@@ -226,7 +226,7 @@ public class GameManager {
 	private Collection<Action> apply(GenerationRule rule, Species sp) {
 		Collection<Action> actions = new LinkedList<Action>();
 		currentSpecies = sp;
-		actions.addAll(rule.apply(this));
+		if(sp.trigger(frame)) actions.addAll(rule.apply(this));
 		return actions;
 	}
 
@@ -234,7 +234,7 @@ public class GameManager {
 		Collection<Action> actions = new LinkedList<Action>();
 		for(Entity member : sp.getMembers()) {
 			currentEntity = member;
-			actions.addAll(rule.apply(this));
+			if(member.trigger(frame)) actions.addAll(rule.apply(this));
 		}
 		return actions;
 	}
@@ -243,7 +243,7 @@ public class GameManager {
 		Collection<Action> actions = new LinkedList<Action>();
 		for(Entity member : sp.getMembers()) {
 			currentEntity = member;
-			actions.addAll(rule.apply(this));
+			if(member.trigger(frame)) actions.addAll(rule.apply(this));
 		}
 		return actions;
 	}
