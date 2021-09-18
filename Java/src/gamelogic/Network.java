@@ -49,7 +49,7 @@ public class Network {
 	public boolean link(Node source, String outputName, Node target, String inputName) {
 		Output output = source.getOutput(outputName);
 		Input input = target.getInput(inputName);
-		if(!input.isCompatibleWith(output)) {
+		if(!input.getDataClass().equals(output.getDataClass())) {
 			return false;
 		}
 

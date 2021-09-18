@@ -1,0 +1,29 @@
+package gamelogic.nodes;
+
+import gamelogic.Node;
+import gamelogic.GameManager;
+
+/**
+* The node model used to add two doubles.
+* 
+* @see GameManager
+*/
+public class DoubleAddNode extends AddNode<Double> {
+
+	/**
+	* 
+	*/ 
+	public DoubleAddNode() {
+		super(Double.class);
+	}
+
+	/**
+	* @param val1
+	* @param val2
+	* @return the sum of val1 and val2
+	*/ 
+	Double sum(Double val1, Double val2) {
+		return val1+val2;
+	} 
+
+}

@@ -41,16 +41,6 @@ public class Input {
 	}
 
 	/**
-	* Checks if the data type of an output is compatible with the input
-	* 
-	* @param output
-	* @return true if compatible, otherwise false
-	*/ 
-	public boolean isCompatibleWith(Output output) {
-		return dataClass.equals(output.getDataClass());
-	}
-
-	/**
 	* @param source
 	*/ 
 	public void setSource(Output source) {
