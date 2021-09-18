@@ -14,6 +14,7 @@ public class Species {
 
 	private String name;
 	private Collection<Entity> members;
+	private Integer triggerTime;
 
 	/**
 	* @param name
@@ -21,6 +22,7 @@ public class Species {
 	public Species(String name) {
 		this.name = name;
 		members = new ArrayList<Entity>();
+		triggerTime = 1;
 	}
 
 	/**
@@ -51,6 +53,28 @@ public class Species {
 	*/ 
 	public Collection<Entity> getMembers() {
 		return members;
+	}
+
+	/**
+	* @return the species' trigger time
+	*/ 
+	public Integer getTriggerTime() {
+		return triggerTime;
+	}
+
+	/**
+	* @param time
+	*/ 
+	public void setTriggerTime(Integer time) {
+		triggerTime = Math.max(time, 1);
+	}
+
+	/**
+	* @param frame
+	* @return true if species is triggered at the given frame, otherwise false
+	*/ 
+	public boolean trigger(Integer frame) {
+		return (frame%triggerTime == 0);
 	}
 
 }
