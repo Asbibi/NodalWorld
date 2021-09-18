@@ -10,16 +10,28 @@ import gamelogic.actions.MoveAction;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+* Rule used to move entities.
+* 
+* @see MoveNode
+* @see MoveAction
+*/ 
 public class MovementRule extends Rule {
 
 	private MoveNode terminalNode;
 
+	/**
+	*
+	*/ 
 	public MovementRule() {
 		super();
 		terminalNode = new MoveNode();
 		network.addNode(terminalNode);
 	}
 
+	/**
+	* @param game
+	*/ 
 	@Override
 	public Collection<Action> apply(GameManager game) {
 		network.evaluate(game);

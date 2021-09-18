@@ -9,16 +9,28 @@ import gamelogic.actions.KillAction;
 import java.util.Collection;
 import java.util.LinkedList;
 
+/**
+* Rule used to kill entities.
+* 
+* @see KillNode
+* @see KillAction
+*/ 
 public class DeathRule extends Rule {
 
 	private KillNode terminalNode;
 
+	/**
+	*
+	*/ 
 	public DeathRule() {
 		super();
 		terminalNode = new KillNode();
 		network.addNode(terminalNode);
 	}
 
+	/**
+	* @param game
+	*/ 
 	@Override
 	public Collection<Action> apply(GameManager game) {
 		network.evaluate(game);

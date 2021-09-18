@@ -10,21 +10,42 @@ import java.util.HashMap;
 import java.util.Queue;
 import java.util.LinkedList;
 
+/**
+* This class provides the abstract model for the networks with in the nodal system when defining rules for the game.
+* A network can be evaluated, meaning it will evaluate all its nodes in a topological order (to avoid inconsistencies).
+* Nodes can be added and linked, but an edge will be refused if it creates a cycle, thus maintaining a directed-acyclic graph structure at all times.
+* 
+* @see Node
+* @see Edge
+*/ 
 public class Network {
 
 	private List<Node> nodes;
 	private Map<Node, Collection<Edge>> mapToEdges;
 
+	/**
+	* Creates an empty network.
+	*/ 
 	public Network() {
 		nodes = new ArrayList<Node>();
 		mapToEdges = new HashMap<Node, Collection<Edge>>();
 	}
 
+	/**
+	* @param node
+	*/ 
 	public void addNode(Node node) {
 		nodes.add(node);
 		mapToEdges.put(node, new ArrayList<Edge>());
 	}
 
+	/**
+	* @param source
+	* @param outputName
+	* @param target
+	* @param inputName
+	* @result true if the nodes were successfully linked - meaning the output and input type matched and no cycle were created -, otherwise false
+	*/ 
 	public boolean link(Node source, String outputName, Node target, String inputName) {
 		Output output = source.getOutput(outputName);
 		Input input = target.getInput(inputName);
@@ -44,6 +65,9 @@ public class Network {
 		return true;
 	}
 
+	/**
+	* @param game
+	*/ 
 	public void evaluate(GameManager game) {
 		for(Node node : nodes) {
 			node.evaluate(game);
