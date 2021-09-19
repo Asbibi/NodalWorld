@@ -21,9 +21,9 @@ public class VecToIntsNode extends Node {
 	*/ 
 	public VecToIntsNode() {
 		super();
-		addInput(new Output("vec", Vec2D.class));
-		addOutput(new Input("x", Integer.class));
-		addOutput(new Input("y", Integer.class));
+		addInput(new Input("vec", Vec2D.class));
+		addOutput(new Output("x", Integer.class));
+		addOutput(new Output("y", Integer.class));
 	}
 
 	/**
