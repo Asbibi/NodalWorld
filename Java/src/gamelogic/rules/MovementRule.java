@@ -30,6 +30,13 @@ public class MovementRule extends Rule {
 	}
 
 	/**
+	* @return the terminal node of the network defining the rule
+	*/ 
+	public MoveNode getTerminalNode() {
+		return terminalNode;
+	}
+
+	/**
 	* @param game
 	*/ 
 	@Override

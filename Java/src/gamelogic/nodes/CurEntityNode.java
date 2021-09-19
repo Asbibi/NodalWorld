@@ -6,7 +6,10 @@ import gamelogic.Entity;
 import gamelogic.Output;
 
 /**
-* The node model used to get the entity being processed.
+* The node model used to get the entity being processed. <br/>
+* 
+* Inputs : none <br/>
+* Outputs : entity
 * 
 * @see GameManager
 */

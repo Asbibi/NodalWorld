@@ -6,6 +6,7 @@ import gamelogic.GameManager;
 /**
 * The node model used to add two doubles.
 * 
+* @see AddNode
 * @see GameManager
 */
 public class DoubleAddNode extends AddNode<Double> {

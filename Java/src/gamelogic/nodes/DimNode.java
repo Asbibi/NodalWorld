@@ -5,7 +5,10 @@ import gamelogic.GameManager;
 import gamelogic.Output;
 
 /**
-* The node model used to get the game's grid dimensions.
+* The node model used to get the game's grid dimensions. <br/>
+* 
+* Inputs : none <br/>
+* Outputs : width, height
 * 
 * @see GameManager
 */

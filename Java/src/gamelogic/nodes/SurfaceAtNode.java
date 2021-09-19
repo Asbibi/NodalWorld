@@ -8,7 +8,10 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 /**
-* The node model used to get the surface in the tile at a given position.
+* The node model used to get the surface in the tile at a given position. <br/>
+* 
+* Inputs : position <br/>
+* Outputs : surface
 * 
 * @see GameManager
 */

@@ -8,7 +8,10 @@ import gamelogic.Output;
 import java.lang.Class;
 
 /**
-* The node model used to test equality between two objects.
+* The node model used to test equality between two objects. <br/>
+* 
+* Inputs : val1, val2 <br/>
+* Outputs : res
 * 
 * @see GameManager
 */
@@ -24,7 +27,7 @@ public class EqualNode<T> extends Node {
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));
-		addOutput(new Output("res", dataClass));
+		addOutput(new Output("res", Boolean.class));
 	}
 
 	/**

@@ -5,7 +5,10 @@ import gamelogic.Node;
 import gamelogic.Input;
 
 /**
-* The node model used as terminal node in a death rule's network.
+* The node model used as terminal node in a death rule's network. <br/>
+* 
+* Inputs : kill <br/>
+* Outputs : none
 * 
 * @see DeathRule
 */ 

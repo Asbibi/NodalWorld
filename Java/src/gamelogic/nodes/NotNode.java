@@ -6,7 +6,10 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 /**
-* The node model used to negate a boolean.
+* The node model used to negate a boolean. <br/>
+* 
+* Inputs : val <br/>
+* Outputs : res
 * 
 * @see GameManager
 */

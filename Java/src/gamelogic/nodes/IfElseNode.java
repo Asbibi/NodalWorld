@@ -8,7 +8,10 @@ import gamelogic.Output;
 import java.lang.Class;
 
 /**
-* The node model used to perform IF/ELSE statement.
+* The node model used to perform IF/ELSE statement. <br/>
+* 
+* Inputs : cond, val1, val2 <br/>
+* Outputs : res
 * 
 * @see GameManager
 */

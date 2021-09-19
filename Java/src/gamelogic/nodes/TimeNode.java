@@ -5,7 +5,10 @@ import gamelogic.GameManager;
 import gamelogic.Output;
 
 /**
-* The node model used to get the current frame.
+* The node model used to get the current frame. <br/>
+* 
+* Inputs : None <br/>
+* Outputs : time
 * 
 * @see GameManager
 */

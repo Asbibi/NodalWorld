@@ -6,7 +6,10 @@ import gamelogic.Input;
 import gamelogic.Vec2D;
 
 /**
-* The node model used as terminal node in a movement rule's network.
+* The node model used as terminal node in a movement rule's network. <br/>
+* 
+* Inputs : position <br/>
+* Outputs : none
 * 
 * @see MovementRule
 */ 

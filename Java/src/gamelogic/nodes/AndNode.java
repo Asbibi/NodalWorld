@@ -6,7 +6,10 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 /**
-* The node model used to perform logical AND.
+* The node model used to perform logical AND. <br/>
+* 
+* Inputs : val1, val2 <br/>
+* Outputs : res
 * 
 * @see GameManager
 */

@@ -6,6 +6,7 @@ import gamelogic.GameManager;
 /**
 * The node model used to add two integers.
 * 
+* @see AddNode
 * @see GameManager
 */
 public class IntAddNode extends AddNode<Integer> {

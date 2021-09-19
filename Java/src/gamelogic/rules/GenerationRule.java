@@ -29,6 +29,13 @@ public class GenerationRule extends Rule {
 	}
 
 	/**
+	* @return the terminal node of the network defining the rule
+	*/ 
+	public GenerateNode getTerminalNode() {
+		return terminalNode;
+	}
+
+	/**
 	* @param game
 	*/ 
 	@Override

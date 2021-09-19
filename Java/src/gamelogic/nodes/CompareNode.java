@@ -9,7 +9,10 @@ import java.lang.Class;
 import java.lang.Comparable;
 
 /**
-* The node model used to compare two objects.
+* The node model used to compare two objects. <br/>
+* 
+* Inputs : val1, val2 <br/>
+* Outputs : res
 * 
 * @see GameManager
 */

@@ -6,7 +6,10 @@ import gamelogic.Species;
 import gamelogic.Output;
 
 /**
-* The node model used to get the species being processed.
+* The node model used to get the species being processed. <br/>
+* 
+* Inputs : none <br/>
+* Outputs : species
 * 
 * @see GameManager
 */

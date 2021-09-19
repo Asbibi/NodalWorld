@@ -8,7 +8,10 @@ import gamelogic.Output;
 import java.util.Random;
 
 /**
-* The node model used to generate a random integer in the range [0, N[.
+* The node model used to generate a random integer in the range [0, N[. <br/>
+* 
+* Inputs : none <br/>
+* Outputs : val
 * 
 * @see GameManager
 */

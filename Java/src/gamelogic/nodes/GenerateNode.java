@@ -6,7 +6,10 @@ import gamelogic.Input;
 import gamelogic.Vec2D;
 
 /**
-* The node model used as terminal node in a generation rule's network.
+* The node model used as terminal node in a generation rule's network. <br/>
+* 
+* Inputs : generate, position <br/>
+* Outputs : none
 * 
 * @see GenerationRule
 */ 
@@ -34,8 +37,8 @@ public class GenerateNode extends Node {
 	*/ 
 	public boolean generate() {
 		Boolean result = getInput("generate").getData(Boolean.class);
-		if(result== null) return false;
-		else return result;
+		if(result==null) return false;
+		return result;
 	}
 
 	/**

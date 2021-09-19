@@ -6,7 +6,10 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 /**
-* The node model used to perform logical OR.
+* The node model used to perform logical OR. <br/>
+* 
+* Inputs : val1, val2 <br/>
+* Outputs : res
 * 
 * @see GameManager
 */

@@ -7,6 +7,7 @@ import gamelogic.Vec2D;
 /**
 * The node model used to add two 2D vectors.
 * 
+* @see AddNode
 * @see GameManager
 */
 public class VecAddNode extends AddNode<Vec2D> {
