@@ -7,19 +7,19 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 /**
-* The node model used to gather to integers to form a 2D vector. <br/>
+* The node model used to gather two integers to form a 2D vector. <br/>
 * 
 * Inputs : x, y <br/>
 * Outputs : vec
 * 
 * @see GameManager
 */
-public class IntToVecNode extends Node {
+public class IntsToVecNode extends Node {
 
 	/**
 	*
 	*/ 
-	public IntToVecNode() {
+	public IntsToVecNode() {
 		super();
 		addInput(new Input("x", Integer.class));
 		addInput(new Input("y", Integer.class));

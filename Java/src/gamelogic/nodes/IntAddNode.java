@@ -23,7 +23,7 @@ public class IntAddNode extends AddNode<Integer> {
 	* @param val2
 	* @return the sum of val1 and val2
 	*/ 
-	Integer sum(Integer val1, Integer val2) {
+	Integer add(Integer val1, Integer val2) {
 		return val1+val2;
 	} 
 

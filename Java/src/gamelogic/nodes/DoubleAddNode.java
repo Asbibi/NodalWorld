@@ -23,7 +23,7 @@ public class DoubleAddNode extends AddNode<Double> {
 	* @param val2
 	* @return the sum of val1 and val2
 	*/ 
-	Double sum(Double val1, Double val2) {
+	Double add(Double val1, Double val2) {
 		return val1+val2;
 	} 
 

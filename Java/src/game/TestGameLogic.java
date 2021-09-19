@@ -29,7 +29,7 @@ public class TestGameLogic {
 		net.addNode(nodeRandX);
 		RandIntNode nodeRandY = new RandIntNode(game.gridHeight()); 
 		net.addNode(nodeRandY);
-		IntToVecNode nodeGather = new IntToVecNode(); 
+		IntsToVecNode nodeGather = new IntToVecNode(); 
 		net.addNode(nodeGather);
 		net.link(nodeRandX, "val", nodeGather, "x");
 		net.link(nodeRandY, "val", nodeGather, "y");
