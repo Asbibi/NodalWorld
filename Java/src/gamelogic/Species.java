@@ -1,6 +1,8 @@
 package gamelogic;
 
 import java.util.Collection;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 /**
@@ -13,14 +15,25 @@ import java.util.ArrayList;
 public class Species {
 
 	private String name;
+	private Image image;
 	private Collection<Entity> members;
 	private Integer triggerTime;
 
 	/**
 	* @param name
+	* @param path to the image
 	*/ 
-	public Species(String name) {
+	public Species(String name, String imagePath) {
+		this(name, Toolkit.getDefaultToolkit().getImage(imagePath));
+	}
+	
+	/**
+	* @param name
+	* @param image of the species for display
+	*/ 
+	public Species(String name, Image image) {
 		this.name = name;
+		this.image = image;
 		members = new ArrayList<Entity>();
 		triggerTime = 1;
 	}
@@ -48,6 +61,13 @@ public class Species {
 		members.remove(member);
 	}
 
+	/**
+	* @return the image for display of the species
+	*/ 
+	public Image getImage() {
+		return image;
+	}
+	
 	/**
 	* @return all the members of the species
 	*/ 

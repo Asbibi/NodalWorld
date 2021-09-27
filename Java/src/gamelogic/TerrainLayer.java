@@ -2,11 +2,11 @@ package gamelogic;
 
 /**
 * A terrain is a 2D grid of tiles, each tile containing a surface.
-* The dimensions of a terrain are given at construction time and do not change.
+* The dimensions of a terrain are given at construction time and do NOT change (important for the terrain stack dimensions).
 * 
 * @see Surface
 */
-public class Terrain {
+public class TerrainLayer {
 
 	private Integer width, height;
 	private Surface[] tiles;
@@ -15,7 +15,7 @@ public class Terrain {
 	* @param width
 	* @param height
 	*/
-	public Terrain(Integer width, Integer height) {
+	public TerrainLayer(Integer width, Integer height) {
 		this.width = width;
 		this.height = height;
 		tiles = new Surface[width*height];
@@ -58,5 +58,14 @@ public class Terrain {
 	private boolean isOutside(Vec2D pos) {
 		return (pos.getX() < 0) || (pos.getX() >= width) || (pos.getY() < 0) || (pos.getY() >= height);
 	}
+	
+	/**
+	* @return the height of the terrain layer
+	*/
+	public Integer getHeight() { return height; }
+	/**
+	* @return the width of the terrain layer
+	*/
+	public Integer getWidth() { return width; }
 
 }

@@ -18,7 +18,7 @@ public class TestGameLogic {
 	public TestGameLogic(int width, int height) {
 		game = new GameManager(width, height);
 		soil = new Surface("soil");
-		humans = new Species("human");
+		humans = new Species("human", "res/Animal_Human");
 	}
 
 	private GenerationRule makeGenRandomOnSoilRule() {
@@ -66,7 +66,7 @@ public class TestGameLogic {
 
 			TestGameLogic test = new TestGameLogic(width, height);
 
-			Terrain ground = new Terrain(test.game.gridWidth(), test.game.gridHeight());
+			TerrainLayer ground = new TerrainLayer(test.game.gridWidth(), test.game.gridHeight());
 			ground.fill(test.soil);
 			test.game.pushTerrain(ground);
 

@@ -79,17 +79,25 @@ public class GameManager {
 	}
 
 	/**
+	 * Mainly used for display on the interface
+	* @return the current terrains stack
+	*/
+	public TerrainStack getTerrainStack() {
+		return terrainStack;
+	}
+	
+	/**
 	* @param pos
 	* @return the surface stored in the tile at the given position
 	*/
 	public Surface surfaceAt(Vec2D pos) {
-		return terrainStack.surfaceAt(pos);
+		return terrainStack.getSurfaceAt(pos);
 	}
 
 	/**
 	* @param terrain
 	*/
-	public void pushTerrain(Terrain terrain) {
+	public void pushTerrain(TerrainLayer terrain) {
 		terrainStack.pushTerrain(terrain);
 	}
 
