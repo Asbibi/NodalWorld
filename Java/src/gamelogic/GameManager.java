@@ -30,7 +30,6 @@ public class GameManager {
 	private Collection<MovementRule> moveRules;
 	private Collection<DeathRule> deathRules;
 
-	private Map<Rule, Collection<Species>> rulesToSpecies;
 	private Map<Species, GenerationRule> speciesToGenRule;
 	private Map<Species, MovementRule> speciesToMoveRule;
 	private Map<Species, DeathRule> speciesToDeathRule;
@@ -51,7 +50,6 @@ public class GameManager {
 		genRules = new ArrayList<GenerationRule>();
 		moveRules = new ArrayList<MovementRule>();
 		deathRules = new ArrayList<DeathRule>();
-		rulesToSpecies = new HashMap<Rule, Collection<Species>>();
 		speciesToGenRule = new HashMap<Species, GenerationRule>();
 		speciesToMoveRule = new HashMap<Species, MovementRule>();
 		speciesToDeathRule = new HashMap<Species, DeathRule>();
@@ -135,7 +133,6 @@ public class GameManager {
 	*/
 	public void addRule(GenerationRule rule) {
 		genRules.add(rule);
-		rulesToSpecies.put(rule, new ArrayList<Species>());
 	}
 
 	/**
@@ -143,7 +140,6 @@ public class GameManager {
 	*/
 	public void addRule(MovementRule rule) {
 		moveRules.add(rule);
-		rulesToSpecies.put(rule, new ArrayList<Species>());
 	}
 
 	/**
@@ -151,7 +147,6 @@ public class GameManager {
 	*/
 	public void addRule(DeathRule rule) {
 		deathRules.add(rule);
-		rulesToSpecies.put(rule, new ArrayList<Species>());
 	}
 
 	/**
@@ -161,7 +156,6 @@ public class GameManager {
 	* @param sp
 	*/
 	public void connectRuleToSpecies(GenerationRule rule, Species sp) {
-		rulesToSpecies.get(rule).add(sp);
 		if(speciesToGenRule.containsKey(sp) && !speciesToGenRule.get(sp).equals(rule)) {
 			speciesToGenRule.replace(sp, rule);
 		} else {
@@ -176,7 +170,6 @@ public class GameManager {
 	* @param sp
 	*/
 	public void connectRuleToSpecies(MovementRule rule, Species sp) {
-		rulesToSpecies.get(rule).add(sp);
 		if(speciesToMoveRule.containsKey(sp) && !speciesToMoveRule.get(sp).equals(rule)) {
 			speciesToMoveRule.replace(sp, rule);
 		} else {
@@ -191,7 +184,6 @@ public class GameManager {
 	* @param sp
 	*/
 	public void connectRuleToSpecies(DeathRule rule, Species sp) {
-		rulesToSpecies.get(rule).add(sp);
 		if(speciesToDeathRule.containsKey(sp) && !speciesToDeathRule.get(sp).equals(rule)) {
 			speciesToDeathRule.replace(sp, rule);
 		} else {
@@ -205,25 +197,25 @@ public class GameManager {
 	public void evolveGameState() {
 		Collection<Action> actions;
 		actions = new LinkedList<Action>();
-		for(GenerationRule rule : genRules) {
-			for(Species sp : rulesToSpecies.get(rule)) {
-				actions.addAll(apply(rule, sp));
+		for(Species sp : species.values()) {
+			if(speciesToGenRule.containsKey(sp)) {
+				actions.addAll(apply(speciesToGenRule.get(sp), sp));
 			}
 		}
 		execute(actions);
 
 		actions = new LinkedList<Action>();
-		for(MovementRule rule : moveRules) {
-			for(Species sp : rulesToSpecies.get(rule)) {
-				actions.addAll(apply(rule, sp));
+		for(Species sp : species.values()) {
+			if(speciesToMoveRule.containsKey(sp)) {
+				actions.addAll(apply(speciesToMoveRule.get(sp), sp));
 			}
 		}
 		execute(actions);
 
 		actions = new LinkedList<Action>();
-		for(DeathRule rule : deathRules) {
-			for(Species sp : rulesToSpecies.get(rule)) {
-				actions.addAll(apply(rule, sp));
+		for(Species sp : species.values()) {
+			if(speciesToDeathRule.containsKey(sp)) {
+				actions.addAll(apply(speciesToDeathRule.get(sp), sp));
 			}
 		}
 		execute(actions);

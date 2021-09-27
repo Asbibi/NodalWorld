@@ -48,13 +48,6 @@ public class Surface extends Element{
 		Surface surf = (Surface) o;
 		return (this.id == surf.id);
 	}
-
-
-	
-	
-	
-	
-	
 	
 	
 	
