@@ -14,12 +14,12 @@ import gamelogic.Surface;
 * The elements managers are ElementDetailPanel instances.
 * They are derivated from JToolBar which allows the user to freely rearrange their positions
 * 
-* @see ElementDetailPanel
+* @see ElementManagerToolBar
 */ 
 public class ControlPanel extends JPanel {
 	JToolBar terrainToolBar;
-	ElementDetailPanel<Surface> surfaceToolBar;
-	ElementDetailPanel<Species> speciesToolBar;
+	ElementManagerToolBar<Surface> surfaceToolBar;
+	ElementManagerToolBar<Species> speciesToolBar;
 
 	public ControlPanel() {
 		setBackground(Color.red);
@@ -36,8 +36,18 @@ public class ControlPanel extends JPanel {
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
 		terrainToolBar = new JToolBar(null, JToolBar.VERTICAL);
-		surfaceToolBar = new ElementDetailPanel<>("Surface");
-		speciesToolBar = new ElementDetailPanel<>("Species");
+		surfaceToolBar = new ElementManagerToolBar<>("Surface") { 
+			@Override
+			public Surface createElement(String name) {
+				return new Surface(name);
+			}
+		};
+		speciesToolBar = new ElementManagerToolBar<>("Species") { 
+			@Override
+			public Species createElement(String name) {
+				return new Species(name, "");
+			}
+		};
 		terrainToolBar.add(new JButton("Test"));
 		toolBarPanel.add(terrainToolBar);
 		toolBarPanel.add(surfaceToolBar);

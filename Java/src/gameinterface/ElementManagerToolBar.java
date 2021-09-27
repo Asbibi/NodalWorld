@@ -17,7 +17,7 @@ import gamelogic.Element;
 * 
 * @see ControlPanel
 */ 
-public class ElementDetailPanel<T extends Element> extends JToolBar {
+public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private ArrayList<T> elements;
 	private JList<Element> scrollList;
 	private JButton upButton;
@@ -26,7 +26,7 @@ public class ElementDetailPanel<T extends Element> extends JToolBar {
 	private JButton addButton;
 	private JTextField addTextField;
 	
-	public ElementDetailPanel(String className) {
+	public ElementManagerToolBar(String className) {
 		super(null, JToolBar.VERTICAL);
 		elements = new ArrayList<T>();
 		scrollList = new JList<Element>();
@@ -62,6 +62,11 @@ public class ElementDetailPanel<T extends Element> extends JToolBar {
             	moveDownCurrentElement();
             }
         });
+		removeButton.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent event) {
+            	removeCurrentElement();
+            }
+        });
 		topButtonsPanel.add(upButton);
 		topButtonsPanel.add(downButton);
 		topButtonsPanel.add(removeButton);
@@ -72,6 +77,11 @@ public class ElementDetailPanel<T extends Element> extends JToolBar {
 		addTextField = new JTextField(5);
 		ImageIcon addIcon = new ImageIcon("res/_System_Add.png");
 		addButton = new JButton(addIcon);
+		addButton.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent event) {
+            	addNewElement();
+            }
+        });
 		addButton.setPreferredSize(buttonDimension);
 		BottomButtonsPanel.add(addTextField);
 		BottomButtonsPanel.add(addButton);
@@ -85,17 +95,46 @@ public class ElementDetailPanel<T extends Element> extends JToolBar {
 	public void moveUpCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
 		System.out.println(selectedIndex);
-		if (selectedIndex > 0)
+		if (selectedIndex > 0) {
 			swapElementArray(selectedIndex, selectedIndex -1);
+			scrollList.setSelectedIndex(selectedIndex - 1);
+		}
 	}
 	/**
 	* Callback for the down button, swap the selected element with the one below
 	*/ 
 	public void moveDownCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
-		if (selectedIndex < scrollList.getModel().getSize() -1 && selectedIndex != -1)
+		if (selectedIndex < scrollList.getModel().getSize() -1 && selectedIndex != -1) {
 			swapElementArray(selectedIndex, selectedIndex +1);
+			scrollList.setSelectedIndex(selectedIndex + 1);
+		}
 	}
+	/**
+	* Callback for the down button, swap the selected element with the one below
+	*/ 
+	public void removeCurrentElement() {
+		int selectedIndex = scrollList.getSelectedIndex();
+		if (selectedIndex != -1) {
+			removeElementArray(selectedIndex);
+			scrollList.setSelectedIndex(Math.max(selectedIndex - 1, 0));
+		}
+	}
+	/**
+	* Callback for the down button, swap the selected element with the one below
+	*/ 
+	public void addNewElement() {
+		String name = addTextField.getText();
+		if (name.isEmpty())
+			return;
+		addElementArray(createElement(name));
+		addTextField.setText("");
+	}
+	/**
+	* Method to create the new element, should be override on class instanciation to use the T constructor
+	*/
+	public T createElement(String name) { return null; }
+	
 	
 	
 	// Array management
