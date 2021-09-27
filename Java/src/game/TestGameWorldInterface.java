@@ -59,6 +59,12 @@ public class TestGameWorldInterface {
 		
 		gameFrame.gWP_test().updateTerrain(terrain);
 		gameFrame.gWP_test().updateAllSpeciesDisplayed(species);
+
+		ArrayList<Surface> surfaces = new ArrayList<Surface>();
+		surfaces.add(ground);
+		surfaces.add(water);
+		gameFrame.gCTRL_test().setSurfaces(surfaces);
+		gameFrame.gCTRL_test().setSpecies(species);
 		
 		gameFrame.setVisible(true);
 	}

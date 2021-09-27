@@ -59,4 +59,5 @@ public class GameFrame extends JFrame {
 		//TODO
 	}
 	public WorldPanel gWP_test() { return worldPanel;}
+	public ControlPanel gCTRL_test() { return controlPanel;}
 }

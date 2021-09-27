@@ -10,12 +10,10 @@ import java.util.ArrayList;
 * At each frame it can generate new entities.
 * 
 * @see Entity
-* @see GenerationRule
+* @see GenerationRule, Element
 */ 
-public class Species {
+public class Species extends Element{
 
-	private String name;
-	private Image image;
 	private Collection<Entity> members;
 	private Integer triggerTime;
 
@@ -39,14 +37,6 @@ public class Species {
 	}
 
 	/**
-	* @return the name of the species
-	*/ 
-	@Override
-	public String toString() {
-		return name;
-	}
-
-	/**
 	* @param pos
 	* @param birthTime
 	*/ 
@@ -61,12 +51,6 @@ public class Species {
 		members.remove(member);
 	}
 
-	/**
-	* @return the image for display of the species
-	*/ 
-	public Image getImage() {
-		return image;
-	}
 	
 	/**
 	* @return all the members of the species

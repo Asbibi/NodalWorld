@@ -7,15 +7,13 @@ import java.lang.Object;
 /**
 * Each instance of this class represents a different kind of surface that can be stored on a tile.
 * 
-* @see TerrainLayer
+* @see TerrainLayer, Element
 */
-public class Surface {
+public class Surface extends Element{
 
 	private static int idCounter;
 
 	private int id;
-	private String name;	
-    private Image image;
 
 	/**
 	* @param name
@@ -51,28 +49,7 @@ public class Surface {
 		return (this.id == surf.id);
 	}
 
-	/**
-	* @return the name of the surface
-	*/
-	@Override 
-	public String toString() {
-		return name;
-	}
 
-	
-	
-	/**
-	* @return the image of the surface
-	*/
-	public Image getImage() { return image; }
-	/**
-	* @param the new image for this surface
-	*/
-	public void setImage(Image image) { this.image = image; }
-	/**
-	* @param the path to the new image for this surface
-	*/
-	public void setImage(String imagePath) { this.image = Toolkit.getDefaultToolkit().getImage(imagePath); }
 	
 	
 	
