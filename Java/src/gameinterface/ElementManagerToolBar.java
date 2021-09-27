@@ -3,8 +3,9 @@ package gameinterface;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
 import gamelogic.Element;
@@ -15,7 +16,7 @@ import gamelogic.Element;
 * buttons to add/remove/rearrange them,
 * a viewer to inspect and modify a specific element.
 * 
-* @see ControlPanel
+* @see ControlPanel, ElementDetailPanel
 */ 
 public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private ArrayList<T> elements;
@@ -25,20 +26,37 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private JButton removeButton;
 	private JButton addButton;
 	private JTextField addTextField;
+	private ElementDetailPanel detailPanel;
 	
-	public ElementManagerToolBar(String className) {
+	public ElementManagerToolBar(String className, ElementDetailPanel detailPanel) {
 		super(null, JToolBar.VERTICAL);
 		elements = new ArrayList<T>();
-		scrollList = new JList<Element>();
-		setUpUI(className);
+		setUpUI(className, detailPanel);
 	}
 	
 	/**
 	* Sets up the UI of the element manager
 	*/ 
-	private void setUpUI(String className) {
+	private void setUpUI(String className, ElementDetailPanel detailPanel) {
 		add(new JLabel(className));
 		
+		scrollList = new JList<Element>() {			
+			@Override
+			public void setSelectedIndex(int index) {
+				super.setSelectedIndex(index);
+				detailPanel.setElement(elements.get(index));
+			}
+		};
+		scrollList.addMouseListener(new MouseAdapter() {
+	         public void mouseClicked(MouseEvent me) {
+	             if (me.getClickCount() == 1) {
+	                JList target = (JList)me.getSource();
+	                int index = target.locationToIndex(me.getPoint());
+	                if (index >= 0)
+	                	detailPanel.setElement(elements.get(index));
+	             }
+	          }
+	       });
 		add(scrollList);
 		
 		Dimension buttonDimension = new Dimension(25,25);
@@ -86,7 +104,13 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		BottomButtonsPanel.add(addTextField);
 		BottomButtonsPanel.add(addButton);
 		add(BottomButtonsPanel);
+		
+		this.detailPanel = detailPanel;
+		add(this.detailPanel);
 	}
+	
+	
+	
 	
 	// Button callbacks
 	/**
@@ -134,6 +158,9 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	* Method to create the new element, should be override on class instanciation to use the T constructor
 	*/
 	public T createElement(String name) { return null; }
+	
+	
+	
 	
 	
 	

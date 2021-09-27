@@ -36,13 +36,13 @@ public class ControlPanel extends JPanel {
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
 		terrainToolBar = new JToolBar(null, JToolBar.VERTICAL);
-		surfaceToolBar = new ElementManagerToolBar<>("Surface") { 
+		surfaceToolBar = new ElementManagerToolBar<>("Surface", new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
 				return new Surface(name);
 			}
 		};
-		speciesToolBar = new ElementManagerToolBar<>("Species") { 
+		speciesToolBar = new ElementManagerToolBar<>("Species", new SpeciesDetailPanel()) { 
 			@Override
 			public Species createElement(String name) {
 				return new Species(name, "");
