@@ -5,6 +5,7 @@ import gamelogic.rules.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -23,8 +24,10 @@ public class GameManager {
 
 	private Integer width, height;
 	private Integer frame;
+
 	private TerrainStack terrainStack;
-	private Map<String, Species> species;
+
+	private List<Species> species;
 
 	private Collection<GenerationRule> genRules;
 	private Collection<MovementRule> moveRules;
@@ -46,7 +49,7 @@ public class GameManager {
 		this.height = height;
 		frame = 0;
 		terrainStack = new TerrainStack();
-		species = new HashMap<String, Species>();
+		species = new LinkedList<Species>();
 		genRules = new ArrayList<GenerationRule>();
 		moveRules = new ArrayList<MovementRule>();
 		deathRules = new ArrayList<DeathRule>();
@@ -104,14 +107,14 @@ public class GameManager {
 	* @return the species corresponding to the given name, null if it doesn't exist
 	*/
 	public Species getSpecies(String name) {
-		return species.get(name);
+		return species.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
 	}
 
 	/**
 	* @param sp
 	*/
 	public void addSpecies(Species sp) {
-		species.put(sp.toString(), sp);
+		species.add(sp);
 	}
 
 	/**
@@ -197,7 +200,7 @@ public class GameManager {
 	public void evolveGameState() {
 		Collection<Action> actions;
 		actions = new LinkedList<Action>();
-		for(Species sp : species.values()) {
+		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
 				actions.addAll(apply(speciesToGenRule.get(sp), sp));
 			}
@@ -205,7 +208,7 @@ public class GameManager {
 		execute(actions);
 
 		actions = new LinkedList<Action>();
-		for(Species sp : species.values()) {
+		for(Species sp : species) {
 			if(speciesToMoveRule.containsKey(sp)) {
 				actions.addAll(apply(speciesToMoveRule.get(sp), sp));
 			}
@@ -213,7 +216,7 @@ public class GameManager {
 		execute(actions);
 
 		actions = new LinkedList<Action>();
-		for(Species sp : species.values()) {
+		for(Species sp : species) {
 			if(speciesToDeathRule.containsKey(sp)) {
 				actions.addAll(apply(speciesToDeathRule.get(sp), sp));
 			}
@@ -273,7 +276,7 @@ public class GameManager {
 		sb.append('\n');
 
 		sb.append("Species : \n");
-		for(Species sp : species.values()) {
+		for(Species sp : species) {
 			sb.append(sp);
 			sb.append(" : ");
 			for(Entity member : sp.getMembers()) {
