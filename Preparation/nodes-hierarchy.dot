@@ -1,0 +1,50 @@
+digraph {
+
+	/* Style */
+	rankdir=LR;
+	node[shape=rectangle];
+
+	/* Nodes */
+	game[label="Game"]; 
+	pred[label="Predicates"];
+	op[label="Operations"];
+	util[label="Utils"];
+	rand[label="Random"];
+	rule[label="Rules"];
+
+	dim[label="Dimensions"];
+	curSp[label="Current Species"];
+	curEnt[label="Current Entity"];
+	time[label="Time"];
+	surfAt[label="Surface At"];
+
+	eq[label="Equal ( == )"];
+	comp[label="Compare ( < )"];
+	ifelse[label="If / Else"];
+	not[label="Not ( ! )"];
+	and[label="And ( && )"];
+	or[label="Or ( || )"]; 
+
+	add[label="Add ( + )"];
+	sub[label="Substract ( - )"];
+	eucldiv[label="Euclidean Division"];
+
+	ints2vec[label="Ints To Vec"];
+	vec2ints[label="Vec To Ints"];
+	value[label="Value"];
+
+	randint[label="Random Int"];
+	rand01[label="Random Double"];
+
+	gen[label="Generate"];
+	move[label="Move"];
+	kill[label="Kill"];
+
+	/* Edges */
+	game -> {dim curSp curEnt time surfAt};
+	pred -> {eq comp ifelse not and or};
+	op -> {add sub eucldiv};
+	util -> {ints2vec vec2ints value};
+	rand -> {randint rand01};
+	rule -> {gen move kill};
+}

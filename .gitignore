@@ -28,7 +28,7 @@ Java/.classpath
 Java/.project
 
 # Other
-commands.txt
-*.dot
-bin/
-jar/
+Java/*.sh
+Preparation/*.sh
+Java/bin/
+Java/jar/
