@@ -5,6 +5,11 @@ import javax.swing.*;
 
 import gamelogic.GameManager;
 
+/**
+* This class manages the display of the whole game in its own window
+* 
+* @see ControlPanel, WorldPanel
+*/ 
 public class GameFrame extends JFrame {
 	private	WorldPanel 		worldPanel;
 	private	ControlPanel 	controlPanel;
@@ -16,6 +21,9 @@ public class GameFrame extends JFrame {
 	private JButton			restartButton;
 	
 	
+	/**
+	* Calls setupUI() and the Control & World panels' constructors methods
+	*/ 
 	public GameFrame() {
 		super("Nodal World");
 		worldPanel = new WorldPanel();
@@ -24,20 +32,25 @@ public class GameFrame extends JFrame {
 	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
+	/**
+	* Sets up the UI Layout :
+	* - Creates the menubar
+	* - Separate the empty space into 2 areas of the same size (GridLayout) : one for the ControlPanel and one for the WorldPanel 
+	*/ 
 	private void setupUI() {
         setPreferredSize(new Dimension(1280, 720));
-        setLayout(new BorderLayout());
+        setLayout(new GridLayout(0,2));
         
         setupMenuBar();
         
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.X_AXIS));
-        centerPanel.add(controlPanel);
-        centerPanel.add(new JScrollPane(worldPanel));
-        add(centerPanel, BorderLayout.CENTER);
+        add(controlPanel);
+        add(new JScrollPane(worldPanel));
 
         pack();        
 	}
+	/**
+	* Creates the menubar of the game
+	*/ 
 	private void setupMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		pauseButton = new JButton("Pause");
@@ -53,7 +66,10 @@ public class GameFrame extends JFrame {
 	    setJMenuBar(menuBar);
 	}
 	
-	
+	/**
+	* Updates the world panel using the gameManager data
+	* WIP
+	*/ 
 	public void update(GameManager gameManager)
 	{
 		//TODO

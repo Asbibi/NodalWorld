@@ -114,7 +114,7 @@ public class WorldPanel extends JPanel{
 	 * Still some work to do on this part.
 	*/
 	public void setPreferredSizeAuto() {
-		int tileSize = 32; //TODO Later : compute a size for the map to be automatically in the full Panel + tile still having a square ratio instead of a forced tile size
+		int tileSize = 64; //TODO Later : compute a size for the map to be automatically in the full Panel + tile still having a square ratio instead of a forced tile size
 		setPreferredSize(new Dimension(tileSize * gridDimension.width, tileSize * gridDimension.height));
 	}
 
