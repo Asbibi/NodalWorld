@@ -9,7 +9,6 @@ import java.util.Collection;
 * Classes that extend this class will usually rely on a specific node in the network - called a terminal node - for the implementation of the apply method.
 * 
 * @see Network
-* @see Action
 */ 
 public abstract class Rule {
 
@@ -47,8 +46,7 @@ public abstract class Rule {
 
 	/**
 	* @param game
-	* @return the actions to execute
 	*/ 
-	public abstract Collection<Action> apply(GameManager game);
+	public abstract void apply(GameManager game);
 
 }

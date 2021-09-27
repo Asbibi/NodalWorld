@@ -2,9 +2,7 @@ package gamelogic.rules;
 
 import gamelogic.GameManager;
 import gamelogic.Rule;
-import gamelogic.Action;
 import gamelogic.nodes.KillNode;
-import gamelogic.actions.KillAction;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -13,7 +11,6 @@ import java.util.LinkedList;
 * Rule used to kill entities.
 * 
 * @see KillNode
-* @see KillAction
 */ 
 public class DeathRule extends Rule {
 
@@ -39,14 +36,12 @@ public class DeathRule extends Rule {
 	* @param game
 	*/ 
 	@Override
-	public Collection<Action> apply(GameManager game) {
+	public void apply(GameManager game) {
 		network.evaluate(game);
 
-		Collection<Action> actions = new LinkedList<Action>();
 		if(terminalNode.kill()) {
-			actions.add(new KillAction(game.getCurrentEntity()));
+			game.getCurrentEntity().getSpecies().removeMember(game.getCurrentEntity());
 		}
-		return actions;
 	}
 
 }

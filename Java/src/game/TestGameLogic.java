@@ -3,7 +3,6 @@ package game;
 import gamelogic.*;
 import gamelogic.rules.*;
 import gamelogic.nodes.*;
-import gamelogic.actions.*;
 
 /**
 * Class used to customize and run some small interactive tests for the gamelogic package.

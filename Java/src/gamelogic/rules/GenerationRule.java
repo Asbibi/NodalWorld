@@ -2,9 +2,7 @@ package gamelogic.rules;
 
 import gamelogic.GameManager;
 import gamelogic.Rule;
-import gamelogic.Action;
 import gamelogic.nodes.GenerateNode;
-import gamelogic.actions.GenerateAction;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -13,7 +11,6 @@ import java.util.LinkedList;
 * Rule used to generate new members in a species.
 * 
 * @see GenerateNode
-* @see GenerateAction
 */ 
 public class GenerationRule extends Rule {
 
@@ -39,14 +36,12 @@ public class GenerationRule extends Rule {
 	* @param game
 	*/ 
 	@Override
-	public Collection<Action> apply(GameManager game) {
+	public void apply(GameManager game) {
 		network.evaluate(game);
 		
-		Collection<Action> actions = new LinkedList<Action>();
 		if(terminalNode.generate()) {
-			actions.add(new GenerateAction(game.getCurrentSpecies(), terminalNode.position(), game.getFrame()));
+			game.getCurrentSpecies().addMemberAt(terminalNode.position(), game.getFrame());
 		}
-		return actions;
 	}
 
 }

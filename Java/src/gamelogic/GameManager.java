@@ -15,7 +15,6 @@ import java.lang.StringBuilder;
 * The game manager is responsible for the initialization and evolution of the game state at each frame using the rules defined by the user.
 * 
 * @see Rule
-* @see Action
 * @see TerrainStack
 * @see Species
 * @see Entity
@@ -200,47 +199,35 @@ public class GameManager {
 	public void evolveGameState() {
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
-				execute(apply(speciesToGenRule.get(sp), sp));
+				apply(speciesToGenRule.get(sp), sp);
 			}
 			if(speciesToMoveRule.containsKey(sp)) {
-				execute(apply(speciesToMoveRule.get(sp), sp));
+				apply(speciesToMoveRule.get(sp), sp);
 			}
 			if(speciesToDeathRule.containsKey(sp)) {
-				execute(apply(speciesToDeathRule.get(sp), sp));
+				apply(speciesToDeathRule.get(sp), sp);
 			}
 		}
 
 		frame++;
 	}
 
-	private Collection<Action> apply(GenerationRule rule, Species sp) {
-		Collection<Action> actions = new LinkedList<Action>();
+	private void apply(GenerationRule rule, Species sp) {
 		currentSpecies = sp;
-		if(sp.trigger(frame)) actions.addAll(rule.apply(this));
-		return actions;
+		if(sp.trigger(frame)) rule.apply(this);
 	}
 
-	private Collection<Action> apply(MovementRule rule, Species sp) {
-		Collection<Action> actions = new LinkedList<Action>();
+	private void apply(MovementRule rule, Species sp) {
 		for(Entity member : sp.getMembers()) {
 			currentEntity = member;
-			if(member.trigger(frame)) actions.addAll(rule.apply(this));
+			if(member.trigger(frame)) rule.apply(this);
 		}
-		return actions;
 	}
 
-	private Collection<Action> apply(DeathRule rule, Species sp) {
-		Collection<Action> actions = new LinkedList<Action>();
+	private void apply(DeathRule rule, Species sp) {
 		for(Entity member : sp.getMembers()) {
 			currentEntity = member;
-			if(member.trigger(frame)) actions.addAll(rule.apply(this));
-		}
-		return actions;
-	}
-
-	private void execute(Collection<Action> actions) {
-		for(Action action : actions) {
-			action.execute();
+			if(member.trigger(frame)) rule.apply(this);
 		}
 	}
 
