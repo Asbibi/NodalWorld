@@ -198,30 +198,17 @@ public class GameManager {
 	* Applies the rules and executes the corresponding actions in the following order : generation, movement, death.
 	*/ 
 	public void evolveGameState() {
-		Collection<Action> actions;
-		actions = new LinkedList<Action>();
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
-				actions.addAll(apply(speciesToGenRule.get(sp), sp));
+				execute(apply(speciesToGenRule.get(sp), sp));
 			}
-		}
-		execute(actions);
-
-		actions = new LinkedList<Action>();
-		for(Species sp : species) {
 			if(speciesToMoveRule.containsKey(sp)) {
-				actions.addAll(apply(speciesToMoveRule.get(sp), sp));
+				execute(apply(speciesToMoveRule.get(sp), sp));
 			}
-		}
-		execute(actions);
-
-		actions = new LinkedList<Action>();
-		for(Species sp : species) {
 			if(speciesToDeathRule.containsKey(sp)) {
-				actions.addAll(apply(speciesToDeathRule.get(sp), sp));
+				execute(apply(speciesToDeathRule.get(sp), sp));
 			}
 		}
-		execute(actions);
 
 		frame++;
 	}
