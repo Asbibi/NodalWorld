@@ -32,6 +32,7 @@ public class WorldPanel extends JPanel{
 	private ArrayList<TileComponent> tiles;
 	private ArrayList<Species> speciesDisplayed;
 	private int speciesSlotNumber_sqrt;
+	private int minimalTileSize;
 	
 
 	
@@ -41,8 +42,38 @@ public class WorldPanel extends JPanel{
 		speciesDisplayed = new ArrayList<Species>();
 		gridDimension = new Dimension(-1,-1);
 		speciesSlotNumber_sqrt = 0;
+		ResetMinimalTileSize();
 	}
 	
+	
+	
+	// ==== Size Related ====
+	public void ResetMinimalTileSize() {
+		minimalTileSize = 32;
+	}
+	public void increaseMinimalTileSize() {
+		minimalTileSize += 16;
+	}
+	public void decreaseMinimalTileSize() {
+		minimalTileSize += 16;
+	}
+	@Override
+	public void setPreferredSize(Dimension d) {
+		int tileSizeX = d.width / gridDimension.width;
+		int tileSizeY = d.height / gridDimension.height;
+		int realTileSize = Math.min(tileSizeX, tileSizeY);
+		realTileSize = Math.max(realTileSize, minimalTileSize);
+		d.width = realTileSize * gridDimension.width;
+		d.height = realTileSize * gridDimension.height;
+		super.setPreferredSize(d);
+	}
+	/**
+	 * Set automatically a preferred size to fit the tile size.
+	 * Still some work to do on this part.
+	*/
+	public void setMinimalPreferredSize() {
+		setPreferredSize(new Dimension(0,0));
+	}
 	
 	
 	
@@ -92,7 +123,7 @@ public class WorldPanel extends JPanel{
 				add(tiles.get(x + y * width));
 		
 		gridDimension = newDimensions;
-		setPreferredSizeAuto();	// changing size
+		setMinimalPreferredSize();	// changing size
 	}
 	
 	/**
@@ -107,15 +138,6 @@ public class WorldPanel extends JPanel{
 			for (int y = 0; y < gridDimension.height; y++)
 				tiles.get(x + y * width).setSurface(terrain.getSurfaceAt(new Vec2D(x,y)));
 		}
-	}
-	
-	/**
-	 * Set automatically a preferred size to fit the tile size.
-	 * Still some work to do on this part.
-	*/
-	public void setPreferredSizeAuto() {
-		int tileSize = 64; //TODO Later : compute a size for the map to be automatically in the full Panel + tile still having a square ratio instead of a forced tile size
-		setPreferredSize(new Dimension(tileSize * gridDimension.width, tileSize * gridDimension.height));
 	}
 
 	

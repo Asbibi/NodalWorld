@@ -7,6 +7,7 @@ public class SurfaceDetailPanel extends ElementDetailPanel {
 
 	@Override
 	public void setElement(Element e) {
+		super.setElement(e);
 		setSpecies((Surface)e);
 	}
 	

@@ -7,6 +7,7 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 
 	@Override
 	public void setElement(Element e) {
+		super.setElement(e);
 		setSpecies((Species)e);
 	}
 	
