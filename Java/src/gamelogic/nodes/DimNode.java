@@ -18,7 +18,7 @@ public class DimNode extends Node {
 	*
 	*/ 
 	public DimNode() {
-		super();
+		super("World Dimensions");
 		addOutput(new Output("width", Integer.class));
 		addOutput(new Output("height", Integer.class));
 	}

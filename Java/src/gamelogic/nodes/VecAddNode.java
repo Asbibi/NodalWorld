@@ -16,7 +16,7 @@ public class VecAddNode extends AddNode<Vec2D> {
 	* 
 	*/ 
 	public VecAddNode() {
-		super(Vec2D.class);
+		super("Vec Add", Vec2D.class);
 	}
 
 	/**

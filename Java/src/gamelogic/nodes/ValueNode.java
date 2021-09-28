@@ -23,7 +23,7 @@ public class ValueNode<T> extends Node {
 	* @param dataClass the class object representing the type of the objects to test
 	*/ 
 	public ValueNode(Class<T> dataClass) {
-		super();
+		super("Value");
 		this.dataClass = dataClass;
 		addOutput(new Output("val", dataClass));
 	}

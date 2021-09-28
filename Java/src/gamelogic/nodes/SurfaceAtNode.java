@@ -21,7 +21,7 @@ public class SurfaceAtNode extends Node {
 	*
 	*/ 
 	public SurfaceAtNode() {
-		super();
+		super("Surface At");
 		addInput(new Input("position", Vec2D.class));
 		addOutput(new Output("surface", Surface.class));
 	}

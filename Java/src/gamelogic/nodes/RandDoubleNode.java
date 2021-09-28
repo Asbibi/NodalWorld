@@ -22,7 +22,7 @@ public class RandDoubleNode extends Node {
 	* 
 	*/ 
 	public RandDoubleNode() {
-		super();
+		super("Random Double");
 		rand = new Random();
 		addOutput(new Output("val", Double.class));
 	}

@@ -19,7 +19,7 @@ public class KillNode extends TerminalNode<DeathRule> {
 	* 
 	*/ 
 	public KillNode() {
-		super();
+		super("Death");
 		addInput(new Input("kill", Boolean.class));
 	}
 

@@ -24,7 +24,7 @@ public class RandIntNode extends Node {
 	* @param bound
 	*/ 
 	public RandIntNode(int bound) {
-		super();
+		super("Random Int" + bound);
 		this.bound = bound;
 		rand = new Random();
 		addOutput(new Output("val", Integer.class));

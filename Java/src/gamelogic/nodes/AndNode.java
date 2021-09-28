@@ -19,7 +19,7 @@ public class AndNode extends Node {
 	*
 	*/ 
 	public AndNode() {
-		super();
+		super("And");
 		addInput(new Input("val1", Boolean.class));
 		addInput(new Input("val2", Boolean.class));
 		addOutput(new Output("res", Boolean.class));

@@ -22,8 +22,8 @@ public abstract class AddNode<T> extends Node {
 	/**
 	* @param dataClass the class object representing the type of the objects being added
 	*/ 
-	public AddNode(Class<T> dataClass) {
-		super();
+	public AddNode(String name, Class<T> dataClass) {
+		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));
