@@ -58,13 +58,20 @@ public class WorldPanel extends JPanel{
 		minimalTileSize += 16;
 	}
 	@Override
+	public void setSize(Dimension d) {
+		super.setSize(d);
+		setPreferredSize(d);
+	}
+	@Override
 	public void setPreferredSize(Dimension d) {
+		//System.out.print("Set preferred size on world panel" + d);
 		int tileSizeX = d.width / gridDimension.width;
 		int tileSizeY = d.height / gridDimension.height;
 		int realTileSize = Math.min(tileSizeX, tileSizeY);
 		realTileSize = Math.max(realTileSize, minimalTileSize);
 		d.width = realTileSize * gridDimension.width;
 		d.height = realTileSize * gridDimension.height;
+		//System.out.println("\t Became :" + d);
 		super.setPreferredSize(d);
 	}
 	/**

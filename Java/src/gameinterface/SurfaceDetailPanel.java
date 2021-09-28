@@ -5,6 +5,11 @@ import gamelogic.Surface;
 
 public class SurfaceDetailPanel extends ElementDetailPanel {
 
+	public SurfaceDetailPanel() {
+		super();
+		addApplyButton();
+	}
+	
 	@Override
 	public void setElement(Element e) {
 		super.setElement(e);

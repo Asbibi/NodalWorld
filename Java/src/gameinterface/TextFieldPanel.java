@@ -1,19 +1,19 @@
 package gameinterface;
 
-import java.awt.BorderLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import java.awt.*;
+import javax.swing.*;
 
 public class TextFieldPanel extends JPanel {
 	JTextField textField;
 	
 	public TextFieldPanel(String fieldName) {
 		setLayout(new BorderLayout());
-		add(new JLabel(fieldName), BorderLayout.WEST);
+		JLabel itemLabel = new JLabel(fieldName);
+		itemLabel.setPreferredSize(new Dimension(50, 16));
+		add(itemLabel, BorderLayout.WEST);
 		textField = new JTextField(5);
 		add(textField, BorderLayout.CENTER);
+		//System.out.println("lab" + itemLabel.getPreferredSize());
 	}
 	
 	public String getFieldString() { return textField.getText(); }

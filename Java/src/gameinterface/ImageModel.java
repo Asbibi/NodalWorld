@@ -9,18 +9,25 @@ import javax.swing.event.ChangeListener;
 
 public class ImageModel {
 	private boolean isPressed; // is being pushed
+	private boolean isEnabled;
     private ArrayList<ActionListener> actionListeners = new ArrayList<>(); // triggering/fire button
     private ArrayList<ChangeListener> changeListeners = new ArrayList<>();// change listening
 
 
-    public boolean isPressed() {
+    public boolean getIsPressed() {
         return this.isPressed;
     }
-    public void setPressed(boolean pressed) {
+    public void setIsPressed(boolean pressed) {
         if (pressed != isPressed) {
             this.isPressed = pressed;
             //triggerChangeListeners();
         }
+    }
+    public boolean getIsEnabled() {
+        return isEnabled;
+    }
+    public void setIsEnabled(boolean pressed) {
+    	isEnabled = !isEnabled;
     }
 
 
@@ -35,10 +42,12 @@ public class ImageModel {
     	fireActionListeners();        
     }
     private void fireActionListeners() {
-        for (ActionListener listener : actionListeners) {
-            listener.actionPerformed(
-                    new ActionEvent(this, ActionEvent.ACTION_FIRST, "fire"));
-        }
+    	if (isEnabled) {
+            for (ActionListener listener : actionListeners) {
+                listener.actionPerformed(
+                        new ActionEvent(this, ActionEvent.ACTION_FIRST, "fire"));
+            }    		
+    	}
     }
 
     public void triggerChangeListeners() {

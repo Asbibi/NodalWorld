@@ -44,7 +44,10 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 			@Override
 			public void setSelectedIndex(int index) {
 				super.setSelectedIndex(index);
-				detailPanel.setElement(elements.get(index));
+				if (index >= 0 && index < elements.size())
+					detailPanel.setElement(elements.get(index));
+				else
+					detailPanel.setElement(null);
 			}
 		};
 		scrollList.addMouseListener(new MouseAdapter() {
@@ -57,7 +60,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	             }
 	          }
 	       });
-		add(scrollList);
+		add(new JScrollPane(scrollList));
 		
 		Dimension buttonDimension = new Dimension(25,25);
 		JPanel topButtonsPanel = new JPanel();
@@ -70,21 +73,9 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		upButton.setPreferredSize(buttonDimension);
 		downButton.setPreferredSize(buttonDimension);
 		removeButton.setPreferredSize(buttonDimension);
-		upButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent event) {
-            	moveUpCurrentElement();
-            }
-        });
-		downButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent event) {
-            	moveDownCurrentElement();
-            }
-        });
-		removeButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent event) {
-            	removeCurrentElement();
-            }
-        });
+		upButton.addActionListener( e -> moveUpCurrentElement() );
+		downButton.addActionListener( e -> moveDownCurrentElement() );
+		removeButton.addActionListener( e -> removeCurrentElement() );
 		topButtonsPanel.add(upButton);
 		topButtonsPanel.add(downButton);
 		topButtonsPanel.add(removeButton);
@@ -95,17 +86,27 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		addTextField = new JTextField(5);
 		ImageIcon addIcon = new ImageIcon("res/_System_Add.png");
 		addButton = new JButton(addIcon);
-		addButton.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent event) {
-            	addNewElement();
-            }
-        });
+		addButton.addActionListener( e -> addNewElement() );
 		addButton.setPreferredSize(buttonDimension);
 		BottomButtonsPanel.add(addTextField);
 		BottomButtonsPanel.add(addButton);
 		add(BottomButtonsPanel);
 		
+		JSeparator separator = new JSeparator();
+		separator.setForeground(new Color(180,180,180));
+		add(separator);
+		addSeparator();
 		this.detailPanel = detailPanel;
+		this.detailPanel.addApplyListener(new ActionListener()
+			{
+            @Override
+            public void actionPerformed(ActionEvent event) {
+            	int selectedIndex = scrollList.getSelectedIndex();
+            	if (selectedIndex < 0)
+            		return;
+            	detailPanel.applyModificationsToElement(elements.get(selectedIndex));
+            }
+        });
 		add(this.detailPanel);
 	}
 	
@@ -152,6 +153,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		if (name.isEmpty())
 			return;
 		addElementArray(createElement(name));
+		scrollList.setSelectedIndex(elements.size() -1);
 		addTextField.setText("");
 	}
 	/**
