@@ -13,8 +13,8 @@ public abstract class TerminalNode<R extends Rule> extends Node {
 	/**
 	* 
 	*/ 
-	public TerminalNode() {
-		super();
+	public TerminalNode(String name) {
+		super(name);
 		initRule();
 	}
 

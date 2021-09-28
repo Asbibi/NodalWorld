@@ -19,7 +19,7 @@ public class NotNode extends Node {
 	*
 	*/ 
 	public NotNode() {
-		super();
+		super("Not");
 		addInput(new Input("val", Boolean.class));
 		addOutput(new Output("res", Boolean.class));
 	}

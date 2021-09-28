@@ -18,7 +18,7 @@ public class TimeNode extends Node {
 	*
 	*/ 
 	public TimeNode() {
-		super();
+		super("Time");
 		addOutput(new Output("time", Integer.class));
 	}
 

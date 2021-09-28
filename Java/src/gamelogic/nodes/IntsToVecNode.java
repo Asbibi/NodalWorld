@@ -20,7 +20,7 @@ public class IntsToVecNode extends Node {
 	*
 	*/ 
 	public IntsToVecNode() {
-		super();
+		super("Gather");
 		addInput(new Input("x", Integer.class));
 		addInput(new Input("y", Integer.class));
 		addOutput(new Output("vec", Vec2D.class));

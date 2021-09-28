@@ -20,7 +20,7 @@ public class MoveNode extends TerminalNode<MovementRule> {
 	*
 	*/ 
 	public MoveNode() {
-		super();
+		super("Movement");
 		addInput(new Input("position", Vec2D.class));
 	}
 

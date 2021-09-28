@@ -23,7 +23,7 @@ public class EqualNode<T> extends Node {
 	* @param dataClass the class object representing the type of the objects to test
 	*/ 
 	public EqualNode(Class<T> dataClass) {
-		super();
+		super("Equals");
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));

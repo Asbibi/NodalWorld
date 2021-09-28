@@ -19,7 +19,7 @@ public class CurEntityNode extends Node {
 	*
 	*/ 
 	public CurEntityNode() {
-		super();
+		super("Current Entity");
 		addOutput(new Output("entity", Entity.class));
 	}
 

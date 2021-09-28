@@ -20,7 +20,7 @@ public class GenerateNode extends TerminalNode<GenerationRule> {
 	* 
 	*/ 
 	public GenerateNode() {
-		super();
+		super("Generation");
 		addInput(new Input("generate", Boolean.class));
 		addInput(new Input("position", Vec2D.class));
 	}

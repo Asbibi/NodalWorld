@@ -32,12 +32,23 @@ public class Network {
 	}
 
 	/**
+	* @return all the network's nodes
+	*/ 
+	public List<Node> getNodes() { return nodes; }
+
+	/**
 	* @param node
 	*/ 
 	public void addNode(Node node) {
 		nodes.add(node);
 		mapToEdges.put(node, new ArrayList<Edge>());
 	}
+
+	/**
+	* @param node
+	* @return all the edges coming out of the node
+	*/ 
+	public Collection<Edge> getEdges(Node node) { return mapToEdges.get(node); }
 
 	/**
 	* @param source

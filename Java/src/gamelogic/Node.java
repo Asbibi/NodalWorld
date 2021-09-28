@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collection;
 
 /**
 * This class provides the abstract node model for the nodes used in the nodal system.
@@ -13,15 +14,25 @@ import java.util.HashMap;
 */ 
 public abstract class Node {
 
+	protected String name;
 	protected Map<String, Input> inputs;
 	protected Map<String, Output> outputs;
 
 	/**
 	*
 	*/ 
-	public Node() {
+	public Node(String name) {
+		this.name = name;
 		inputs = new HashMap<String, Input>();
 		outputs = new HashMap<String, Output>();
+	}
+
+	/**
+	* @return the node's name
+	*/ 
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	/**
@@ -40,6 +51,13 @@ public abstract class Node {
 	}
 
 	/**
+	* @return all the node's inputs
+	*/ 
+	public Collection<Input> getInputs() {
+		return inputs.values();
+	}
+
+	/**
 	* @param output
 	*/ 
 	public void addOutput(Output output) {
@@ -52,6 +70,13 @@ public abstract class Node {
 	*/ 
 	public Output getOutput(String outputName) {
 		return outputs.get(outputName);
+	}
+
+	/**
+	* @return all the node's outputs
+	*/ 
+	public Collection<Output> getOutputs() {
+		return outputs.values();
 	}
 
 	/**
