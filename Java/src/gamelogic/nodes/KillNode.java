@@ -1,8 +1,9 @@
 package gamelogic.nodes;
 
 import gamelogic.GameManager;
-import gamelogic.Node;
+import gamelogic.TerminalNode;
 import gamelogic.Input;
+import gamelogic.rules.DeathRule;
 
 /**
 * The node model used as terminal node in a death rule's network. <br/>
@@ -12,14 +13,19 @@ import gamelogic.Input;
 * 
 * @see DeathRule
 */ 
-public class KillNode extends Node {
+public class KillNode extends TerminalNode<DeathRule> {
 
 	/**
-	*
+	* 
 	*/ 
 	public KillNode() {
 		super();
 		addInput(new Input("kill", Boolean.class));
+	}
+
+	@Override
+	protected void initRule() {
+		rule = new DeathRule(this);
 	}
 
 	/**

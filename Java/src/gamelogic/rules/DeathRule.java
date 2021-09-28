@@ -12,24 +12,13 @@ import java.util.LinkedList;
 * 
 * @see KillNode
 */ 
-public class DeathRule extends Rule {
-
-	private KillNode terminalNode;
+public class DeathRule extends Rule<KillNode> {
 
 	/**
-	*
+	* @param terminalNode
 	*/ 
-	public DeathRule() {
-		super();
-		terminalNode = new KillNode();
-		network.addNode(terminalNode);
-	}
-
-	/**
-	* @return the terminal node of the network defining the rule
-	*/ 
-	public KillNode getTerminalNode() {
-		return terminalNode;
+	public DeathRule(KillNode terminalNode) {
+		super(terminalNode);
 	}
 
 	/**
@@ -37,8 +26,6 @@ public class DeathRule extends Rule {
 	*/ 
 	@Override
 	public void apply(GameManager game) {
-		network.evaluate(game);
-
 		if(terminalNode.kill()) {
 			game.getCurrentEntity().getSpecies().removeMember(game.getCurrentEntity());
 		}

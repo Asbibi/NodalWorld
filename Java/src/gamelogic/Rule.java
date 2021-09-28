@@ -6,31 +6,32 @@ import java.util.Collection;
 
 /**
 * Abstract model for the rules defined by the user through a network of operators.
-* Classes that extend this class will usually rely on a specific node in the network - called a terminal node - for the implementation of the apply method.
+* Rules rely on a specific node in the network - called a terminal node - for the implementation of the apply method.
 * 
 * @see Network
+* @see TerminalNode
 */ 
-public abstract class Rule {
+public abstract class Rule<T extends TerminalNode> {
 
 	private static int idCounter = 0;
 
 	private int id;
-	protected Network network;
+	protected T terminalNode;
 
 	/**
-	*
+	* @param terminalNode
 	*/ 
-	public Rule() {
+	public Rule(T terminalNode) {
 		this.id = idCounter;
 		idCounter++;
-		network = new Network();
+		this.terminalNode = terminalNode;
 	}
 
 	/**
-	* @return the rule's network
+	* @return the rule's terminal node
 	*/ 
-	public Network getNetwork() {
-		return network;
+	public T getTerminalNode() {
+		return terminalNode;
 	}
 
 	/**

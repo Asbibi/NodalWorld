@@ -21,8 +21,7 @@ public class TestGameLogic {
 	}
 
 	private GenerationRule makeGenRandomOnSoilRule() {
-		GenerationRule rule = new GenerationRule();
-		Network net = rule.getNetwork();
+		Network net = game.getGenNet();
 
 		RandIntNode nodeRandX = new RandIntNode(game.gridWidth()); 
 		net.addNode(nodeRandX);
@@ -45,11 +44,12 @@ public class TestGameLogic {
 		net.link(nodeSurf, "surface", nodeEq, "val1");
 		net.link(nodeSoil, "val", nodeEq, "val2");
 
-		GenerateNode nodeEnd = rule.getTerminalNode();
+		GenerateNode nodeEnd = new GenerateNode();
+		net.addNode(nodeEnd);
 		net.link(nodeEq, "res", nodeEnd, "generate");
 		net.link(nodeGather, "vec", nodeEnd, "position");
 
-		return rule;
+		return nodeEnd.getRule();
 	}
 
 	public static void main(String[] args) {
@@ -72,7 +72,6 @@ public class TestGameLogic {
 			test.game.addSpecies(test.humans);
 
 			GenerationRule rule = test.makeGenRandomOnSoilRule();
-			test.game.addRule(rule);
 			test.game.connectRuleToSpecies(rule, test.humans);
 
 			for(int i=0; i<nIter; i++) {

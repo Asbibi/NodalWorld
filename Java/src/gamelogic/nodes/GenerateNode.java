@@ -1,9 +1,10 @@
 package gamelogic.nodes;
 
 import gamelogic.GameManager;
-import gamelogic.Node;
+import gamelogic.TerminalNode;
 import gamelogic.Input;
 import gamelogic.Vec2D;
+import gamelogic.rules.GenerationRule;
 
 /**
 * The node model used as terminal node in a generation rule's network. <br/>
@@ -13,15 +14,20 @@ import gamelogic.Vec2D;
 * 
 * @see GenerationRule
 */ 
-public class GenerateNode extends Node {
+public class GenerateNode extends TerminalNode<GenerationRule> {
 
 	/**
-	*
+	* 
 	*/ 
 	public GenerateNode() {
 		super();
 		addInput(new Input("generate", Boolean.class));
 		addInput(new Input("position", Vec2D.class));
+	}
+
+	@Override
+	protected void initRule() {
+		rule = new GenerationRule(this);
 	}
 
 	/**

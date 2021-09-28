@@ -1,9 +1,10 @@
 package gamelogic.nodes;
 
 import gamelogic.GameManager;
-import gamelogic.Node;
+import gamelogic.TerminalNode;
 import gamelogic.Input;
 import gamelogic.Vec2D;
+import gamelogic.rules.MovementRule;
 
 /**
 * The node model used as terminal node in a movement rule's network. <br/>
@@ -13,7 +14,7 @@ import gamelogic.Vec2D;
 * 
 * @see MovementRule
 */ 
-public class MoveNode extends Node {
+public class MoveNode extends TerminalNode<MovementRule> {
 
 	/**
 	*
@@ -21,6 +22,11 @@ public class MoveNode extends Node {
 	public MoveNode() {
 		super();
 		addInput(new Input("position", Vec2D.class));
+	}
+
+	@Override
+	protected void initRule() {
+		rule = new MovementRule(this);
 	}
 
 	/**

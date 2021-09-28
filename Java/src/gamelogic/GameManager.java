@@ -28,16 +28,14 @@ public class GameManager {
 
 	private List<Species> species;
 
-	private Collection<GenerationRule> genRules;
-	private Collection<MovementRule> moveRules;
-	private Collection<DeathRule> deathRules;
-
 	private Map<Species, GenerationRule> speciesToGenRule;
 	private Map<Species, MovementRule> speciesToMoveRule;
 	private Map<Species, DeathRule> speciesToDeathRule;
 
 	private Species currentSpecies;
 	private Entity currentEntity;
+
+	private Network genNet, moveNet, deathNet;
 
 	/**
 	* @param width
@@ -47,14 +45,21 @@ public class GameManager {
 		this.width = width;
 		this.height = height;
 		frame = 0;
+
 		terrainStack = new TerrainStack();
+
 		species = new LinkedList<Species>();
-		genRules = new ArrayList<GenerationRule>();
-		moveRules = new ArrayList<MovementRule>();
-		deathRules = new ArrayList<DeathRule>();
+
 		speciesToGenRule = new HashMap<Species, GenerationRule>();
 		speciesToMoveRule = new HashMap<Species, MovementRule>();
 		speciesToDeathRule = new HashMap<Species, DeathRule>();
+
+		currentSpecies = null;
+		currentEntity = null;
+
+		genNet = new Network();
+		moveNet = new Network();
+		deathNet = new Network();
 	}
 
 	/**
@@ -131,24 +136,24 @@ public class GameManager {
 	}
 
 	/**
-	* @param rule
-	*/
-	public void addRule(GenerationRule rule) {
-		genRules.add(rule);
+	* @return the generation netork
+	*/ 
+	public Network getGenNet() {
+		return genNet;
 	}
 
 	/**
-	* @param rule
-	*/
-	public void addRule(MovementRule rule) {
-		moveRules.add(rule);
+	* @return the movement netork
+	*/ 
+	public Network getMoveNet() {
+		return moveNet;
 	}
 
 	/**
-	* @param rule
-	*/
-	public void addRule(DeathRule rule) {
-		deathRules.add(rule);
+	* @return the death netork
+	*/ 
+	public Network getDeathNet() {
+		return deathNet;
 	}
 
 	/**
@@ -199,12 +204,15 @@ public class GameManager {
 	public void evolveGameState() {
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
+				genNet.evaluate(this);
 				apply(speciesToGenRule.get(sp), sp);
 			}
 			if(speciesToMoveRule.containsKey(sp)) {
+				moveNet.evaluate(this);
 				apply(speciesToMoveRule.get(sp), sp);
 			}
 			if(speciesToDeathRule.containsKey(sp)) {
+				deathNet.evaluate(this);
 				apply(speciesToDeathRule.get(sp), sp);
 			}
 		}

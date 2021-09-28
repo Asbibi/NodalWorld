@@ -13,24 +13,13 @@ import java.util.LinkedList;
 * 
 * @see MoveNode
 */ 
-public class MovementRule extends Rule {
-
-	private MoveNode terminalNode;
+public class MovementRule extends Rule<MoveNode> {
 
 	/**
-	*
+	* @param terminalNode
 	*/ 
-	public MovementRule() {
-		super();
-		terminalNode = new MoveNode();
-		network.addNode(terminalNode);
-	}
-
-	/**
-	* @return the terminal node of the network defining the rule
-	*/ 
-	public MoveNode getTerminalNode() {
-		return terminalNode;
+	public MovementRule(MoveNode terminalNode) {
+		super(terminalNode);
 	}
 
 	/**
@@ -38,8 +27,6 @@ public class MovementRule extends Rule {
 	*/ 
 	@Override
 	public void apply(GameManager game) {
-		network.evaluate(game);
-
 		Vec2D nextPos = terminalNode.position();
 		if(nextPos!=null) {
 			game.getCurrentEntity().setPos(nextPos);
