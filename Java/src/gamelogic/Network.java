@@ -55,8 +55,8 @@ public class Network {
 
 		Edge edge = new Edge(source, target);
 		mapToEdges.get(source).add(edge);
-		boolean isValid = sortNodes();
-		if(!isValid) {
+		boolean isDAG = sortNodes();
+		if(!isDAG) {
 			mapToEdges.get(source).remove(edge);
 			return false;
 		}
@@ -69,8 +69,10 @@ public class Network {
 	* @param game
 	*/ 
 	public void evaluate(GameManager game) {
-		for(Node node : nodes) {
-			node.evaluate(game);
+		if(checkConnections()) {
+			for(Node node : nodes) {
+				node.evaluate(game);
+			}
 		}
 	}
 
@@ -122,6 +124,10 @@ public class Network {
 		}
 		Collections.sort(nodes, new CompareNodesByPriority());
 		return true;
+	}
+
+	private boolean checkConnections() {
+		return nodes.stream().allMatch(node -> node.allInputsConnected());
 	}
 
 }

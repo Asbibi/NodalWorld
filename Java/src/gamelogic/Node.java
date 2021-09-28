@@ -55,6 +55,13 @@ public abstract class Node {
 	}
 
 	/**
+	* @return true if all inputs are connected to a source, otherwise false
+	*/ 
+	public boolean allInputsConnected() {
+		return inputs.values().stream().allMatch(input -> input.hasSource());
+	}
+
+	/**
 	* @param game
 	*/ 
 	public abstract void evaluate(GameManager game);

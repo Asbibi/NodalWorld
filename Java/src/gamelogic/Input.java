@@ -48,6 +48,20 @@ public class Input {
 	}
 
 	/**
+	*
+	*/ 
+	public void removeSource() {
+		source = null;
+	}
+
+	/**
+	* @return true if input is connected to an output, otherwise false
+	*/ 
+	public boolean hasSource() {
+		return (source != null);
+	}
+
+	/**
 	* @param requestClass a class object representing the type expected by the object calling this method
 	* @return the data retrieved by the input, null if the request type doesn't match the data type or if the input isn't connected to an output
 	*/ 
