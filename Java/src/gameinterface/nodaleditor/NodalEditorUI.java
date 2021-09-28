@@ -32,8 +32,7 @@ public class NodalEditorUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(SwingUtilities.isRightMouseButton(e)) {
-					// TODO : display a menu that allows the user to select a node to add
-					editor.addNode(new GenerateNode(), e.getX(), e.getY());
+					editor.showNodeMenu(e.getX(), e.getY());
 				}
 			}
 		});

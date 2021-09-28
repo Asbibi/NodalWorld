@@ -63,7 +63,7 @@ public class NodalEditorModel {
 	* @return the corresponding node view
 	*/ 
 	public NodeView getNodeView(Node node) { return nodeViews.get(node); }
- 
+
 
 
 	// ========== Change Listeners ==========

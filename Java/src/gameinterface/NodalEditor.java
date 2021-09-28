@@ -1,8 +1,6 @@
 package gameinterface;
 
-import gameinterface.nodaleditor.NodalEditorModel;
-import gameinterface.nodaleditor.NodalEditorUI;
-import gameinterface.nodaleditor.NodeView;
+import gameinterface.nodaleditor.*;
 
 import gamelogic.GameManager;
 import gamelogic.Network;
@@ -12,6 +10,8 @@ import javax.swing.JComponent;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,6 +24,7 @@ import java.awt.Graphics2D;
 public class NodalEditor extends JComponent {
 
 	private NodalEditorModel model;
+	private NodeMenu nodeMenu;
 	private NodalEditorUI ui;
 
 	/**
@@ -37,6 +38,14 @@ public class NodalEditor extends JComponent {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				repaint();
+			}
+		});
+
+		nodeMenu = new NodeMenu();
+		nodeMenu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				model.addNode(nodeMenu.getNewNode(), nodeMenu.getXInvoke(), nodeMenu.getYInvoke());
 			}
 		});
 
@@ -60,8 +69,6 @@ public class NodalEditor extends JComponent {
 
 	public Network getNetwork() { return model.getNetwork(); }
 
-	public void addNode(Node node, int x, int y) { model.addNode(node, x, y); }
-
 	// Node view
 
 	public NodeView getNodeView(Node node) { return model.getNodeView(node); }
@@ -71,5 +78,10 @@ public class NodalEditor extends JComponent {
 	public void addChangeListener(ChangeListener listener) { model.addChangeListener(listener); }
 
 	public void removeChangeListener(ChangeListener listener) { model.removeChangeListener(listener); }
+
+
+	// ========== Node Menu ==========
+
+	public void showNodeMenu(int x, int y) { nodeMenu.show(this, x, y); }
 
 }
