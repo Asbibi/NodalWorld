@@ -19,7 +19,7 @@ public class CurSpeciesNode extends Node {
 	*
 	*/ 
 	public CurSpeciesNode() {
-		super();
+		super("Current Species");
 		addOutput(new Output("species", Species.class));
 	}
 

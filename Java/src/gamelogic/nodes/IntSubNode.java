@@ -15,7 +15,7 @@ public class IntSubNode extends SubNode<Integer> {
 	* 
 	*/ 
 	public IntSubNode() {
-		super(Integer.class);
+		super("Int Sub", Integer.class);
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class EuclDivNode extends Node {
 	*
 	*/ 
 	public EuclDivNode() {
-		super();
+		super("Euclidean Division");
 		addInput(new Input("dividend", Integer.class));
 		addInput(new Input("divisor", Integer.class));
 		addOutput(new Output("quotient", Integer.class));

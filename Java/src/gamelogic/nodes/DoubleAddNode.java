@@ -15,7 +15,7 @@ public class DoubleAddNode extends AddNode<Double> {
 	* 
 	*/ 
 	public DoubleAddNode() {
-		super(Double.class);
+		super("Double Add", Double.class);
 	}
 
 	/**

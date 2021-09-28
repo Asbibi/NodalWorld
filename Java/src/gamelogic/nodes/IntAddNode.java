@@ -15,7 +15,7 @@ public class IntAddNode extends AddNode<Integer> {
 	* 
 	*/ 
 	public IntAddNode() {
-		super(Integer.class);
+		super("Int Add", Integer.class);
 	}
 
 	/**

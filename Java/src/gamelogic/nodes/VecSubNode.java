@@ -16,7 +16,7 @@ public class VecSubNode extends SubNode<Vec2D> {
 	* 
 	*/ 
 	public VecSubNode() {
-		super(Vec2D.class);
+		super("Vec Sub", Vec2D.class);
 	}
 
 	/**

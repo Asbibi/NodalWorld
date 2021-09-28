@@ -15,7 +15,7 @@ public class DoubleSubNode extends SubNode<Double> {
 	* 
 	*/ 
 	public DoubleSubNode() {
-		super(Double.class);
+		super("Double Sub", Double.class);
 	}
 
 	/**

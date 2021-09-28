@@ -23,7 +23,7 @@ public class IfElseNode<T> extends Node {
 	* @param dataClass the class object representing the type of the input objects
 	*/ 
 	public IfElseNode(Class<T> dataClass) {
-		super();
+		super("If Else");
 		this.dataClass = dataClass;
 		addInput(new Input("cond", Boolean.class));
 		addInput(new Input("val1", dataClass));

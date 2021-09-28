@@ -24,7 +24,7 @@ public class CompareNode<T extends Comparable<T>> extends Node {
 	* @param dataClass the class object representing the type of the objects to compare
 	*/ 
 	public CompareNode(Class<T> dataClass) {
-		super();
+		super("Compare");
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));

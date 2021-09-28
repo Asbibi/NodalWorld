@@ -22,8 +22,8 @@ public abstract class SubNode<T> extends Node {
 	/**
 	* @param dataClass the class object representing the type of the objects being substracted
 	*/ 
-	public SubNode(Class<T> dataClass) {
-		super();
+	public SubNode(String name, Class<T> dataClass) {
+		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));
