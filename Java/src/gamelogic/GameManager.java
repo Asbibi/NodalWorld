@@ -3,6 +3,9 @@ package gamelogic;
 import gamelogic.rules.*;
 
 import java.util.Map;
+
+import game.initializer.EmptyGameInitializer;
+
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +24,6 @@ import java.lang.StringBuilder;
 */
 public class GameManager {
 
-	private Integer width, height;
 	private Integer frame;
 
 	private TerrainStack terrainStack;
@@ -38,13 +40,18 @@ public class GameManager {
 
 	private Network genNet, moveNet, deathNet;
 
+	
+
 	/**
-	* @param width
-	* @param height
+	* Call the other constructor with an EmptyGameInitializer
 	*/ 
-	public GameManager(Integer width, Integer height) {
-		this.width = width;
-		this.height = height;
+	public GameManager() {
+		this(new EmptyGameInitializer());
+	}
+	/**
+	* @param intializer, it will set the gamemanager in a specific state. Usually used to create basic surfaces and species to use
+	*/ 
+	public GameManager(GameManagerInitializer initializer) {
 		frame = 0;
 
 		terrainStack = new TerrainStack();
@@ -62,20 +69,22 @@ public class GameManager {
 		genNet = new Network();
 		moveNet = new Network();
 		deathNet = new Network();
+		
+		initializer.initManager(this);
 	}
 
 	/**
 	* @return the grid's width
 	*/ 
 	public Integer gridWidth() {
-		return width;
+		return terrainStack.getStackDimension().width;
 	}
 
 	/**
 	* @return the grid's height
 	*/
 	public Integer gridHeight() {
-		return height;
+		return terrainStack.getStackDimension().height;
 	}
 
 	/**
@@ -117,12 +126,23 @@ public class GameManager {
 
 	/**
 	* @param name
-	* @return the species corresponding to the given name, null if it doesn't exist
+	* @return the surface corresponding to the given name, null if it doesn't exist
 	*/
 	public Surface getSurface(String name) {
 		return surfaces.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
 	}
 
+	/**
+	* @param index of the surface in the array
+	* @return the surface corresponding to the given index, null if it doesn't exist
+	*/
+	public Surface getSurface(int index) {
+		if (index >=0 && index <surfaces.size())
+			return surfaces.get(index);
+		else
+			return null;
+	}
+	
 	/**
 	* @param sp
 	*/
@@ -143,6 +163,17 @@ public class GameManager {
 	*/
 	public Species getSpecies(String name) {
 		return species.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
+	}
+	
+	/**
+	* @param index of the species in the array
+	* @return the species corresponding to the given index, null if it doesn't exist
+	*/
+	public Species getSpecies(int index) {
+		if (index >=0 && index <species.size())
+			return species.get(index);
+		else
+			return null;
 	}
 
 	/**
@@ -279,6 +310,8 @@ public class GameManager {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("Terrain : \n");
+		int height = gridHeight();
+		int width = gridWidth();
 		for(int y=0; y<height; y++) {
 			for(int x=0; x<width; x++) {
 				sb.append(surfaceAt(new Vec2D(x, y)));

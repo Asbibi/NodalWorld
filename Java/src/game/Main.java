@@ -11,7 +11,7 @@ public class Main {
 	
 
 	public static void main(String[] args) {
-		gameManager = new GameManager(10,10);
+		gameManager = new GameManager();
 		gameFrame = new GameFrame(gameManager);
 		gameFrame.setVisible(true);
 	}

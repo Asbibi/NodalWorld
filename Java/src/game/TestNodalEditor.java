@@ -15,7 +15,7 @@ public class TestNodalEditor extends JFrame {
 
 	public TestNodalEditor() {
 		super();
-		game = new GameManager(5, 5);
+		game = new GameManager();
 		buildUI();
 	}
 

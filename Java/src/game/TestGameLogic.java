@@ -15,7 +15,7 @@ public class TestGameLogic {
 	private Species humans;
 
 	public TestGameLogic(int width, int height) {
-		game = new GameManager(width, height);
+		game = new GameManager();
 		soil = new Surface("soil", "res/Tile_Dirt.png");
 		humans = new Species("human", "res/Animal_Human.png");
 	}
@@ -65,7 +65,7 @@ public class TestGameLogic {
 
 			TestGameLogic test = new TestGameLogic(width, height);
 
-			TerrainLayer ground = new TerrainLayer(test.game.gridWidth(), test.game.gridHeight());
+			TerrainLayer ground = new TerrainLayer(width, height);
 			ground.fill(test.soil);
 			test.game.pushTerrain(ground);
 
