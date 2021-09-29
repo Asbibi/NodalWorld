@@ -1,11 +1,13 @@
 package gameinterface;
 
 import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
 import gamelogic.Entity;
+import gamelogic.GameManager;
 import gamelogic.Species;
 import gamelogic.TerrainStack;
 import gamelogic.Vec2D;
@@ -25,24 +27,35 @@ public class WorldPanel extends JPanel{
 	private Color speciesCountBGColor = new Color(0,0,0,150);
 	private Color gridColor = new Color(162,255,25);
 	private int gridThickness = 1;
-	private boolean displayGridDetail = false;
+	private boolean displayGridDetail = true;
 
 	// ==== Class fields ====
 	private Dimension gridDimension;
 	private ArrayList<TileComponent> tiles;
-	private ArrayList<Species> speciesDisplayed;
+	private List<Species> speciesDisplayed;
+	private TerrainStack terrain;
 	private int speciesSlotNumber_sqrt;
 	private int minimalTileSize;
 	
 
 	
-	public WorldPanel() {
+	public WorldPanel(GameManager gameManager) {
 		setBackground(Color.blue);
 		tiles = new ArrayList<TileComponent>();
-		speciesDisplayed = new ArrayList<Species>();
+		speciesDisplayed = gameManager.getSpeciesArray();
+		terrain = gameManager.getTerrainStack();
 		gridDimension = new Dimension(-1,-1);
 		speciesSlotNumber_sqrt = 0;
 		ResetMinimalTileSize();
+	}
+	
+	public void update(int frame) {
+		updateTerrain();
+		for (int i =0; i < speciesDisplayed.size(); i++) {
+			if(speciesDisplayed.get(i).trigger(frame))
+				updateSpeciesDisplay(i);
+		}
+		repaint();
 	}
 	
 	
@@ -90,11 +103,11 @@ public class WorldPanel extends JPanel{
 	 * Updates the whole terrain, including dimension check and potential changed
 	* @param the terrain stack to display
 	*/
-	public void updateTerrain(TerrainStack terrain) {
+	public void updateTerrain() {
 		if (terrain == null) {
 			gridDimension = new Dimension(-1,-1);			
 		} else {
-			SetDimensions(terrain.getStackDimension());
+			setDimensions(terrain.getStackDimension());
 			updateTilesSurface(terrain);
 		}
 	}	
@@ -104,12 +117,12 @@ public class WorldPanel extends JPanel{
 	 * If the dimensions are the same as the previous ones, it wont do nothing. Otherwise, it will adapt the layout and create enough tiles to fill the entire map.
 	* @param the new Dimensions (should be got from the terrain to display)
 	*/
-	private void SetDimensions(Dimension newDimensions) {
+	private void setDimensions(Dimension newDimensions) {
 		if (gridDimension == newDimensions)
 			return;
 				
 		int count = newDimensions.width * newDimensions.height;
-		removeAll();
+		removeAll();	// removes all tiles from the JPanel
 		
 		// if one dimension is 0, the terrain is invalid and thus soulhn't be displayed
 		if (count == 0) {
@@ -130,6 +143,7 @@ public class WorldPanel extends JPanel{
 				add(tiles.get(x + y * width));
 		
 		gridDimension = newDimensions;
+		updateAllSpeciesDisplay();
 		setMinimalPreferredSize();	// changing size
 	}
 	
@@ -160,24 +174,23 @@ public class WorldPanel extends JPanel{
 	* @param the array of species that should be displayed
 	* @see updateOneSpeciesDisplayed
 	*/
-	public void updateAllSpeciesDisplayed(ArrayList<Species> species) {
-		speciesDisplayed = species;
+	public void updateAllSpeciesDisplay() {
 		boolean hasChanged = computeSpeciesSlotNumber_sqrt(speciesDisplayed.size());	// set speciesSlotNumber_sqrt
 		if (hasChanged) {
 			// reset all tiles arrays to fit the new potential size
 			for (int i = 0; i < tiles.size() ; i++) 
 				tiles.get(i).setEmptyArraySpecies(speciesSlotNumber_sqrt * speciesSlotNumber_sqrt);
 			for (int s = 0; s < speciesDisplayed.size(); s++)
-				updateOneSpeciesDisplayed(s);			
+				updateSpeciesDisplay(s);			
 		}
 	}
 	
 	/**
-	 * Actually calls updateOneSpeciesDisplayed(int speciesIndex) after retreiving the index
+	 * Actually calls updateSpeciesDisplay(int speciesIndex) after retrieving the index
 	* @param the species to update
 	*/
-	public void updateOneSpeciesDisplayed(Species speciesToUpdate) {
-		updateOneSpeciesDisplayed(speciesDisplayed.indexOf(speciesToUpdate));
+	public void updateSpeciesDisplay(Species speciesToUpdate) {
+		updateSpeciesDisplay(speciesDisplayed.indexOf(speciesToUpdate));
 	}
 	
 	/**
@@ -186,7 +199,7 @@ public class WorldPanel extends JPanel{
 	 * (no checks)
 	* @param the index of the species to update
 	*/
-	public void updateOneSpeciesDisplayed(int speciesIndex) {
+	public void updateSpeciesDisplay(int speciesIndex) {
 		// for each tiles, reset the count of the species to 0
 		for (int i = 0; i < tiles.size() ; i++)
 			tiles.get(i).resetCountArraySpecies(speciesIndex);
@@ -214,6 +227,15 @@ public class WorldPanel extends JPanel{
 			return false;
 	}
 	
+	
+	
+	
+	// ==== Setters ====
+	
+	public void flipDisplayGridDetail() {
+		displayGridDetail = !displayGridDetail;
+		repaint();
+	}
 	
 	
 

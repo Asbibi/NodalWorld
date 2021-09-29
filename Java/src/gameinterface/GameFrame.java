@@ -24,10 +24,10 @@ public class GameFrame extends JFrame {
 	/**
 	* Calls setupUI() and the Control & World panels' constructors methods
 	*/ 
-	public GameFrame() {
+	public GameFrame(GameManager gameManager) {
 		super("Nodal World");
-		worldPanel = new WorldPanel();
-		controlPanel = new ControlPanel();
+		worldPanel = new WorldPanel(gameManager);
+		controlPanel = new ControlPanel(gameManager);
 		setupUI();
 	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
@@ -57,6 +57,7 @@ public class GameFrame extends JFrame {
 		slowButton = new JButton("Slow Down");
 		speedButton = new JButton("Speed Up");
 		detailButton = new JButton("Show Details");
+		detailButton.addActionListener(e -> worldPanel.flipDisplayGridDetail() );
 		restartButton = new JButton("Delete & Restart a world");
 		menuBar.add(pauseButton);
 		menuBar.add(slowButton);
@@ -66,14 +67,13 @@ public class GameFrame extends JFrame {
 	    setJMenuBar(menuBar);
 	}
 	
-	/**
-	* Updates the world panel using the gameManager data
-	* WIP
-	*/ 
-	public void update(GameManager gameManager)
-	{
-		//TODO
+	public void update(int frame) {
+		worldPanel.update(frame);
 	}
+
+	
+	
+	// ===== TEST ONLY =====
 	public WorldPanel gWP_test() { return worldPanel;}
 	public ControlPanel gCTRL_test() { return controlPanel;}
 }

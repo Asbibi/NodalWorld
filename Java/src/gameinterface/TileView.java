@@ -41,7 +41,7 @@ public class TileView {
 		        g.fillRoundRect(0, 0, tile.getWidth(), tile.getHeight(), 0, 0);
 			} else {
 		        g.drawImage(tileImage, 0, 0, tile.getWidth(), tile.getHeight(), tile);
-			}				
+			}
 		}		
 	}
 	/**
@@ -111,7 +111,9 @@ public class TileView {
 		int gridHalfSize = tile.getOwner().getGridThickness();	// is the half of the effective grid thickness as both tiles will draw it
 															// a workaround for this issue would be to only display grid on the top and left edges, but it's a minor issue
 		g.setColor(tile.getOwner().getGridColor());
+		//g.setStroke();
 		
+		//g.drawRect(0, 0, tile.getWidth(), tile.getHeight());
 		g.fillRoundRect(0, 0, tile.getWidth(), gridHalfSize, 0, 0);
 		g.fillRoundRect(0, tile.getHeight() - gridHalfSize, tile.getWidth(), gridHalfSize, 0, 0);
 		g.fillRoundRect(0, 0, gridHalfSize, tile.getHeight(), 0, 0);

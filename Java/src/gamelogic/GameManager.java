@@ -26,6 +26,7 @@ public class GameManager {
 
 	private TerrainStack terrainStack;
 
+	private List<Surface> surfaces;
 	private List<Species> species;
 
 	private Map<Species, GenerationRule> speciesToGenRule;
@@ -48,6 +49,7 @@ public class GameManager {
 
 		terrainStack = new TerrainStack();
 
+		surfaces = new LinkedList<Surface>();
 		species = new LinkedList<Species>();
 
 		speciesToGenRule = new HashMap<Species, GenerationRule>();
@@ -104,6 +106,35 @@ public class GameManager {
 	*/
 	public void pushTerrain(TerrainLayer terrain) {
 		terrainStack.pushTerrain(terrain);
+	}
+	
+	/**
+	* @return reference to the surface list
+	*/
+	public List<Surface> getSurfaceArray() {
+		return surfaces;
+	}
+
+	/**
+	* @param name
+	* @return the species corresponding to the given name, null if it doesn't exist
+	*/
+	public Surface getSurface(String name) {
+		return surfaces.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
+	}
+
+	/**
+	* @param sp
+	*/
+	public void addSurface(Surface surf) {
+		surfaces.add(surf);
+	}
+
+	/**
+	* @return reference to the surface list
+	*/
+	public List<Species> getSpeciesArray() {
+		return species;
 	}
 
 	/**
@@ -201,7 +232,7 @@ public class GameManager {
 	/**
 	* Applies the rules and executes the corresponding actions in the following order : generation, movement, death.
 	*/ 
-	public void evolveGameState() {
+	public int evolveGameState() {
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
 				genNet.evaluate(this);
@@ -216,8 +247,8 @@ public class GameManager {
 				apply(speciesToDeathRule.get(sp), sp);
 			}
 		}
-
-		frame++;
+		frame++;			// TODO : think about frame number limit ?
+		return frame-1;
 	}
 
 	private void apply(GenerationRule rule, Species sp) {
@@ -271,5 +302,23 @@ public class GameManager {
 
 		return sb.toString();
 	}
+	public String arraysToString() {
+		StringBuilder sb = new StringBuilder();
 
+		sb.append("Surfaces:\t[ ");
+		for(Surface surf : surfaces) {
+			sb.append(surf);
+			sb.append(", ");			
+		}
+		sb.append("]\n");
+
+		sb.append("Species:\t[ ");
+		for(Species sp : species) {
+			sb.append(sp);
+			sb.append(", ");			
+		}
+		sb.append("]\n");
+
+		return sb.toString();
+	}
 }

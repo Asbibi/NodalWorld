@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import gamelogic.GameManager;
 import gamelogic.Species;
 import gamelogic.Surface;
 
@@ -21,9 +22,9 @@ public class ControlPanel extends JPanel {
 	ElementManagerToolBar<Surface> surfaceToolBar;
 	ElementManagerToolBar<Species> speciesToolBar;
 
-	public ControlPanel() {
+	public ControlPanel(GameManager gameManager) {
 		setBackground(Color.red);
-		setUpUI();
+		setUpUI(gameManager);
 	}
 	
 	/**
@@ -31,18 +32,18 @@ public class ControlPanel extends JPanel {
 	* Creates the elements managers as toolbars
 	* Use the main area to display the nodes
 	*/ 
-	private void setUpUI() {
+	private void setUpUI(GameManager gameManager) {
 		setLayout(new BorderLayout());
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
 		terrainToolBar = new JToolBar(null, JToolBar.VERTICAL);
-		surfaceToolBar = new ElementManagerToolBar<>("Surface", new SurfaceDetailPanel()) { 
+		surfaceToolBar = new ElementManagerToolBar<>("Surface", gameManager.getSurfaceArray(), new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
 				return new Surface(name);
 			}
 		};
-		speciesToolBar = new ElementManagerToolBar<>("Species", new SpeciesDetailPanel()) { 
+		speciesToolBar = new ElementManagerToolBar<>("Species", gameManager.getSpeciesArray(), new SpeciesDetailPanel()) { 
 			@Override
 			public Species createElement(String name) {
 				return new Species(name, "");
@@ -54,13 +55,4 @@ public class ControlPanel extends JPanel {
 		toolBarPanel.add(speciesToolBar);
 		add(toolBarPanel, BorderLayout.WEST);
 	}
-	
-	/**
-	* @param The surface array to use on the surface manager
-	*/ 
-	public void setSurfaces(ArrayList<Surface> surfaceArray) { surfaceToolBar.setElementArray(surfaceArray); }
-	/**
-	* @param The species array to use on the surface manager
-	*/ 
-	public void setSpecies(ArrayList<Species> speciesArray) { speciesToolBar.setElementArray(speciesArray); }
 }

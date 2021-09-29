@@ -16,11 +16,11 @@ public class TestGameLogic {
 
 	public TestGameLogic(int width, int height) {
 		game = new GameManager(width, height);
-		soil = new Surface("soil");
-		humans = new Species("human", "res/Animal_Human");
+		soil = new Surface("soil", "res/Tile_Dirt.png");
+		humans = new Species("human", "res/Animal_Human.png");
 	}
 
-	private GenerationRule makeGenRandomOnSoilRule() {
+	public GenerationRule makeGenRandomOnSoilRule() {
 		Network net = game.getGenNet();
 
 		RandIntNode nodeRandX = new RandIntNode(game.gridWidth()); 
@@ -83,6 +83,18 @@ public class TestGameLogic {
 			System.out.println("Arguments must be integers");
 			return;
 		}
+	}
+
+	public GameManager getGame() {
+		return game;
+	}
+
+	public Surface getSoil() {
+		return soil;
+	}
+
+	public Species getHumans() {
+		return humans;
 	}
 
 }

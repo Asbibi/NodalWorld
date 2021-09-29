@@ -1,25 +1,23 @@
 package gameinterface;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.*;
 
 import gamelogic.Element;
 
 /**
 * Create an element manager as a tool bar.
-* Includes the list fo the different elements,
+* Includes the list for the different elements,
 * buttons to add/remove/rearrange them,
 * a viewer to inspect and modify a specific element.
 * 
 * @see ControlPanel, ElementDetailPanel
 */ 
 public class ElementManagerToolBar<T extends Element> extends JToolBar {
-	private ArrayList<T> elements;
+	private List<T> elements;
 	private JList<Element> scrollList;
 	private JButton upButton;
 	private JButton downButton;
@@ -28,10 +26,11 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private JTextField addTextField;
 	private ElementDetailPanel detailPanel;
 	
-	public ElementManagerToolBar(String className, ElementDetailPanel detailPanel) {
+	public ElementManagerToolBar(String className, List<T> elements, ElementDetailPanel detailPanel) {
 		super(null, JToolBar.VERTICAL);
-		elements = new ArrayList<T>();
+		this.elements = elements;
 		setUpUI(className, detailPanel);
+		CopyElementsToJList();
 	}
 	
 	/**
@@ -53,7 +52,9 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		scrollList.addMouseListener(new MouseAdapter() {
 	         public void mouseClicked(MouseEvent me) {
 	             if (me.getClickCount() == 1) {
-	                JList target = (JList)me.getSource();
+	                JList<Element> target = (JList<Element>)me.getSource();
+	                if (target == null)
+	                	return;
 	                int index = target.locationToIndex(me.getPoint());
 	                if (index >= 0)
 	                	detailPanel.setElement(elements.get(index));
@@ -167,13 +168,6 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	
 	
 	// Array management
-	/**
-	* @param the list of elements to store
-	*/ 
-	public void setElementArray(ArrayList<T> elements) {
-		this.elements = elements;
-		CopyElementsToJList();
-	}
 	/**
 	* @param the new element to add to the list
 	*/ 

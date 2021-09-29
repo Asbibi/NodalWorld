@@ -3,14 +3,16 @@ package game;
 import javax.swing.JOptionPane;
 
 import gameinterface.GameFrame;
+import gamelogic.GameManager;
 
 public class Main {
+	static GameManager gameManager;
 	static GameFrame gameFrame;
 	
 
 	public static void main(String[] args) {
-		gameFrame = new GameFrame();
-		// link frame to game
+		gameManager = new GameManager(10,10);
+		gameFrame = new GameFrame(gameManager);
 		gameFrame.setVisible(true);
 	}
 
