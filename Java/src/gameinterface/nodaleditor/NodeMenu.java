@@ -108,11 +108,10 @@ public class NodeMenu extends JPopupMenu {
 	}
 
 	private JMenuItem buildNodeItem(Supplier<Node> supplier) {
-		Node node = supplier.get();
-		JMenuItem item = new JMenuItem(new AbstractAction(node.toString()) {
+		JMenuItem item = new JMenuItem(new AbstractAction(supplier.get().toString()) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newNode = node;
+				newNode = supplier.get();
 				fireActionListeners();
 			}
 		});

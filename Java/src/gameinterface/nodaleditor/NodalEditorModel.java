@@ -3,6 +3,8 @@ package gameinterface.nodaleditor;
 import gamelogic.GameManager;
 import gamelogic.Network;
 import gamelogic.Node;
+import gamelogic.Input;
+import gamelogic.Output;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
