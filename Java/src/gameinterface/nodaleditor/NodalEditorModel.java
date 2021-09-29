@@ -13,8 +13,6 @@ import java.awt.FontMetrics;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
 * @see NodalEditor
@@ -23,7 +21,7 @@ public class NodalEditorModel {
 
 	private GameManager game;
 	private Network network;
-	private Map<Node, NodeView> nodeViews;
+	private Collection<NodeBox> boxes;
 
 	private Collection<ChangeListener> changeListeners;
 
@@ -33,7 +31,7 @@ public class NodalEditorModel {
 	public NodalEditorModel(GameManager game, Network network) {
 		this.game = game;
 		this.network = network;
-		nodeViews = new HashMap<Node, NodeView>();
+		boxes = new LinkedList<NodeBox>();
 
 		changeListeners = new LinkedList<ChangeListener>();
 	}
@@ -53,18 +51,17 @@ public class NodalEditorModel {
 	*/ 
 	public void addNode(Node node, int x, int y) {
 		network.addNode(node);
-		nodeViews.put(node, new NodeView(x, y));
+		boxes.add(new NodeBox(node, x, y));
 		triggerChangeListeners();
 	}
 
 
-	// ========== Node View ==========
+	// ========== Node Boxes ==========
 
 	/**
-	* @param node
-	* @return the corresponding node view
+	* @return all the node boxes
 	*/ 
-	public NodeView getNodeView(Node node) { return nodeViews.get(node); }
+	public Collection<NodeBox> getBoxes() { return boxes; }
 
 
 

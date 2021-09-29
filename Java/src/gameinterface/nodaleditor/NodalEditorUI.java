@@ -10,6 +10,7 @@ import gamelogic.nodes.*;
 import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 
 import java.awt.Graphics2D;
@@ -32,19 +33,28 @@ public class NodalEditorUI {
 	public void installUI(NodalEditor editor) {
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(SwingUtilities.isRightMouseButton(e)) {
-					editor.showNodeMenu(e.getX(), e.getY());
-				}
-			}
-
-			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO
 			}
 
 			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					// TODO
+				} else if(SwingUtilities.isRightMouseButton(e)) {
+					editor.showNodeMenu(e.getX(), e.getY());
+				}
+			}
+
+			@Override
 			public void mouseReleased(MouseEvent e) {
+				// TODO
+			}
+		});
+
+		editor.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
 				// TODO
 			}
 		});
@@ -61,42 +71,35 @@ public class NodalEditorUI {
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHints(rh);
 
-		Network network = editor.getNetwork();
-		for(Node node : network.getNodes()) {
-			NodeView view = editor.getNodeView(node);
-			if(!view.isValid()) {
-				view.initView(node, g2d.getFontMetrics(), 8, 4);
+		for(NodeBox box : editor.getBoxes()) {
+			if(!box.isValid()) {
+				box.init(6, 5, 4, g2d.getFontMetrics());
 			}
-			paintNode(g2d, editor, node, view);
+			paintNode(g2d, editor, box);
 		}
 	}
 
-	private void paintNode(Graphics2D g2d, NodalEditor editor, Node node, NodeView view) {
+	private void paintNode(Graphics2D g2d, NodalEditor editor, NodeBox box) {
 		FontMetrics metrics = g2d.getFontMetrics();
 		int lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
-		int radius = view.getPortRadius();
-		int padding = 2*radius;
 
 		g2d.setColor(Color.lightGray);
-		g2d.fill(new RoundRectangle2D.Double(view.getX()-padding, view.getY(), view.getWidth()+2*padding, view.getHeight(), 2*padding, 2*padding));
+		g2d.fill(new RoundRectangle2D.Double(box.getX()-box.getPadding(), box.getY(), box.getWidth()+2*box.getPadding(), box.getHeight(), 2*box.getPadding(), 2*box.getPadding()));
 
 		g2d.setColor(Color.black);
-		int titleWidth = metrics.stringWidth(node.toString());
-		g2d.drawString(node.toString(), view.getX()+(view.getWidth()-titleWidth)/2, view.getY()+lineHeight);
+		int titleWidth = metrics.stringWidth(box.getNode().toString());
+		g2d.drawString(box.getNode().toString(), box.getX()+(box.getWidth()-titleWidth)/2, box.getY()+lineHeight);
 
-		for(Input input : node.getInputs()) {
-			g2d.setColor(Color.black);
-			g2d.drawString(input.toString(), view.getX(), view.getY()+view.getInputOffset(input));
+		for(Port port : box.getPorts()) {
 			g2d.setColor(Color.red);
-			g2d.fill(new Ellipse2D.Double(view.getX()-(padding+radius), view.getY()+view.getInputOffset(input)-2*radius, 2*radius, 2*radius));
-		}
-
-		for(Output output : node.getOutputs()) {
+			g2d.fill(new Ellipse2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize()));
 			g2d.setColor(Color.black);
-			int wordWidth = metrics.stringWidth(output.toString());
-			g2d.drawString(output.toString(), view.getX()+view.getWidth()-wordWidth, view.getY()+view.getOutputOffset(output));
-			g2d.setColor(Color.red);
-			g2d.fill(new Ellipse2D.Double(view.getX()+view.getWidth()+(padding-radius), view.getY()+view.getOutputOffset(output)-2*radius, 2*radius, 2*radius));
+			if(port.hasInput()) {
+				g2d.drawString(port.getInput().toString(), box.getX(), port.getY());
+			} else {
+				int wordWidth = metrics.stringWidth(port.getOutput().toString());
+				g2d.drawString(port.getOutput().toString(), box.getX()+box.getWidth()-wordWidth, port.getY());
+			}
 		}
 	}
 

@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import java.util.Collection;
+
 /**
 * @see Network
 * @see Node
@@ -71,7 +73,7 @@ public class NodalEditor extends JComponent {
 
 	// Node view
 
-	public NodeView getNodeView(Node node) { return model.getNodeView(node); }
+	public Collection<NodeBox> getBoxes() { return model.getBoxes(); }
 
 	// Change Listeners
 
