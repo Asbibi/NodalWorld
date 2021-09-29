@@ -73,6 +73,7 @@ public class Network {
 		}
 
 		input.setSource(output);
+		output.setTarget(input);
 		return true;
 	}
 

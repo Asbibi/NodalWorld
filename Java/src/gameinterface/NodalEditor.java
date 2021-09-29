@@ -5,6 +5,8 @@ import gameinterface.nodaleditor.*;
 import gamelogic.GameManager;
 import gamelogic.Network;
 import gamelogic.Node;
+import gamelogic.Input;
+import gamelogic.Output;
 
 import javax.swing.JComponent;
 
@@ -71,9 +73,29 @@ public class NodalEditor extends JComponent {
 
 	public Network getNetwork() { return model.getNetwork(); }
 
-	// Node view
+	// Node Boxes
 
 	public Collection<NodeBox> getBoxes() { return model.getBoxes(); }
+
+	public Port getPort(Input input) { return model.getPort(input); }
+
+	public Port getPort(Output output) { return model.getPort(output); }	
+
+	// Interaction
+
+	public void setEditingLink(boolean b) { model.setEditingLink(b); }
+
+	public boolean isEditingLink() { return model.isEditingLink(); }
+
+	public void setCursorPos(int x, int y) { model.setCursorPos(x, y); }
+
+	public int getXCursor() { return model.getXCursor(); }
+
+	public int getYCursor() { return model.getYCursor(); }
+
+	public void setCurrentPort(Port port) { model.setCurrentPort(port); }
+
+	public Port getCurrentPort() { return model.getCurrentPort(); }
 
 	// Change Listeners
 

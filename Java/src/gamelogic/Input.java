@@ -11,6 +11,9 @@ import java.lang.Class;
 */ 
 public class Input {
 
+	private static int idCounter = 0;
+
+	private int id;
 	private String name;
 	private Class<?> dataClass;
 	private Output source;
@@ -20,9 +23,20 @@ public class Input {
 	* @param dataClass the class object representing the type of data the input can retrieve
 	*/ 
 	public Input(String name, Class<?> dataClass) {
+		id = idCounter;
+		idCounter++;
 		this.name = name;
 		this.dataClass = dataClass;
 		source = null;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(!(o instanceof Input)) return false;
+
+		Input input = (Input) o;
+		return (this.id == input.id);
 	}
 
 	/**
@@ -59,6 +73,10 @@ public class Input {
 	*/ 
 	public boolean hasSource() {
 		return (source != null);
+	}
+
+	public Output getSource() {
+		return source;
 	}
 
 	/**

@@ -16,9 +16,13 @@ import java.awt.event.MouseEvent;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Color;
+import java.awt.BasicStroke;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.awt.FontMetrics;
+
+import java.util.Optional;
 
 /**
 * @see NodalEditor
@@ -34,7 +38,32 @@ public class NodalEditorUI {
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO
+				Optional<Port> optHit = editor.getBoxes().stream()
+											.flatMap(box -> box.getPorts().stream())
+											.filter(port -> port.hit(e.getX(), e.getY()))
+											.findFirst();
+				if(optHit.isPresent()) {
+					Port portHit = optHit.get();
+					if(portHit.hasInput()) {
+						Input input = portHit.getInput();
+						if(input.hasSource()) {
+							Output output = input.getSource();
+							// TODO
+						} else {
+							editor.setCurrentPort(portHit);
+						}
+					} else {
+						Output output = portHit.getOutput();
+						if(output.hasTarget()) {
+							Input input = output.getTarget();
+							// TODO
+						} else {
+							editor.setCurrentPort(portHit);
+						}
+					}
+					editor.setCursorPos(e.getX(), e.getY());
+					editor.setEditingLink(true);
+				}
 			}
 
 			@Override
@@ -48,14 +77,38 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO
+				if(editor.isEditingLink()) {
+					Optional<Port> optHit = editor.getBoxes().stream()
+											.flatMap(box -> box.getPorts().stream())
+											.filter(port -> port.hit(e.getX(), e.getY()))
+											.findFirst();
+					if(optHit.isPresent()) {
+						Port portHit = optHit.get();
+						if(editor.getCurrentPort().hasInput() && portHit.hasOutput()) {
+							Node source = portHit.getBox().getNode();
+							String outputName = portHit.getOutput().toString();
+							Node target = editor.getCurrentPort().getBox().getNode();
+							String inputName = editor.getCurrentPort().getInput().toString();
+							editor.getNetwork().link(source, outputName, target, inputName);
+						} else if(editor.getCurrentPort().hasOutput() && portHit.hasInput()) {
+							Node target = portHit.getBox().getNode();
+							String inputName = portHit.getInput().toString();
+							Node source = editor.getCurrentPort().getBox().getNode();
+							String outputName = editor.getCurrentPort().getOutput().toString();
+							editor.getNetwork().link(source, outputName, target, inputName);
+						}
+					}
+					editor.setEditingLink(false);
+				}
 			}
 		});
 
 		editor.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				// TODO
+				if(editor.isEditingLink()) {
+					editor.setCursorPos(e.getX(), e.getY());
+				}
 			}
 		});
 	}
@@ -76,6 +129,23 @@ public class NodalEditorUI {
 				box.init(6, 5, 4, g2d.getFontMetrics());
 			}
 			paintNode(g2d, editor, box);
+		}
+
+		g2d.setStroke(new BasicStroke(3));
+		g2d.setColor(Color.magenta);
+		for(NodeBox box : editor.getBoxes()) {
+			for(Port p : box.getPorts()) {
+				if(p.hasOutput() && p.getOutput().hasTarget()) {
+					Port q = editor.getPort(p.getOutput().getTarget());
+					g2d.draw(new Line2D.Double(p.getX(), p.getY(), q.getX(), q.getY()));
+				}
+			}
+		}
+		
+
+		if(editor.isEditingLink()) {
+			g2d.setColor(Color.red);
+			g2d.draw(new Line2D.Double(editor.getCurrentPort().getX(), editor.getCurrentPort().getY(), editor.getXCursor(), editor.getYCursor()));
 		}
 	}
 

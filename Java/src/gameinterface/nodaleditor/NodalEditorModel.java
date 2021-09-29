@@ -13,6 +13,7 @@ import java.awt.FontMetrics;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Optional;
 
 /**
 * @see NodalEditor
@@ -23,6 +24,10 @@ public class NodalEditorModel {
 	private Network network;
 	private Collection<NodeBox> boxes;
 
+	private boolean editingLink;
+	private int xCursor, yCursor;
+	private Port curPort;
+
 	private Collection<ChangeListener> changeListeners;
 
 	/**
@@ -32,6 +37,8 @@ public class NodalEditorModel {
 		this.game = game;
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
+
+		editingLink = false;
 
 		changeListeners = new LinkedList<ChangeListener>();
 	}
@@ -62,6 +69,52 @@ public class NodalEditorModel {
 	* @return all the node boxes
 	*/ 
 	public Collection<NodeBox> getBoxes() { return boxes; }
+
+	public Port getPort(Input input) {
+		Optional<Port> opt = boxes.stream()
+								.flatMap(box -> box.getPorts().stream())
+								.filter(port -> input.equals(port.getInput()))
+								.findFirst();
+		return opt.orElse(null);
+	}
+
+	public Port getPort(Output output) {
+		Optional<Port> opt = boxes.stream()
+								.flatMap(box -> box.getPorts().stream())
+								.filter(port -> output.equals(port.getOutput()))
+								.findFirst();
+		return opt.orElse(null);
+	}
+
+
+
+	// ========== Interaction ==========
+
+	public void setEditingLink(boolean b) {
+		if(editingLink != b) {
+			editingLink = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isEditingLink() { return editingLink; }
+
+	public void setCursorPos(int x, int y) {
+		xCursor = x;
+		yCursor = y;
+		triggerChangeListeners();
+	}
+
+	public int getXCursor() { return xCursor; }
+
+	public int getYCursor() { return yCursor; }
+
+	public void setCurrentPort(Port port) {
+		curPort = port;
+		triggerChangeListeners();
+	}
+
+	public Port getCurrentPort() { return curPort; }
 
 
 

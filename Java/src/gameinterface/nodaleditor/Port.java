@@ -52,7 +52,7 @@ public class Port {
 	/**
 	* @return the parent node box
 	*/ 
-	public NodeBox getParent() { return parent; }
+	public NodeBox getBox() { return parent; }
 
 	/**
 	* @return x coordinate
