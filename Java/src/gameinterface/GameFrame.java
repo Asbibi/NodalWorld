@@ -29,7 +29,7 @@ public class GameFrame extends JFrame {
 		worldPanel = new WorldPanel(gameManager);
 		controlPanel = new ControlPanel(gameManager);
 		setupUI();
-	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		updateInterface(0);
 	}
 	
 	/**
@@ -39,14 +39,18 @@ public class GameFrame extends JFrame {
 	*/ 
 	private void setupUI() {
         setPreferredSize(new Dimension(1280, 720));
-        setLayout(new GridLayout(0,2));
         
         setupMenuBar();
         
-        add(controlPanel);
-        add(new JScrollPane(worldPanel));
+        setLayout(new BorderLayout());
+		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, controlPanel, new JScrollPane(worldPanel));
+		add(splitPanel);
 
-        pack();        
+        pack();
+        setVisible(true);
+	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    
+	    splitPanel.setDividerLocation(0.5);	// at the end to let the split panel get it's definitive size before setting the divider to the center
 	}
 	/**
 	* Creates the menubar of the game
@@ -67,7 +71,7 @@ public class GameFrame extends JFrame {
 	    setJMenuBar(menuBar);
 	}
 	
-	public void update(int frame) {
+	public void updateInterface(int frame) {
 		worldPanel.update(frame);
 	}
 

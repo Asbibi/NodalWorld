@@ -10,7 +10,7 @@ import gameinterface.GameFrame;
 import gamelogic.TerrainLayer;
 import gamelogic.rules.GenerationRule;
 
-public class TestInterfaceUpdating {
+public class TestGameInterfaceLogicLink {
 	
 	public static GameFrame gameFrame;
 	public static TestGameLogic test;
@@ -18,7 +18,7 @@ public class TestInterfaceUpdating {
 	public static void Update() {
 		int frame = test.getGame().evolveGameState();
 		System.out.println(test.getGame());
-		gameFrame.update(frame);
+		gameFrame.updateInterface(frame);
 	}
 	
 	public static void main(String[] args) {

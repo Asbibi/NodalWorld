@@ -1,4 +1,4 @@
-package gameinterface;
+package gameinterface.components;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -43,7 +43,7 @@ public class ImageComponent extends JComponent{
         model.addChangeListener(e -> repaint());
         model.addActionListener(e -> loadImageFromFile());
         
-        setPreferredSize(new Dimension(128,128));
+        //setPreferredSize(new Dimension(128,128));
 	}
 
 	@Override
@@ -55,7 +55,27 @@ public class ImageComponent extends JComponent{
 	public Image getImage() {
 		return image;
 	}
+	@Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
 
+    @Override
+    public Dimension getMaximumSize() {
+        return getPreferredSize();
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(128, 128);
+    }
+
+	
+	/*@Override
+	public void setSize(Dimension d) {
+		d.width = d.height;
+		super.setSize(d);
+	}*/
 	public void setImage(Image image) {
 		this.image = image;
 		model.triggerChangeListeners();

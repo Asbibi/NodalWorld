@@ -1,6 +1,8 @@
-package gameinterface;
+package gameinterface.components;
 
 import java.awt.*;
+
+import gameinterface.WorldPanel;
 
 /**
 * This class is responsible for the view part of the TileComponent

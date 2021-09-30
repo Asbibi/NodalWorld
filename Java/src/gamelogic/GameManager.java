@@ -1,15 +1,11 @@
 package gamelogic;
 
 import gamelogic.rules.*;
+import gamelogic.initializer.EmptyGameInitializer;
 
 import java.util.Map;
-
-import game.initializer.EmptyGameInitializer;
-
 import java.util.HashMap;
-import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import java.lang.StringBuilder;
@@ -43,10 +39,16 @@ public class GameManager {
 	
 
 	/**
-	* Call the other constructor with an EmptyGameInitializer
+	* Initialize the manager with an EmptyGameInitializer
 	*/ 
 	public GameManager() {
 		this(new EmptyGameInitializer());
+	}
+	/**
+	* Initialize the manager with an EmptyGameInitializer that will create an empty layer with given dimensions
+	*/ 
+	public GameManager(int width, int height) {
+		this(new EmptyGameInitializer(width, height));
 	}
 	/**
 	* @param intializer, it will set the gamemanager in a specific state. Usually used to create basic surfaces and species to use
@@ -126,21 +128,21 @@ public class GameManager {
 
 	/**
 	* @param name
-	* @return the surface corresponding to the given name, null if it doesn't exist
+	* @return the surface corresponding to the given name, empty surface if it doesn't exist
 	*/
 	public Surface getSurface(String name) {
-		return surfaces.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
+		return surfaces.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(Surface.getEmpty());
 	}
 
 	/**
 	* @param index of the surface in the array
-	* @return the surface corresponding to the given index, null if it doesn't exist
+	* @return the surface corresponding to the given index, empty surface if it doesn't exist
 	*/
 	public Surface getSurface(int index) {
 		if (index >=0 && index <surfaces.size())
 			return surfaces.get(index);
 		else
-			return null;
+			return Surface.getEmpty();
 	}
 	
 	/**

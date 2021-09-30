@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import gameinterface.components.TileComponent;
 import gamelogic.Entity;
 import gamelogic.GameManager;
 import gamelogic.Species;

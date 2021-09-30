@@ -11,9 +11,20 @@ public class Main {
 	
 
 	public static void main(String[] args) {
-		gameManager = new GameManager();
+		int width = 10;
+		int height = 10;
+		if (args.length > 1) {
+			try {
+				width = Integer.parseInt(args[0]);
+				height = Integer.parseInt(args[1]);
+			} catch(NumberFormatException e) {
+				width = 10;
+				height = 10;
+			}
+		}		
+		
+		gameManager = new GameManager(width, height);
 		gameFrame = new GameFrame(gameManager);
-		gameFrame.setVisible(true);
 	}
 
 	/*

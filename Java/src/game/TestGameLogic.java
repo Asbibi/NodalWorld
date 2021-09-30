@@ -15,11 +15,16 @@ public class TestGameLogic {
 	private Species humans;
 
 	public TestGameLogic(int width, int height) {
-		game = new GameManager();
+		game = new GameManager(width, height);
 		soil = new Surface("soil", "res/Tile_Dirt.png");
 		humans = new Species("human", "res/Animal_Human.png");
 	}
 
+
+	public GameManager getGame() { return game; }
+	public Surface getSoil() { return soil; }
+	public Species getHumans() { return humans; }
+	
 	public GenerationRule makeGenRandomOnSoilRule() {
 		Network net = game.getGenNet();
 
@@ -84,17 +89,4 @@ public class TestGameLogic {
 			return;
 		}
 	}
-
-	public GameManager getGame() {
-		return game;
-	}
-
-	public Surface getSoil() {
-		return soil;
-	}
-
-	public Species getHumans() {
-		return humans;
-	}
-
 }

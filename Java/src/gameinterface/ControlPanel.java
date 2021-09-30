@@ -36,7 +36,7 @@ public class ControlPanel extends JPanel {
 		setLayout(new BorderLayout());
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
-		terrainToolBar = new JToolBar(null, JToolBar.VERTICAL);
+		terrainToolBar = new TerrainManagerToolBar(gameManager.getTerrainStack());
 		surfaceToolBar = new ElementManagerToolBar<>("Surface", gameManager.getSurfaceArray(), new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
@@ -49,10 +49,11 @@ public class ControlPanel extends JPanel {
 				return new Species(name, "");
 			}
 		};
-		terrainToolBar.add(new JButton("Test"));
 		toolBarPanel.add(terrainToolBar);
 		toolBarPanel.add(surfaceToolBar);
 		toolBarPanel.add(speciesToolBar);
-		add(toolBarPanel, BorderLayout.WEST);
+		JScrollPane toolScrollPanel = new JScrollPane(toolBarPanel);
+		toolScrollPanel.setPreferredSize(new Dimension(160,1000));
+		add(toolScrollPanel, BorderLayout.WEST);
 	}
 }

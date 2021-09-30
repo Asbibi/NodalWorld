@@ -1,5 +1,6 @@
 package gamelogic;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.lang.Object;
@@ -14,6 +15,7 @@ public class Surface extends Element{
 	private static int idCounter;
 
 	private int id;
+	private Color color;
 
 	/**
 	* @param name
@@ -37,6 +39,7 @@ public class Surface extends Element{
 		idCounter++;
 		this.name = name;
 		this.image = image;
+		color = Color.lightGray;
 	}	
 
 	/**
@@ -47,6 +50,13 @@ public class Surface extends Element{
 		if(!(o instanceof Surface)) return false;
 		Surface surf = (Surface) o;
 		return (this.id == surf.id);
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	public void setColor(Color color) {
+		this.color = color;
 	}
 	
 	
