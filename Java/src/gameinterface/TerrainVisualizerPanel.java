@@ -1,21 +1,22 @@
 package gameinterface;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 
 import gameinterface.components.TerrainStackVisualizer;
+import gameinterface.components.TerrainStackVisualizerVectors;
 import gamelogic.TerrainLayer;
 
 public class TerrainVisualizerPanel extends JPanel {
 	private TerrainStackVisualizer visualizer;
+	private JScrollPane visuScrollPanel;
+	private TerrainStackVisualizerVectors visuVectors;
 	private JButton focusUp;
 	private JButton focusDown;
 	private JLabel currentFocusLabel;
@@ -24,8 +25,10 @@ public class TerrainVisualizerPanel extends JPanel {
 
 	TerrainVisualizerPanel(List<TerrainLayer> stack) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
 		visualizer = new TerrainStackVisualizer(stack);
-		JScrollPane visuScrollPanel = new JScrollPane(visualizer);
+		visuScrollPanel = new JScrollPane(visualizer) { @Override public Dimension getPreferredSize() { return visualizer.getParentDimension(); } };
+		visuScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(visuScrollPanel);
 
 		Dimension buttonDimension = new Dimension(25,25);
@@ -44,6 +47,11 @@ public class TerrainVisualizerPanel extends JPanel {
 		focusUp.addActionListener( e -> {visualizer.focusPreviousLayer();updateLayerLabelText();} );
 		focusDown.addActionListener( e -> {visualizer.focusNextLayer();updateLayerLabelText();} );
 		focusColor.addActionListener( e -> {visualizer.flipOnlyFocusedInColor();updateLayerLabelText();} );
+		visuVectors = new TerrainStackVisualizerVectors(visualizer);		
+		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);		
+		separator.setForeground(GameFrame.getSeparatorColor());
+		buttonPanel.add(visuVectors);
+		buttonPanel.add(separator);
 		buttonPanel.add(focusUp);
 		buttonPanel.add(focusDown);
 		buttonPanel.add(currentFocusLabel);

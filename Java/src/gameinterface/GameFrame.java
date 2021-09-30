@@ -13,7 +13,7 @@ import gamelogic.GameManager;
 * @see ControlPanel, WorldPanel
 */ 
 public class GameFrame extends JFrame {
-	static private Color separatorColor = new Color(180,180,180);
+	static private Color 	separatorColor = new Color(180,180,180);
 	
 	private	WorldPanel 		worldPanel;
 	private	ControlPanel 	controlPanel;
@@ -132,6 +132,8 @@ public class GameFrame extends JFrame {
 
 	
 	
+	static public Color getSeparatorColor() { return separatorColor; }
+	
 	// ===== TEST ONLY =====
 	public WorldPanel gWP_test() { return worldPanel;}
 	public ControlPanel gCTRL_test() { return controlPanel;}
@@ -139,7 +141,6 @@ public class GameFrame extends JFrame {
 
 
 /* TODO :
-- terrain layer visualizer height on big terrains
 - confirm dialog boxes when removing
 - improve color dialog box (color wheel ?)
 - find a way to ask to update toolbar if the gamemanager changes

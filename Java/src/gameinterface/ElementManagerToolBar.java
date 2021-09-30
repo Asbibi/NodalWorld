@@ -94,7 +94,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		add(BottomButtonsPanel);
 		
 		JSeparator separator = new JSeparator();
-		separator.setForeground(new Color(180,180,180));
+		separator.setForeground(GameFrame.getSeparatorColor());
 		add(separator);
 		addSeparator();
 		this.detailPanel = detailPanel;

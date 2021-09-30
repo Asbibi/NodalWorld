@@ -1,6 +1,7 @@
 package gameinterface.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -29,10 +30,15 @@ public class TerrainStackVisualizer extends JComponent {
 	public TerrainStackVisualizer(List<TerrainLayer> stack) {
 		view = new TerrainStackVisualizerView();
 		this.stack = stack;
-		//setPreferredSize(new Dimension(128,128));
 	}
 	
-	
+	public Dimension getParentDimension() {
+		int focusLayerHeight = computeParentPreferredHeigth();
+		if (focusLayerHeight < 100)
+			return new Dimension(computePreferredWidth(), Math.min(computePreferredHeigth(), 100));
+		else
+			return new Dimension(computePreferredWidth(), focusLayerHeight);
+	}
 	
 	
 	
@@ -50,13 +56,15 @@ public class TerrainStackVisualizer extends JComponent {
 
 	public void focusNextLayer() {
 		if (focusedLayer < stack.size() -1) {
-			focusedLayer++;			
-			repaint();			
+			focusedLayer++;
+			revalidate();
+			repaint();
 		}
 	}
 	public void focusPreviousLayer() {
 		if (focusedLayer > 0) {
-			focusedLayer--;			
+			focusedLayer--;
+			revalidate();
 			repaint();
 		}
 	}
@@ -84,7 +92,9 @@ public class TerrainStackVisualizer extends JComponent {
 	}
 
 	public int getOffset_Focus_y() {
-		return offsetFactor_Focus_y;
+		if (focusedLayer == 0)
+			return 0;
+		return stack.get(focusedLayer).getWidth() * delta_y + stack.get(focusedLayer - 1).getHeight() * delta_y;	//+ getOffset_y()
 	}
 	
 	public int getOffset_Starting_y() {
@@ -117,7 +127,17 @@ public class TerrainStackVisualizer extends JComponent {
 		if (stack == null)
 			return 0;
 		
-		return getOffset_Starting_y() - getOffset_y() + delta_y * stack.get(stack.size() -1).getHeight(); //  delta_y*h
+		return getOffset_Starting_y() - getOffset_y() + delta_y * stack.get(stack.size() -1).getHeight();
+	}
+	private int computeParentPreferredHeigth() {
+		if (stack == null)
+			return 10;
+		
+		int max_wPh = 0;
+		for (TerrainLayer layer : stack) {
+			max_wPh = Math.max(max_wPh, layer.getWidth() + layer.getHeight());
+		}
+		return (max_wPh + 5) * delta_y;
 	}
 	
 

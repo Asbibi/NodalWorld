@@ -12,8 +12,8 @@ public class TestGameInterface {
 	static GameManager gameManager;
 	static GameFrame gameFrame;
 	
-	static int W = 40;
-	static int H = 40;	
+	static int W = 15;
+	static int H = 15;	
 	
 	
 
