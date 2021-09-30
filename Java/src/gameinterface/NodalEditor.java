@@ -73,13 +73,19 @@ public class NodalEditor extends JComponent {
 
 	public Network getNetwork() { return model.getNetwork(); }
 
+	public boolean link(Port portOut, Port portIn) { return model.link(portOut, portIn); }
+
+	public void unlink(Port port) { model.unlink(port); }
+
 	// Node Boxes
 
 	public Collection<NodeBox> getBoxes() { return model.getBoxes(); }
 
 	public Port getPort(Input input) { return model.getPort(input); }
 
-	public Port getPort(Output output) { return model.getPort(output); }	
+	public Port getPort(Output output) { return model.getPort(output); }
+
+	public Port getPort(int x, int y) { return model.getPort(x, y); }
 
 	// Interaction
 

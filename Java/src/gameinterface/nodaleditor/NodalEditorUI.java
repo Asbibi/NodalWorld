@@ -38,20 +38,14 @@ public class NodalEditorUI {
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Optional<Port> optHit = editor.getBoxes().stream()
-											.flatMap(box -> box.getPorts().stream())
-											.filter(port -> port.hit(e.getX(), e.getY()))
-											.findFirst();
-				if(optHit.isPresent()) {
-					Port portHit = optHit.get();
+				Port portHit = editor.getPort(e.getX(), e.getY());
+				if(portHit != null) {
 					if(portHit.hasInput()) {
 						Input input = portHit.getInput();
 						if(input.hasSource()) {
 							Output output = input.getSource();
 							Port portOut = editor.getPort(output);
-							Node source = portOut.getBox().getNode();
-							Node target = portHit.getBox().getNode();
-							editor.getNetwork().unlink(source, output.toString(), target, input.toString());
+							editor.unlink(portHit);
 							editor.setCurrentPort(portOut);
 						} else {
 							editor.setCurrentPort(portHit);
@@ -61,9 +55,7 @@ public class NodalEditorUI {
 						if(output.hasTarget()) {
 							Input input = output.getTarget();
 							Port portIn = editor.getPort(input);
-							Node source = portHit.getBox().getNode();
-							Node target = portIn.getBox().getNode();
-							editor.getNetwork().unlink(source, output.toString(), target, input.toString());
+							editor.unlink(portHit);
 							editor.setCurrentPort(portIn);
 						} else {
 							editor.setCurrentPort(portHit);
@@ -86,24 +78,15 @@ public class NodalEditorUI {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if(editor.isEditingLink()) {
-					Optional<Port> optHit = editor.getBoxes().stream()
-											.flatMap(box -> box.getPorts().stream())
-											.filter(port -> port.hit(e.getX(), e.getY()))
-											.findFirst();
-					if(optHit.isPresent()) {
-						Port portHit = optHit.get();
+					Port portHit = editor.getPort(e.getX(), e.getY());
+
+					if(portHit != null) {
+						editor.unlink(portHit);
+
 						if(editor.getCurrentPort().hasInput() && portHit.hasOutput()) {
-							Node source = portHit.getBox().getNode();
-							String outputName = portHit.getOutput().toString();
-							Node target = editor.getCurrentPort().getBox().getNode();
-							String inputName = editor.getCurrentPort().getInput().toString();
-							editor.getNetwork().link(source, outputName, target, inputName);
+							editor.link(portHit, editor.getCurrentPort());
 						} else if(editor.getCurrentPort().hasOutput() && portHit.hasInput()) {
-							Node target = portHit.getBox().getNode();
-							String inputName = portHit.getInput().toString();
-							Node source = editor.getCurrentPort().getBox().getNode();
-							String outputName = editor.getCurrentPort().getOutput().toString();
-							editor.getNetwork().link(source, outputName, target, inputName);
+							editor.link(editor.getCurrentPort(), portHit);
 						}
 					}
 					editor.setEditingLink(false);

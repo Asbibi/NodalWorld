@@ -62,8 +62,32 @@ public class NodalEditorModel {
 		triggerChangeListeners();
 	}
 
+	public boolean link(Port portOut, Port portIn) {
+		Node source = portOut.getBox().getNode();
+		Output output = portOut.getOutput();
+		Node target = portIn.getBox().getNode();
+		Input input = portIn.getInput();
+		return network.link(source, output.toString(), target, input.toString());
+	}
 
-	// ========== Node Boxes ==========
+	public void unlink(Port port) {
+		if(port.hasOutput() && port.getOutput().hasTarget()) {
+			Node source = port.getBox().getNode();
+			Output output = port.getOutput();
+			Input input = output.getTarget();
+			Node target = getPort(input).getBox().getNode();
+			network.unlink(source, output.toString(), target, input.toString());
+		} else if(port.hasInput() && port.getInput().hasSource()) {
+			Node target = port.getBox().getNode();
+			Input input = port.getInput();
+			Output output = input.getSource();
+			Node source = getPort(output).getBox().getNode();
+			network.unlink(source, output.toString(), target, input.toString());
+		}
+	}
+
+
+	// ========== Node Boxes and Ports ==========
 
 	/**
 	* @return all the node boxes
@@ -82,6 +106,14 @@ public class NodalEditorModel {
 		Optional<Port> opt = boxes.stream()
 								.flatMap(box -> box.getPorts().stream())
 								.filter(port -> output.equals(port.getOutput()))
+								.findFirst();
+		return opt.orElse(null);
+	}
+
+	public Port getPort(int x, int y) {
+		Optional<Port> opt = boxes.stream()
+								.flatMap(box -> box.getPorts().stream())
+								.filter(port -> port.hit(x, y))
 								.findFirst();
 		return opt.orElse(null);
 	}
