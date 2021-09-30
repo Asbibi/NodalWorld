@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Optional;
 
 /**
 * This class provides the abstract model for the networks with in the nodal system when defining rules for the game.
@@ -75,6 +76,27 @@ public class Network {
 		input.setSource(output);
 		output.setTarget(input);
 		return true;
+	}
+
+	/**
+	* @param source
+	* @param outputName
+	* @param target
+	* @param inputName
+	*/ 
+	public void unlink(Node source, String outputName, Node target, String inputName) {
+		Output output = source.getOutput(outputName);
+		Input input = target.getInput(inputName);
+		
+		output.removeTarget();
+		input.removeSource();
+
+		Optional<Edge> optEdge = mapToEdges.get(source).stream()
+									.filter(edge -> edge.getTarget().equals(target))
+									.findFirst();
+		if(optEdge.isPresent()) {
+			mapToEdges.get(source).remove(optEdge.get());
+		}
 	}
 
 	/**

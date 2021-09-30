@@ -48,7 +48,11 @@ public class NodalEditorUI {
 						Input input = portHit.getInput();
 						if(input.hasSource()) {
 							Output output = input.getSource();
-							// TODO
+							Port portOut = editor.getPort(output);
+							Node source = portOut.getBox().getNode();
+							Node target = portHit.getBox().getNode();
+							editor.getNetwork().unlink(source, output.toString(), target, input.toString());
+							editor.setCurrentPort(portOut);
 						} else {
 							editor.setCurrentPort(portHit);
 						}
@@ -56,7 +60,11 @@ public class NodalEditorUI {
 						Output output = portHit.getOutput();
 						if(output.hasTarget()) {
 							Input input = output.getTarget();
-							// TODO
+							Port portIn = editor.getPort(input);
+							Node source = portHit.getBox().getNode();
+							Node target = portIn.getBox().getNode();
+							editor.getNetwork().unlink(source, output.toString(), target, input.toString());
+							editor.setCurrentPort(portIn);
 						} else {
 							editor.setCurrentPort(portHit);
 						}

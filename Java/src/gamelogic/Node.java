@@ -14,6 +14,9 @@ import java.util.Collection;
 */ 
 public abstract class Node {
 
+	private static int idCounter = 0;
+
+	private int id;
 	protected String name;
 	protected Map<String, Input> inputs;
 	protected Map<String, Output> outputs;
@@ -22,9 +25,20 @@ public abstract class Node {
 	*
 	*/ 
 	public Node(String name) {
+		id = idCounter;
+		idCounter++;
 		this.name = name;
 		inputs = new HashMap<String, Input>();
 		outputs = new HashMap<String, Output>();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(!(o instanceof Node)) return false;
+
+		Node node = (Node) o;
+		return (id == node.id);
 	}
 
 	/**

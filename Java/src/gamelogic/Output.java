@@ -36,7 +36,7 @@ public class Output {
 	@Override
 	public boolean equals(Object o) {
 		if(o == null) return false;
-		if(!(o instanceof Input)) return false;
+		if(!(o instanceof Output)) return false;
 
 		Output output = (Output) o;
 		return (this.id == output.id);
@@ -79,6 +79,10 @@ public class Output {
 
 	public void setTarget(Input target) {
 		this.target = target;
+	}
+
+	public void removeTarget() {
+		this.target = null;
 	}
 
 	public boolean hasTarget() {
