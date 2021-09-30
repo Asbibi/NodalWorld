@@ -12,18 +12,18 @@ public class TestGameInterface {
 	static GameManager gameManager;
 	static GameFrame gameFrame;
 	
-	static int W = 10;	//20;
-	static int H = 10;	//15;	
+	static int W = 40;
+	static int H = 40;	
 	
 	
 
 	public static void main(String[] args) {
 		gameManager = new GameManager(new TestLayerInitializer(W,H));
 		
-		/*TerrainLayer waterLayer = new TerrainLayer(W,H);
+		TerrainLayer waterLayer = new TerrainLayer(W,H);
 		for (int i = 0; i< W; i++)
 			waterLayer.setSurfaceAt(new Vec2D(i,0), gameManager.getSurface(1));
-		gameManager.pushTerrain(waterLayer);*/
+		gameManager.pushTerrain(waterLayer);
 		
 		Species birch = gameManager.getSpecies(3);
 		Species human = gameManager.getSpecies(0);

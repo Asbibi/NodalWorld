@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 
 import gameinterface.components.TerrainStackVisualizer;
 import gamelogic.TerrainLayer;
@@ -18,7 +19,7 @@ public class TerrainVisualizerPanel extends JPanel {
 	private JButton focusUp;
 	private JButton focusDown;
 	private JLabel currentFocusLabel;
-	private JButton focusColor;
+	private JToggleButton focusColor;
 	
 
 	TerrainVisualizerPanel(List<TerrainLayer> stack) {
@@ -36,7 +37,7 @@ public class TerrainVisualizerPanel extends JPanel {
 		focusDown = new JButton(downIcon);
 		currentFocusLabel = new JLabel();
 		updateLayerLabelText();
-		focusColor = new JButton(eyeIcon);
+		focusColor = new JToggleButton(eyeIcon);
 		focusUp.setPreferredSize(buttonDimension);
 		focusDown.setPreferredSize(buttonDimension);
 		focusColor.setPreferredSize(buttonDimension);

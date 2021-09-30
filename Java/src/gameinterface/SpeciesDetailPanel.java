@@ -1,5 +1,7 @@
 package gameinterface;
 
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 import gamelogic.Element;
@@ -40,14 +42,17 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 	
 	@Override
 	public void applyModificationsToElement(Element e) {
-		super.applyModificationsToElement(e);
 		Species species = (Species)e;
 		if (species == null)
 			return;
+		
 
-		String triggerTime = triggerTimeField.getFieldString();
-		if (triggerTime == null || triggerTime.isBlank())
-			return;
-		species.setTriggerTime(Integer.parseInt(triggerTime));
+		try {
+			species.setTriggerTime(Integer.parseInt(triggerTimeField.getFieldString()));
+			super.applyModificationsToElement(e);
+			triggerTimeField.setFieldColor(ControlPanel.getStandardFieldColor());
+		} catch (Exception except) {
+			triggerTimeField.setFieldColor(ControlPanel.getWrongFieldColor());		
+		}
 	}
 }

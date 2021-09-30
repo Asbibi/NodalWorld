@@ -28,7 +28,8 @@ public class WorldPanel extends JPanel{
 	private Color speciesCountBGColor = new Color(0,0,0,150);
 	private Color gridColor = new Color(162,255,25);
 	private int gridThickness = 1;
-	private boolean displayGridDetail = true;
+	private boolean displayGridDetail = false;
+	private boolean useColorOverImage = false;
 
 	// ==== Class fields ====
 	private Dimension gridDimension;
@@ -36,21 +37,24 @@ public class WorldPanel extends JPanel{
 	private List<Species> speciesDisplayed;
 	private TerrainStack terrain;
 	private int speciesSlotNumber_sqrt;
+	private int usedTileSize;
 	private int minimalTileSize;
 	
 
 	
 	public WorldPanel(GameManager gameManager) {
-		setBackground(Color.blue);
+		//setBackground(Color.blue);
 		tiles = new ArrayList<TileComponent>();
 		speciesDisplayed = gameManager.getSpeciesArray();
 		terrain = gameManager.getTerrainStack();
 		gridDimension = new Dimension(-1,-1);
 		speciesSlotNumber_sqrt = 0;
-		ResetMinimalTileSize();
+		
+		computeMinimalTileSize();
+		resetTileSizeToMinimal();
 	}
 	
-	public void update(int frame) {
+	public void updateMap(int frame) {
 		updateTerrain();
 		for (int i =0; i < speciesDisplayed.size(); i++) {
 			if(speciesDisplayed.get(i).trigger(frame))
@@ -62,39 +66,52 @@ public class WorldPanel extends JPanel{
 	
 	
 	// ==== Size Related ====
-	public void ResetMinimalTileSize() {
-		minimalTileSize = 32;
+	public void resetTileSizeToMinimal() {
+		usedTileSize = minimalTileSize;
+		revalidate();
 	}
-	public void increaseMinimalTileSize() {
-		minimalTileSize += 16;
+	public void increaseTileSize() {
+		usedTileSize *= 1.5;
+		if(usedTileSize > 600)
+			usedTileSize = 600;
+		revalidate();
 	}
-	public void decreaseMinimalTileSize() {
-		minimalTileSize += 16;
+	public void decreaseTileSize() {
+		usedTileSize *= 0.75;
+		if (usedTileSize < minimalTileSize)
+			usedTileSize = minimalTileSize;
+		revalidate();
 	}
-	@Override
-	public void setSize(Dimension d) {
-		super.setSize(d);
-		setPreferredSize(d);
-	}
-	@Override
-	public void setPreferredSize(Dimension d) {
-		//System.out.print("Set preferred size on world panel" + d);
+	public void computeMinimalTileSize() {
+		if (gridDimension == null || gridDimension.width == 0 || gridDimension.height == 0) {
+			minimalTileSize = 32;
+			return;
+		}
+		
+		Container parent = getParent();
+		if (parent == null)
+			return;
+		System.out.print("computed ");
+		Dimension d = parent.getParent().getSize();	// access the JScrollPane
+		System.out.print(d);
 		int tileSizeX = d.width / gridDimension.width;
 		int tileSizeY = d.height / gridDimension.height;
-		int realTileSize = Math.min(tileSizeX, tileSizeY);
-		realTileSize = Math.max(realTileSize, minimalTileSize);
-		d.width = realTileSize * gridDimension.width;
-		d.height = realTileSize * gridDimension.height;
-		//System.out.println("\t Became :" + d);
-		super.setPreferredSize(d);
+		minimalTileSize = Math.min(tileSizeX, tileSizeY);
+		System.out.println(minimalTileSize);
 	}
-	/**
-	 * Set automatically a preferred size to fit the tile size.
-	 * Still some work to do on this part.
-	*/
-	public void setMinimalPreferredSize() {
-		setPreferredSize(new Dimension(0,0));
+	@Override
+	public Dimension getMinimumSize() {
+		return getPreferredSize();
+	}	
+	@Override
+	public Dimension getMaximumSize() {
+		return getPreferredSize();
 	}
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(usedTileSize * gridDimension.width, usedTileSize * gridDimension.height);
+	}
+	
 	
 	
 	
@@ -145,7 +162,9 @@ public class WorldPanel extends JPanel{
 		
 		gridDimension = newDimensions;
 		updateAllSpeciesDisplay();
-		setMinimalPreferredSize();	// changing size
+		computeMinimalTileSize();
+		System.out.println(getPreferredSize());
+        setPreferredSize(getPreferredSize());
 	}
 	
 	/**
@@ -237,6 +256,11 @@ public class WorldPanel extends JPanel{
 		displayGridDetail = !displayGridDetail;
 		repaint();
 	}
+
+	public void flipUseColorOverImage() {
+		useColorOverImage = !useColorOverImage;
+		repaint();
+	}
 	
 	
 
@@ -280,7 +304,11 @@ public class WorldPanel extends JPanel{
 	*/
 	public int getGridThickness() { return gridThickness; }
 	/**
-	* @return indicates if the grid should be displayed
+	* @return indicates if the grid must be displayed
 	*/
 	public boolean getDisplayGridDetail() { return displayGridDetail; }
+	/**
+	* @return indicates if the tiles should be represented by their color or images
+	*/
+	public boolean getUseColorOverImage() { return useColorOverImage; }
 }

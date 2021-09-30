@@ -151,11 +151,26 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	*/ 
 	public void addNewElement() {
 		String name = addTextField.getText();
-		if (name.isEmpty())
+		if (name.isEmpty()) {
+			addTextField.setBackground(ControlPanel.getWrongFieldColor());
 			return;
-		addElementArray(createElement(name));
+		}
+		
+		// check if the name has already be given
+		for (Element e : elements) {
+			if(e.toString().equals(name) ) {
+				addTextField.setBackground(ControlPanel.getWrongFieldColor());
+				return;
+			}
+		}
+		
+		T newElement = createElement(name);
+		if (newElement == null)
+			return;
+		addElementArray(newElement);
 		scrollList.setSelectedIndex(elements.size() -1);
 		addTextField.setText("");
+		addTextField.setBackground(ControlPanel.getStandardFieldColor());
 	}
 	/**
 	* Method to create the new element, should be override on class instanciation to use the T constructor

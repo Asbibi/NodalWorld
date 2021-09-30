@@ -18,12 +18,16 @@ import gamelogic.Surface;
 * @see ElementManagerToolBar
 */ 
 public class ControlPanel extends JPanel {
-	JToolBar terrainToolBar;
-	ElementManagerToolBar<Surface> surfaceToolBar;
-	ElementManagerToolBar<Species> speciesToolBar;
+	static private Color standardFieldColor = Color.white;
+	static private Color wrongFieldColor = Color.red;
+	
+	private JPanel nodeEditorPanel;
+	
+	private JToolBar terrainToolBar;
+	private ElementManagerToolBar<Surface> surfaceToolBar;
+	private ElementManagerToolBar<Species> speciesToolBar;
 
 	public ControlPanel(GameManager gameManager) {
-		setBackground(Color.red);
 		setUpUI(gameManager);
 	}
 	
@@ -54,6 +58,36 @@ public class ControlPanel extends JPanel {
 		toolBarPanel.add(speciesToolBar);
 		JScrollPane toolScrollPanel = new JScrollPane(toolBarPanel);
 		toolScrollPanel.setPreferredSize(new Dimension(160,1000));
-		add(toolScrollPanel, BorderLayout.WEST);
+
+
+		
+		nodeEditorPanel = new JPanel();
+		nodeEditorPanel.setBackground(Color.red);
+		
+		
+		
+		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, toolScrollPanel, nodeEditorPanel);
+		add(splitPanel);
+		splitPanel.setDividerLocation(toolScrollPanel.getPreferredSize().width);
+		//add(toolScrollPanel, BorderLayout.WEST);
+	}
+
+	
+	
+	
+	public static Color getStandardFieldColor() {
+		return standardFieldColor;
+	}
+
+	public static Color getWrongFieldColor() {
+		return wrongFieldColor;
+	}
+
+	public static void setStandardFieldColor(Color standardFieldColor) {
+		ControlPanel.standardFieldColor = standardFieldColor;
+	}
+
+	public static void setWrongFieldColor(Color wrongFieldColor) {
+		ControlPanel.wrongFieldColor = wrongFieldColor;
 	}
 }

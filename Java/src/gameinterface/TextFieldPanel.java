@@ -1,6 +1,8 @@
 package gameinterface;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 public class TextFieldPanel extends JPanel {
@@ -13,9 +15,11 @@ public class TextFieldPanel extends JPanel {
 		add(itemLabel, BorderLayout.WEST);
 		textField = new JTextField(5);
 		add(textField, BorderLayout.CENTER);
-		//System.out.println("lab" + itemLabel.getPreferredSize());
 	}
 	
 	public String getFieldString() { return textField.getText(); }
-	public void setFieldString(String text) { textField.setText(text); }
+	public void setFieldString(String text) { textField.setText(text); setFieldColor(ControlPanel.getStandardFieldColor()); }
+	
+	public void addactionListener(ActionListener action) { textField.addActionListener(action); }
+	public void setFieldColor(Color color) { textField.setBackground(color); }
 }

@@ -18,7 +18,7 @@ public class TestGameInterfaceLogicLink {
 	public static void Update() {
 		int frame = test.getGame().evolveGameState();
 		System.out.println(test.getGame());
-		gameFrame.updateInterface(frame);
+		gameFrame.updateWorld(frame);
 	}
 	
 	public static void main(String[] args) {

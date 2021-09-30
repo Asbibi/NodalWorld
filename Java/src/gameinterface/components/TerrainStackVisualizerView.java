@@ -35,13 +35,6 @@ public class TerrainStackVisualizerView {
 			else
 				paintOneLayer(g2d, model.getStack().get(i), delta_x, y, delta_x, delta_y, focus);
 		}
-		
-		// frame, for debug ?
-		//g2d.setColor(Color.black);
-		//g2d.drawRect(0,0,model.getWidth(),model.getHeight());
-		//g2d.setColor(Color.blue);
-		//g2d.setStroke(new BasicStroke(2));
-		//g2d.drawRect(0,0,model.getPreferredSize().width, model.getPreferredSize().height);
 	}
 	
 	// layer paint scale

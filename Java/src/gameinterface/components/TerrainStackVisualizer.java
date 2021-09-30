@@ -12,8 +12,8 @@ import gamelogic.TerrainLayer;
 
 public class TerrainStackVisualizer extends JComponent {
 	private TerrainStackVisualizerView view;
-	private List<TerrainLayer> stack = null;
-	private int focusedLayer;
+	private List<TerrainLayer> stack;
+	private int focusedLayer = 0;
 	private boolean onlyFocusedInColor = false;
 	
 	private static Color unfocusedColor  = new Color(192,192,192,192);//Color.lightGray;//
@@ -29,8 +29,7 @@ public class TerrainStackVisualizer extends JComponent {
 	public TerrainStackVisualizer(List<TerrainLayer> stack) {
 		view = new TerrainStackVisualizerView();
 		this.stack = stack;
-		focusedLayer = 3;
-		setPreferredSize(new Dimension(128,128));
+		//setPreferredSize(new Dimension(128,128));
 	}
 	
 	

@@ -1,6 +1,8 @@
 package gameinterface;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 import gamelogic.GameManager;
@@ -11,15 +13,21 @@ import gamelogic.GameManager;
 * @see ControlPanel, WorldPanel
 */ 
 public class GameFrame extends JFrame {
+	static private Color separatorColor = new Color(180,180,180);
+	
 	private	WorldPanel 		worldPanel;
 	private	ControlPanel 	controlPanel;
 	
 	private JButton			pauseButton;
 	private JButton			slowButton;
 	private JButton			speedButton;
-	private JButton			detailButton;
+	private JToggleButton	gridButton;
+	private JToggleButton	detailButton;
+	private JButton			zoomPlusButton;
+	private JButton			zoomMinusButton;
+	private JButton			zoomResetButton;
 	private JButton			restartButton;
-	
+
 	
 	/**
 	* Calls setupUI() and the Control & World panels' constructors methods
@@ -29,7 +37,8 @@ public class GameFrame extends JFrame {
 		worldPanel = new WorldPanel(gameManager);
 		controlPanel = new ControlPanel(gameManager);
 		setupUI();
-		updateInterface(0);
+		updateWorld(0);
+		worldPanel.resetTileSizeToMinimal();
 	}
 	
 	/**
@@ -42,8 +51,12 @@ public class GameFrame extends JFrame {
         
         setupMenuBar();
         
-        setLayout(new BorderLayout());
-		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, controlPanel, new JScrollPane(worldPanel));
+        JPanel worldParentPanel = new JPanel() { @Override public void setSize(Dimension d) { super.setSize(d); worldPanel.computeMinimalTileSize(); }};
+        worldParentPanel.setLayout(new FlowLayout());
+        worldParentPanel.setBorder( BorderFactory.createEmptyBorder(-5, -5, -5, -5) );
+        worldParentPanel.setBackground(Color.darkGray);
+        worldParentPanel.add(worldPanel);
+		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, controlPanel, new JScrollPane(worldParentPanel));
 		add(splitPanel);
 
         pack();
@@ -60,19 +73,61 @@ public class GameFrame extends JFrame {
 		pauseButton = new JButton("Pause");
 		slowButton = new JButton("Slow Down");
 		speedButton = new JButton("Speed Up");
-		detailButton = new JButton("Show Details");
-		detailButton.addActionListener(e -> worldPanel.flipDisplayGridDetail() );
+		
+		Dimension buttonDimension = new Dimension(110,25);
+		ImageIcon gridIcon = new ImageIcon("res/_System_Grid.png");
+		ImageIcon eyeIcon = new ImageIcon("res/_System_Eye.png");
+		ImageIcon zoomPIcon = new ImageIcon("res/_System_ZoomPlus.png");
+		ImageIcon zoomMIcon = new ImageIcon("res/_System_ZoomMinus.png");
+		ImageIcon zoomRIcon = new ImageIcon("res/_System_Zoom.png");
+		gridButton = new JToggleButton("Grid", gridIcon);
+		detailButton = new JToggleButton("Simple", eyeIcon);
+		zoomPlusButton = new JButton("Zoom +",zoomPIcon);
+		zoomMinusButton = new JButton("Zoom -",zoomMIcon);
+		zoomResetButton= new JButton("Reset",zoomRIcon);
+		gridButton.setPreferredSize(buttonDimension);
+		detailButton.setPreferredSize(buttonDimension);
+		zoomPlusButton.setPreferredSize(buttonDimension);
+		zoomMinusButton.setPreferredSize(buttonDimension);
+		zoomResetButton.setPreferredSize(buttonDimension);
+		gridButton.addActionListener(e -> worldPanel.flipDisplayGridDetail() );
+		detailButton.addActionListener(e -> worldPanel.flipUseColorOverImage() );
+		zoomPlusButton.addActionListener(e -> worldPanel.increaseTileSize() );
+		zoomMinusButton.addActionListener(e -> worldPanel.decreaseTileSize() );
+		zoomResetButton.addActionListener(e -> worldPanel.resetTileSizeToMinimal() );
+		
 		restartButton = new JButton("Delete & Restart a world");
+		
 		menuBar.add(pauseButton);
 		menuBar.add(slowButton);
-		menuBar.add(speedButton);
-		menuBar.add(detailButton);
+		menuBar.add(speedButton);		
+		JSeparator separator1 = new JSeparator(SwingConstants.VERTICAL);		
+		separator1.setForeground(separatorColor);
+		menuBar.add(separator1);
+		menuBar.add(gridButton);
+		menuBar.add(detailButton);	
+		menuBar.add(zoomPlusButton);
+		menuBar.add(zoomMinusButton);
+		menuBar.add(zoomResetButton);		
+		JSeparator separator2 = new JSeparator(SwingConstants.VERTICAL);
+		separator2.setForeground(separatorColor);		
+		menuBar.add(separator2);
 		menuBar.add(restartButton);
 	    setJMenuBar(menuBar);
 	}
 	
-	public void updateInterface(int frame) {
-		worldPanel.update(frame);
+	public void updateWorld(int frame) {
+		worldPanel.updateMap(frame);
+	}
+	
+	public void addPauseActionListener(ActionListener action) {
+		pauseButton.addActionListener(action);
+	}
+	public void addSlowDownActionListener(ActionListener action) {
+		slowButton.addActionListener(action);
+	}
+	public void addSpeedUpActionListener(ActionListener action) {
+		speedButton.addActionListener(action);
 	}
 
 	
@@ -81,3 +136,16 @@ public class GameFrame extends JFrame {
 	public WorldPanel gWP_test() { return worldPanel;}
 	public ControlPanel gCTRL_test() { return controlPanel;}
 }
+
+
+/* TODO :
+- terrain layer visualizer height on big terrains
+- confirm dialog boxes when removing
+- improve color dialog box (color wheel ?)
+- find a way to ask to update toolbar if the gamemanager changes
+- debug image component
+------//----
+- restart with presets
+- saving
+- loading as restart
+*/
