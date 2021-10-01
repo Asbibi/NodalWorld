@@ -65,6 +65,15 @@ public class Port {
 	public int getY() { return y; }
 
 	/**
+	* @param dx
+	* @param dy
+	*/ 
+	public void translate(int dx, int dy) {
+		x += dx;
+		y += dy;
+	}
+
+	/**
 	* @return the port size
 	*/ 
 	public int getSize() { return size; }

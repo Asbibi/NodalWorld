@@ -73,13 +73,17 @@ public class NodalEditor extends JComponent {
 
 	public Network getNetwork() { return model.getNetwork(); }
 
-	public boolean link(Port portOut, Port portIn) { return model.link(portOut, portIn); }
+	public void link(Port portOut, Port portIn) { model.link(portOut, portIn); }
 
 	public void unlink(Port port) { model.unlink(port); }
 
 	// Node Boxes
 
 	public Collection<NodeBox> getBoxes() { return model.getBoxes(); }
+
+	public NodeBox getBox(Node node) { return model.getBox(node); }
+
+	public NodeBox getBox(int x, int y) { return model.getBox(x, y); }
 
 	public Port getPort(Input input) { return model.getPort(input); }
 
@@ -93,15 +97,31 @@ public class NodalEditor extends JComponent {
 
 	public boolean isEditingLink() { return model.isEditingLink(); }
 
+	public void setMovingSelection(boolean b) { model.setMovingSelection(b); }
+
+	public boolean isMovingSelection() { return model.isMovingSelection(); }
+
 	public void setCursorPos(int x, int y) { model.setCursorPos(x, y); }
 
 	public int getXCursor() { return model.getXCursor(); }
 
 	public int getYCursor() { return model.getYCursor(); }
 
+	public void setReferencePos(int x, int y) { model.setReferencePos(x, y); }
+
+	public int getXReference() { return model.getXReference(); }
+
+	public int getYReference() { return model.getYReference(); }
+
 	public void setCurrentPort(Port port) { model.setCurrentPort(port); }
 
 	public Port getCurrentPort() { return model.getCurrentPort(); }
+
+	public boolean isSelected(NodeBox box) { return model.isSelected(box); }
+
+	public void clearSelection() { model.clearSelection(); }
+
+	public void addToSelection(NodeBox box) { model.addToSelection(box); }
 
 	// Change Listeners
 

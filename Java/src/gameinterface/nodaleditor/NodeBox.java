@@ -116,6 +116,16 @@ public class NodeBox {
 	public int getY() { return y; }
 
 	/**
+	* @param dx
+	* @param dy
+	*/ 
+	public void translate(int dx, int dy) {
+		x += dx;
+		y += dy;
+		for(Port port : ports) port.translate(dx, dy);
+	}
+
+	/**
 	* @return true if the view has been initialized, otherwise false
 	*/
 	public boolean isValid() { return valid; }

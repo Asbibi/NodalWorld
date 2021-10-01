@@ -63,14 +63,25 @@ public class NodalEditorUI {
 					}
 					editor.setCursorPos(e.getX(), e.getY());
 					editor.setEditingLink(true);
+					return;
+				}
+
+				NodeBox box = editor.getBox(e.getX(), e.getY());
+				if(box != null) {
+					if(!editor.isSelected(box)) {
+						editor.clearSelection();
+						editor.addToSelection(box);
+					}
+					editor.setReferencePos(e.getX(), e.getY());
+					editor.setCursorPos(e.getX(), e.getY());
+					editor.setMovingSelection(true);
+					return;
 				}
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(SwingUtilities.isLeftMouseButton(e)) {
-					// TODO
-				} else if(SwingUtilities.isRightMouseButton(e)) {
+				if(SwingUtilities.isRightMouseButton(e)) {
 					editor.showNodeMenu(e.getX(), e.getY());
 				}
 			}
@@ -90,6 +101,14 @@ public class NodalEditorUI {
 						}
 					}
 					editor.setEditingLink(false);
+
+				} else if(editor.isMovingSelection()) {
+					int dx = editor.getXCursor()-editor.getXReference();
+					int dy = editor.getYCursor()-editor.getYReference();
+					for(NodeBox box : editor.getBoxes()) {
+						if(editor.isSelected(box)) box.translate(dx, dy);
+					}
+					editor.setMovingSelection(false);
 				}
 			}
 		});
@@ -97,9 +116,7 @@ public class NodalEditorUI {
 		editor.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if(editor.isEditingLink()) {
-					editor.setCursorPos(e.getX(), e.getY());
-				}
+				editor.setCursorPos(e.getX(), e.getY());
 			}
 		});
 	}
@@ -128,7 +145,16 @@ public class NodalEditorUI {
 			for(Port p : box.getPorts()) {
 				if(p.hasOutput() && p.getOutput().hasTarget()) {
 					Port q = editor.getPort(p.getOutput().getTarget());
-					g2d.draw(new Line2D.Double(p.getX(), p.getY(), q.getX(), q.getY()));
+
+					boolean translateP = editor.isMovingSelection() && editor.isSelected(box);
+					int dxP = (translateP) ? editor.getXCursor()-editor.getXReference() : 0;
+					int dyP = (translateP) ? editor.getYCursor()-editor.getYReference() : 0;
+
+					boolean translateQ = editor.isMovingSelection() && editor.isSelected(q.getBox());
+					int dxQ = (translateQ) ? editor.getXCursor()-editor.getXReference() : 0;
+					int dyQ = (translateQ) ? editor.getYCursor()-editor.getYReference() : 0;
+
+					g2d.draw(new Line2D.Double(p.getX()+dxP, p.getY()+dyP, q.getX()+dxQ, q.getY()+dyQ));
 				}
 			}
 		}
@@ -144,22 +170,32 @@ public class NodalEditorUI {
 		FontMetrics metrics = g2d.getFontMetrics();
 		int lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
 
+		boolean translate = editor.isMovingSelection() && editor.isSelected(box);
+		int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
+		int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
+
+		RoundRectangle2D rect = new RoundRectangle2D.Double(box.getX()-box.getPadding()+dx, box.getY()+dy, box.getWidth()+2*box.getPadding(), box.getHeight(), 2*box.getPadding(), 2*box.getPadding());
+		if(editor.isSelected(box)) {
+			g2d.setStroke(new BasicStroke(3));
+			g2d.setColor(Color.pink);
+			g2d.draw(rect);
+		}
 		g2d.setColor(Color.lightGray);
-		g2d.fill(new RoundRectangle2D.Double(box.getX()-box.getPadding(), box.getY(), box.getWidth()+2*box.getPadding(), box.getHeight(), 2*box.getPadding(), 2*box.getPadding()));
+		g2d.fill(rect);
 
 		g2d.setColor(Color.black);
 		int titleWidth = metrics.stringWidth(box.getNode().toString());
-		g2d.drawString(box.getNode().toString(), box.getX()+(box.getWidth()-titleWidth)/2, box.getY()+lineHeight);
+		g2d.drawString(box.getNode().toString(), box.getX()+(box.getWidth()-titleWidth)/2+dx, box.getY()+lineHeight+dy);
 
 		for(Port port : box.getPorts()) {
 			g2d.setColor(Color.red);
-			g2d.fill(new Ellipse2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize()));
+			g2d.fill(new Ellipse2D.Double(port.getX()-port.getSize()+dx, port.getY()-port.getSize()+dy, 2*port.getSize(), 2*port.getSize()));
 			g2d.setColor(Color.black);
 			if(port.hasInput()) {
-				g2d.drawString(port.getInput().toString(), box.getX(), port.getY());
+				g2d.drawString(port.getInput().toString(), box.getX()+dx, port.getY()+dy);
 			} else {
 				int wordWidth = metrics.stringWidth(port.getOutput().toString());
-				g2d.drawString(port.getOutput().toString(), box.getX()+box.getWidth()-wordWidth, port.getY());
+				g2d.drawString(port.getOutput().toString(), box.getX()+box.getWidth()-wordWidth+dx, port.getY()+dy);
 			}
 		}
 	}

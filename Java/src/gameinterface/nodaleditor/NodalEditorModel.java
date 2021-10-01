@@ -14,6 +14,8 @@ import java.awt.FontMetrics;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
 * @see NodalEditor
@@ -24,9 +26,10 @@ public class NodalEditorModel {
 	private Network network;
 	private Collection<NodeBox> boxes;
 
-	private boolean editingLink;
-	private int xCursor, yCursor;
+	private boolean editingLink, movingSelection;
+	private int xCursor, yCursor, xRef, yRef;
 	private Port curPort;
+	private Map<NodeBox, Boolean> selected;
 
 	private Collection<ChangeListener> changeListeners;
 
@@ -39,6 +42,8 @@ public class NodalEditorModel {
 		boxes = new LinkedList<NodeBox>();
 
 		editingLink = false;
+		movingSelection = false;
+		selected = new HashMap<NodeBox, Boolean>();
 
 		changeListeners = new LinkedList<ChangeListener>();
 	}
@@ -58,16 +63,21 @@ public class NodalEditorModel {
 	*/ 
 	public void addNode(Node node, int x, int y) {
 		network.addNode(node);
-		boxes.add(new NodeBox(node, x, y));
+		NodeBox box = new NodeBox(node, x, y);
+		boxes.add(box);
+		selected.put(box, false);
 		triggerChangeListeners();
 	}
 
-	public boolean link(Port portOut, Port portIn) {
+	public void link(Port portOut, Port portIn) {
 		Node source = portOut.getBox().getNode();
 		Output output = portOut.getOutput();
 		Node target = portIn.getBox().getNode();
 		Input input = portIn.getInput();
-		return network.link(source, output.toString(), target, input.toString());
+		boolean res = network.link(source, output.toString(), target, input.toString());
+		if(res) {
+			triggerChangeListeners();
+		}
 	}
 
 	public void unlink(Port port) {
@@ -93,6 +103,20 @@ public class NodalEditorModel {
 	* @return all the node boxes
 	*/ 
 	public Collection<NodeBox> getBoxes() { return boxes; }
+
+	public NodeBox getBox(Node node) {
+		Optional<NodeBox> opt = boxes.stream()
+									.filter(box -> box.getNode().equals(node))
+									.findFirst();
+		return opt.orElse(null);
+	}
+
+	public NodeBox getBox(int x, int y) {
+		Optional<NodeBox> opt = boxes.stream()
+									.filter(box -> box.hit(x, y))
+									.findFirst();
+		return opt.orElse(null);
+	}
 
 	public Port getPort(Input input) {
 		Optional<Port> opt = boxes.stream()
@@ -131,6 +155,15 @@ public class NodalEditorModel {
 
 	public boolean isEditingLink() { return editingLink; }
 
+	public void setMovingSelection(boolean b) {
+		if(movingSelection != b) {
+			movingSelection = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isMovingSelection() { return movingSelection; }
+
 	public void setCursorPos(int x, int y) {
 		xCursor = x;
 		yCursor = y;
@@ -146,7 +179,31 @@ public class NodalEditorModel {
 		triggerChangeListeners();
 	}
 
+	public void setReferencePos(int x, int y) {
+		xRef = x;
+		yRef = y;
+		triggerChangeListeners();
+	}
+
+	public int getXReference() { return xRef; }
+
+	public int getYReference() { return yRef; }
+
 	public Port getCurrentPort() { return curPort; }
+
+	public boolean isSelected(NodeBox box) { return selected.get(box); }
+
+	public void clearSelection() {
+		selected.replaceAll((k, v) -> false);
+		triggerChangeListeners();
+	}
+
+	public void addToSelection(NodeBox box) {
+		if(!selected.get(box)) {
+			selected.replace(box, true);
+			triggerChangeListeners();
+		}
+	}
 
 
 
