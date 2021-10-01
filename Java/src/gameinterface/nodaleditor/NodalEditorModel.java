@@ -26,7 +26,7 @@ public class NodalEditorModel {
 	private Network network;
 	private Collection<NodeBox> boxes;
 
-	private boolean editingLink, movingSelection;
+	private boolean editingLink, movingSelection, selectingArea;
 	private int xCursor, yCursor, xRef, yRef;
 	private Port curPort;
 	private Map<NodeBox, Boolean> selected;
@@ -43,6 +43,7 @@ public class NodalEditorModel {
 
 		editingLink = false;
 		movingSelection = false;
+		selectingArea = false;
 		selected = new HashMap<NodeBox, Boolean>();
 
 		changeListeners = new LinkedList<ChangeListener>();
@@ -163,6 +164,15 @@ public class NodalEditorModel {
 	}
 
 	public boolean isMovingSelection() { return movingSelection; }
+
+	public void setSelectingArea(boolean b) {
+		if(selectingArea != b) {
+			selectingArea = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isSelectingArea() { return selectingArea; }
 
 	public void setCursorPos(int x, int y) {
 		xCursor = x;

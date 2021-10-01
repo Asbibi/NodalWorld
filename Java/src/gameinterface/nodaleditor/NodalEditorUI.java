@@ -17,6 +17,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Color;
 import java.awt.BasicStroke;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -77,6 +78,11 @@ public class NodalEditorUI {
 					editor.setMovingSelection(true);
 					return;
 				}
+
+				editor.clearSelection();
+				editor.setReferencePos(e.getX(), e.getY());
+				editor.setCursorPos(e.getX(), e.getY());
+				editor.setSelectingArea(true);
 			}
 
 			@Override
@@ -109,6 +115,20 @@ public class NodalEditorUI {
 						if(editor.isSelected(box)) box.translate(dx, dy);
 					}
 					editor.setMovingSelection(false);
+
+				} else if(editor.isSelectingArea()) {
+					int x = Math.min(editor.getXCursor(), editor.getXReference());
+					int y = Math.min(editor.getYCursor(), editor.getYReference());
+					int w = Math.abs(editor.getXCursor()-editor.getXReference());
+					int h = Math.abs(editor.getYCursor()-editor.getYReference());
+					Rectangle2D selectRect = new Rectangle2D.Double(x, y, w, h);
+					for(NodeBox box : editor.getBoxes()) {
+						Rectangle2D boxRect = new Rectangle2D.Double(box.getX()-box.getPadding(), box.getY(), box.getWidth()+2*box.getPadding(), box.getHeight());
+						if(selectRect.intersects(boxRect)) {
+							editor.addToSelection(box);
+						}
+					}
+					editor.setSelectingArea(false);
 				}
 			}
 		});
@@ -163,6 +183,16 @@ public class NodalEditorUI {
 		if(editor.isEditingLink()) {
 			g2d.setColor(Color.red);
 			g2d.draw(new Line2D.Double(editor.getCurrentPort().getX(), editor.getCurrentPort().getY(), editor.getXCursor(), editor.getYCursor()));
+		}
+
+		if(editor.isSelectingArea()) {
+			int x = Math.min(editor.getXCursor(), editor.getXReference());
+			int y = Math.min(editor.getYCursor(), editor.getYReference());
+			int w = Math.abs(editor.getXCursor()-editor.getXReference());
+			int h = Math.abs(editor.getYCursor()-editor.getYReference());
+			Rectangle2D selectRect = new Rectangle2D.Double(x, y, w, h);
+			g2d.setColor(new Color(255, 255, 0, 50));
+			g2d.fill(selectRect);
 		}
 	}
 

@@ -101,6 +101,10 @@ public class NodalEditor extends JComponent {
 
 	public boolean isMovingSelection() { return model.isMovingSelection(); }
 
+	public void setSelectingArea(boolean b) { model.setSelectingArea(b); }
+
+	public boolean isSelectingArea() { return model.isSelectingArea(); }
+
 	public void setCursorPos(int x, int y) { model.setCursorPos(x, y); }
 
 	public int getXCursor() { return model.getXCursor(); }
