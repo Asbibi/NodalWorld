@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import gameinterface.GameFrame;
+import gameinterface.components.ColorWheelComponent;
 import gamelogic.TerrainLayer;
 import gamelogic.rules.GenerationRule;
 
@@ -44,11 +45,10 @@ public class TestGameInterfaceLogicLink {
 		gameFrame.setVisible(true);
 		
 		JFrame debugFrame = new JFrame("Debug");
-		//debugFrame.setPreferredSize(new Dimension(200, 100));
 		debugFrame.setLayout(new BorderLayout());
 		JButton button = new JButton("Debug");
 		button.addActionListener( e -> Update());
-		debugFrame.add(button, BorderLayout.CENTER);
+		debugFrame.add(button, BorderLayout.NORTH);
 		debugFrame.pack();
 		debugFrame.setVisible(true);
 		debugFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

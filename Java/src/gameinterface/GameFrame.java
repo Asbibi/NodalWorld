@@ -142,7 +142,6 @@ public class GameFrame extends JFrame {
 
 /* TODO :
 - confirm dialog boxes when removing
-- improve color dialog box (color wheel ?)
 - find a way to ask to update toolbar if the gamemanager changes
 - debug image component
 ------//----

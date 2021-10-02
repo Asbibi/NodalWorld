@@ -5,7 +5,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import gameinterface.ColorDialogBox;
 
 public class ColorButton extends JButton{
 
@@ -26,8 +29,11 @@ public class ColorButton extends JButton{
 	}
 	
 	private void askColor() {
-		String m = JOptionPane.showInputDialog("Input a hex color", "0x");		
-        color = Color.decode(m);
+		ColorDialogBox dialogBox = new ColorDialogBox((JFrame)this.getRootPane().getParent(), color);
+		if (!dialogBox.getConfirm())
+			return;
+		
+        color = dialogBox.getColor();
         repaint();
 	}
 
