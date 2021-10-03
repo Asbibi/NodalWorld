@@ -96,8 +96,8 @@ public abstract class Node {
 	/**
 	* @return true if all inputs are connected to a source, otherwise false
 	*/ 
-	public boolean allInputsConnected() {
-		return inputs.values().stream().allMatch(input -> input.hasSource());
+	public boolean allInputsValid() {
+		return inputs.values().stream().allMatch(input -> (input.hasSource() || input.isManual()));
 	}
 
 	/**

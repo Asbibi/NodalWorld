@@ -161,7 +161,7 @@ public class Network {
 	}
 
 	private boolean checkConnections() {
-		return nodes.stream().allMatch(node -> node.allInputsConnected());
+		return nodes.stream().allMatch(node -> node.allInputsValid());
 	}
 
 }

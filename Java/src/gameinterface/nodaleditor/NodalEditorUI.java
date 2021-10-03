@@ -70,8 +70,7 @@ public class NodalEditorUI {
 				NodeBox box = editor.getBox(e.getX(), e.getY());
 				if(box != null) {
 					if(!editor.isSelected(box)) {
-						editor.clearSelection();
-						editor.addToSelection(box);
+						editor.soloSelection(box);
 					}
 					editor.setReferencePos(e.getX(), e.getY());
 					editor.setCursorPos(e.getX(), e.getY());

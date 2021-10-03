@@ -6,6 +6,9 @@ import gamelogic.Node;
 import gamelogic.Input;
 import gamelogic.Output;
 
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -25,11 +28,13 @@ public class NodalEditorModel {
 	private GameManager game;
 	private Network network;
 	private Collection<NodeBox> boxes;
+	private Map<Node, NodeInfoPanel> infoPanels;
 
 	private boolean editingLink, movingSelection, selectingArea;
 	private int xCursor, yCursor, xRef, yRef;
 	private Port curPort;
 	private Map<NodeBox, Boolean> selected;
+	private JPanel curInfoPanel, defaultInfoPanel;
 
 	private Collection<ChangeListener> changeListeners;
 
@@ -40,11 +45,15 @@ public class NodalEditorModel {
 		this.game = game;
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
+		infoPanels = new HashMap<Node, NodeInfoPanel>();
 
 		editingLink = false;
 		movingSelection = false;
 		selectingArea = false;
 		selected = new HashMap<NodeBox, Boolean>();
+		curInfoPanel = null;
+		defaultInfoPanel = new JPanel();
+		defaultInfoPanel.add(new JLabel("Info"));
 
 		changeListeners = new LinkedList<ChangeListener>();
 	}
@@ -64,9 +73,17 @@ public class NodalEditorModel {
 	*/ 
 	public void addNode(Node node, int x, int y) {
 		network.addNode(node);
+
 		NodeBox box = new NodeBox(node, x, y);
 		boxes.add(box);
-		selected.put(box, false);
+
+		NodeInfoPanel infoPanel = new NodeInfoPanel(node);
+		infoPanels.put(node, infoPanel);
+
+		clearSelection();
+		selected.put(box, true);
+		curInfoPanel = infoPanel;
+
 		triggerChangeListeners();
 	}
 
@@ -144,7 +161,6 @@ public class NodalEditorModel {
 	}
 
 
-
 	// ========== Interaction ==========
 
 	public void setEditingLink(boolean b) {
@@ -215,6 +231,16 @@ public class NodalEditorModel {
 		}
 	}
 
+	public void soloSelection(NodeBox box) {
+		selected.replaceAll((k, v) -> false);
+		selected.replace(box, true);
+		curInfoPanel = infoPanels.get(box.getNode());
+		triggerChangeListeners();
+	}
+
+	public JPanel getCurrentInfoPanel() {
+		return ((curInfoPanel==null) ? defaultInfoPanel : curInfoPanel);
+	}
 
 
 	// ========== Change Listeners ==========

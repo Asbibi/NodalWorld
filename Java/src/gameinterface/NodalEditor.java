@@ -9,6 +9,7 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -56,6 +57,7 @@ public class NodalEditor extends JComponent {
 		ui = new NodalEditorUI();
 		ui.installUI(this);
 	}
+
 
 	/**
 	* @param g the graphic context
@@ -126,6 +128,10 @@ public class NodalEditor extends JComponent {
 	public void clearSelection() { model.clearSelection(); }
 
 	public void addToSelection(NodeBox box) { model.addToSelection(box); }
+
+	public void soloSelection(NodeBox box) { model.soloSelection(box); }
+
+	public JPanel getCurrentInfoPanel() { return model.getCurrentInfoPanel(); }
 
 	// Change Listeners
 

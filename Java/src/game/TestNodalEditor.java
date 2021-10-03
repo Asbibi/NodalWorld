@@ -6,6 +6,8 @@ import gameinterface.NodalEditor;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 import java.awt.BorderLayout;
 
@@ -30,7 +32,19 @@ public class TestNodalEditor extends JFrame {
 	private JPanel buildContentPane() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		panel.add(new NodalEditor(game, game.getGenNet()), BorderLayout.CENTER);
+
+		NodalEditor editor = new NodalEditor(game, game.getGenNet());
+		panel.add(editor, BorderLayout.CENTER);
+
+		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
+		editor.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				infoScroll.setViewportView(editor.getCurrentInfoPanel());
+			}
+		});
+		panel.add(infoScroll, BorderLayout.SOUTH);
+
 		return panel;
 	}
 

@@ -60,7 +60,7 @@ public class NodeMenu extends JPopupMenu {
 	private JMenu buildMenuRandom() {
 		JMenu menuRandom = new JMenu("Random");
 		menuRandom.add(buildNodeItem(() -> new RandDoubleNode()));
-		// TODO : rand int within bounds
+		menuRandom.add(buildNodeItem(() -> new RandIntNode()));
 		return menuRandom;	
 	}
 
