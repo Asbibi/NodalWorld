@@ -5,6 +5,9 @@ import gamelogic.Network;
 import gamelogic.Node;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.Rule;
+import gamelogic.Species;
+import gamelogic.rules.GenerationRule;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -20,6 +23,8 @@ import java.util.Optional;
 import java.util.Map;
 import java.util.HashMap;
 
+import java.lang.Class;
+
 /**
 * @see NodalEditor
 */ 
@@ -29,12 +34,16 @@ public class NodalEditorModel {
 	private Network network;
 	private Collection<NodeBox> boxes;
 	private Map<Node, NodeInfoPanel> infoPanels;
+	private boolean usingSpecies;
+	private Class<? extends Rule> ruleClass;
+	private int speciesBoxWidth, speciesBoxHeight;
 
-	private boolean editingLink, movingSelection, selectingArea;
+	private boolean editingLink, movingSelection, selectingArea, linkingSpecies;
 	private int xCursor, yCursor, xRef, yRef;
 	private Port curPort;
 	private Map<NodeBox, Boolean> selected;
 	private JPanel curInfoPanel, defaultInfoPanel;
+	private int curSpeciesRow;
 
 	private Collection<ChangeListener> changeListeners;
 
@@ -46,17 +55,28 @@ public class NodalEditorModel {
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
 		infoPanels = new HashMap<Node, NodeInfoPanel>();
+		usingSpecies = true; // FIXME
+		ruleClass = GenerationRule.class; // FIXME
+		speciesBoxWidth = 100;
+		speciesBoxHeight = 50;
 
 		editingLink = false;
 		movingSelection = false;
 		selectingArea = false;
+		linkingSpecies = false;
 		selected = new HashMap<NodeBox, Boolean>();
 		curInfoPanel = null;
 		defaultInfoPanel = new JPanel();
 		defaultInfoPanel.add(new JLabel("Info"));
+		curSpeciesRow = -1;
 
 		changeListeners = new LinkedList<ChangeListener>();
 	}
+
+
+	// ========== Game ==========
+
+	public GameManager getGameManager() { return game; }
 
 
 	// ========== Network ==========
@@ -161,6 +181,17 @@ public class NodalEditorModel {
 	}
 
 
+	// ========== Species and Rules ==========
+
+	public boolean isUsingSpecies() { return usingSpecies; }
+
+	public Class<? extends Rule> getRuleClass() { return ruleClass; }
+
+	public int getSpeciesBoxWidth() { return speciesBoxWidth; }
+
+	public int getSpeciesBoxHeight() { return speciesBoxHeight; }
+
+
 	// ========== Interaction ==========
 
 	public void setEditingLink(boolean b) {
@@ -189,6 +220,15 @@ public class NodalEditorModel {
 	}
 
 	public boolean isSelectingArea() { return selectingArea; }
+
+	public void setLinkingSpecies(boolean b) {
+		if(linkingSpecies != b) {
+			linkingSpecies = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isLinkingSpecies() { return linkingSpecies; }
 
 	public void setCursorPos(int x, int y) {
 		xCursor = x;
@@ -241,6 +281,15 @@ public class NodalEditorModel {
 	public JPanel getCurrentInfoPanel() {
 		return ((curInfoPanel==null) ? defaultInfoPanel : curInfoPanel);
 	}
+
+	public void setCurrentSpeciesRow(int row) {
+		curSpeciesRow = row;
+		triggerChangeListeners();
+	}
+
+	public int getCurrentSpeciesRow() { return curSpeciesRow; }
+
+	public Species getCurrentSpecies() { return game.getSpecies(curSpeciesRow); }
 
 
 	// ========== Change Listeners ==========

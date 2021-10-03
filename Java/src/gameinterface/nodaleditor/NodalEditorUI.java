@@ -1,11 +1,7 @@
 package gameinterface.nodaleditor;
 
 import gameinterface.NodalEditor;
-import gamelogic.Network;
-import gamelogic.Node;
-import gamelogic.Input;
-import gamelogic.Output;
-import gamelogic.nodes.*;
+import gamelogic.*;
 
 import javax.swing.SwingUtilities;
 
@@ -78,6 +74,14 @@ public class NodalEditorUI {
 					return;
 				}
 
+				int spRow = editor.getSpeciesRow(e.getX(), e.getY());
+				if(spRow >= 0) {
+					editor.setCurrentSpeciesRow(spRow);
+					editor.setCursorPos(e.getX(), e.getY());
+					editor.setLinkingSpecies(true);
+					return;
+				}
+
 				editor.clearSelection();
 				editor.setReferencePos(e.getX(), e.getY());
 				editor.setCursorPos(e.getX(), e.getY());
@@ -95,7 +99,6 @@ public class NodalEditorUI {
 			public void mouseReleased(MouseEvent e) {
 				if(editor.isEditingLink()) {
 					Port portHit = editor.getPort(e.getX(), e.getY());
-
 					if(portHit != null) {
 						editor.unlink(portHit);
 
@@ -128,6 +131,12 @@ public class NodalEditorUI {
 						}
 					}
 					editor.setSelectingArea(false);
+				} else if(editor.isLinkingSpecies()) {
+					NodeBox box = editor.getBox(e.getX(), e.getY());
+					if(box != null && box.getNode() instanceof TerminalNode) {
+						editor.getGameManager().connectRuleToSpecies(((TerminalNode) box.getNode()).getRule(), editor.getCurrentSpecies());
+					}
+					editor.setLinkingSpecies(false);
 				}
 			}
 		});
@@ -150,6 +159,7 @@ public class NodalEditorUI {
 	public void paint(Graphics2D g2d, NodalEditor editor) {
 		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHints(rh);
+		g2d.setStroke(new BasicStroke(3));
 
 		for(NodeBox box : editor.getBoxes()) {
 			if(!box.isValid()) {
@@ -158,7 +168,36 @@ public class NodalEditorUI {
 			paintNode(g2d, editor, box);
 		}
 
-		g2d.setStroke(new BasicStroke(3));
+		if(editor.isUsingSpecies()) {
+			GameManager game = editor.getGameManager();
+			int row = 0;
+			for(Species sp : game.getSpeciesArray()) {
+				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSpeciesBoxWidth(), row*editor.getSpeciesBoxHeight(), editor.getSpeciesBoxWidth(), editor.getSpeciesBoxHeight());
+				g2d.setColor(Color.lightGray);
+				g2d.fill(rect);
+				g2d.setColor(Color.gray);
+				g2d.draw(rect);
+				g2d.setColor(Color.black);
+				g2d.drawString(sp.toString(), editor.getWidth()-editor.getSpeciesBoxWidth()+10, editor.getSpeciesBoxHeight()*row+10);
+
+				if(game.getRule(editor.getRuleClass(), sp) != null) {
+					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
+					boolean translate = editor.isMovingSelection() && editor.isSelected(box);
+					int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
+					int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
+					g2d.setColor(Color.green);
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSpeciesBoxWidth(), editor.getSpeciesBoxHeight()*row+10, box.getX()+dx, box.getY()+dy));
+				}
+
+				row++;
+			}
+
+			if(editor.isLinkingSpecies()) {
+				g2d.setColor(Color.red);
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSpeciesBoxWidth(), editor.getSpeciesBoxHeight()*editor.getCurrentSpeciesRow()+10, editor.getXCursor(), editor.getYCursor()));
+			}
+		}
+
 		g2d.setColor(Color.magenta);
 		for(NodeBox box : editor.getBoxes()) {
 			for(Port p : box.getPorts()) {

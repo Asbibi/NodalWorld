@@ -1,6 +1,7 @@
 package game;
 
 import gamelogic.GameManager;
+import gamelogic.Species;
 import gameinterface.NodalEditor;
 
 import javax.swing.JFrame;
@@ -17,7 +18,11 @@ public class TestNodalEditor extends JFrame {
 
 	public TestNodalEditor() {
 		super();
+
 		game = new GameManager(5, 5);
+		game.addSpecies(new Species("human", "res/Animal_Human"));
+		game.addSpecies(new Species("birch", "res/Tree_Birch.png"));
+
 		buildUI();
 	}
 

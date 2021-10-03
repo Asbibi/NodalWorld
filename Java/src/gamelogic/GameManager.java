@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import java.lang.StringBuilder;
+import java.lang.Class;
 
 /**
 * The game manager is responsible for the initialization and evolution of the game state at each frame using the rules defined by the user.
@@ -65,96 +66,79 @@ public class GameManager {
 	/**
 	* @return the grid's width
 	*/ 
-	public Integer gridWidth() {
-		return width;
-	}
+	public Integer gridWidth() { return width; }
 
 	/**
 	* @return the grid's height
 	*/
-	public Integer gridHeight() {
-		return height;
-	}
+	public Integer gridHeight() { return height; }
 
 	/**
 	* @return the current frame
 	*/
-	public Integer getFrame() {
-		return frame;
-	}
+	public Integer getFrame() { return frame; }
 
 	/**
 	 * Mainly used for display on the interface
 	* @return the current terrains stack
 	*/
-	public TerrainStack getTerrainStack() {
-		return terrainStack;
-	}
+	public TerrainStack getTerrainStack() { return terrainStack; }
 	
 	/**
 	* @param pos
 	* @return the surface stored in the tile at the given position
 	*/
-	public Surface surfaceAt(Vec2D pos) {
-		return terrainStack.getSurfaceAt(pos);
-	}
+	public Surface surfaceAt(Vec2D pos) { return terrainStack.getSurfaceAt(pos); }
 
 	/**
 	* @param terrain
 	*/
-	public void pushTerrain(TerrainLayer terrain) {
-		terrainStack.pushTerrain(terrain);
-	}
+	public void pushTerrain(TerrainLayer terrain) { terrainStack.pushTerrain(terrain); }
+
+	public List<Species> getSpeciesArray() { return species; }
 
 	/**
 	* @param name
 	* @return the species corresponding to the given name, null if it doesn't exist
 	*/
 	public Species getSpecies(String name) {
-		return species.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
+		return species.stream()
+					.filter(sp -> sp.toString().equals(name))
+					.findFirst()
+					.orElse(null);
 	}
+
+	public Species getSpecies(int index) { return species.get(index); }
 
 	/**
 	* @param sp
 	*/
-	public void addSpecies(Species sp) {
-		species.add(sp);
-	}
+	public void addSpecies(Species sp) { species.add(sp); }
 
 	/**
 	* @return the species being processed in the game loop
 	*/
-	public Species getCurrentSpecies() {
-		return currentSpecies;
-	}
+	public Species getCurrentSpecies() { return currentSpecies; }
 
 	/**
 	* @return the entity being processed in the game loop
 	*/
-	public Entity getCurrentEntity() {
-		return currentEntity;
-	}
+	public Entity getCurrentEntity() { return currentEntity; }
 
 	/**
 	* @return the generation netork
 	*/ 
-	public Network getGenNet() {
-		return genNet;
-	}
+	public Network getGenNet() { return genNet; }
 
 	/**
 	* @return the movement netork
 	*/ 
-	public Network getMoveNet() {
-		return moveNet;
-	}
+	public Network getMoveNet() { return moveNet; }
 
 	/**
 	* @return the death netork
 	*/ 
-	public Network getDeathNet() {
-		return deathNet;
-	}
+	public Network getDeathNet() { return deathNet; }
 
 	/**
 	* Ensures that each species has at most one generation rule.
@@ -196,6 +180,27 @@ public class GameManager {
 		} else {
 			speciesToDeathRule.put(sp, rule);
 		}
+	}
+
+	public <R extends Rule> void connectRuleToSpecies(R rule, Species sp) {
+		if(rule instanceof GenerationRule) {
+			connectRuleToSpecies((GenerationRule) rule, sp);
+		} else if(rule instanceof MovementRule) {
+			connectRuleToSpecies((MovementRule) rule, sp);
+		} else if(rule instanceof DeathRule) {
+			connectRuleToSpecies((DeathRule) rule, sp);
+		}
+	}
+
+	public <R extends Rule> R getRule(Class<R> ruleClass, Species sp) {
+		if(ruleClass.equals(GenerationRule.class)) {
+			return ruleClass.cast(speciesToGenRule.get(sp));
+		} else if(ruleClass.equals(MovementRule.class)) {
+			return ruleClass.cast(speciesToMoveRule.get(sp));
+		} else if(ruleClass.equals(DeathRule.class)) {
+			return ruleClass.cast(speciesToDeathRule.get(sp));
+		}
+		return null;
 	}
 
 	/**

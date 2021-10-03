@@ -1,12 +1,7 @@
 package gameinterface;
 
 import gameinterface.nodaleditor.*;
-
-import gamelogic.GameManager;
-import gamelogic.Network;
-import gamelogic.Node;
-import gamelogic.Input;
-import gamelogic.Output;
+import gamelogic.*;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -20,6 +15,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import java.util.Collection;
+
+import java.lang.Class;
 
 /**
 * @see Network
@@ -71,6 +68,10 @@ public class NodalEditor extends JComponent {
 
 	// ========== Calls forwarded to the model ==========
 
+	// Game Manager
+
+	public GameManager getGameManager() { return model.getGameManager(); }
+
 	// Network
 
 	public Network getNetwork() { return model.getNetwork(); }
@@ -93,6 +94,23 @@ public class NodalEditor extends JComponent {
 
 	public Port getPort(int x, int y) { return model.getPort(x, y); }
 
+	// Species and Rules
+
+	public boolean isUsingSpecies() { return model.isUsingSpecies(); }
+
+	public Class<? extends Rule> getRuleClass() { return model.getRuleClass(); }
+
+	public int getSpeciesBoxWidth() { return model.getSpeciesBoxWidth(); }
+
+	public int getSpeciesBoxHeight() { return model.getSpeciesBoxHeight(); }
+
+	public int getSpeciesRow(int x, int y) {
+		if(isUsingSpecies() && x >= getWidth()-getSpeciesBoxWidth() && y < getSpeciesBoxHeight()*getGameManager().getSpeciesArray().size()) {
+			return y/getSpeciesBoxHeight();
+		}
+		return -1;
+	}
+
 	// Interaction
 
 	public void setEditingLink(boolean b) { model.setEditingLink(b); }
@@ -106,6 +124,10 @@ public class NodalEditor extends JComponent {
 	public void setSelectingArea(boolean b) { model.setSelectingArea(b); }
 
 	public boolean isSelectingArea() { return model.isSelectingArea(); }
+
+	public void setLinkingSpecies(boolean b) { model.setLinkingSpecies(b); }
+
+	public boolean isLinkingSpecies() { return model.isLinkingSpecies(); }
 
 	public void setCursorPos(int x, int y) { model.setCursorPos(x, y); }
 
@@ -132,6 +154,12 @@ public class NodalEditor extends JComponent {
 	public void soloSelection(NodeBox box) { model.soloSelection(box); }
 
 	public JPanel getCurrentInfoPanel() { return model.getCurrentInfoPanel(); }
+
+	public void setCurrentSpeciesRow(int row) { model.setCurrentSpeciesRow(row); }
+
+	public int getCurrentSpeciesRow() { return model.getCurrentSpeciesRow(); }
+
+	public Species getCurrentSpecies() { return model.getCurrentSpecies(); }
 
 	// Change Listeners
 
