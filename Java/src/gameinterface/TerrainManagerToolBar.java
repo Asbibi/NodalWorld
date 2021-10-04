@@ -7,17 +7,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import gameinterface.components.TerrainStackVisualizer;
-import gamelogic.TerrainStack;
+import gamelogic.Terrain;
 
 public class TerrainManagerToolBar extends JToolBar {
 	
-	private TerrainStack terrain;
+	private Terrain terrain;
 	private TerrainVisualizerPanel visualizer;
 	protected TextFullPanel widthField;
 	protected TextFullPanel heightField;
 	protected TextFieldPanel periodField;
 	
-	public TerrainManagerToolBar(TerrainStack terrain) {
+	public TerrainManagerToolBar(Terrain terrain) {
 		super(null, JToolBar.VERTICAL);
 		this.terrain = terrain;
 		setUpUI(terrain);
@@ -26,10 +26,10 @@ public class TerrainManagerToolBar extends JToolBar {
 	/**
 	* Sets up the UI of the element manager
 	*/ 
-	private void setUpUI(TerrainStack terrain) {
+	private void setUpUI(Terrain terrain) {
 		add(new JLabel("Terrain"));
 
-		visualizer = new TerrainVisualizerPanel(terrain.getStack());
+		visualizer = new TerrainVisualizerPanel(terrain);
 		add(visualizer);
 		
 		widthField = new TextFullPanel("Width");;
@@ -46,8 +46,8 @@ public class TerrainManagerToolBar extends JToolBar {
 	
 	private void updateFromTerrain() {
 		visualizer.repaint();
-		widthField.setLabelString(Integer.toString(terrain.getStackDimension().width));
-		heightField.setLabelString(Integer.toString(terrain.getStackDimension().height));
+		widthField.setLabelString(Integer.toString(terrain.getWidth()));
+		heightField.setLabelString(Integer.toString(terrain.getHeight()));
 		periodField.setFieldString(Integer.toString(terrain.getTriggerTime()));
 	}
 	

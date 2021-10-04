@@ -21,7 +21,7 @@ public class ControlPanel extends JPanel {
 	static private Color standardFieldColor = Color.white;
 	static private Color wrongFieldColor = Color.red;
 	
-	private JPanel nodeEditorPanel;
+	private JTabbedPane nodeEditorPanel;
 	
 	private JToolBar terrainToolBar;
 	private ElementManagerToolBar<Surface> surfaceToolBar;
@@ -40,7 +40,7 @@ public class ControlPanel extends JPanel {
 		setLayout(new BorderLayout());
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
-		terrainToolBar = new TerrainManagerToolBar(gameManager.getTerrainStack());
+		terrainToolBar = new TerrainManagerToolBar(gameManager.getTerrain());
 		surfaceToolBar = new ElementManagerToolBar<>("Surface", gameManager.getSurfaceArray(), new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
@@ -61,8 +61,7 @@ public class ControlPanel extends JPanel {
 
 
 		
-		nodeEditorPanel = new JPanel();
-		nodeEditorPanel.setBackground(Color.red);
+		nodeEditorPanel = NodalEditorBuilder.buildTabbedEditors(gameManager);
 		
 		
 		

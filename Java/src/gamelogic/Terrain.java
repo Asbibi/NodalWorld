@@ -24,6 +24,14 @@ public class Terrain {
 		return height;
 	}
 
+	public void setTriggerTime(int triggerTime) {
+		this.triggerTime = triggerTime;
+	} 
+
+	public int getTriggerTime() {
+		return triggerTime;
+	}
+
 	public Surface getSurfaceAt(Vec2D pos) {
 		if(slots.isEmpty()) return Surface.getEmpty();
 		for(TerrainSlot slot : slots) {

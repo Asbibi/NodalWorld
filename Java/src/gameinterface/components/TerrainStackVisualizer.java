@@ -9,11 +9,11 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import gamelogic.TerrainLayer;
+import gamelogic.Terrain;
 
 public class TerrainStackVisualizer extends JComponent {
 	private TerrainStackVisualizerView view;
-	private List<TerrainLayer> stack;
+	private Terrain terrain;
 	private int focusedLayer = 0;
 	private boolean onlyFocusedInColor = false;
 	
@@ -27,9 +27,9 @@ public class TerrainStackVisualizer extends JComponent {
 	
 	
 	
-	public TerrainStackVisualizer(List<TerrainLayer> stack) {
+	public TerrainStackVisualizer(Terrain terrain) {
 		view = new TerrainStackVisualizerView();
-		this.stack = stack;
+		this.terrain = terrain;
 	}
 	
 	public Dimension getParentDimension() {
@@ -47,15 +47,15 @@ public class TerrainStackVisualizer extends JComponent {
 		view.paint((Graphics2D)g, this);
 	}
 
-	public final List<TerrainLayer> getStack() {
-		return stack;
+	public Terrain getTerrain() {
+		return terrain;
 	}
 	public int getFocusedLayer() {
 		return focusedLayer;
 	}
 
 	public void focusNextLayer() {
-		if (focusedLayer < stack.size() -1) {
+		if (focusedLayer < terrain.getSlots().size() -1) {
 			focusedLayer++;
 			revalidate();
 			repaint();
@@ -94,11 +94,11 @@ public class TerrainStackVisualizer extends JComponent {
 	public int getOffset_Focus_y() {
 		if (focusedLayer == 0)
 			return 0;
-		return stack.get(focusedLayer).getWidth() * delta_y + stack.get(focusedLayer - 1).getHeight() * delta_y;	//+ getOffset_y()
+		return terrain.getWidth() * delta_y + terrain.getHeight() * delta_y;	//+ getOffset_y()
 	}
 	
 	public int getOffset_Starting_y() {
-		return delta_y * stack.get(0).getWidth() + getOffset_y() * stack.size() + getOffset_Focus_y();
+		return delta_y * terrain.getWidth() + getOffset_y() * terrain.getSlots().size() + getOffset_Focus_y();
 	}
 	
 	@Override
@@ -114,30 +114,13 @@ public class TerrainStackVisualizer extends JComponent {
 		return new Dimension(computePreferredWidth(), computePreferredHeigth());
 	}
 	private int computePreferredWidth() {
-		if (stack == null)
-			return 0;
-		
-		int max_wPh = 0;
-		for (TerrainLayer layer : stack) {
-			max_wPh = Math.max(max_wPh, layer.getWidth() + layer.getHeight());
-		}
-		return max_wPh * delta_x;
+		return (terrain.getWidth()+terrain.getHeight()) * delta_x;
 	}
 	private int computePreferredHeigth() {
-		if (stack == null)
-			return 0;
-		
-		return getOffset_Starting_y() - getOffset_y() + delta_y * stack.get(stack.size() -1).getHeight();
+		return getOffset_Starting_y() - getOffset_y() + delta_y * terrain.getHeight();
 	}
 	private int computeParentPreferredHeigth() {
-		if (stack == null)
-			return 10;
-		
-		int max_wPh = 0;
-		for (TerrainLayer layer : stack) {
-			max_wPh = Math.max(max_wPh, layer.getWidth() + layer.getHeight());
-		}
-		return (max_wPh + 5) * delta_y;
+		return (terrain.getWidth() + terrain.getHeight() + 5) * delta_y;
 	}
 	
 
