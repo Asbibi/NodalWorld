@@ -1,0 +1,4 @@
+main goal : implement the project description
+2 other things focused : code clean (name clear, well separated, if MVC announced, MVC present)
+			UX : animation, usable
+code documentation

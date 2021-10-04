@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.awt.Dimension;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
 * This class represents the model used to stack terrains on top of each other (like Photoshop layers).
@@ -10,15 +11,23 @@ import java.util.LinkedList;
 */ 
 public class TerrainStack {
 	private Dimension stackDimensions;
+	private Integer triggerTime;
 
 	private LinkedList<TerrainLayer> stack;
 
 	/**
-	*
+	* Call the other constructor with default trigger time set at 10
 	*/
 	public TerrainStack() {
+		this(10);
+	}
+	/**
+	* @param triggerPeriod will be the trigger time of the terrain
+	*/
+	public TerrainStack(int triggerPeriod) {
 		stack = new LinkedList<TerrainLayer>();
 		stackDimensions = new Dimension(0,0);
+		triggerTime = triggerPeriod;
 	}
 
 	/**
@@ -46,6 +55,13 @@ public class TerrainStack {
 		}
 		return Surface.getEmpty();
 	}
+	
+	/**
+	* @return the terrainLayer list that composes the terrain stack
+	*/
+	public List<TerrainLayer> getStack() {
+		return stack;
+	}
 
 	/**
 	* The dimensions of the stack are defined as the max height and max width among all the terrain layers
@@ -55,4 +71,18 @@ public class TerrainStack {
 		return stackDimensions;
 	}
 
+
+	/**
+	* @return the trigger time
+	*/
+	public int getTriggerTime() {
+		return triggerTime;
+	}
+
+	/**
+	* @param the new trigger time to use
+	*/
+	public void setTriggerTime(int time) {
+		triggerTime = time;
+	}
 }

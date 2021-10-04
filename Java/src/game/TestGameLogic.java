@@ -16,11 +16,16 @@ public class TestGameLogic {
 
 	public TestGameLogic(int width, int height) {
 		game = new GameManager(width, height);
-		soil = new Surface("soil");
-		humans = new Species("human", "res/Animal_Human");
+		soil = new Surface("soil", "res/Tile_Dirt.png");
+		humans = new Species("human", "res/Animal_Human.png");
 	}
 
-	private GenerationRule makeGenRandomOnSoilRule() {
+
+	public GameManager getGame() { return game; }
+	public Surface getSoil() { return soil; }
+	public Species getHumans() { return humans; }
+	
+	public GenerationRule makeGenRandomOnSoilRule() {
 		Network net = game.getGenNet();
 
 		RandIntNode nodeRandX = new RandIntNode(); 
@@ -67,7 +72,7 @@ public class TestGameLogic {
 
 			TestGameLogic test = new TestGameLogic(width, height);
 
-			TerrainLayer ground = new TerrainLayer(test.game.gridWidth(), test.game.gridHeight());
+			TerrainLayer ground = new TerrainLayer(width, height);
 			ground.fill(test.soil);
 			test.game.pushTerrain(ground);
 
@@ -86,5 +91,4 @@ public class TestGameLogic {
 			return;
 		}
 	}
-
 }

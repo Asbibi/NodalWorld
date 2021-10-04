@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import gamelogic.GameManager;
 import gamelogic.Species;
 import gamelogic.Surface;
 
@@ -17,13 +18,17 @@ import gamelogic.Surface;
 * @see ElementManagerToolBar
 */ 
 public class ControlPanel extends JPanel {
-	JToolBar terrainToolBar;
-	ElementManagerToolBar<Surface> surfaceToolBar;
-	ElementManagerToolBar<Species> speciesToolBar;
+	static private Color standardFieldColor = Color.white;
+	static private Color wrongFieldColor = Color.red;
+	
+	private JPanel nodeEditorPanel;
+	
+	private JToolBar terrainToolBar;
+	private ElementManagerToolBar<Surface> surfaceToolBar;
+	private ElementManagerToolBar<Species> speciesToolBar;
 
-	public ControlPanel() {
-		setBackground(Color.red);
-		setUpUI();
+	public ControlPanel(GameManager gameManager) {
+		setUpUI(gameManager);
 	}
 	
 	/**
@@ -31,36 +36,58 @@ public class ControlPanel extends JPanel {
 	* Creates the elements managers as toolbars
 	* Use the main area to display the nodes
 	*/ 
-	private void setUpUI() {
+	private void setUpUI(GameManager gameManager) {
 		setLayout(new BorderLayout());
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
-		terrainToolBar = new JToolBar(null, JToolBar.VERTICAL);
-		surfaceToolBar = new ElementManagerToolBar<>("Surface", new SurfaceDetailPanel()) { 
+		terrainToolBar = new TerrainManagerToolBar(gameManager.getTerrainStack());
+		surfaceToolBar = new ElementManagerToolBar<>("Surface", gameManager.getSurfaceArray(), new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
 				return new Surface(name);
 			}
 		};
-		speciesToolBar = new ElementManagerToolBar<>("Species", new SpeciesDetailPanel()) { 
+		speciesToolBar = new ElementManagerToolBar<>("Species", gameManager.getSpeciesArray(), new SpeciesDetailPanel()) { 
 			@Override
 			public Species createElement(String name) {
 				return new Species(name, "");
 			}
 		};
-		terrainToolBar.add(new JButton("Test"));
 		toolBarPanel.add(terrainToolBar);
 		toolBarPanel.add(surfaceToolBar);
 		toolBarPanel.add(speciesToolBar);
-		add(toolBarPanel, BorderLayout.WEST);
+		JScrollPane toolScrollPanel = new JScrollPane(toolBarPanel);
+		toolScrollPanel.setPreferredSize(new Dimension(160,1000));
+
+
+		
+		nodeEditorPanel = new JPanel();
+		nodeEditorPanel.setBackground(Color.red);
+		
+		
+		
+		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, toolScrollPanel, nodeEditorPanel);
+		add(splitPanel);
+		splitPanel.setDividerLocation(toolScrollPanel.getPreferredSize().width);
+		//add(toolScrollPanel, BorderLayout.WEST);
 	}
+
 	
-	/**
-	* @param The surface array to use on the surface manager
-	*/ 
-	public void setSurfaces(ArrayList<Surface> surfaceArray) { surfaceToolBar.setElementArray(surfaceArray); }
-	/**
-	* @param The species array to use on the surface manager
-	*/ 
-	public void setSpecies(ArrayList<Species> speciesArray) { speciesToolBar.setElementArray(speciesArray); }
+	
+	
+	public static Color getStandardFieldColor() {
+		return standardFieldColor;
+	}
+
+	public static Color getWrongFieldColor() {
+		return wrongFieldColor;
+	}
+
+	public static void setStandardFieldColor(Color standardFieldColor) {
+		ControlPanel.standardFieldColor = standardFieldColor;
+	}
+
+	public static void setWrongFieldColor(Color wrongFieldColor) {
+		ControlPanel.wrongFieldColor = wrongFieldColor;
+	}
 }

@@ -1,12 +1,11 @@
 package gamelogic;
 
 import gamelogic.rules.*;
+import gamelogic.initializer.EmptyGameInitializer;
 
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Collection;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import java.lang.StringBuilder;
@@ -22,11 +21,11 @@ import java.lang.Class;
 */
 public class GameManager {
 
-	private Integer width, height;
 	private Integer frame;
 
 	private TerrainStack terrainStack;
 
+	private List<Surface> surfaces;
 	private List<Species> species;
 
 	private Map<Species, GenerationRule> speciesToGenRule;
@@ -38,17 +37,29 @@ public class GameManager {
 
 	private Network genNet, moveNet, deathNet;
 
+	
+
 	/**
-	* @param width
-	* @param height
+	* Initialize the manager with an EmptyGameInitializer
 	*/ 
-	public GameManager(Integer width, Integer height) {
-		this.width = width;
-		this.height = height;
+	public GameManager() {
+		this(new EmptyGameInitializer());
+	}
+	/**
+	* Initialize the manager with an EmptyGameInitializer that will create an empty layer with given dimensions
+	*/ 
+	public GameManager(int width, int height) {
+		this(new EmptyGameInitializer(width, height));
+	}
+	/**
+	* @param intializer, it will set the gamemanager in a specific state. Usually used to create basic surfaces and species to use
+	*/ 
+	public GameManager(GameManagerInitializer initializer) {
 		frame = 0;
 
 		terrainStack = new TerrainStack();
 
+		surfaces = new LinkedList<Surface>();
 		species = new LinkedList<Species>();
 
 		speciesToGenRule = new HashMap<Species, GenerationRule>();
@@ -61,17 +72,23 @@ public class GameManager {
 		genNet = new Network();
 		moveNet = new Network();
 		deathNet = new Network();
+		
+		initializer.initManager(this);
 	}
 
 	/**
 	* @return the grid's width
 	*/ 
-	public Integer gridWidth() { return width; }
+	public Integer gridWidth() {
+		return terrainStack.getStackDimension().width;
+	}
 
 	/**
 	* @return the grid's height
 	*/
-	public Integer gridHeight() { return height; }
+	public Integer gridHeight() {
+		return terrainStack.getStackDimension().height;
+	}
 
 	/**
 	* @return the current frame
@@ -93,9 +110,49 @@ public class GameManager {
 	/**
 	* @param terrain
 	*/
-	public void pushTerrain(TerrainLayer terrain) { terrainStack.pushTerrain(terrain); }
+	public void pushTerrain(TerrainLayer terrain) {
+		terrainStack.pushTerrain(terrain);
+	}
+	
+	/**
+	* @return reference to the surface list
+	*/
+	public List<Surface> getSurfaceArray() {
+		return surfaces;
+	}
 
-	public List<Species> getSpeciesArray() { return species; }
+	/**
+	* @param name
+	* @return the surface corresponding to the given name, empty surface if it doesn't exist
+	*/
+	public Surface getSurface(String name) {
+		return surfaces.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(Surface.getEmpty());
+	}
+
+	/**
+	* @param index of the surface in the array
+	* @return the surface corresponding to the given index, empty surface if it doesn't exist
+	*/
+	public Surface getSurface(int index) {
+		if (index >=0 && index <surfaces.size())
+			return surfaces.get(index);
+		else
+			return Surface.getEmpty();
+	}
+	
+	/**
+	* @param sp
+	*/
+	public void addSurface(Surface surf) {
+		surfaces.add(surf);
+	}
+
+	/**
+	* @return reference to the surface list
+	*/
+	public List<Species> getSpeciesArray() {
+		return species;
+	}
 
 	/**
 	* @param name
@@ -106,6 +163,17 @@ public class GameManager {
 					.filter(sp -> sp.toString().equals(name))
 					.findFirst()
 					.orElse(null);
+	}
+	
+	/**
+	* @param index of the species in the array
+	* @return the species corresponding to the given index, null if it doesn't exist
+	*/
+	public Species getSpecies(int index) {
+		if (index >=0 && index <species.size())
+			return species.get(index);
+		else
+			return null;
 	}
 
 	public Species getSpecies(int index) { return species.get(index); }
@@ -206,7 +274,7 @@ public class GameManager {
 	/**
 	* Applies the rules and executes the corresponding actions in the following order : generation, movement, death.
 	*/ 
-	public void evolveGameState() {
+	public int evolveGameState() {
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
 				genNet.evaluate(this);
@@ -221,8 +289,8 @@ public class GameManager {
 				apply(speciesToDeathRule.get(sp), sp);
 			}
 		}
-
-		frame++;
+		frame++;			// TODO : think about frame number limit ?
+		return frame-1;
 	}
 
 	private void apply(GenerationRule rule, Species sp) {
@@ -253,6 +321,8 @@ public class GameManager {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("Terrain : \n");
+		int height = gridHeight();
+		int width = gridWidth();
 		for(int y=0; y<height; y++) {
 			for(int x=0; x<width; x++) {
 				sb.append(surfaceAt(new Vec2D(x, y)));
@@ -276,5 +346,23 @@ public class GameManager {
 
 		return sb.toString();
 	}
+	public String arraysToString() {
+		StringBuilder sb = new StringBuilder();
 
+		sb.append("Surfaces:\t[ ");
+		for(Surface surf : surfaces) {
+			sb.append(surf);
+			sb.append(", ");			
+		}
+		sb.append("]\n");
+
+		sb.append("Species:\t[ ");
+		for(Species sp : species) {
+			sb.append(sp);
+			sb.append(", ");			
+		}
+		sb.append("]\n");
+
+		return sb.toString();
+	}
 }

@@ -1,6 +1,8 @@
-package gameinterface;
+package gameinterface.components;
 
 import java.awt.*;
+
+import gameinterface.WorldPanel;
 
 /**
 * This class is responsible for the view part of the TileComponent
@@ -34,6 +36,9 @@ public class TileView {
 		if (tile.isSurfaceEmpty()) {
 			g.setColor(tile.getOwner().getEmptyColor());
 	        g.fillRoundRect(0, 0, tile.getWidth(), tile.getHeight(), 0, 0);
+		} else if (tile.getOwner().getUseColorOverImage()) {
+			g.setColor(tile.getSurface().getColor());
+	        g.fillRoundRect(0, 0, tile.getWidth(), tile.getHeight(), 0, 0);
 		} else {
 			Image tileImage = tile.getSurface().getImage();
 			if (tileImage == null || tileImage.getWidth(null) < 1) {
@@ -41,7 +46,7 @@ public class TileView {
 		        g.fillRoundRect(0, 0, tile.getWidth(), tile.getHeight(), 0, 0);
 			} else {
 		        g.drawImage(tileImage, 0, 0, tile.getWidth(), tile.getHeight(), tile);
-			}				
+			}
 		}		
 	}
 	/**
@@ -101,20 +106,15 @@ public class TileView {
 	/**
 	* Display the grid over the tile.
 	* It's basically a rectangle around the tile.
-	* Color and thickness are retrieved from the tile's owner 
+	* Color and thickness are retrieved from the tile's owner (WorldPanel)
 	* 
 	* @param The graphic context used to display
 	* @param The model displayed
 	* @see WorldPanel
 	*/
 	private void paintGrid(Graphics2D g, TileComponent tile) {
-		int gridHalfSize = tile.getOwner().getGridThickness();	// is the half of the effective grid thickness as both tiles will draw it
-															// a workaround for this issue would be to only display grid on the top and left edges, but it's a minor issue
 		g.setColor(tile.getOwner().getGridColor());
-		
-		g.fillRoundRect(0, 0, tile.getWidth(), gridHalfSize, 0, 0);
-		g.fillRoundRect(0, tile.getHeight() - gridHalfSize, tile.getWidth(), gridHalfSize, 0, 0);
-		g.fillRoundRect(0, 0, gridHalfSize, tile.getHeight(), 0, 0);
-		g.fillRoundRect(tile.getWidth() - gridHalfSize, 0, gridHalfSize, tile.getHeight(), 0, 0);
+		g.setStroke(new BasicStroke(tile.getOwner().getGridThickness()));		
+		g.drawRect(0, 0, tile.getWidth(), tile.getHeight());
 	}
 }

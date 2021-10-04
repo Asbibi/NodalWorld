@@ -1,11 +1,13 @@
 package gameinterface;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import gameinterface.components.ImageComponent;
 import gamelogic.Element;
 
 public class ElementDetailPanel extends JPanel {
@@ -18,6 +20,9 @@ public class ElementDetailPanel extends JPanel {
 		nameField = new TextFieldPanel("Name");
 		add(nameField);
 		imageField = new ImageComponent();
+		/*JPanel imagePanel = new JPanel();
+		imagePanel.setLayout(new BorderLayout());
+		imagePanel.add(imageField, BorderLayout.CENTER);*/
 		add(imageField);
 	}
 	

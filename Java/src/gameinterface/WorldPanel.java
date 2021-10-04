@@ -1,11 +1,14 @@
 package gameinterface;
 
 import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.*;
 
+import gameinterface.components.TileComponent;
 import gamelogic.Entity;
+import gamelogic.GameManager;
 import gamelogic.Species;
 import gamelogic.TerrainStack;
 import gamelogic.Vec2D;
@@ -26,61 +29,89 @@ public class WorldPanel extends JPanel{
 	private Color gridColor = new Color(162,255,25);
 	private int gridThickness = 1;
 	private boolean displayGridDetail = false;
+	private boolean useColorOverImage = false;
 
 	// ==== Class fields ====
 	private Dimension gridDimension;
 	private ArrayList<TileComponent> tiles;
-	private ArrayList<Species> speciesDisplayed;
+	private List<Species> speciesDisplayed;
+	private TerrainStack terrain;
 	private int speciesSlotNumber_sqrt;
+	private int usedTileSize;
 	private int minimalTileSize;
 	
 
 	
-	public WorldPanel() {
-		setBackground(Color.blue);
+	public WorldPanel(GameManager gameManager) {
+		//setBackground(Color.blue);
 		tiles = new ArrayList<TileComponent>();
-		speciesDisplayed = new ArrayList<Species>();
+		speciesDisplayed = gameManager.getSpeciesArray();
+		terrain = gameManager.getTerrainStack();
 		gridDimension = new Dimension(-1,-1);
 		speciesSlotNumber_sqrt = 0;
-		ResetMinimalTileSize();
+		
+		computeMinimalTileSize();
+		resetTileSizeToMinimal();
+	}
+	
+	public void updateMap(int frame) {
+		updateTerrain();
+		for (int i =0; i < speciesDisplayed.size(); i++) {
+			if(speciesDisplayed.get(i).trigger(frame))
+				updateSpeciesDisplay(i);
+		}
+		repaint();
 	}
 	
 	
 	
 	// ==== Size Related ====
-	public void ResetMinimalTileSize() {
-		minimalTileSize = 32;
+	public void resetTileSizeToMinimal() {
+		usedTileSize = minimalTileSize;
+		revalidate();
 	}
-	public void increaseMinimalTileSize() {
-		minimalTileSize += 16;
+	public void increaseTileSize() {
+		usedTileSize *= 1.5;
+		if(usedTileSize > 600)
+			usedTileSize = 600;
+		revalidate();
 	}
-	public void decreaseMinimalTileSize() {
-		minimalTileSize += 16;
+	public void decreaseTileSize() {
+		usedTileSize *= 0.75;
+		if (usedTileSize < minimalTileSize)
+			usedTileSize = minimalTileSize;
+		revalidate();
 	}
-	@Override
-	public void setSize(Dimension d) {
-		super.setSize(d);
-		setPreferredSize(d);
-	}
-	@Override
-	public void setPreferredSize(Dimension d) {
-		//System.out.print("Set preferred size on world panel" + d);
+	public void computeMinimalTileSize() {
+		if (gridDimension == null || gridDimension.width == 0 || gridDimension.height == 0) {
+			minimalTileSize = 32;
+			return;
+		}
+		
+		Container parent = getParent();
+		if (parent == null)
+			return;
+		System.out.print("computed ");
+		Dimension d = parent.getParent().getSize();	// access the JScrollPane
+		System.out.print(d);
 		int tileSizeX = d.width / gridDimension.width;
 		int tileSizeY = d.height / gridDimension.height;
-		int realTileSize = Math.min(tileSizeX, tileSizeY);
-		realTileSize = Math.max(realTileSize, minimalTileSize);
-		d.width = realTileSize * gridDimension.width;
-		d.height = realTileSize * gridDimension.height;
-		//System.out.println("\t Became :" + d);
-		super.setPreferredSize(d);
+		minimalTileSize = Math.min(tileSizeX, tileSizeY);
+		System.out.println(minimalTileSize);
 	}
-	/**
-	 * Set automatically a preferred size to fit the tile size.
-	 * Still some work to do on this part.
-	*/
-	public void setMinimalPreferredSize() {
-		setPreferredSize(new Dimension(0,0));
+	@Override
+	public Dimension getMinimumSize() {
+		return getPreferredSize();
+	}	
+	@Override
+	public Dimension getMaximumSize() {
+		return getPreferredSize();
 	}
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(usedTileSize * gridDimension.width, usedTileSize * gridDimension.height);
+	}
+	
 	
 	
 	
@@ -90,11 +121,11 @@ public class WorldPanel extends JPanel{
 	 * Updates the whole terrain, including dimension check and potential changed
 	* @param the terrain stack to display
 	*/
-	public void updateTerrain(TerrainStack terrain) {
+	public void updateTerrain() {
 		if (terrain == null) {
 			gridDimension = new Dimension(-1,-1);			
 		} else {
-			SetDimensions(terrain.getStackDimension());
+			setDimensions(terrain.getStackDimension());
 			updateTilesSurface(terrain);
 		}
 	}	
@@ -104,12 +135,12 @@ public class WorldPanel extends JPanel{
 	 * If the dimensions are the same as the previous ones, it wont do nothing. Otherwise, it will adapt the layout and create enough tiles to fill the entire map.
 	* @param the new Dimensions (should be got from the terrain to display)
 	*/
-	private void SetDimensions(Dimension newDimensions) {
+	private void setDimensions(Dimension newDimensions) {
 		if (gridDimension == newDimensions)
 			return;
 				
 		int count = newDimensions.width * newDimensions.height;
-		removeAll();
+		removeAll();	// removes all tiles from the JPanel
 		
 		// if one dimension is 0, the terrain is invalid and thus soulhn't be displayed
 		if (count == 0) {
@@ -130,7 +161,10 @@ public class WorldPanel extends JPanel{
 				add(tiles.get(x + y * width));
 		
 		gridDimension = newDimensions;
-		setMinimalPreferredSize();	// changing size
+		updateAllSpeciesDisplay();
+		computeMinimalTileSize();
+		System.out.println(getPreferredSize());
+        setPreferredSize(getPreferredSize());
 	}
 	
 	/**
@@ -160,24 +194,23 @@ public class WorldPanel extends JPanel{
 	* @param the array of species that should be displayed
 	* @see updateOneSpeciesDisplayed
 	*/
-	public void updateAllSpeciesDisplayed(ArrayList<Species> species) {
-		speciesDisplayed = species;
+	public void updateAllSpeciesDisplay() {
 		boolean hasChanged = computeSpeciesSlotNumber_sqrt(speciesDisplayed.size());	// set speciesSlotNumber_sqrt
 		if (hasChanged) {
 			// reset all tiles arrays to fit the new potential size
 			for (int i = 0; i < tiles.size() ; i++) 
 				tiles.get(i).setEmptyArraySpecies(speciesSlotNumber_sqrt * speciesSlotNumber_sqrt);
 			for (int s = 0; s < speciesDisplayed.size(); s++)
-				updateOneSpeciesDisplayed(s);			
+				updateSpeciesDisplay(s);			
 		}
 	}
 	
 	/**
-	 * Actually calls updateOneSpeciesDisplayed(int speciesIndex) after retreiving the index
+	 * Actually calls updateSpeciesDisplay(int speciesIndex) after retrieving the index
 	* @param the species to update
 	*/
-	public void updateOneSpeciesDisplayed(Species speciesToUpdate) {
-		updateOneSpeciesDisplayed(speciesDisplayed.indexOf(speciesToUpdate));
+	public void updateSpeciesDisplay(Species speciesToUpdate) {
+		updateSpeciesDisplay(speciesDisplayed.indexOf(speciesToUpdate));
 	}
 	
 	/**
@@ -186,7 +219,7 @@ public class WorldPanel extends JPanel{
 	 * (no checks)
 	* @param the index of the species to update
 	*/
-	public void updateOneSpeciesDisplayed(int speciesIndex) {
+	public void updateSpeciesDisplay(int speciesIndex) {
 		// for each tiles, reset the count of the species to 0
 		for (int i = 0; i < tiles.size() ; i++)
 			tiles.get(i).resetCountArraySpecies(speciesIndex);
@@ -214,6 +247,20 @@ public class WorldPanel extends JPanel{
 			return false;
 	}
 	
+	
+	
+	
+	// ==== Setters ====
+	
+	public void flipDisplayGridDetail() {
+		displayGridDetail = !displayGridDetail;
+		repaint();
+	}
+
+	public void flipUseColorOverImage() {
+		useColorOverImage = !useColorOverImage;
+		repaint();
+	}
 	
 	
 
@@ -257,7 +304,11 @@ public class WorldPanel extends JPanel{
 	*/
 	public int getGridThickness() { return gridThickness; }
 	/**
-	* @return indicates if the grid should be displayed
+	* @return indicates if the grid must be displayed
 	*/
 	public boolean getDisplayGridDetail() { return displayGridDetail; }
+	/**
+	* @return indicates if the tiles should be represented by their color or images
+	*/
+	public boolean getUseColorOverImage() { return useColorOverImage; }
 }
