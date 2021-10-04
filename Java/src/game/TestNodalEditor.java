@@ -7,6 +7,7 @@ import gameinterface.NodalEditor;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
@@ -34,7 +35,17 @@ public class TestNodalEditor extends JFrame {
 		setContentPane(buildContentPane());
 	}
 
-	private JPanel buildContentPane() {
+	private JTabbedPane buildContentPane() {
+		JTabbedPane tabs = new JTabbedPane();
+
+		tabs.add("Generation", buildGenerationEditor());
+		tabs.add("Movement", buildMovementEditor());
+		tabs.add("Death", buildDeathEditor());
+
+		return tabs;
+	}
+
+	private JPanel buildGenerationEditor() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
@@ -43,6 +54,50 @@ public class TestNodalEditor extends JFrame {
 		editor.disable("Movement");
 		editor.disable("Death");
 		editor.disable("Current Species");
+		panel.add(editor, BorderLayout.CENTER);
+
+		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
+		editor.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				infoScroll.setViewportView(editor.getCurrentInfoPanel());
+			}
+		});
+		panel.add(infoScroll, BorderLayout.SOUTH);
+
+		return panel;
+	}
+
+	private JPanel buildMovementEditor() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+
+		NodalEditor editor = new NodalEditor(game, game.getGenNet());
+		editor.setSpeciesRuleCreator(MovementRule.class);
+		editor.disable("Generation");
+		editor.disable("Death");
+		panel.add(editor, BorderLayout.CENTER);
+
+		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
+		editor.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				infoScroll.setViewportView(editor.getCurrentInfoPanel());
+			}
+		});
+		panel.add(infoScroll, BorderLayout.SOUTH);
+
+		return panel;
+	}
+
+	private JPanel buildDeathEditor() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+
+		NodalEditor editor = new NodalEditor(game, game.getGenNet());
+		editor.setSpeciesRuleCreator(DeathRule.class);
+		editor.disable("Generation");
+		editor.disable("Movement");
 		panel.add(editor, BorderLayout.CENTER);
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
