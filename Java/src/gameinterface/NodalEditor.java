@@ -176,4 +176,27 @@ public class NodalEditor extends JComponent {
 
 	public void disable(String nodeName) { nodeMenu.disable(nodeName); }
 
+
+	// ========== Factory ==========
+
+	public static JPanel buildTerrainEditor(GameManager game) {
+		// TODO
+		return null;
+	}
+
+	public static JPanel buildGenerationEditor(GameManager game) {
+		// TODO
+		return null;
+	}
+
+	public static JPanel buildMovementEditor(GameManager game) {
+		// TODO
+		return null;
+	}
+
+	public static JPanel buildDeathEditor(GameManager game) {
+		// TODO
+		return null;
+	}
+
 }

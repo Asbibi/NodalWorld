@@ -72,7 +72,7 @@ public class TestNodalEditor extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		NodalEditor editor = new NodalEditor(game, game.getGenNet());
+		NodalEditor editor = new NodalEditor(game, game.getMoveNet());
 		editor.setSpeciesRuleCreator(MovementRule.class);
 		editor.disable("Generation");
 		editor.disable("Death");
@@ -94,7 +94,7 @@ public class TestNodalEditor extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		NodalEditor editor = new NodalEditor(game, game.getGenNet());
+		NodalEditor editor = new NodalEditor(game, game.getDeathNet());
 		editor.setSpeciesRuleCreator(DeathRule.class);
 		editor.disable("Generation");
 		editor.disable("Movement");
