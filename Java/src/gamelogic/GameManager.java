@@ -176,8 +176,6 @@ public class GameManager {
 			return null;
 	}
 
-	public Species getSpecies(int index) { return species.get(index); }
-
 	/**
 	* @param sp
 	*/
