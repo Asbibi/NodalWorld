@@ -54,6 +54,12 @@ public class Input {
 		value = val;
 	}
 
+	public Input(String name, Surface val) {
+		this(name, Surface.class);
+		manual = true;
+		value = val;
+	} 
+
 	@Override
 	public boolean equals(Object o) {
 		if(o == null) return false;
