@@ -10,7 +10,9 @@ import gamelogic.GameManager;
 /**
 * This class manages the display of the whole game in its own window
 * 
-* @see ControlPanel, WorldPanel
+* @see GameManager
+* @see ControlPanel
+* @see WorldPanel
 */ 
 public class GameFrame extends JFrame {
 	static private Color 	separatorColor = new Color(180,180,180);
@@ -45,7 +47,7 @@ public class GameFrame extends JFrame {
 	* Sets up the UI Layout :
 	* - Creates the menubar
 	* - Separate the empty space into 2 areas of the same size (GridLayout) : one for the ControlPanel and one for the WorldPanel 
-	*/ 
+	*/
 	private void setupUI() {
         setPreferredSize(new Dimension(1280, 720));
         
@@ -63,7 +65,7 @@ public class GameFrame extends JFrame {
         setVisible(true);
 	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    
-	    splitPanel.setDividerLocation(0.5);	// at the end to let the split panel get it's definitive size before setting the divider to the center
+	    splitPanel.setDividerLocation(0.5);	// after pack() to let the split panel get its definitive size before setting the divider to the center (otherwise it's setting itself to 0)
 	}
 	/**
 	* Creates the menubar of the game
@@ -100,39 +102,64 @@ public class GameFrame extends JFrame {
 		
 		menuBar.add(pauseButton);
 		menuBar.add(slowButton);
-		menuBar.add(speedButton);		
-		JSeparator separator1 = new JSeparator(SwingConstants.VERTICAL);		
+		menuBar.add(speedButton);
+		
+		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+		JSeparator separator1 = new JSeparator(SwingConstants.VERTICAL);
+		separator1.setPreferredSize(new Dimension(2, 25));
 		separator1.setForeground(separatorColor);
 		menuBar.add(separator1);
+		
 		menuBar.add(gridButton);
 		menuBar.add(detailButton);	
 		menuBar.add(zoomPlusButton);
 		menuBar.add(zoomMinusButton);
-		menuBar.add(zoomResetButton);		
-		JSeparator separator2 = new JSeparator(SwingConstants.VERTICAL);
+		menuBar.add(zoomResetButton);
+		
+		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+		/*JSeparator separator2 = new JSeparator(SwingConstants.VERTICAL);
+		separator2.setPreferredSize(new Dimension(2, 25));
 		separator2.setForeground(separatorColor);		
-		menuBar.add(separator2);
+		menuBar.add(separator2);*/
+		
 		menuBar.add(restartButton);
 	    setJMenuBar(menuBar);
 	}
 	
+	/**
+	* Ask the world panel to updates itself
+	* @param the last frame processed
+	*/
 	public void updateWorld(int frame) {
 		worldPanel.updateMap(frame);
 	}
 	
+	/**
+	* @param the ActionListener to add to the pause button
+	*/
 	public void addPauseActionListener(ActionListener action) {
 		pauseButton.addActionListener(action);
 	}
+	/**
+	* @param the ActionListener to add to the slow down button
+	*/
 	public void addSlowDownActionListener(ActionListener action) {
 		slowButton.addActionListener(action);
 	}
+	/**
+	* @param the ActionListener to add to the speed up button
+	*/
 	public void addSpeedUpActionListener(ActionListener action) {
 		speedButton.addActionListener(action);
 	}
 
 	
-	
+
+	/**
+	* @return the color the separator should use in the interface
+	*/
 	static public Color getSeparatorColor() { return separatorColor; }
+	
 	
 	// ===== TEST ONLY =====
 	public WorldPanel gWP_test() { return worldPanel;}
@@ -142,8 +169,10 @@ public class GameFrame extends JFrame {
 
 /* TODO :
 - confirm dialog boxes when removing
-- find a way to ask to update toolbar if the gamemanager changes
+- find a way to ask to update toolbar if the gamemanager changes	=>	listeners ?
+- find a way to ask to update world if element image changed		=>		"
 - debug image component
+- terrain visualizer : when changing the focused layer, move the JScrollPane parent slider to center the view on the displayed layer
 ------//----
 - restart with presets
 - saving

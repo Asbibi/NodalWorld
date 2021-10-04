@@ -9,6 +9,12 @@ import gamelogic.Surface;
 import gamelogic.TerrainLayer;
 import gamelogic.Vec2D;
 
+/**
+* A simple initialize that fills the surfaces and species with the game provided data.
+* It also creates a first terrain layer filled up with the surface corresponding to the specified index or empty surfaces if no index is given.
+* 
+* @see GameManagerInitializer
+*/ 
 public class BasicGameInitializer extends GameManagerInitializer {
 	private int width;
 	private int height;

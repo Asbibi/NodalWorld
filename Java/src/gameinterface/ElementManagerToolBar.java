@@ -14,8 +14,10 @@ import gamelogic.Element;
 * buttons to add/remove/rearrange them,
 * a viewer to inspect and modify a specific element.
 * 
-* @see ControlPanel, ElementDetailPanel
-*/ 
+* @see ControlPanel
+* @see ElementDetailPanel
+* @see Element
+*/
 public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private List<T> elements;
 	private JList<Element> scrollList;
@@ -114,9 +116,10 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	
 	
 	
-	// Button callbacks
+	// === Button callbacks ===
+	
 	/**
-	* Callback for the up button, swap the selected element with the one above
+	* Callback for the up button : swap the selected element with the one above
 	*/ 
 	public void moveUpCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
@@ -127,7 +130,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 	}
 	/**
-	* Callback for the down button, swap the selected element with the one below
+	* Callback for the down button : swap the selected element with the one below
 	*/ 
 	public void moveDownCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
@@ -137,7 +140,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 	}
 	/**
-	* Callback for the down button, swap the selected element with the one below
+	* Callback for the remove button : remove the selected element of the list
 	*/ 
 	public void removeCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
@@ -147,7 +150,11 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 	}
 	/**
-	* Callback for the down button, swap the selected element with the one below
+	* Callback for the add button : create a new element using the addTextField's text as the element's name.
+	* If the name inputed is empty or already used, the addTextField will become have the "wrong" color from the ColorPanel and the add won't happen.
+	* If the add is succesful the callback will also reset the addTextField's text to an empty string.
+	* 
+	* @see ControlPanel.getWrongFieldColor
 	*/ 
 	public void addNewElement() {
 		String name = addTextField.getText();
@@ -173,7 +180,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		addTextField.setBackground(ControlPanel.getStandardFieldColor());
 	}
 	/**
-	* Method to create the new element, should be override on class instanciation to use the T constructor
+	* Method to create the new element, should be override on class instanciation using an anonym class in order to use the T constructor
 	*/
 	public T createElement(String name) { return null; }
 	

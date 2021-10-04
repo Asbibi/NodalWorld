@@ -8,15 +8,20 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
+/**
+* Component that simply displays the X and Y vectors of a TerrainStackVisualizer
+* 
+* @see TerrainStackVisualizer
+*/
 public class TerrainStackVisualizerVectors extends JComponent {
-	private TerrainStackVisualizer model;
+	private TerrainStackVisualizer visualizer;
 	int lenght = 2;
 	double arrowSize = 0.5;
 	int offset_x = 2;
 	int offset_y = 4;
 	
-	public TerrainStackVisualizerVectors(TerrainStackVisualizer model) {
-		this.model = model;
+	public TerrainStackVisualizerVectors(TerrainStackVisualizer visualizer) {
+		this.visualizer = visualizer;
 	}
 	
 	
@@ -24,8 +29,8 @@ public class TerrainStackVisualizerVectors extends JComponent {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;		
 		
-		int d_x = model.getDelta_x();
-		int d_y = model.getDelta_y();
+		int d_x = visualizer.getDelta_x();
+		int d_y = visualizer.getDelta_y();
 		int sizeDelta_x = d_x*lenght;
 		int sizeDelta_y = d_y*lenght;
 		
@@ -62,8 +67,8 @@ public class TerrainStackVisualizerVectors extends JComponent {
 	
 	@Override
 	public Dimension getPreferredSize() {
-		int d_x = model.getDelta_x();
-		int d_y = model.getDelta_y();
+		int d_x = visualizer.getDelta_x();
+		int d_y = visualizer.getDelta_y();
 		return new Dimension(d_x * (lenght + 1) + offset_x * 2, d_y * (lenght + 1) * 2 + offset_y * 2);
 	}
 }

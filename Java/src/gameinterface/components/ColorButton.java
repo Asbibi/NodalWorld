@@ -9,7 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import gameinterface.ColorDialogBox;
+import gamelogic.TerrainStack;
 
+/**
+* A button that displays a color instead of the regular text/icon.
+* When clicked, it will pop a ColorDialogBox to change the color displayed.
+* 
+* @see ColorDialogBox
+*/ 
 public class ColorButton extends JButton{
 
 	private Color color;
@@ -28,6 +35,11 @@ public class ColorButton extends JButton{
 		g2D.drawRect(0, 0, getWidth(), getHeight());
 	}
 	
+	/**
+	* Pops a modal dialog box with a color wheel so the user can set the color he wants.
+	* When the dialog box is closed by cliking the "OK" button, the color set by the user replaces the one displayed by the button
+	* @see ColorDialogBox
+	*/ 
 	private void askColor() {
 		ColorDialogBox dialogBox = new ColorDialogBox((JFrame)this.getRootPane().getParent(), color);
 		if (!dialogBox.getConfirm())
@@ -36,11 +48,15 @@ public class ColorButton extends JButton{
         color = dialogBox.getColor();
         repaint();
 	}
-
+	/**
+	* @return the color of the button
+	*/ 
 	public Color getColor() {
 		return color;
 	}
-
+	/**
+	* @param the new color of the button
+	*/ 
 	public void setColor(Color color) {
 		this.color = color;
 		repaint();

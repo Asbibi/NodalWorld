@@ -16,7 +16,8 @@ import gamelogic.Vec2D;
 /**
 * This class manages how the world will be displayed.
 * 
-* @see TerrainStack, TileComponent
+* @see TerrainStack
+* @see TileComponent
 */ 
 public class WorldPanel extends JPanel{
 	
@@ -43,7 +44,6 @@ public class WorldPanel extends JPanel{
 
 	
 	public WorldPanel(GameManager gameManager) {
-		//setBackground(Color.blue);
 		tiles = new ArrayList<TileComponent>();
 		speciesDisplayed = gameManager.getSpeciesArray();
 		terrain = gameManager.getTerrainStack();
@@ -53,7 +53,12 @@ public class WorldPanel extends JPanel{
 		computeMinimalTileSize();
 		resetTileSizeToMinimal();
 	}
-	
+
+	/**
+	* Update the terrain and the species that need to.
+	* Having the frame allows to only update the species that were triggered this frame
+	* @param the frame that had just be computed by the gamemanager.
+	*/
 	public void updateMap(int frame) {
 		updateTerrain();
 		for (int i =0; i < speciesDisplayed.size(); i++) {
@@ -66,22 +71,35 @@ public class WorldPanel extends JPanel{
 	
 	
 	// ==== Size Related ====
+
+	/**
+	* Resets the zoom so the map fit completely in the available space;
+	*/
 	public void resetTileSizeToMinimal() {
 		usedTileSize = minimalTileSize;
 		revalidate();
 	}
+	/**
+	* Zooms in until one tile is 600x600 pixels
+	*/
 	public void increaseTileSize() {
 		usedTileSize *= 1.5;
 		if(usedTileSize > 600)
 			usedTileSize = 600;
 		revalidate();
 	}
+	/**
+	* Zooms out until one tile as the size of the minimal tile
+	*/
 	public void decreaseTileSize() {
 		usedTileSize *= 0.75;
 		if (usedTileSize < minimalTileSize)
 			usedTileSize = minimalTileSize;
 		revalidate();
 	}
+	/**
+	* Compute the minimal tile size to use, depending on the parent's size which is the available size for the world
+	*/
 	public void computeMinimalTileSize() {
 		if (gridDimension == null || gridDimension.width == 0 || gridDimension.height == 0) {
 			minimalTileSize = 32;
@@ -91,14 +109,12 @@ public class WorldPanel extends JPanel{
 		Container parent = getParent();
 		if (parent == null)
 			return;
-		System.out.print("computed ");
-		Dimension d = parent.getParent().getSize();	// access the JScrollPane
-		System.out.print(d);
+		Dimension d = parent.getParent().getSize();	// access the JScrollPane to get the available space dimension
 		int tileSizeX = d.width / gridDimension.width;
 		int tileSizeY = d.height / gridDimension.height;
 		minimalTileSize = Math.min(tileSizeX, tileSizeY);
-		System.out.println(minimalTileSize);
 	}
+	
 	@Override
 	public Dimension getMinimumSize() {
 		return getPreferredSize();
@@ -251,12 +267,17 @@ public class WorldPanel extends JPanel{
 	
 	
 	// ==== Setters ====
-	
+
+	/**
+	* Flips the boolean indicating if the grid should be displayed on top of the tiles
+	*/
 	public void flipDisplayGridDetail() {
 		displayGridDetail = !displayGridDetail;
 		repaint();
 	}
-
+	/**
+	* Flips the boolean indicating if the tiles should be displayed with their images as texture or as square of their color
+	*/
 	public void flipUseColorOverImage() {
 		useColorOverImage = !useColorOverImage;
 		repaint();

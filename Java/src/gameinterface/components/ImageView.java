@@ -3,8 +3,17 @@ package gameinterface.components;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+/**
+* The model of the clickable image display
+* 
+* @see ImageComponent
+*/ 
 public class ImageView {
 
+	/**
+	* @param the Graphic Context to use to display the image
+	* @param the image component
+	*/ 
 	public void paint(Graphics2D g, ImageComponent owner) {
 		Image image = owner.getImage();
 		if (image == null || image.getWidth(null) < 1) {

@@ -11,8 +11,18 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+* A clickable display of an Image object.
+* When clicked, it opens a JFileChooser to replace the image.
+* 
+* @see ImageModel
+* @see ImageView
+*/ 
 public class ImageComponent extends JComponent{
 	static private Color nullColor = new Color(105,98,73);
+	/**
+	* @return the color to display as a rectangle when the image is null or empty
+	*/ 
 	static public Color getNullColor(){ return nullColor; }
 	
 	private ImageView view;
@@ -36,25 +46,22 @@ public class ImageComponent extends JComponent{
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                model.fire();
+                model.triggerActionListeners();
                 model.setIsPressed(false);
             }
         });
         model.addChangeListener(e -> repaint());
-        model.addActionListener(e -> loadImageFromFile());
-        
-        //setPreferredSize(new Dimension(128,128));
+        model.addActionListener(e -> setImageFromFile());
 	}
 
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		view.paint((Graphics2D)g, this);
 	}
 	
 	
-	public Image getImage() {
-		return image;
-	}
+
 	@Override
     public Dimension getMinimumSize() {
         return getPreferredSize();
@@ -69,23 +76,33 @@ public class ImageComponent extends JComponent{
     public Dimension getPreferredSize() {
         return new Dimension(128, 128);
     }
+	/**
+	* @return the image displayed
+	*/ 
+	public Image getImage() {
+		return image;
+	}
 
 	
-	/*@Override
-	public void setSize(Dimension d) {
-		d.width = d.height;
-		super.setSize(d);
-	}*/
+	
+	
+	/**
+	* @param if the image component should be enabled or not
+	*/ 
+    public void setIsEnabled(boolean pressed) {
+    	model.setIsEnabled(pressed);
+    }
+	/**
+	* @param the image displayed
+	*/ 
 	public void setImage(Image image) {
 		this.image = image;
 		model.triggerChangeListeners();
 	}
-
-    public void setIsEnabled(boolean pressed) {
-    	model.setIsEnabled(pressed);
-    }
-	
-	private void loadImageFromFile() {		
+	/**
+	* Sets the image displayed using a JFileChooser.
+	*/ 
+	private void setImageFromFile() {		
 		imageChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("jpg","gif","png");
 		imageChooser.addChoosableFileFilter(imageFilter);
@@ -96,8 +113,8 @@ public class ImageComponent extends JComponent{
 				System.out.println("Image set from file, yeay !");
 				setImage(ImageIO.read(selectedImage));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return;
 			}
 		}		
 	}

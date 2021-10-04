@@ -85,8 +85,7 @@ public class TileView {
 			if (currentCount == 0)
 				continue;
 			
-			//System.out.println(tile.tileId + " - Line : " + currentLine + " | Col : " + currentRow + " | Species : " + i + "" + tile.getOwner().speciesDisplayed.get(i).toString() + " | Count : " + currentCount);
-	        Image speciesImage = tile.getOwner().getSpeciesImage(i);
+			Image speciesImage = tile.getOwner().getSpeciesImage(i);
 			if (speciesImage == null || speciesImage.getHeight(null) < 0) {
 				g.setColor(tile.getOwner().getMissingSpeciesImageColor());
 		        g.fillRoundRect(x, y, speciesWidth, speciesHeight, 0, 0);

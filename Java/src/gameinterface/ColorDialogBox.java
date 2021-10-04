@@ -13,6 +13,11 @@ import javax.swing.JPanel;
 
 import gameinterface.components.ColorWheelComponent;
 
+/**
+* A modal dialog box that pops to ask the user to input a color using a color wheel
+* 
+* @see ColorWheelComponent
+*/ 
 public class ColorDialogBox extends JDialog{
 	private boolean confirm = false;
 	private ColorWheelComponent colorWheel;
@@ -40,10 +45,17 @@ public class ColorDialogBox extends JDialog{
 		setVisible(true);
 	}
 	
+	/**
+	* Should be called once the dialog box is closed, and only if getConfirm() returns true 
+	* @return the color inputed by the user
+	*/ 
 	public Color getColor() {
 		return colorWheel.getColorFromCursor();
 	}
 
+	/**
+	* @return if the user closed the dialog box by cliking on the "OK" button or not
+	*/ 
 	public boolean getConfirm() {
 		return confirm;
 	}

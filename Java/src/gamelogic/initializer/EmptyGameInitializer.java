@@ -5,6 +5,13 @@ import gamelogic.GameManagerInitializer;
 import gamelogic.Surface;
 import gamelogic.TerrainLayer;
 
+/**
+* The default initializer class.
+* If constructed with terrain dimension will create a terrainlayer with the correct dimension filled up with empty surfaces.
+* Otherwise do nothing.
+* 
+* @see GameManagerInitializer
+*/ 
 public class EmptyGameInitializer extends GameManagerInitializer {
 	private int width;
 	private int height;

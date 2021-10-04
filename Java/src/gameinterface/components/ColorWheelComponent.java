@@ -10,7 +10,16 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
+import gameinterface.ColorDialogBox;
 
+/**
+* A Color wheel based on the HSV model (Hue, Saturation, Value)
+* The color wheel itself is composed of a circle filled with rainbow gradient for HS coordinates and a side slider for V.
+* It also has a sample of the color picked around the cursor in a 35x35 pixels square.
+* 
+* @see ColorWheelView
+* @see ColorDialogBox
+*/ 
 public class ColorWheelComponent extends JComponent {
 	private ColorWheelView view;
 	private BufferedImage wheelImage;
@@ -35,18 +44,11 @@ public class ColorWheelComponent extends JComponent {
 		generateWheelImage(getHeight(), false);
 		view.paint((Graphics2D)g, this);
 	}
-	public int getSliderWidth() {
-		return Math.max(getHeight()/20, 5);
-	}
-	public BufferedImage getWheelImage() { return wheelImage; }
-	public int getCursorX() { return (int)(x_Cursor * getHeight()); }
-	public int getCursorY() { return (int)(y_Cursor * getHeight()); }
-	public int getValueCursorY() { return (int)((1-value) * getHeight()); }
-	public int getXOffset() {
-		return (getWidth() - getHeight() - 5 - getSliderWidth())/2;
-	}
-	public double getValue() { return value; }
-	
+	/**
+	* @param the diameter of the circle, it's also the height of the image and it determines its width (not equal)
+	* @param if set to false, the image will only be generated if the diameter given is different from the one of the previous generation
+	* Generates a BufferedImage of the color wheel (the circle + the value shader) of the correct height, without any cursor on it
+	*/
 	private void generateWheelImage(int diameter, boolean forceRegenerate) {
 		if (!forceRegenerate && wheelImage!=null && diameter == wheelImage.getHeight())
 			return;
@@ -81,41 +83,12 @@ public class ColorWheelComponent extends JComponent {
 			}
 		}
 	}
-	public void setCursorPositionFromPoint(Point point) {
-		double diameter = getHeight();
-		double x_pos = (point.x - getXOffset()) / diameter;
-		double y_pos = point.y / diameter;
-		
-		if (x_pos > 1) {		// value slider
-			value = Math.min(Math.max(1-y_pos,0),1);
-			generateWheelImage(getHeight(), true);
-			
-		} else {				// HUE-Saturation wheel
-			double vect_norm = Math.sqrt(Math.pow(x_pos-0.5,2) + Math.pow(y_pos-0.5,2));
-			if (vect_norm > 0.5)
-				return;
-			
-			x_Cursor = x_pos;
-			y_Cursor = y_pos;
-		}
-	}
-	public Color getColorFromCursor() {
-		double x = x_Cursor*2 -1; 
-		double y = y_Cursor*2 -1; 
-		double saturation = Math.sqrt(x*x + y*y);
-		double hue = Math.toDegrees(Math.atan2(y, x));
-		return new Color(convertHSVtoRGB(hue, saturation, value));
-	}
-	public void setColorToCursor(Color color) {
-		float[] hsv = new float[3];
-		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(),hsv);
-		value = hsv[2];
-		double hue = hsv[0] * 2 * Math.PI;
-		x_Cursor = hsv[1] * Math.cos(hue);
-		y_Cursor = hsv[1] * Math.sin(hue);
-		x_Cursor = x_Cursor/2 + 0.5;
-		y_Cursor = y_Cursor/2 + 0.5;
-	}
+	/**
+	* @param the H (hue) value of the color to convert
+	* @param the S (saturation) value of the color to convert
+	* @param the V (value) value of the color to convert
+	* @return the hex code (RGBA, with alpha = 255) of the color designated
+	*/
 	private int convertHSVtoRGB(double hue, double saturation, double value) {
 		if (hue < 0) hue += 360;
 		double C = saturation * value;
@@ -152,4 +125,87 @@ public class ColorWheelComponent extends JComponent {
 		
 		return (255 << 24) | (R << 16) | (G << 8) | B;
 	}
+	
+	
+	/**
+	* @return the color wheel generated image
+	*/
+	public BufferedImage getWheelImage() { return wheelImage; }
+	/**
+	* @return the x position of the HS cursor
+	*/
+	public int getCursorX() { return (int)(x_Cursor * getHeight()); }
+	/**
+	* @return the y position of the HS cursor
+	*/
+	public int getCursorY() { return (int)(y_Cursor * getHeight()); }
+	/**
+	* @return the y position of the V cursor
+	*/
+	public int getValueCursorY() { return (int)((1-value) * getHeight()); }
+	/**
+	* @return the x offset to start displaying the color wheel (allow to center the render of the component)
+	*/
+	public int getXOffset() { return (getWidth() - getHeight() - 5 - getSliderWidth())/2; }
+	/**
+	* @return the width of the V slider on display
+	*/
+	public int getSliderWidth() { return Math.max(getHeight()/20, 5); }
+	/**
+	* @return directly the V value
+	* @see getValueCursorY
+	*/
+	public double getValue() { return value; }
+	/**
+	* @return the color pointed by the HS & V cursors
+	*/
+	public Color getColorFromCursor() {
+		double x = x_Cursor*2 -1; 
+		double y = y_Cursor*2 -1; 
+		double saturation = Math.sqrt(x*x + y*y);
+		double hue = Math.toDegrees(Math.atan2(y, x));
+		return new Color(convertHSVtoRGB(hue, saturation, value));
+	}
+	
+	
+	
+	/**
+	* @param (X,Y) coordinates on the component used to place the HS or V cursors (depending on X)
+	*/
+	public void setCursorPositionFromPoint(Point point) {
+		double diameter = getHeight();
+		double x_pos = (point.x - getXOffset()) / diameter;
+		double y_pos = point.y / diameter;
+		
+		if (x_pos > 1) {		// value slider
+			value = Math.min(Math.max(1-y_pos,0),1);
+			if (value < 0.0001) {
+				x_Cursor = 0.5;
+				y_Cursor = 0.5;
+			}
+			generateWheelImage(getHeight(), true);
+			
+		} else {				// HUE-Saturation wheel
+			double vect_norm = Math.sqrt(Math.pow(x_pos-0.5,2) + Math.pow(y_pos-0.5,2));
+			if (vect_norm > 0.5)
+				return;
+			
+			x_Cursor = x_pos;
+			y_Cursor = y_pos;
+		}
+	}
+	/**
+	* @param the color the HS & V cursors have to point
+	*/
+	public void setColorToCursor(Color color) {
+		float[] hsv = new float[3];
+		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(),hsv);
+		value = hsv[2];
+		double hue = hsv[0] * 2 * Math.PI;
+		x_Cursor = hsv[1] * Math.cos(hue);
+		y_Cursor = hsv[1] * Math.sin(hue);
+		x_Cursor = x_Cursor/2 + 0.5;
+		y_Cursor = y_Cursor/2 + 0.5;
+	}
+	
 }

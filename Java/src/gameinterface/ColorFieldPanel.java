@@ -7,19 +7,30 @@ import java.awt.Dimension;
 import javax.swing.*;
 
 import gameinterface.components.ColorButton;
+import gameinterface.components.ColorWheelComponent;
 
-public class ColorFieldPanel extends JPanel {
+/**
+* A property field for Color.
+* 
+* @see ColorButton
+* @see PropertyFieldPanel
+*/ 
+public class ColorFieldPanel extends PropertyFieldPanel {
 	ColorButton colorField;
-	
+
 	public ColorFieldPanel(String fieldName) {
-		setLayout(new BorderLayout());
-		JLabel itemLabel = new JLabel(fieldName);
-		itemLabel.setPreferredSize(new Dimension(50, 16));
-		add(itemLabel, BorderLayout.WEST);
+		super(fieldName);
 		colorField = new ColorButton(Color.LIGHT_GRAY);
 		add(colorField, BorderLayout.CENTER);
 	}
 	
+	
+	/**
+	* @return the color value of the field
+	*/ 
 	public Color getFieldColor() { return colorField.getColor(); }
+	/**
+	* @param the value of color the field must have
+	*/ 
 	public void setFieldColor(Color color) { colorField.setColor(color); }
 }

@@ -1,15 +1,21 @@
 package game;
 
-import javax.swing.JOptionPane;
-
 import gameinterface.GameFrame;
 import gamelogic.GameManager;
 
+/**
+* Main instancier of the game
+* 
+* @see ControlPanel, WorldPanel
+*/ 
 public class Main {
 	static GameManager gameManager;
 	static GameFrame gameFrame;
 	
-
+	
+	/**
+	* Static main method that will instanciate the gamemanager and a gameframe linked to it
+	*/ 
 	public static void main(String[] args) {
 		int width = 10;
 		int height = 10;
@@ -26,9 +32,4 @@ public class Main {
 		gameManager = new GameManager(width, height);
 		gameFrame = new GameFrame(gameManager);
 	}
-
-	/*
-	 * something i found that may be useful later : 
-	           JOptionPane.showMessageDialog(null, "message to display in a new window");
-	 */
 }

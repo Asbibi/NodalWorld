@@ -16,10 +16,12 @@ import gamelogic.Surface;
 * They are derivated from JToolBar which allows the user to freely rearrange their positions
 * 
 * @see ElementManagerToolBar
+* @see GameFrame
 */ 
 public class ControlPanel extends JPanel {
 	static private Color standardFieldColor = Color.white;
 	static private Color wrongFieldColor = Color.red;
+	
 	
 	private JPanel nodeEditorPanel;
 	
@@ -27,14 +29,17 @@ public class ControlPanel extends JPanel {
 	private ElementManagerToolBar<Surface> surfaceToolBar;
 	private ElementManagerToolBar<Species> speciesToolBar;
 
+	
 	public ControlPanel(GameManager gameManager) {
 		setUpUI(gameManager);
 	}
 	
+	
+	
 	/**
 	* Sets up this panel's UI
-	* Creates the elements managers as toolbars
-	* Use the main area to display the nodes
+	* Creates the elements and terrain managers as a left toolbar. Its horizontal size can be adjusted by the user
+	* The main area is used to display the node editors.
 	*/ 
 	private void setUpUI(GameManager gameManager) {
 		setLayout(new BorderLayout());
@@ -69,25 +74,20 @@ public class ControlPanel extends JPanel {
 		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, toolScrollPanel, nodeEditorPanel);
 		add(splitPanel);
 		splitPanel.setDividerLocation(toolScrollPanel.getPreferredSize().width);
-		//add(toolScrollPanel, BorderLayout.WEST);
 	}
 
 	
 	
-	
+	/**
+	* @return the color to use on a TextField background by default
+	*/ 
 	public static Color getStandardFieldColor() {
 		return standardFieldColor;
 	}
-
+	/**
+	* @return the color to use on a TextField background when the string inputed doesn't comply with constraints (e.g. writting letters in a TextField used for inputing integers)
+	*/
 	public static Color getWrongFieldColor() {
 		return wrongFieldColor;
-	}
-
-	public static void setStandardFieldColor(Color standardFieldColor) {
-		ControlPanel.standardFieldColor = standardFieldColor;
-	}
-
-	public static void setWrongFieldColor(Color wrongFieldColor) {
-		ControlPanel.wrongFieldColor = wrongFieldColor;
 	}
 }

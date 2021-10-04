@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+* The model of the clickable image display
+* 
+* @see ImageComponent
+*/ 
 public class ImageModel {
 	private boolean isPressed; // is being pushed
 	private boolean isEnabled;
@@ -14,34 +19,49 @@ public class ImageModel {
     private ArrayList<ChangeListener> changeListeners = new ArrayList<>();// change listening
 
 
-    public boolean getIsPressed() {
-        return this.isPressed;
-    }
+    /**
+    * @return if the clickable image is pressed
+    */ 
+    public boolean getIsPressed() { return this.isPressed; }
+    /**
+    * @param if the clickable image is pressed
+    */ 
     public void setIsPressed(boolean pressed) {
         if (pressed != isPressed) {
             this.isPressed = pressed;
             //triggerChangeListeners();
         }
     }
-    public boolean getIsEnabled() {
-        return isEnabled;
-    }
-    public void setIsEnabled(boolean pressed) {
-    	isEnabled = !isEnabled;
-    }
+    /**
+    * @return if the clickable image is enabled (= clickable)
+    */ 
+    public boolean getIsEnabled() { return isEnabled; }
+    /**
+    * @param if the clickable image is enabled (= clickable)
+    */ 
+    public void setIsEnabled(boolean pressed) { isEnabled = !isEnabled; }
 
 
+    /**
+    * @param the ActionListener to add
+    */ 
     public void addActionListener(ActionListener listener) { actionListeners.add(listener); }
+    /**
+    * @param the ActionListener to remove
+    */ 
     public void removeActionListener(ActionListener listener) { actionListeners.remove(listener); }
+    /**
+    * @param the ChangeListener to add
+    */ 
     public void addChangeListener(ChangeListener listener) { changeListeners.add(listener); }
+    /**
+    * @param the ChangeListener to remove
+    */ 
     public void removeChangeListener(ChangeListener listener) { changeListeners.remove(listener); }
-
-    
-    
-    public void fire() {
-    	fireActionListeners();        
-    }
-    private void fireActionListeners() {
+    /**
+    * Triggers all the action listeners.
+    */ 
+    public void triggerActionListeners() {
     	if (isEnabled) {
             for (ActionListener listener : actionListeners) {
                 listener.actionPerformed(
@@ -49,7 +69,9 @@ public class ImageModel {
             }    		
     	}
     }
-
+    /**
+    * Triggers all the change listeners.
+    */ 
     public void triggerChangeListeners() {
         for (ChangeListener listener : changeListeners) {
             listener.stateChanged(new ChangeEvent(this));

@@ -1,10 +1,6 @@
 package gameinterface;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.List;
 
 import javax.swing.*;
@@ -13,6 +9,14 @@ import gameinterface.components.TerrainStackVisualizer;
 import gameinterface.components.TerrainStackVisualizerVectors;
 import gamelogic.TerrainLayer;
 
+/**
+* Complete visualizer of the layers of a terrainStack.
+* It display the layers as well as buttons to change the focused layer.
+* 
+* @see TerrainLayer
+* @see TerrainStackVisualizer
+* @see TerrainStackVisualizerVectors
+*/
 public class TerrainVisualizerPanel extends JPanel {
 	private TerrainStackVisualizer visualizer;
 	private JScrollPane visuScrollPanel;
@@ -59,6 +63,9 @@ public class TerrainVisualizerPanel extends JPanel {
 		add(buttonPanel);		
 	}
 	
+	/**
+	* Update the index of the focused layer displayed to the actual focused layer index
+	*/
 	private void updateLayerLabelText() {
 		currentFocusLabel.setText(Integer.toString(visualizer.getFocusedLayer()));
 	}
