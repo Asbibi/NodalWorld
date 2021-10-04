@@ -21,6 +21,11 @@ public class TestNodalEditor extends JFrame {
 		super();
 
 		game = new GameManager(5, 5);
+
+		game.getTerrain().addSlot();
+		game.getTerrain().addSlot();
+		game.getTerrain().addSlot();
+
 		game.addSpecies(new Species("human", "res/Animal_Human"));
 		game.addSpecies(new Species("birch", "res/Tree_Birch.png"));
 
@@ -38,6 +43,7 @@ public class TestNodalEditor extends JFrame {
 	private JTabbedPane buildContentPane() {
 		JTabbedPane tabs = new JTabbedPane();
 
+		tabs.add("Terrain", buildTerrainEditor());
 		tabs.add("Generation", buildGenerationEditor());
 		tabs.add("Movement", buildMovementEditor());
 		tabs.add("Death", buildDeathEditor());
@@ -45,15 +51,40 @@ public class TestNodalEditor extends JFrame {
 		return tabs;
 	}
 
+	private JPanel buildTerrainEditor() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+
+		NodalEditor editor = new NodalEditor(game, game.getTerrainNet());
+		editor.setTerrainCreator();
+		editor.disable("Generation");
+		editor.disable("Movement");
+		editor.disable("Death");
+		editor.disable("Current Species");
+		editor.disable("Current Entity");
+		panel.add(editor, BorderLayout.CENTER);
+
+		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
+		editor.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				infoScroll.setViewportView(editor.getCurrentInfoPanel());
+			}
+		});
+		panel.add(infoScroll, BorderLayout.SOUTH);
+
+		return panel;
+	}
+
 	private JPanel buildGenerationEditor() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
 		NodalEditor editor = new NodalEditor(game, game.getGenNet());
-		editor.setSpeciesRuleCreator(GenerationRule.class);
+		editor.setRuleCreator(GenerationRule.class);
 		editor.disable("Movement");
 		editor.disable("Death");
-		editor.disable("Current Species");
+		editor.disable("Current Entity");
 		panel.add(editor, BorderLayout.CENTER);
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
@@ -73,7 +104,7 @@ public class TestNodalEditor extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		NodalEditor editor = new NodalEditor(game, game.getMoveNet());
-		editor.setSpeciesRuleCreator(MovementRule.class);
+		editor.setRuleCreator(MovementRule.class);
 		editor.disable("Generation");
 		editor.disable("Death");
 		panel.add(editor, BorderLayout.CENTER);
@@ -95,7 +126,7 @@ public class TestNodalEditor extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		NodalEditor editor = new NodalEditor(game, game.getDeathNet());
-		editor.setSpeciesRuleCreator(DeathRule.class);
+		editor.setRuleCreator(DeathRule.class);
 		editor.disable("Generation");
 		editor.disable("Movement");
 		panel.add(editor, BorderLayout.CENTER);

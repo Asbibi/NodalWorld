@@ -74,11 +74,19 @@ public class NodalEditorUI {
 					return;
 				}
 
-				int spRow = editor.getSpeciesRow(e.getX(), e.getY());
-				if(spRow >= 0) {
-					editor.setCurrentSpeciesRow(spRow);
+				int speciesRow = editor.getSpeciesRow(e.getX(), e.getY());
+				if(speciesRow >= 0) {
+					editor.setCurrentSpeciesRow(speciesRow);
 					editor.setCursorPos(e.getX(), e.getY());
 					editor.setLinkingSpecies(true);
+					return;
+				}
+
+				int terrainSlotRow = editor.getTerrainSlotRow(e.getX(), e.getY());
+				if(terrainSlotRow >= 0) {
+					editor.setCurrentTerrainSlotRow(terrainSlotRow);
+					editor.setCursorPos(e.getX(), e.getY());
+					editor.setLinkingTerrainSlot(true);
 					return;
 				}
 
@@ -131,12 +139,21 @@ public class NodalEditorUI {
 						}
 					}
 					editor.setSelectingArea(false);
+
 				} else if(editor.isLinkingSpecies()) {
 					NodeBox box = editor.getBox(e.getX(), e.getY());
 					if(box != null && box.getNode() instanceof TerminalNode) {
 						editor.getGameManager().connectRuleToSpecies(((TerminalNode) box.getNode()).getRule(), editor.getCurrentSpecies());
 					}
 					editor.setLinkingSpecies(false);
+
+				} else if(editor.isLinkingTerrainSlot()) {
+					NodeBox box = editor.getBox(e.getX(), e.getY());
+					if(box != null && box.getNode() instanceof TerrainNode) {
+						editor.getCurrentTerrainSlot().connect((TerrainNode) (box.getNode()));
+					}
+					editor.setLinkingTerrainSlot(false);
+
 				}
 			}
 		});
@@ -168,17 +185,17 @@ public class NodalEditorUI {
 			paintNode(g2d, editor, box);
 		}
 
-		if(editor.isUsingSpecies()) {
+		if(editor.isUsingRules()) {
 			GameManager game = editor.getGameManager();
 			int row = 0;
 			for(Species sp : game.getSpeciesArray()) {
-				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSpeciesBoxWidth(), row*editor.getSpeciesBoxHeight(), editor.getSpeciesBoxWidth(), editor.getSpeciesBoxHeight());
+				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
 				g2d.setColor(Color.lightGray);
 				g2d.fill(rect);
 				g2d.setColor(Color.gray);
 				g2d.draw(rect);
 				g2d.setColor(Color.black);
-				g2d.drawString(sp.toString(), editor.getWidth()-editor.getSpeciesBoxWidth()+10, editor.getSpeciesBoxHeight()*row+10);
+				g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
 
 				if(game.getRule(editor.getRuleClass(), sp) != null) {
 					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
@@ -186,7 +203,7 @@ public class NodalEditorUI {
 					int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
 					int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
 					g2d.setColor(Color.green);
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSpeciesBoxWidth(), editor.getSpeciesBoxHeight()*row+10, box.getX()+dx, box.getY()+dy));
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX()+dx, box.getY()+dy));
 				}
 
 				row++;
@@ -194,7 +211,37 @@ public class NodalEditorUI {
 
 			if(editor.isLinkingSpecies()) {
 				g2d.setColor(Color.red);
-				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSpeciesBoxWidth(), editor.getSpeciesBoxHeight()*editor.getCurrentSpeciesRow()+10, editor.getXCursor(), editor.getYCursor()));
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*editor.getCurrentSpeciesRow()+10, editor.getXCursor(), editor.getYCursor()));
+			}
+		}
+
+		if(editor.isUsingTerrains()) {
+			Terrain terrain = editor.getGameManager().getTerrain();
+			int row = 0;
+			for(TerrainSlot slot : terrain.getSlots()) {
+				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
+				g2d.setColor(Color.lightGray);
+				g2d.fill(rect);
+				g2d.setColor(Color.gray);
+				g2d.draw(rect);
+				g2d.setColor(Color.black);
+				g2d.drawString("slot "+row, editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
+
+				if(slot.isOccupied()) {
+					NodeBox box = editor.getBox(slot.getTerrainNode());
+					boolean translate = editor.isMovingSelection() && editor.isSelected(box);
+					int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
+					int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
+					g2d.setColor(Color.green);
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX()+dx, box.getY()+dy));
+				}
+
+				row++;
+			}
+
+			if(editor.isLinkingTerrainSlot()) {
+				g2d.setColor(Color.red);
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*editor.getCurrentTerrainSlotRow()+10, editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 

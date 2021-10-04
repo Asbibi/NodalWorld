@@ -46,6 +46,7 @@ public class NodeMenu extends JPopupMenu {
 
 	private void buildMenu() {
 		add(buildMenuRules());
+		add(buildMenuTerrain());
 		add(buildMenuRandom());
 		add(buildMenuUtils());
 		add(buildMenuOperations());
@@ -59,6 +60,12 @@ public class NodeMenu extends JPopupMenu {
 		menuRules.add(buildNodeItem(() -> new MoveNode()));
 		menuRules.add(buildNodeItem(() -> new KillNode()));
 		return menuRules;
+	}
+
+	private JMenu buildMenuTerrain() {
+		JMenu menuTerrain = new JMenu("Terrain");
+		menuTerrain.add(buildNodeItem(() -> new TerrainNodeRectangle()));
+		return menuTerrain;
 	}
 
 	private JMenu buildMenuRandom() {

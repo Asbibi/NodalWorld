@@ -94,21 +94,32 @@ public class NodalEditor extends JComponent {
 
 	public Port getPort(int x, int y) { return model.getPort(x, y); }
 
-	// Species and Rules
+	// Rules and Terrains
 
-	public void setSpeciesRuleCreator(Class<? extends Rule> ruleClass) { model.setSpeciesRuleCreator(ruleClass); }
+	public void setRuleCreator(Class<? extends Rule> ruleClass) { model.setRuleCreator(ruleClass); }
 
-	public boolean isUsingSpecies() { return model.isUsingSpecies(); }
+	public boolean isUsingRules() { return model.isUsingRules(); }
 
 	public Class<? extends Rule> getRuleClass() { return model.getRuleClass(); }
 
-	public int getSpeciesBoxWidth() { return model.getSpeciesBoxWidth(); }
+	public void setTerrainCreator() { model.setTerrainCreator(); }
 
-	public int getSpeciesBoxHeight() { return model.getSpeciesBoxHeight(); }
+	public boolean isUsingTerrains() { return model.isUsingTerrains(); }
+
+	public int getSideBoxWidth() { return model.getSideBoxWidth(); }
+
+	public int getSideBoxHeight() { return model.getSideBoxHeight(); }
 
 	public int getSpeciesRow(int x, int y) {
-		if(isUsingSpecies() && x >= getWidth()-getSpeciesBoxWidth() && y < getSpeciesBoxHeight()*getGameManager().getSpeciesArray().size()) {
-			return y/getSpeciesBoxHeight();
+		if(isUsingRules() && x >= getWidth()-getSideBoxWidth() && y < getSideBoxHeight()*getGameManager().getSpeciesArray().size()) {
+			return y/getSideBoxHeight();
+		}
+		return -1;
+	}
+
+	public int getTerrainSlotRow(int x, int y) {
+		if(isUsingTerrains() && x >= getWidth()-getSideBoxWidth() && y < getSideBoxHeight()*getGameManager().getTerrain().getSlots().size()) {
+			return y/getSideBoxHeight();
 		}
 		return -1;
 	}
@@ -130,6 +141,10 @@ public class NodalEditor extends JComponent {
 	public void setLinkingSpecies(boolean b) { model.setLinkingSpecies(b); }
 
 	public boolean isLinkingSpecies() { return model.isLinkingSpecies(); }
+
+	public void setLinkingTerrainSlot(boolean b) { model.setLinkingTerrainSlot(b); }
+
+	public boolean isLinkingTerrainSlot() { return model.isLinkingTerrainSlot(); }
 
 	public void setCursorPos(int x, int y) { model.setCursorPos(x, y); }
 
@@ -162,6 +177,12 @@ public class NodalEditor extends JComponent {
 	public int getCurrentSpeciesRow() { return model.getCurrentSpeciesRow(); }
 
 	public Species getCurrentSpecies() { return model.getCurrentSpecies(); }
+
+	public void setCurrentTerrainSlotRow(int row) { model.setCurrentTerrainSlotRow(row); }
+
+	public int getCurrentTerrainSlotRow() { return model.getCurrentTerrainSlotRow(); }
+
+	public TerrainSlot getCurrentTerrainSlot() { return model.getCurrentTerrainSlot(); }
 
 	// Change Listeners
 

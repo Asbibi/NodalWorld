@@ -27,16 +27,16 @@ public class NodalEditorModel {
 	private Network network;
 	private Collection<NodeBox> boxes;
 	private Map<Node, NodeInfoPanel> infoPanels;
-	private boolean usingSpecies;
+	private boolean usingRules, usingTerrains;
 	private Class<? extends Rule> ruleClass;
-	private int speciesBoxWidth, speciesBoxHeight;
+	private int sideBoxWidth, sideBoxHeight;
 
-	private boolean editingLink, movingSelection, selectingArea, linkingSpecies;
+	private boolean editingLink, movingSelection, selectingArea, linkingSpecies, linkingTerrainSlot;
 	private int xCursor, yCursor, xRef, yRef;
 	private Port curPort;
 	private Map<NodeBox, Boolean> selected;
 	private JPanel curInfoPanel, defaultInfoPanel;
-	private int curSpeciesRow;
+	private int curSpeciesRow, curTerrainSlotRow;
 
 	private Collection<ChangeListener> changeListeners;
 
@@ -48,20 +48,23 @@ public class NodalEditorModel {
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
 		infoPanels = new HashMap<Node, NodeInfoPanel>();
-		usingSpecies = false;
+		usingRules = false;
+		usingTerrains = false;
 		ruleClass = null;
-		speciesBoxWidth = 100;
-		speciesBoxHeight = 50;
+		sideBoxWidth = 100;
+		sideBoxHeight = 50;
 
 		editingLink = false;
 		movingSelection = false;
 		selectingArea = false;
 		linkingSpecies = false;
+		linkingTerrainSlot = false;
 		selected = new HashMap<NodeBox, Boolean>();
 		curInfoPanel = null;
 		defaultInfoPanel = new JPanel();
 		defaultInfoPanel.add(new JLabel("Info"));
 		curSpeciesRow = -1;
+		curTerrainSlotRow = -1;
 
 		changeListeners = new LinkedList<ChangeListener>();
 	}
@@ -174,20 +177,26 @@ public class NodalEditorModel {
 	}
 
 
-	// ========== Species and Rules ==========
+	// ========== Rules and Terrains ==========
 
-	public void setSpeciesRuleCreator(Class<? extends Rule> ruleClass) {
-		usingSpecies = true;
+	public void setRuleCreator(Class<? extends Rule> ruleClass) {
+		usingRules = true;
 		this.ruleClass = ruleClass;
 	}
 
-	public boolean isUsingSpecies() { return usingSpecies; }
+	public boolean isUsingRules() { return usingRules; }
 
 	public Class<? extends Rule> getRuleClass() { return ruleClass; }
 
-	public int getSpeciesBoxWidth() { return speciesBoxWidth; }
+	public void setTerrainCreator() {
+		usingTerrains = true;
+	}
 
-	public int getSpeciesBoxHeight() { return speciesBoxHeight; }
+	public boolean isUsingTerrains() { return usingTerrains; }
+
+	public int getSideBoxWidth() { return sideBoxWidth; }
+
+	public int getSideBoxHeight() { return sideBoxHeight; }
 
 
 	// ========== Interaction ==========
@@ -227,6 +236,15 @@ public class NodalEditorModel {
 	}
 
 	public boolean isLinkingSpecies() { return linkingSpecies; }
+
+	public void setLinkingTerrainSlot(boolean b) {
+		if(linkingTerrainSlot != b) {
+			linkingTerrainSlot = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isLinkingTerrainSlot() { return linkingTerrainSlot; }
 
 	public void setCursorPos(int x, int y) {
 		xCursor = x;
@@ -288,6 +306,15 @@ public class NodalEditorModel {
 	public int getCurrentSpeciesRow() { return curSpeciesRow; }
 
 	public Species getCurrentSpecies() { return game.getSpecies(curSpeciesRow); }
+
+	public void setCurrentTerrainSlotRow(int row) {
+		curTerrainSlotRow = row;
+		triggerChangeListeners();
+	}
+
+	public int getCurrentTerrainSlotRow() { return curTerrainSlotRow; }
+
+	public TerrainSlot getCurrentTerrainSlot() { return game.getTerrain().getSlot(curTerrainSlotRow); }
 
 
 	// ========== Change Listeners ==========
