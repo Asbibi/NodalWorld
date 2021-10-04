@@ -2,7 +2,7 @@ package game;
 
 import gamelogic.*;
 import gamelogic.rules.*;
-import gameinterface.NodalEditor;
+import gameinterface.NodalEditorBuilder;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -37,110 +37,7 @@ public class TestNodalEditor extends JFrame {
 		setSize(900, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setContentPane(buildContentPane());
-	}
-
-	private JTabbedPane buildContentPane() {
-		JTabbedPane tabs = new JTabbedPane();
-
-		tabs.add("Terrain", buildTerrainEditor());
-		tabs.add("Generation", buildGenerationEditor());
-		tabs.add("Movement", buildMovementEditor());
-		tabs.add("Death", buildDeathEditor());
-
-		return tabs;
-	}
-
-	private JPanel buildTerrainEditor() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-
-		NodalEditor editor = new NodalEditor(game, game.getTerrainNet());
-		editor.setTerrainCreator();
-		editor.disable("Generation");
-		editor.disable("Movement");
-		editor.disable("Death");
-		editor.disable("Current Species");
-		editor.disable("Current Entity");
-		panel.add(editor, BorderLayout.CENTER);
-
-		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
-		editor.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				infoScroll.setViewportView(editor.getCurrentInfoPanel());
-			}
-		});
-		panel.add(infoScroll, BorderLayout.SOUTH);
-
-		return panel;
-	}
-
-	private JPanel buildGenerationEditor() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-
-		NodalEditor editor = new NodalEditor(game, game.getGenNet());
-		editor.setRuleCreator(GenerationRule.class);
-		editor.disable("Movement");
-		editor.disable("Death");
-		editor.disable("Current Entity");
-		panel.add(editor, BorderLayout.CENTER);
-
-		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
-		editor.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				infoScroll.setViewportView(editor.getCurrentInfoPanel());
-			}
-		});
-		panel.add(infoScroll, BorderLayout.SOUTH);
-
-		return panel;
-	}
-
-	private JPanel buildMovementEditor() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-
-		NodalEditor editor = new NodalEditor(game, game.getMoveNet());
-		editor.setRuleCreator(MovementRule.class);
-		editor.disable("Generation");
-		editor.disable("Death");
-		panel.add(editor, BorderLayout.CENTER);
-
-		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
-		editor.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				infoScroll.setViewportView(editor.getCurrentInfoPanel());
-			}
-		});
-		panel.add(infoScroll, BorderLayout.SOUTH);
-
-		return panel;
-	}
-
-	private JPanel buildDeathEditor() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-
-		NodalEditor editor = new NodalEditor(game, game.getDeathNet());
-		editor.setRuleCreator(DeathRule.class);
-		editor.disable("Generation");
-		editor.disable("Movement");
-		panel.add(editor, BorderLayout.CENTER);
-
-		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
-		editor.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				infoScroll.setViewportView(editor.getCurrentInfoPanel());
-			}
-		});
-		panel.add(infoScroll, BorderLayout.SOUTH);
-
-		return panel;
+		setContentPane(NodalEditorBuilder.buildTabbedEditors(game));
 	}
 
 	public static void main(String[] args) {
