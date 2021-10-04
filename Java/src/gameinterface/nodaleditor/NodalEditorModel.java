@@ -1,13 +1,6 @@
 package gameinterface.nodaleditor;
 
-import gamelogic.GameManager;
-import gamelogic.Network;
-import gamelogic.Node;
-import gamelogic.Input;
-import gamelogic.Output;
-import gamelogic.Rule;
-import gamelogic.Species;
-import gamelogic.rules.GenerationRule;
+import gamelogic.*;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -55,8 +48,8 @@ public class NodalEditorModel {
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
 		infoPanels = new HashMap<Node, NodeInfoPanel>();
-		usingSpecies = true; // FIXME
-		ruleClass = GenerationRule.class; // FIXME
+		usingSpecies = false;
+		ruleClass = null;
 		speciesBoxWidth = 100;
 		speciesBoxHeight = 50;
 
@@ -182,6 +175,11 @@ public class NodalEditorModel {
 
 
 	// ========== Species and Rules ==========
+
+	public void setSpeciesRuleCreator(Class<? extends Rule> ruleClass) {
+		usingSpecies = true;
+		this.ruleClass = ruleClass;
+	}
 
 	public boolean isUsingSpecies() { return usingSpecies; }
 

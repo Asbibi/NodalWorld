@@ -96,6 +96,8 @@ public class NodalEditor extends JComponent {
 
 	// Species and Rules
 
+	public void setSpeciesRuleCreator(Class<? extends Rule> ruleClass) { model.setSpeciesRuleCreator(ruleClass); }
+
 	public boolean isUsingSpecies() { return model.isUsingSpecies(); }
 
 	public Class<? extends Rule> getRuleClass() { return model.getRuleClass(); }
@@ -171,5 +173,7 @@ public class NodalEditor extends JComponent {
 	// ========== Node Menu ==========
 
 	public void showNodeMenu(int x, int y) { nodeMenu.show(this, x, y); }
+
+	public void disable(String nodeName) { nodeMenu.disable(nodeName); }
 
 }

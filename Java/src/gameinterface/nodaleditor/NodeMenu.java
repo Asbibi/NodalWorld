@@ -14,6 +14,9 @@ import java.awt.event.ActionEvent;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+
 import java.util.function.Supplier;
 
 /**
@@ -22,7 +25,7 @@ import java.util.function.Supplier;
 public class NodeMenu extends JPopupMenu {
 
 	private int xInvoke, yInvoke;
-
+	private Map<String, AbstractAction> actions;
 	private Node newNode;
 
 	private Collection<ActionListener> actionListeners;
@@ -32,6 +35,7 @@ public class NodeMenu extends JPopupMenu {
 	*/ 
 	public NodeMenu() {
 		super("Add a node...");
+		actions = new HashMap<String, AbstractAction>();
 		newNode = null;
 		buildMenu();
 		actionListeners = new LinkedList<ActionListener>();
@@ -108,21 +112,26 @@ public class NodeMenu extends JPopupMenu {
 	}
 
 	private JMenuItem buildNodeItem(Supplier<Node> supplier) {
-		JMenuItem item = new JMenuItem(new AbstractAction(supplier.get().toString()) {
+		Node node = supplier.get();
+		actions.put(node.toString(), new AbstractAction(node.toString()) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newNode = supplier.get();
 				fireActionListeners();
 			}
 		});
+		JMenuItem item = new JMenuItem(actions.get(node.toString()));
 		return item;
 	}
 
 	/**
-	* @param itemName
+	* @param nodeName
 	*/ 
-	public void disable(String itemName) {
-		// TODO
+	public void disable(String nodeName) {
+		AbstractAction action = actions.get(nodeName);
+		if(action != null) {
+			action.setEnabled(false);
+		}
 	}
 
 

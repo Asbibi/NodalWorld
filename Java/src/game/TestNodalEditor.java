@@ -1,7 +1,7 @@
 package game;
 
-import gamelogic.GameManager;
-import gamelogic.Species;
+import gamelogic.*;
+import gamelogic.rules.*;
 import gameinterface.NodalEditor;
 
 import javax.swing.JFrame;
@@ -39,6 +39,10 @@ public class TestNodalEditor extends JFrame {
 		panel.setLayout(new BorderLayout());
 
 		NodalEditor editor = new NodalEditor(game, game.getGenNet());
+		editor.setSpeciesRuleCreator(GenerationRule.class);
+		editor.disable("Movement");
+		editor.disable("Death");
+		editor.disable("Current Species");
 		panel.add(editor, BorderLayout.CENTER);
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
