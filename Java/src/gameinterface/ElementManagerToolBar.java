@@ -54,7 +54,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		scrollList.addMouseListener(new MouseAdapter() {
 	         public void mouseClicked(MouseEvent me) {
 	             if (me.getClickCount() == 1) {
-	                JList<Element> target = (JList<Element>)me.getSource();
+	                JList<Element> target = (JList<Element>) (me.getSource());
 	                if (target == null)
 	                	return;
 	                int index = target.locationToIndex(me.getPoint());

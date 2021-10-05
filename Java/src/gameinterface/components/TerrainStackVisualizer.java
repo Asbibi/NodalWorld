@@ -69,6 +69,9 @@ public class TerrainStackVisualizer extends JComponent {
 		return new Dimension(computePreferredWidth(), computePreferredHeigth());
 	}
 
+	/**
+	* @return the terrain model
+	*/ 
 	public Terrain getTerrain() {
 		return terrain;
 	}
@@ -78,24 +81,6 @@ public class TerrainStackVisualizer extends JComponent {
 	*/ 
 	public int getFocusedLayer() {
 		return focusedLayer;
-	}
-
-	/**
-	* @return if only the focused layer should be displayed with colors
-	*/ 
-	public void focusNextLayer() {
-		if (focusedLayer < terrain.getSlots().size() -1) {
-			focusedLayer++;
-			revalidate();
-			repaint();
-		}
-	}
-	public void focusPreviousLayer() {
-		if (focusedLayer > 0) {
-			focusedLayer--;
-			revalidate();
-			repaint();
-		}
 	}
 
 	public boolean getOnlyFocusedInColor() {
@@ -167,12 +152,13 @@ public class TerrainStackVisualizer extends JComponent {
 	* Increases the index of the focused layer.
 	*/ 
 	public void focusNextLayer() {
-		if (focusedLayer < stack.size() -1) {
+		if (focusedLayer < terrain.getSlots().size() -1) {
 			focusedLayer++;
 			revalidate();
 			repaint();
 		}
 	}
+
 	/**
 	* Decreases the index of the focused layer.
 	*/
@@ -183,6 +169,7 @@ public class TerrainStackVisualizer extends JComponent {
 			repaint();
 		}
 	}
+
 	/**
 	* Flips if only the focused layer should be displayed with colors.
 	*/ 

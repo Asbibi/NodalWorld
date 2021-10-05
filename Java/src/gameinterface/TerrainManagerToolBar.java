@@ -55,9 +55,9 @@ public class TerrainManagerToolBar extends JToolBar {
 	
 	
 	/**
-	* @param the new terrain reference
+	* @param terrain
 	*/ 
-	public void setTerrain(TerrainStack terrain) {
+	public void setTerrain(Terrain terrain) {
 		this.terrain = terrain;
 		updateFromTerrain();
 	}

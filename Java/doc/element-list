@@ -1,5 +1,7 @@
 game
+gameinterface
 gamelogic
-gamelogic.actions
+gamelogic.initializer
 gamelogic.nodes
 gamelogic.rules
+gamelogic.terrains
