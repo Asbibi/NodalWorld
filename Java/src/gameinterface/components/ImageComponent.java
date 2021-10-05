@@ -38,16 +38,9 @@ public class ImageComponent extends JComponent{
 		
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                model.setIsPressed(true);
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
-                model.triggerActionListeners();
-                model.setIsPressed(false);
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                model.click();
             }
         });
         model.addChangeListener(e -> repaint());
@@ -89,8 +82,8 @@ public class ImageComponent extends JComponent{
 	/**
 	* @param if the image component should be enabled or not
 	*/ 
-    public void setIsEnabled(boolean pressed) {
-    	model.setIsEnabled(pressed);
+    public void setIsEnabled(boolean enabled) {
+    	model.setIsEnabled(enabled);
     }
 	/**
 	* @param the image displayed
@@ -104,7 +97,8 @@ public class ImageComponent extends JComponent{
 	*/ 
 	private void setImageFromFile() {		
 		imageChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("jpg","gif","png");
+		imageChooser.setAcceptAllFileFilterUsed(false);
+		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Images", "jpg","gif","png");
 		imageChooser.addChoosableFileFilter(imageFilter);
 		int result = imageChooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {			

@@ -163,7 +163,6 @@ public class GameFrame extends JFrame {
 - confirm dialog boxes when removing
 - find a way to ask to update toolbar if the gamemanager changes	=>	listeners ?
 - find a way to ask to update world if element image changed		=>		"
-- debug image component
 ------//----
 - restart with presets
 - saving
