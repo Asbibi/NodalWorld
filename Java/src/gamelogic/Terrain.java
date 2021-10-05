@@ -75,7 +75,7 @@ public class Terrain {
 	* Add a new slot on top of the others
 	*/ 
 	public void addSlot() {
-		slots.add(0, new TerrainSlot());
+		slots.add(new TerrainSlot());
 	}
 
 	/**
