@@ -20,10 +20,11 @@ public class IfElseNode<T> extends Node {
 	private Class<T> dataClass;
 
 	/**
+	* @param name 
 	* @param dataClass the class object representing the type of the input objects
 	*/ 
-	public IfElseNode(Class<T> dataClass) {
-		super("If Else");
+	public IfElseNode(String name, Class<T> dataClass) {
+		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("cond", Boolean.class));
 		addInput(new Input("val1", dataClass));

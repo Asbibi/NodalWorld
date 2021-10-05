@@ -20,10 +20,11 @@ public class EqualNode<T> extends Node {
 	private Class<T> dataClass;
 
 	/**
+	* @param name 
 	* @param dataClass the class object representing the type of the objects to test
 	*/ 
-	public EqualNode(Class<T> dataClass) {
-		super("Equals");
+	public EqualNode(String name, Class<T> dataClass) {
+		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));

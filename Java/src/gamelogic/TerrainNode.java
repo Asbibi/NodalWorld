@@ -18,7 +18,7 @@ public abstract class TerrainNode<T extends TerrainModel> extends Node {
 	public TerrainNode(String name, T model) {
 		super(name);
 		this.model = model;
-		addInput(new Input("surface", Surface.getEmpty()));
+		addInput(new Input("surface", Surface.class));
 	}
 
 	/**

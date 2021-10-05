@@ -25,7 +25,7 @@ public class RandIntNode extends Node {
 	public RandIntNode() {
 		super("Random Int");
 		rand = new Random();
-		addInput(new Input("bound", 10));
+		addInput(new Input("bound", Integer.class));
 		addOutput(new Output("val", Integer.class));
 	}
 

@@ -1,6 +1,8 @@
 package gameinterface.nodaleditor;
 
 import gamelogic.Node;
+import gamelogic.Surface;
+import gamelogic.Vec2D;
 import gamelogic.nodes.*;
 
 import javax.swing.JPopupMenu;
@@ -79,9 +81,14 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenu buildMenuUtils() {
 		JMenu menuUtils = new JMenu("Utils");
+		JMenu menuVariable = new JMenu("Variable");
+		menuUtils.add(menuVariable);
+		menuVariable.add(buildNodeItem(() -> new VariableNode<Boolean>("Variable : Bool", Boolean.class)));
+		menuVariable.add(buildNodeItem(() -> new VariableNode<Integer>("Variable : Int", Integer.class)));
+		menuVariable.add(buildNodeItem(() -> new VariableNode<Double>("Variable : Double", Double.class)));
+		menuVariable.add(buildNodeItem(() -> new VariableNode<Surface>("Variable : Surface", Surface.class)));
 		menuUtils.add(buildNodeItem(() -> new VecToIntsNode()));
 		menuUtils.add(buildNodeItem(() -> new IntsToVecNode()));
-		// TODO : constant value
 		return menuUtils;
 	}
 
@@ -106,7 +113,21 @@ public class NodeMenu extends JPopupMenu {
 		menuPredicates.add(buildNodeItem(() -> new NotNode()));
 		menuPredicates.add(buildNodeItem(() -> new AndNode()));
 		menuPredicates.add(buildNodeItem(() -> new OrNode()));
-		// TODO : equals, compare, if-else
+		JMenu menuEqual = new JMenu("Equal");
+		menuPredicates.add(menuEqual);
+		menuEqual.add(buildNodeItem(() -> new EqualNode<Integer>("Equal : Int", Integer.class)));
+		menuEqual.add(buildNodeItem(() -> new EqualNode<Vec2D>("Equal : Vec", Vec2D.class)));
+		menuEqual.add(buildNodeItem(() -> new EqualNode<Surface>("Equal : Surface", Surface.class)));
+		JMenu menuCompare = new JMenu("Compare");
+		menuPredicates.add(menuCompare);
+		menuCompare.add(buildNodeItem(() -> new CompareNode<Integer>("Compare : Int", Integer.class)));
+		menuCompare.add(buildNodeItem(() -> new CompareNode<Double>("Compare : Double", Double.class)));
+		JMenu menuIfElse = new JMenu("If-Else");
+		menuPredicates.add(menuIfElse);
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Integer>("If-Else : Int", Integer.class)));
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Vec2D>("If-Else : Vec", Vec2D.class)));
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Double>("If-Else : Double", Double.class)));
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Surface>("If-Else : Surface", Surface.class)));
 		return menuPredicates;
 	}
 

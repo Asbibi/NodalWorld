@@ -101,6 +101,8 @@ public abstract class Node {
 	}
 
 	/**
+	* Compute data using potential inputs and store result in potential outputs.
+	* 
 	* @param game
 	*/ 
 	public abstract void evaluate(GameManager game);

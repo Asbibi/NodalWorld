@@ -32,33 +32,28 @@ public class Input {
 		this.dataClass = dataClass;
 		source = null;
 
-		manual = false;
-		value = null;
-	}
+		if(dataClass.equals(Boolean.class)) {
+			manual = true;
+			value = false;
 
-	public Input(String name, Boolean val) {
-		this(name, Boolean.class);
-		manual = true;
-		value = val;
-	}
+		} else if(dataClass.equals(Integer.class)) {
+			manual = true;
+			value = 0;
 
-	public Input(String name, Integer val) {
-		this(name, Integer.class);
-		manual = true;
-		value = val;
-	}
+		} else if(dataClass.equals(Double.class)) {
+			manual = true;
+			value = 0.;
 
-	public Input(String name, Double val) {
-		this(name, Double.class);
-		manual = true;
-		value = val;
-	}
+		} else if(dataClass.equals(Surface.class)) {
+			manual = true;
+			value = Surface.getEmpty();
 
-	public Input(String name, Surface val) {
-		this(name, Surface.class);
-		manual = true;
-		value = val;
-	} 
+		} else {
+			manual = false;
+			value = null;
+
+		}
+	}
 
 	@Override
 	public boolean equals(Object o) {

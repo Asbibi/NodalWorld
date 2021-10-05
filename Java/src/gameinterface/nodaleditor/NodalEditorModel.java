@@ -100,7 +100,7 @@ public class NodalEditorModel {
 		NodeBox box = new NodeBox(node, x, y);
 		boxes.add(box);
 
-		NodeInfoPanel infoPanel = new NodeInfoPanel(node);
+		NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
 		infoPanels.put(node, infoPanel);
 
 		clearSelection();

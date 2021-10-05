@@ -21,10 +21,11 @@ public class CompareNode<T extends Comparable<T>> extends Node {
 	private Class<T> dataClass;
 
 	/**
+	* @param name
 	* @param dataClass the class object representing the type of the objects to compare
 	*/ 
-	public CompareNode(Class<T> dataClass) {
-		super("Compare");
+	public CompareNode(String name, Class<T> dataClass) {
+		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("val1", dataClass));
 		addInput(new Input("val2", dataClass));

@@ -46,6 +46,8 @@ public class GameManager {
 		terrain = new Terrain(width, height, 1);
 
 		surfaces = new LinkedList<Surface>();
+		surfaces.add(Surface.getEmpty());
+
 		species = new LinkedList<Species>();
 
 		speciesToGenRule = new HashMap<Species, GenerationRule>();
