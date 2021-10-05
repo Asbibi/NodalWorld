@@ -39,6 +39,24 @@ public class GameFrame extends JFrame {
 		worldPanel = new WorldPanel(gameManager);
 		controlPanel = new ControlPanel(gameManager);
 		setupUI();
+		/*
+		 addWindowListener(new WindowAdapter() {
+	      	public void windowClosing(WindowEvent we) {
+		        int result = JOptionPane.showConfirmDialog(frame,
+		            "Do you want to Save ?", "Save",
+		            JOptionPane.YES_NO_OPTION);
+		        if (result == JOptionPane.YES_OPTION) {
+		        	// ... save dialog box + save game
+		          	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        }
+		        else if (result == JOptionPane.NO_OPTION)
+		          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        else
+		          frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		      }
+		  });
+		 */
+		
 		updateWorld(0);
 		worldPanel.resetTileSizeToMinimal();
 	}
@@ -160,11 +178,10 @@ public class GameFrame extends JFrame {
 
 
 /* TODO :
-- confirm dialog boxes when removing
 - find a way to ask to update toolbar if the gamemanager changes	=>	listeners ?
 - find a way to ask to update world if element image changed		=>		"
 ------//----
 - restart with presets
-- saving
+- saving (+ saving on exit)
 - loading as restart
 */
