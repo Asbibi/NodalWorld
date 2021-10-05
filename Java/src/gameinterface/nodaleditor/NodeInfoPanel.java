@@ -14,10 +14,15 @@ import javax.swing.event.ChangeEvent;
 import java.awt.Component;
 
 /**
-*
+* Info panel of a node, allows the user to manually set values in unconnected inputs that allow it.
+* 
+* @see Input
 */ 
 public class NodeInfoPanel extends JPanel {
 
+	/**
+	* @param node
+	*/ 
 	public NodeInfoPanel(Node node) {
 		super();
 

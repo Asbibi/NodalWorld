@@ -37,7 +37,8 @@ public class GameManager {
 	private Network terrainNet, genNet, moveNet, deathNet;
 
 	/**
-	*
+	* @param width
+	* @param height
 	*/ 
 	public GameManager(int width, int height) {
 		frame = 0;
@@ -81,7 +82,7 @@ public class GameManager {
 
 	/**
 	 * Mainly used for display on the interface
-	* @return the current terrains stack
+	* @return the current terrain
 	*/
 	public Terrain getTerrain() { return terrain; }
 	

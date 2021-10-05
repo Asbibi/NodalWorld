@@ -19,9 +19,11 @@ import java.util.Collection;
 import java.lang.Class;
 
 /**
+* The controller class for nodal editors. 
+* 
 * @see Network
 * @see Node
-* @see GameManager
+* @see NodeEditorBuilder
 */ 
 public class NodalEditor extends JComponent {
 
@@ -30,7 +32,8 @@ public class NodalEditor extends JComponent {
 	private NodalEditorUI ui;
 
 	/**
-	*
+	* @param game
+	* @param network
 	*/ 
 	public NodalEditor(GameManager game, Network network) {
 		super();

@@ -12,8 +12,17 @@ import javax.swing.event.ChangeEvent;
 
 import java.awt.BorderLayout;
 
+/**
+* A class with only static methods, meant to build the standard node editors we use in the software.
+*  
+* @see NodalEditor
+*/ 
 public class NodalEditorBuilder {
 
+	/**
+	* @param game
+	* @return a tabbed pane containing nodal editors for : terrain, generation, movement and death
+	*/ 
 	public static JTabbedPane buildTabbedEditors(GameManager game) {
 		JTabbedPane tabs = new JTabbedPane();
 
@@ -25,6 +34,10 @@ public class NodalEditorBuilder {
 		return tabs;
 	}
 
+	/**
+	* @param game
+	* @return nodal editor for the game's terrain network
+	*/ 
 	public static JPanel buildTerrainEditor(GameManager game) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -51,6 +64,10 @@ public class NodalEditorBuilder {
 		return panel;
 	}
 
+	/**
+	* @param game
+	* @return nodal editor for the game's generation network
+	*/ 
 	public static JPanel buildGenerationEditor(GameManager game) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -78,6 +95,10 @@ public class NodalEditorBuilder {
 		return panel;
 	}
 
+	/**
+	* @param game
+	* @return nodal editor for the game's movement network
+	*/ 
 	public static JPanel buildMovementEditor(GameManager game) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -104,6 +125,10 @@ public class NodalEditorBuilder {
 		return panel;
 	}
 
+	/**
+	* @param game
+	* @return nodal editor for the game's death network
+	*/ 
 	public static JPanel buildDeathEditor(GameManager game) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());

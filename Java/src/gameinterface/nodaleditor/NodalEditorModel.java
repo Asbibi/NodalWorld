@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.lang.Class;
 
 /**
+* The model behind the nodal editor.
+* It uses boxes and ports for creating and suppressing connections in the network. 
+*  
 * @see NodalEditor
 */ 
 public class NodalEditorModel {
@@ -41,7 +44,8 @@ public class NodalEditorModel {
 	private Collection<ChangeListener> changeListeners;
 
 	/**
-	*
+	* @param game
+	* @param network
 	*/ 
 	public NodalEditorModel(GameManager game, Network network) {
 		this.game = game;
@@ -72,13 +76,16 @@ public class NodalEditorModel {
 
 	// ========== Game ==========
 
+	/**
+	* @return the game manager
+	*/ 
 	public GameManager getGameManager() { return game; }
 
 
 	// ========== Network ==========
 
 	/**
-	* @return the network the model points to
+	* @return the network the model represents
 	*/ 
 	public Network getNetwork() { return network; }
 
@@ -103,6 +110,10 @@ public class NodalEditorModel {
 		triggerChangeListeners();
 	}
 
+	/**
+	* @param portOut
+	* @param portIn
+	*/ 
 	public void link(Port portOut, Port portIn) {
 		Node source = portOut.getBox().getNode();
 		Output output = portOut.getOutput();
@@ -114,6 +125,9 @@ public class NodalEditorModel {
 		}
 	}
 
+	/**
+	* @param port
+	*/ 
 	public void unlink(Port port) {
 		if(port.hasOutput() && port.getOutput().hasTarget()) {
 			Node source = port.getBox().getNode();
@@ -138,6 +152,10 @@ public class NodalEditorModel {
 	*/ 
 	public Collection<NodeBox> getBoxes() { return boxes; }
 
+	/**
+	* @param node 
+	* @return the box corresponding to the given node (if it exists)
+	*/ 
 	public NodeBox getBox(Node node) {
 		Optional<NodeBox> opt = boxes.stream()
 									.filter(box -> box.getNode().equals(node))
@@ -145,6 +163,11 @@ public class NodalEditorModel {
 		return opt.orElse(null);
 	}
 
+	/**
+	* @param x
+	* @param y
+	* @return a box found at the given position (if it exists)
+	*/ 
 	public NodeBox getBox(int x, int y) {
 		Optional<NodeBox> opt = boxes.stream()
 									.filter(box -> box.hit(x, y))
@@ -152,6 +175,10 @@ public class NodalEditorModel {
 		return opt.orElse(null);
 	}
 
+	/**
+	* @param input
+	* @return the port corresponding to the given input (if it exists)
+	*/ 
 	public Port getPort(Input input) {
 		Optional<Port> opt = boxes.stream()
 								.flatMap(box -> box.getPorts().stream())
@@ -160,6 +187,10 @@ public class NodalEditorModel {
 		return opt.orElse(null);
 	}
 
+	/**
+	* @param output
+	* @return the port corresponding to the given output (if it exists)
+	*/ 
 	public Port getPort(Output output) {
 		Optional<Port> opt = boxes.stream()
 								.flatMap(box -> box.getPorts().stream())
@@ -168,6 +199,11 @@ public class NodalEditorModel {
 		return opt.orElse(null);
 	}
 
+	/**
+	* @param x
+	* @param y
+	* @return a port found at the given position (if it exists)
+	*/ 
 	public Port getPort(int x, int y) {
 		Optional<Port> opt = boxes.stream()
 								.flatMap(box -> box.getPorts().stream())
@@ -179,23 +215,46 @@ public class NodalEditorModel {
 
 	// ========== Rules and Terrains ==========
 
+	/**
+	* Enables the editor to handle rules and species
+	*  
+	* @param ruleClass the specific rule class to handle
+	*/ 
 	public void setRuleCreator(Class<? extends Rule> ruleClass) {
 		usingRules = true;
 		this.ruleClass = ruleClass;
 	}
 
+	/**
+	* @return true if the editor can handle rules, otherwise false
+	*/ 
 	public boolean isUsingRules() { return usingRules; }
 
+	/**
+	* @return the specific rule class the editor can handle
+	*/ 
 	public Class<? extends Rule> getRuleClass() { return ruleClass; }
 
+	/**
+	* Enables the editor th handle terrains
+	*/ 
 	public void setTerrainCreator() {
 		usingTerrains = true;
 	}
 
+	/**
+	* @return true if the editor can handle terrains, otherwise false
+	*/ 
 	public boolean isUsingTerrains() { return usingTerrains; }
 
+	/**
+	* @return width of side box for specific handling behaviours (rules or terrains)
+	*/ 
 	public int getSideBoxWidth() { return sideBoxWidth; }
 
+	/**
+	* @return height of side box for specific handling behaviours (rules or terrains)
+	*/ 
 	public int getSideBoxHeight() { return sideBoxHeight; }
 
 

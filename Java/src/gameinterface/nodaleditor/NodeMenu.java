@@ -20,7 +20,9 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 /**
-*
+* Free floating menu that allows the user to choose new nodes to add in the nodal editor
+* 
+* @see Node
 */ 
 public class NodeMenu extends JPopupMenu {
 
@@ -169,15 +171,27 @@ public class NodeMenu extends JPopupMenu {
 
 	// ========== New Node ==========
 
+	/**
+	* @return the newly created node (if there's one)
+	*/ 
 	public Node getNewNode() { return newNode; }
 
 
 	// ========== Action Listeners ==========
 
+	/**
+	* @param listener
+	*/ 
 	public void addActionListener(ActionListener listener) { actionListeners.add(listener); }
 
+	/**
+	* @param listener
+	*/ 
 	public void removeActionListener(ActionListener listener) { actionListeners.remove(listener); }
 
+	/**
+	*
+	*/ 
 	public void fireActionListeners() {
 		for(ActionListener listener : actionListeners) {
 			listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "new node"));

@@ -4,7 +4,11 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 /**
-*
+* Geometric representation and interaction methods for an input or output in the nodal editor.
+* 
+* @see Input
+* @see Output
+* @see NodeBox
 */ 
 public class Port {
 

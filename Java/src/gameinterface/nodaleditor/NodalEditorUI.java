@@ -22,6 +22,8 @@ import java.awt.FontMetrics;
 import java.util.Optional;
 
 /**
+* The presentation (view + interaction) of the nodal editor. 
+* 
 * @see NodalEditor
 */ 
 public class NodalEditorUI {
@@ -29,6 +31,8 @@ public class NodalEditorUI {
 	// ========== Interaction ==========
 
 	/**
+	* Initializes the editor's interaction behaviour 
+	* 
 	* @param editor
 	*/ 
 	public void installUI(NodalEditor editor) {
