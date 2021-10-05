@@ -20,11 +20,6 @@ public class TestGameInterface {
 	public static void main(String[] args) {
 		gameManager = new GameManager(new TestLayerInitializer(W,H));
 		
-		TerrainLayer waterLayer = new TerrainLayer(W,H);
-		for (int i = 0; i< W; i++)
-			waterLayer.setSurfaceAt(new Vec2D(i,0), gameManager.getSurface(1));
-		gameManager.pushTerrain(waterLayer);
-		
 		Species birch = gameManager.getSpecies(3);
 		Species human = gameManager.getSpecies(0);
 		birch.addMemberAt(new Vec2D(5,5), 5);

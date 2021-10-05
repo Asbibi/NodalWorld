@@ -105,10 +105,6 @@ public class GameFrame extends JFrame {
 		menuBar.add(speedButton);
 		
 		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
-		JSeparator separator1 = new JSeparator(SwingConstants.VERTICAL);
-		separator1.setPreferredSize(new Dimension(2, 25));
-		separator1.setForeground(separatorColor);
-		menuBar.add(separator1);
 		
 		menuBar.add(gridButton);
 		menuBar.add(detailButton);	
@@ -117,10 +113,6 @@ public class GameFrame extends JFrame {
 		menuBar.add(zoomResetButton);
 		
 		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
-		/*JSeparator separator2 = new JSeparator(SwingConstants.VERTICAL);
-		separator2.setPreferredSize(new Dimension(2, 25));
-		separator2.setForeground(separatorColor);		
-		menuBar.add(separator2);*/
 		
 		menuBar.add(restartButton);
 	    setJMenuBar(menuBar);
@@ -172,7 +164,6 @@ public class GameFrame extends JFrame {
 - find a way to ask to update toolbar if the gamemanager changes	=>	listeners ?
 - find a way to ask to update world if element image changed		=>		"
 - debug image component
-- terrain visualizer : when changing the focused layer, move the JScrollPane parent slider to center the view on the displayed layer
 ------//----
 - restart with presets
 - saving

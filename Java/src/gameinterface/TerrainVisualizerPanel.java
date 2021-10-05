@@ -48,9 +48,18 @@ public class TerrainVisualizerPanel extends JPanel {
 		focusUp.setPreferredSize(buttonDimension);
 		focusDown.setPreferredSize(buttonDimension);
 		focusColor.setPreferredSize(buttonDimension);
-		focusUp.addActionListener( e -> {visualizer.focusPreviousLayer();updateLayerLabelText();} );
-		focusDown.addActionListener( e -> {visualizer.focusNextLayer();updateLayerLabelText();} );
-		focusColor.addActionListener( e -> {visualizer.flipOnlyFocusedInColor();updateLayerLabelText();} );
+		focusUp.addActionListener( e -> {
+			visualizer.focusPreviousLayer();
+			updateLayerLabelText();
+			} );
+		focusDown.addActionListener( e -> {
+			visualizer.focusNextLayer();
+			updateLayerLabelText();
+			} );
+		focusColor.addActionListener( e -> {
+			visualizer.flipOnlyFocusedInColor();
+			updateLayerLabelText();
+			} );
 		visuVectors = new TerrainStackVisualizerVectors(visualizer);		
 		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);		
 		separator.setForeground(GameFrame.getSeparatorColor());

@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 
 import gamelogic.TerrainLayer;
 
@@ -152,7 +153,14 @@ public class TerrainStackVisualizer extends JComponent {
 		}
 		return (max_wPh + 5) * delta_y;
 	}
-	
+	/**
+	* Sets the parent's scroll bar position (the parent should be a JScrollPane) to be centered on the focused layer
+	*/
+	public void setParentScrollPosition(int scrollPosition) {
+		JScrollPane scrollParent = (JScrollPane)(getParent().getParent());
+		if (scrollParent != null)
+			scrollParent.getVerticalScrollBar().setValue(scrollPosition);
+	}
 	
 	
 	

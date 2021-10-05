@@ -38,6 +38,7 @@ public class TerrainStackVisualizerView {
 				focus = true;
 				paintOneLayer(g2d, model.getStack().get(i), delta_x, y, delta_x, delta_y, focus);
 				paintBorderLayer(g2d, model.getStack().get(i), delta_x, y, delta_x, delta_y);
+				model.setParentScrollPosition(y - model.getStack().get(i).getWidth() * delta_y + 0*delta_y);
 				y -= model.getOffset_Focus_y();
 				focus = false;
 			}
@@ -70,7 +71,7 @@ public class TerrainStackVisualizerView {
 					paintEmptySurface(g2d, x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y, focus);
 				else
 					paintSurface(g2d, focus ? surface.getColor() : TerrainStackVisualizer.getUnfocusedColor(), x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y);
-			}		
+			}
 	}
 	/**
 	* The paint method for the border of a layer
