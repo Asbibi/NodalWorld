@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.lang.StringBuilder;
 import java.lang.Class;
 
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
 /**
 * The game manager is responsible for the initialization and evolution of the game state at each frame using the rules defined by the user.
 * 
@@ -36,6 +39,8 @@ public class GameManager {
 
 	private Network terrainNet, genNet, moveNet, deathNet;
 
+	private List<ChangeListener> gameListeners, surfaceListeners, speciesListeners;
+
 	/**
 	* @param width
 	* @param height
@@ -61,6 +66,10 @@ public class GameManager {
 		genNet = new Network();
 		moveNet = new Network();
 		deathNet = new Network();
+
+		gameListeners = new LinkedList<ChangeListener>();
+		surfaceListeners = new LinkedList<ChangeListener>();
+		speciesListeners = new LinkedList<ChangeListener>();
 	}
 
 	/**
@@ -125,6 +134,7 @@ public class GameManager {
 	*/
 	public void addSurface(Surface surf) {
 		surfaces.add(surf);
+		triggerSurfaceListeners();
 	}
 
 	/**
@@ -159,7 +169,10 @@ public class GameManager {
 	/**
 	* @param sp
 	*/
-	public void addSpecies(Species sp) { species.add(sp); }
+	public void addSpecies(Species sp) {
+		species.add(sp);
+		triggerSpeciesListeners();
+	}
 
 	/**
 	* @return the species being processed in the game loop
@@ -303,7 +316,7 @@ public class GameManager {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("Terrain : \n"); // HERE
+		sb.append("Terrain : \n");
 		int height = gridHeight();
 		int width = gridWidth();
 		for(int y=0; y<height; y++) {
@@ -329,6 +342,7 @@ public class GameManager {
 
 		return sb.toString();
 	}
+
 	public String arraysToString() {
 		StringBuilder sb = new StringBuilder();
 
@@ -348,4 +362,50 @@ public class GameManager {
 
 		return sb.toString();
 	}
+
+
+	// ========== Change Listeners ==========
+
+	/**
+	* The listener will receive an event when the game state gets updated 
+	* 
+	* @param listener
+	*/ 
+	public void addGameListener(ChangeListener listener) { gameListeners.add(listener); }
+
+	private void triggerGameListeners() {
+		for(ChangeListener listener : gameListeners) 
+			listener.stateChanged(new ChangeEvent(this));
+	}
+
+	/**
+	* The listener will receive an event when a surface is created, changed or removed
+	* 
+	* @param listener
+	*/ 
+	public void addSurfaceListener(ChangeListener listener) { surfaceListeners.add(listener); }
+
+	private void triggerSurfaceListeners() {
+		for(ChangeListener listener : surfaceListeners) 
+			listener.stateChanged(new ChangeEvent(this));
+	}
+
+	/**
+	* The listener will receive an event when a species is created, changed or removed
+	* 
+	* @param listener
+	*/ 
+	public void addSpeciesListener(ChangeListener listener) { speciesListeners.add(listener); }
+
+	private void triggerSpeciesListeners() {
+		for(ChangeListener listener : speciesListeners) 
+			listener.stateChanged(new ChangeEvent(this));
+	}
+
+	/**
+	* The listener will receive an event when the terrain's slot list changes
+	* 
+	* @param listener
+	*/ 
+	public void addTerrainListener(ChangeListener listener) { terrain.addChangeListener(listener); }
 }

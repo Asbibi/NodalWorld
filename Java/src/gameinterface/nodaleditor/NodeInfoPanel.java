@@ -95,6 +95,16 @@ public class NodeInfoPanel extends JPanel {
 				});
 				panel.add(comboBox);
 
+				game.addSurfaceListener(new ChangeListener() {
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						comboBox.removeAllItems();
+						for(Surface surface : game.getSurfaceArray()) 
+							comboBox.addItem(surface);
+						comboBox.setSelectedItem(input.getManualValue(Surface.class));
+					}
+				});
+
 			}
 		}
 

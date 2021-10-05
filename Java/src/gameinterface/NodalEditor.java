@@ -38,6 +38,20 @@ public class NodalEditor extends JComponent {
 	public NodalEditor(GameManager game, Network network) {
 		super();
 
+		game.addTerrainListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				repaint();
+			}
+		});
+
+		game.addSpeciesListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				repaint();
+			}
+		});
+
 		model = new NodalEditorModel(game, network);
 		model.addChangeListener(new ChangeListener() {
 			@Override

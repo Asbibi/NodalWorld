@@ -2,6 +2,10 @@ package gamelogic;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
+
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 /**
 * Representation of the terrain as a list of slots.
@@ -16,6 +20,8 @@ public class Terrain {
 	private int triggerTime;
 	private List<TerrainSlot> slots;
 
+	private List<ChangeListener> listeners;
+
 	/**
 	* @param width
 	* @param height
@@ -26,6 +32,7 @@ public class Terrain {
 		this.height = height;
 		this.triggerTime = triggerTime;
 		slots = new ArrayList<TerrainSlot>();
+		listeners = new LinkedList<ChangeListener>();
 	}
 
 	/**
@@ -77,6 +84,7 @@ public class Terrain {
 	*/ 
 	public void addSlot() {
 		slots.add(new TerrainSlot());
+		triggerChangeListeners();
 	}
 
 	/**
@@ -92,6 +100,19 @@ public class Terrain {
 	*/ 
 	public TerrainSlot getSlot(int index) {
 		return slots.get(index);
+	}
+
+
+	// ========== Change Listeners ==========
+
+	/**
+	* @param listener
+	*/ 
+	public void addChangeListener(ChangeListener listener) { listeners.add(listener); }
+
+	private void triggerChangeListeners() {
+		for(ChangeListener listener : listeners) 
+			listener.stateChanged(new ChangeEvent(this));
 	}
 
 }
