@@ -28,9 +28,11 @@ public class TestGameLogic {
 	public GenerationRule makeGenRandomOnSoilRule() {
 		Network net = game.getGenNet();
 
-		RandIntNode nodeRandX = new RandIntNode(game.gridWidth()); 
+		RandIntNode nodeRandX = new RandIntNode(); 
+		nodeRandX.getInput("bound").setManualValue(game.gridWidth());
 		net.addNode(nodeRandX);
-		RandIntNode nodeRandY = new RandIntNode(game.gridHeight()); 
+		RandIntNode nodeRandY = new RandIntNode(); 
+		nodeRandY.getInput("bound").setManualValue(game.gridHeight());
 		net.addNode(nodeRandY);
 		IntsToVecNode nodeGather = new IntsToVecNode(); 
 		net.addNode(nodeGather);

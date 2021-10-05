@@ -12,17 +12,34 @@ import java.lang.Class;
 */ 
 public class Output {
 
+	private static int idCounter = 0;
+
+	private int id;
 	private String name;
 	private Class<?> dataClass;
 	private Object data;
+	private Input target;
 
 	/**
 	* @param name
 	* @param dataClass the class object representing the type of data the output can hold
 	*/ 
 	public Output(String name, Class<?> dataClass) {
+		id = idCounter;
+		idCounter++;
 		this.name = name;
 		this.dataClass = dataClass;
+		data = null;
+		target = null;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(!(o instanceof Output)) return false;
+
+		Output output = (Output) o;
+		return (this.id == output.id);
 	}
 
 	/**
@@ -58,6 +75,22 @@ public class Output {
 			return requestClass.cast(data);
 		}
 		return null;
+	}
+
+	public void setTarget(Input target) {
+		this.target = target;
+	}
+
+	public void removeTarget() {
+		this.target = null;
+	}
+
+	public boolean hasTarget() {
+		return target != null;
+	}
+
+	public Input getTarget() {
+		return target;
 	}
 
 }

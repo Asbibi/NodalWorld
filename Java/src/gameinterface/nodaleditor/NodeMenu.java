@@ -14,15 +14,20 @@ import java.awt.event.ActionEvent;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+
 import java.util.function.Supplier;
 
 /**
-*
+* Free floating menu that allows the user to choose new nodes to add in the nodal editor
+* 
+* @see Node
 */ 
 public class NodeMenu extends JPopupMenu {
 
 	private int xInvoke, yInvoke;
-
+	private Map<String, AbstractAction> actions;
 	private Node newNode;
 
 	private Collection<ActionListener> actionListeners;
@@ -32,6 +37,7 @@ public class NodeMenu extends JPopupMenu {
 	*/ 
 	public NodeMenu() {
 		super("Add a node...");
+		actions = new HashMap<String, AbstractAction>();
 		newNode = null;
 		buildMenu();
 		actionListeners = new LinkedList<ActionListener>();
@@ -42,6 +48,7 @@ public class NodeMenu extends JPopupMenu {
 
 	private void buildMenu() {
 		add(buildMenuRules());
+		add(buildMenuTerrain());
 		add(buildMenuRandom());
 		add(buildMenuUtils());
 		add(buildMenuOperations());
@@ -57,10 +64,16 @@ public class NodeMenu extends JPopupMenu {
 		return menuRules;
 	}
 
+	private JMenu buildMenuTerrain() {
+		JMenu menuTerrain = new JMenu("Terrain");
+		menuTerrain.add(buildNodeItem(() -> new TerrainNodeRectangle()));
+		return menuTerrain;
+	}
+
 	private JMenu buildMenuRandom() {
 		JMenu menuRandom = new JMenu("Random");
 		menuRandom.add(buildNodeItem(() -> new RandDoubleNode()));
-		// TODO : rand int within bounds
+		menuRandom.add(buildNodeItem(() -> new RandIntNode()));
 		return menuRandom;	
 	}
 
@@ -109,21 +122,25 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenuItem buildNodeItem(Supplier<Node> supplier) {
 		Node node = supplier.get();
-		JMenuItem item = new JMenuItem(new AbstractAction(node.toString()) {
+		actions.put(node.toString(), new AbstractAction(node.toString()) {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newNode = node;
+				newNode = supplier.get();
 				fireActionListeners();
 			}
 		});
+		JMenuItem item = new JMenuItem(actions.get(node.toString()));
 		return item;
 	}
 
 	/**
-	* @param itemName
+	* @param nodeName
 	*/ 
-	public void disable(String itemName) {
-		// TODO
+	public void disable(String nodeName) {
+		AbstractAction action = actions.get(nodeName);
+		if(action != null) {
+			action.setEnabled(false);
+		}
 	}
 
 
@@ -154,15 +171,27 @@ public class NodeMenu extends JPopupMenu {
 
 	// ========== New Node ==========
 
+	/**
+	* @return the newly created node (if there's one)
+	*/ 
 	public Node getNewNode() { return newNode; }
 
 
 	// ========== Action Listeners ==========
 
+	/**
+	* @param listener
+	*/ 
 	public void addActionListener(ActionListener listener) { actionListeners.add(listener); }
 
+	/**
+	* @param listener
+	*/ 
 	public void removeActionListener(ActionListener listener) { actionListeners.remove(listener); }
 
+	/**
+	*
+	*/ 
 	public void fireActionListeners() {
 		for(ActionListener listener : actionListeners) {
 			listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "new node"));

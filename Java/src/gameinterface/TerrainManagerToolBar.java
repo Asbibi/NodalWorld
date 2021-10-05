@@ -8,7 +8,7 @@ import javax.swing.JToolBar;
 
 import gameinterface.components.TerrainStackVisualizer;
 import gamelogic.Element;
-import gamelogic.TerrainStack;
+import gamelogic.Terrain;
 
 /**
 * Create an terrain stack manager as a tool bar.
@@ -16,16 +16,17 @@ import gamelogic.TerrainStack;
 * 
 * @see ControlPanel
 * @see TerrainVisualizerPanel
-* @see TerrainStack
+* @see Terrain
 */
 public class TerrainManagerToolBar extends JToolBar {	
-	private TerrainStack terrain;
+	
+	private Terrain terrain;
 	private TerrainVisualizerPanel visualizer;
 	private TextFixedFieldPanel widthField;
 	private TextFixedFieldPanel heightField;
 	private TextFieldPanel periodField;
 	
-	public TerrainManagerToolBar(TerrainStack terrain) {
+	public TerrainManagerToolBar(Terrain terrain) {
 		super(null, JToolBar.VERTICAL);
 		this.terrain = terrain;
 		setUpUI(terrain);
@@ -34,10 +35,10 @@ public class TerrainManagerToolBar extends JToolBar {
 	/**
 	* Sets up the UI of the terrain manager
 	*/ 
-	private void setUpUI(TerrainStack terrain) {
+	private void setUpUI(Terrain terrain) {
 		add(new JLabel("Terrain"));
 
-		visualizer = new TerrainVisualizerPanel(terrain.getStack());
+		visualizer = new TerrainVisualizerPanel(terrain);
 		add(visualizer);
 		
 		widthField = new TextFixedFieldPanel("Width");;
@@ -69,8 +70,8 @@ public class TerrainManagerToolBar extends JToolBar {
 			return;
 		
 		visualizer.repaint();
-		widthField.setLabelString(Integer.toString(terrain.getStackDimension().width));
-		heightField.setLabelString(Integer.toString(terrain.getStackDimension().height));
+		widthField.setLabelString(Integer.toString(terrain.getWidth()));
+		heightField.setLabelString(Integer.toString(terrain.getHeight()));
 		periodField.setFieldString(Integer.toString(terrain.getTriggerTime()));
 	}
 	

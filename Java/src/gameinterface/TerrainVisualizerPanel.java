@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import gameinterface.components.TerrainStackVisualizer;
 import gameinterface.components.TerrainStackVisualizerVectors;
-import gamelogic.TerrainLayer;
+import gamelogic.Terrain;
 
 /**
 * Complete visualizer of the layers of a terrainStack.
@@ -27,10 +27,10 @@ public class TerrainVisualizerPanel extends JPanel {
 	private JToggleButton focusColor;
 	
 
-	TerrainVisualizerPanel(List<TerrainLayer> stack) {
+	TerrainVisualizerPanel(Terrain terrain) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		visualizer = new TerrainStackVisualizer(stack);
+		visualizer = new TerrainStackVisualizer(terrain);
 		visuScrollPanel = new JScrollPane(visualizer) { @Override public Dimension getPreferredSize() { return visualizer.getParentDimension(); } };
 		visuScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(visuScrollPanel);

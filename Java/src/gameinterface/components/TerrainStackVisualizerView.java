@@ -5,7 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import gamelogic.Surface;
-import gamelogic.TerrainLayer;
+import gamelogic.Terrain;
+import gamelogic.TerrainSlot;
 import gamelogic.Vec2D;
 
 /**
@@ -21,10 +22,10 @@ public class TerrainStackVisualizerView {
 	* @param the TerrainStackVisualizer controller to display
 	*/
 	public void paint(Graphics2D g2d, TerrainStackVisualizer model) {
-		if (model.getStack() == null || model.getStack().isEmpty())
+		if (model.getTerrain().getSlots().isEmpty())
 			return;
 		
-		int numberOfLayers = model.getStack().size();
+		int numberOfLayers = model.getTerrain().getSlots().size();
 		int offset_y = model.getOffset_y();
 		final Integer delta_y = model.getDelta_y();
 		final Integer delta_x = model.getDelta_x();
@@ -36,18 +37,16 @@ public class TerrainStackVisualizerView {
 			y -= offset_y;
 			if (i == model.getFocusedLayer()) {
 				focus = true;
-				paintOneLayer(g2d, model.getStack().get(i), delta_x, y, delta_x, delta_y, focus);
-				paintBorderLayer(g2d, model.getStack().get(i), delta_x, y, delta_x, delta_y);
-				model.setParentScrollPosition(y - model.getStack().get(i).getWidth() * delta_y + 0*delta_y);
+				paintOneLayer(g2d, model.getTerrain(), model.getTerrain().getSlot(i), delta_x, y, delta_x, delta_y, focus);
+				paintBorderLayer(g2d, model.getTerrain(), delta_x, y, delta_x, delta_y);
+				model.setParentScrollPosition(y - model.getTerrain().getWidth() * delta_y + 0*delta_y);
 				y -= model.getOffset_Focus_y();
 				focus = false;
 			}
 			else
-				paintOneLayer(g2d, model.getStack().get(i), delta_x, y, delta_x, delta_y, focus);
+				paintOneLayer(g2d, model.getTerrain(), model.getTerrain().getSlot(i), delta_x, y, delta_x, delta_y, focus);
 		}
 	}
-	
-	
 	
 	
 	/**
@@ -60,19 +59,20 @@ public class TerrainStackVisualizerView {
 	* @param the delta_y of the controller
 	* @param is the layer focused
 	*/
-	private void paintOneLayer(Graphics2D g2d, TerrainLayer layer, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y, boolean focus) {
-		int w =layer.getWidth();
-		int h =layer.getHeight();
+	private void paintOneLayer(Graphics2D g2d, Terrain terrain, TerrainSlot slot, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y, boolean focus) {
+		int w = terrain.getWidth();
+		int h = terrain.getHeight();
 		
 		for (int x = 0; x < w; x++)		
 			for (int y = 0; y < h; y++) {
-				Surface surface = layer.surfaceAt(new Vec2D(x,y));
-				if (surface == null || surface ==Surface.getEmpty())
+				Surface surface = slot.isOccupied() ? slot.getTerrainNode().getSurfaceAt(new Vec2D(x,y)) : null;
+				if (surface == null || surface == Surface.getEmpty())
 					paintEmptySurface(g2d, x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y, focus);
 				else
 					paintSurface(g2d, focus ? surface.getColor() : TerrainStackVisualizer.getUnfocusedColor(), x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y);
 			}
 	}
+
 	/**
 	* The paint method for the border of a layer
 	* @param the Graphic Context to use to display the color wheel
@@ -82,9 +82,9 @@ public class TerrainStackVisualizerView {
 	* @param the delta_x of the controller
 	* @param the delta_y of the controller
 	*/
-	private void paintBorderLayer(Graphics2D g2d, TerrainLayer layer, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y) {
-		int w =layer.getWidth();
-		int h =layer.getHeight();
+	private void paintBorderLayer(Graphics2D g2d, Terrain terrain, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y) {
+		int w = terrain.getWidth();
+		int h = terrain.getHeight();
 				
 		int x = x_firstTile;
 		int y = y_firstTile;

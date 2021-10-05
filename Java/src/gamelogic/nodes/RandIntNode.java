@@ -17,31 +17,16 @@ import java.util.Random;
 */
 public class RandIntNode extends Node {
 
-	private int bound;
 	private Random rand;
 
 	/**
 	* @param bound
 	*/ 
-	public RandIntNode(int bound) {
-		super("Random Int" + bound);
-		this.bound = bound;
+	public RandIntNode() {
+		super("Random Int");
 		rand = new Random();
+		addInput(new Input("bound", 10));
 		addOutput(new Output("val", Integer.class));
-	}
-
-	/**
-	* @return the right bound of the random number generator range
-	*/ 
-	public int getBound() {
-		return bound;
-	}
-
-	/**
-	* @param b
-	*/ 
-	public void setBound(int b) {
-		bound = b;
 	}
 
 	/**
@@ -49,6 +34,7 @@ public class RandIntNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) {
+		Integer bound = getInput("bound").getData(Integer.class);
 		Integer val = rand.nextInt(bound);
 		getOutput("val").setData(val);
 	}

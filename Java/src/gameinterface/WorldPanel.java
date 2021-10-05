@@ -10,7 +10,7 @@ import gameinterface.components.TileComponent;
 import gamelogic.Entity;
 import gamelogic.GameManager;
 import gamelogic.Species;
-import gamelogic.TerrainStack;
+import gamelogic.Terrain;
 import gamelogic.Vec2D;
 
 /**
@@ -18,6 +18,7 @@ import gamelogic.Vec2D;
 * 
 * @see TerrainStack
 * @see TileComponent
+* @see Terrain
 */ 
 public class WorldPanel extends JPanel{
 	
@@ -36,7 +37,7 @@ public class WorldPanel extends JPanel{
 	private Dimension gridDimension;
 	private ArrayList<TileComponent> tiles;
 	private List<Species> speciesDisplayed;
-	private TerrainStack terrain;
+	private Terrain terrain;
 	private int speciesSlotNumber_sqrt;
 	private int usedTileSize;
 	private int minimalTileSize;
@@ -46,7 +47,7 @@ public class WorldPanel extends JPanel{
 	public WorldPanel(GameManager gameManager) {
 		tiles = new ArrayList<TileComponent>();
 		speciesDisplayed = gameManager.getSpeciesArray();
-		terrain = gameManager.getTerrainStack();
+		terrain = gameManager.getTerrain();
 		gridDimension = new Dimension(-1,-1);
 		speciesSlotNumber_sqrt = 0;
 		
@@ -141,7 +142,7 @@ public class WorldPanel extends JPanel{
 		if (terrain == null) {
 			gridDimension = new Dimension(-1,-1);			
 		} else {
-			setDimensions(terrain.getStackDimension());
+			setDimensions(new Dimension(terrain.getWidth(), terrain.getHeight()));
 			updateTilesSurface(terrain);
 		}
 	}	
@@ -188,7 +189,7 @@ public class WorldPanel extends JPanel{
  	* This method assumes that the dimensions of the terrain are the same as gridDimension.
 	* @param the terrain stack to represent
 	*/
-	private void updateTilesSurface(TerrainStack terrain) {
+	private void updateTilesSurface(Terrain terrain) {
 		int width = gridDimension.width;
 		for (int x = 0; x < gridDimension.width; x++)
 		{

@@ -1,7 +1,6 @@
 package gamelogic;
 
 import gamelogic.rules.*;
-import gamelogic.initializer.EmptyGameInitializer;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -9,12 +8,13 @@ import java.util.List;
 import java.util.LinkedList;
 
 import java.lang.StringBuilder;
+import java.lang.Class;
 
 /**
 * The game manager is responsible for the initialization and evolution of the game state at each frame using the rules defined by the user.
 * 
 * @see Rule
-* @see TerrainStack
+* @see Terrain
 * @see Species
 * @see Entity
 */
@@ -22,7 +22,7 @@ public class GameManager {
 
 	private Integer frame;
 
-	private TerrainStack terrainStack;
+	private Terrain terrain;
 
 	private List<Surface> surfaces;
 	private List<Species> species;
@@ -34,29 +34,16 @@ public class GameManager {
 	private Species currentSpecies;
 	private Entity currentEntity;
 
-	private Network genNet, moveNet, deathNet;
-
-	
+	private Network terrainNet, genNet, moveNet, deathNet;
 
 	/**
-	* Initialize the manager with an EmptyGameInitializer
-	*/ 
-	public GameManager() {
-		this(new EmptyGameInitializer());
-	}
-	/**
-	* Initialize the manager with an EmptyGameInitializer that will create an empty layer with given dimensions
+	* @param width
+	* @param height
 	*/ 
 	public GameManager(int width, int height) {
-		this(new EmptyGameInitializer(width, height));
-	}
-	/**
-	* @param intializer, it will set the gamemanager in a specific state. Usually used to create basic surfaces and species to use
-	*/ 
-	public GameManager(GameManagerInitializer initializer) {
 		frame = 0;
 
-		terrainStack = new TerrainStack();
+		terrain = new Terrain(width, height, 1);
 
 		surfaces = new LinkedList<Surface>();
 		species = new LinkedList<Species>();
@@ -68,56 +55,42 @@ public class GameManager {
 		currentSpecies = null;
 		currentEntity = null;
 
+		terrainNet = new Network();
 		genNet = new Network();
 		moveNet = new Network();
 		deathNet = new Network();
-		
-		initializer.initManager(this);
 	}
 
 	/**
 	* @return the grid's width
 	*/ 
 	public Integer gridWidth() {
-		return terrainStack.getStackDimension().width;
+		return terrain.getWidth();
 	}
 
 	/**
 	* @return the grid's height
 	*/
 	public Integer gridHeight() {
-		return terrainStack.getStackDimension().height;
+		return terrain.getHeight();
 	}
 
 	/**
 	* @return the current frame
 	*/
-	public Integer getFrame() {
-		return frame;
-	}
+	public Integer getFrame() { return frame; }
 
 	/**
 	 * Mainly used for display on the interface
-	* @return the current terrains stack
+	* @return the current terrain
 	*/
-	public TerrainStack getTerrainStack() {
-		return terrainStack;
-	}
+	public Terrain getTerrain() { return terrain; }
 	
 	/**
 	* @param pos
 	* @return the surface stored in the tile at the given position
 	*/
-	public Surface surfaceAt(Vec2D pos) {
-		return terrainStack.getSurfaceAt(pos);
-	}
-
-	/**
-	* @param terrain
-	*/
-	public void pushTerrain(TerrainLayer terrain) {
-		terrainStack.pushTerrain(terrain);
-	}
+	public Surface surfaceAt(Vec2D pos) { return terrain.getSurfaceAt(pos); }
 	
 	/**
 	* @return reference to the surface list
@@ -164,7 +137,10 @@ public class GameManager {
 	* @return the species corresponding to the given name, null if it doesn't exist
 	*/
 	public Species getSpecies(String name) {
-		return species.stream().filter(sp -> sp.toString().equals(name)).findFirst().orElse(null);
+		return species.stream()
+					.filter(sp -> sp.toString().equals(name))
+					.findFirst()
+					.orElse(null);
 	}
 	
 	/**
@@ -181,44 +157,37 @@ public class GameManager {
 	/**
 	* @param sp
 	*/
-	public void addSpecies(Species sp) {
-		species.add(sp);
-	}
+	public void addSpecies(Species sp) { species.add(sp); }
 
 	/**
 	* @return the species being processed in the game loop
 	*/
-	public Species getCurrentSpecies() {
-		return currentSpecies;
-	}
+	public Species getCurrentSpecies() { return currentSpecies; }
 
 	/**
 	* @return the entity being processed in the game loop
 	*/
-	public Entity getCurrentEntity() {
-		return currentEntity;
-	}
+	public Entity getCurrentEntity() { return currentEntity; }
+
+	/**
+	* @return the terrain network
+	*/ 
+	public Network getTerrainNet() { return terrainNet; }
 
 	/**
 	* @return the generation netork
 	*/ 
-	public Network getGenNet() {
-		return genNet;
-	}
+	public Network getGenNet() { return genNet; }
 
 	/**
 	* @return the movement netork
 	*/ 
-	public Network getMoveNet() {
-		return moveNet;
-	}
+	public Network getMoveNet() { return moveNet; }
 
 	/**
 	* @return the death netork
 	*/ 
-	public Network getDeathNet() {
-		return deathNet;
-	}
+	public Network getDeathNet() { return deathNet; }
 
 	/**
 	* Ensures that each species has at most one generation rule.
@@ -260,6 +229,27 @@ public class GameManager {
 		} else {
 			speciesToDeathRule.put(sp, rule);
 		}
+	}
+
+	public <R extends Rule> void connectRuleToSpecies(R rule, Species sp) {
+		if(rule instanceof GenerationRule) {
+			connectRuleToSpecies((GenerationRule) rule, sp);
+		} else if(rule instanceof MovementRule) {
+			connectRuleToSpecies((MovementRule) rule, sp);
+		} else if(rule instanceof DeathRule) {
+			connectRuleToSpecies((DeathRule) rule, sp);
+		}
+	}
+
+	public <R extends Rule> R getRule(Class<R> ruleClass, Species sp) {
+		if(ruleClass.equals(GenerationRule.class)) {
+			return ruleClass.cast(speciesToGenRule.get(sp));
+		} else if(ruleClass.equals(MovementRule.class)) {
+			return ruleClass.cast(speciesToMoveRule.get(sp));
+		} else if(ruleClass.equals(DeathRule.class)) {
+			return ruleClass.cast(speciesToDeathRule.get(sp));
+		}
+		return null;
 	}
 
 	/**
@@ -311,7 +301,7 @@ public class GameManager {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("Terrain : \n");
+		sb.append("Terrain : \n"); // HERE
 		int height = gridHeight();
 		int width = gridWidth();
 		for(int y=0; y<height; y++) {
