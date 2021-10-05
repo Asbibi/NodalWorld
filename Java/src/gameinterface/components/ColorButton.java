@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import gameinterface.ColorDialogBox;
-import gamelogic.TerrainStack;
 
 /**
 * A button that displays a color instead of the regular text/icon.

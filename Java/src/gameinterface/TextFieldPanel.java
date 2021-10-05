@@ -7,7 +7,6 @@ import javax.swing.*;
 
 import gameinterface.components.TerrainStackVisualizer;
 import gameinterface.components.TerrainStackVisualizerVectors;
-import gamelogic.TerrainLayer;
 
 /**
 * A property field for text that can be edited.

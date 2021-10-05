@@ -2,6 +2,7 @@ package game;
 
 import gameinterface.GameFrame;
 import gamelogic.GameManager;
+import gamelogic.GameManagerBuilder;
 
 /**
 * Main instancier of the game
@@ -29,7 +30,7 @@ public class Main {
 			}
 		}		
 		
-		gameManager = new GameManager(width, height);
+		gameManager = GameManagerBuilder.buildBasicGame(width, height);
 		gameFrame = new GameFrame(gameManager);
 	}
 }

@@ -62,7 +62,8 @@ public class Terrain {
 	*/ 
 	public Surface getSurfaceAt(Vec2D pos) {
 		if(slots.isEmpty()) return Surface.getEmpty();
-		for(TerrainSlot slot : slots) {
+		for(int i=slots.size()-1; i>= 0; i++) {
+			TerrainSlot slot = slots.get(i);
 			if(slot.isOccupied()) {
 				Surface surface = slot.getTerrainNode().getSurfaceAt(pos);
 				if(!surface.equals(Surface.getEmpty())) return surface;

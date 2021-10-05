@@ -1,5 +1,7 @@
 package gamelogic;
 
+import java.awt.Color;
+
 /**
 * Class with only static methods meant to build new game managers when the user wants to start a new project.
 * 
@@ -69,7 +71,7 @@ public class GameManagerBuilder {
 		grassB.setColor(new Color(50,182,98));
 	}
 
-	private static initBasicSpecies() {
+	private static void initBasicSpecies() {
 		human = new Species("Human", "res/Animal_Human.png");
 		chicken = new Species("Chicken", "res/Animal_Chicken.png");
 		boar = new Species("Boar", "res/Animal_Boar.png");
