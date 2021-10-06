@@ -1,7 +1,9 @@
 package gameinterface;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 import javax.swing.*;
 
@@ -61,6 +63,14 @@ public class GameFrame extends JFrame {
 		
 		updateWorld(0);
 		worldPanel.resetTileSizeToMinimal();
+
+		gameManager.addGameListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int frame = gameManager.getFrame();
+				updateWorld(frame);
+			}
+		});
 	}
 	
 	/**
@@ -82,7 +92,6 @@ public class GameFrame extends JFrame {
 		add(splitPanel);
 
         pack();
-        setVisible(true);
 	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    
 	    splitPanel.setDividerLocation(0.5);	// after pack() to let the split panel get its definitive size before setting the divider to the center (otherwise it's setting itself to 0)
@@ -162,22 +171,22 @@ public class GameFrame extends JFrame {
 	}
 	
 	/**
-	* @param the ActionListener to add to the pause button
+	* @param listener the ActionListener to add to the pause button
 	*/
-	public void addPauseActionListener(ActionListener action) {
-		pauseButton.addActionListener(action);
+	public void addPlayPauseListener(ItemListener listener) {
+		pauseButton.addItemListener(listener);
 	}
 	/**
-	* @param the ActionListener to add to the slow down button
+	* @param listener the ActionListener to add to the slow down button
 	*/
-	public void addSlowDownActionListener(ActionListener action) {
-		slowButton.addActionListener(action);
+	public void addSlowDownListener(ActionListener listener) {
+		slowButton.addActionListener(listener);
 	}
 	/**
-	* @param the ActionListener to add to the speed up button
+	* @param listener the ActionListener to add to the speed up button
 	*/
-	public void addSpeedUpActionListener(ActionListener action) {
-		speedButton.addActionListener(action);
+	public void addSpeedUpListener(ActionListener listener) {
+		speedButton.addActionListener(listener);
 	}
 
 	

@@ -17,19 +17,6 @@ import java.util.TimerTask;
 * @see WorldPanel
 */ 
 public class Main {
-
-	static GameManager gameManager;
-	static GameFrame gameFrame;
-
-	static TimerTask task = new TimerTask() {
-		@Override
-		public void run() {
-			int frame = gameManager.evolveGameState();
-			gameFrame.updateWorld(frame);
-			//System.out.println(gameManager);
-		}
-	};
-	
 	
 	/**
 	* Static main method that will instanciate the gamemanager and a gameframe linked to it
@@ -47,15 +34,10 @@ public class Main {
 			}
 		}	
 		
-		gameManager = GameManagerBuilder.buildBasicGame(width, height);
-		gameFrame = new GameFrame(gameManager);
+		GameManager game = GameManagerBuilder.buildBasicGame(width, height);
+		GameFrame window = new GameFrame(game);
+		GamePlayer player = new GamePlayer(game, window);
 
-		gameFrame.addPauseActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Timer timer = new Timer();
-				timer.scheduleAtFixedRate(task, 1000, 1000);
-			}
-		});
+		window.setVisible(true);
 	}
 }

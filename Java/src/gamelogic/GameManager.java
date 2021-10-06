@@ -270,7 +270,7 @@ public class GameManager {
 	/**
 	* Applies the rules and executes the corresponding actions in the following order : generation, movement, death.
 	*/ 
-	public int evolveGameState() {
+	public void evolveGameState() {
 		if(terrain.trigger(frame)) terrainNet.evaluate(this);
 
 		for(Species sp : species) {
@@ -278,18 +278,21 @@ public class GameManager {
 				genNet.evaluate(this);
 				apply(speciesToGenRule.get(sp), sp);
 			}
+
 			if(speciesToMoveRule.containsKey(sp)) {
 				moveNet.evaluate(this);
 				apply(speciesToMoveRule.get(sp), sp);
 			}
+			
 			if(speciesToDeathRule.containsKey(sp)) {
 				deathNet.evaluate(this);
 				apply(speciesToDeathRule.get(sp), sp);
 			}
 		}
 
+		triggerGameListeners();
+
 		frame++;			// TODO : think about frame number limit ?
-		return frame-1;
 	}
 
 	private void apply(GenerationRule rule, Species sp) {
