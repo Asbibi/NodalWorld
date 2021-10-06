@@ -5,8 +5,10 @@ import gamelogic.Node;
 import gamelogic.Input;
 import gamelogic.Surface;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
@@ -19,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 /**
 * Info panel of a node, allows the user to manually set values in unconnected inputs that allow it.
@@ -35,12 +38,12 @@ public class NodeInfoPanel extends JPanel {
 		super();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		add(new JLabel(node.toString()));
+		add(leftJustify(new JLabel(node.toString())));
+		add(Box.createVerticalStrut(20));
 
 		for(Input input : node.getInputs()) {
-			add(buildInputPanel(game, input));
+			add(leftJustify(buildInputPanel(game, input)));
 		}
 	}
 
@@ -49,6 +52,7 @@ public class NodeInfoPanel extends JPanel {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
 		panel.add(new JLabel(input.toString()));
+		panel.add(Box.createHorizontalStrut(10));
 
 		if(input.isManual()) {
 			if(input.getDataClass().equals(Boolean.class)) {
@@ -70,6 +74,7 @@ public class NodeInfoPanel extends JPanel {
 						input.setManualValue((Integer) (spinner.getModel().getValue()));
 					}
 				});
+				spinner.setMaximumSize(new Dimension(200, 25));
 				panel.add(spinner);
 
 			} else if(input.getDataClass().equals(Double.class)) {
@@ -80,6 +85,7 @@ public class NodeInfoPanel extends JPanel {
 						input.setManualValue((Double) (spinner.getModel().getValue()));
 					}
 				});
+				spinner.setMaximumSize(new Dimension(200, 25));
 				panel.add(spinner);
 
 			} else if(input.getDataClass().equals(Surface.class)) {
@@ -93,6 +99,7 @@ public class NodeInfoPanel extends JPanel {
 						input.setManualValue((Surface) (comboBox.getSelectedItem()));
 					}
 				});
+				comboBox.setMaximumSize(new Dimension(200, 25));
 				panel.add(comboBox);
 
 				game.addSurfaceListener(new ChangeListener() {
@@ -109,6 +116,13 @@ public class NodeInfoPanel extends JPanel {
 		}
 
 		return panel;
+	}
+
+	private JComponent leftJustify(JComponent panel)  {
+	    Box  b = Box.createHorizontalBox();
+	    b.add(panel);
+	    b.add(Box.createHorizontalGlue());
+	    return b;
 	}
 
 }
