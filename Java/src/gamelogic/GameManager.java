@@ -275,17 +275,14 @@ public class GameManager {
 
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp)) {
-				genNet.evaluate(this);
 				apply(speciesToGenRule.get(sp), sp);
 			}
 
 			if(speciesToMoveRule.containsKey(sp)) {
-				moveNet.evaluate(this);
 				apply(speciesToMoveRule.get(sp), sp);
 			}
-			
+
 			if(speciesToDeathRule.containsKey(sp)) {
-				deathNet.evaluate(this);
 				apply(speciesToDeathRule.get(sp), sp);
 			}
 		}
@@ -296,21 +293,30 @@ public class GameManager {
 	}
 
 	private void apply(GenerationRule rule, Species sp) {
-		currentSpecies = sp;
-		if(sp.trigger(frame)) rule.apply(this);
+		if(sp.trigger(frame)) {
+			currentSpecies = sp;
+			genNet.evaluate(this);
+			rule.apply(this);
+		}
 	}
 
 	private void apply(MovementRule rule, Species sp) {
-		for(Entity member : sp.getMembers()) {
-			currentEntity = member;
-			if(member.trigger(frame)) rule.apply(this);
+		if(sp.trigger(frame) && !sp.getMembers().isEmpty()) {
+			for(Entity member : sp.getMembers()) {
+				currentEntity = member;
+				moveNet.evaluate(this);
+				rule.apply(this);
+			}
 		}
 	}
 
 	private void apply(DeathRule rule, Species sp) {
-		for(Entity member : sp.getMembers()) {
-			currentEntity = member;
-			if(member.trigger(frame)) rule.apply(this);
+		if(sp.trigger(frame) && !sp.getMembers().isEmpty()) {
+			for(Entity member : sp.getMembers()) {
+				currentEntity = member;
+				deathNet.evaluate(this);
+				rule.apply(this);
+			}
 		}
 	}
 

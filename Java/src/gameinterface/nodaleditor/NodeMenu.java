@@ -89,6 +89,8 @@ public class NodeMenu extends JPopupMenu {
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Surface>("Variable : Surface", Surface.class)));
 		menuUtils.add(buildNodeItem(() -> new VecToIntsNode()));
 		menuUtils.add(buildNodeItem(() -> new IntsToVecNode()));
+		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
+		menuUtils.add(buildNodeItem(() -> new EntityNode()));
 		return menuUtils;
 	}
 

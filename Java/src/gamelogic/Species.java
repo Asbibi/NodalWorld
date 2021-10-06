@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import java.lang.Object;
+
 /**
 * A species represents a group of homogeneous entities, which all behave according to the same rules.
 * At each frame it can generate new entities.
@@ -14,6 +16,9 @@ import java.util.ArrayList;
 */ 
 public class Species extends Element{
 
+	private static int idCounter = 0;
+
+	private int id;
 	private Collection<Entity> members;
 	private Integer triggerTime;
 
@@ -30,10 +35,21 @@ public class Species extends Element{
 	* @param image of the species for display
 	*/ 
 	public Species(String name, Image image) {
+		id = idCounter;
+		idCounter++;
 		this.name = name;
 		this.image = image;
 		members = new ArrayList<Entity>();
 		triggerTime = 1;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o == null) return false;
+		if(!(o instanceof Species)) return false;
+
+		Species sp = (Species) o;
+		return id == sp.id;
 	}
 
 	/**

@@ -13,7 +13,6 @@ public class Entity {
 	private Species species;
 	private Vec2D pos;
 	private Integer birthTime;
-	private Integer triggerTime;
 
 	/**
 	* @param species
@@ -24,7 +23,6 @@ public class Entity {
 		this.species = species;
 		this.pos = pos;
 		this.birthTime = birthTime;
-		this.triggerTime = 1;
 	}
 
 	/**
@@ -53,28 +51,6 @@ public class Entity {
 	*/ 
 	public Integer getBirthTime() {
 		return birthTime;
-	}
-
-	/**
-	* @return the entity's trigger time
-	*/ 
-	public int getTriggerTime() {
-		return triggerTime;
-	}
-
-	/**
-	* @param time
-	*/ 
-	public void setTriggerTime(int time) {
-		triggerTime = Math.max(time, 1);
-	}
-
-	/**
-	* @param frame
-	* @return true if entity is triggered at the given frame, otherwise false
-	*/ 
-	public boolean trigger(int frame) {
-		return ((frame-birthTime)%triggerTime == 0);
 	}
 
 }
