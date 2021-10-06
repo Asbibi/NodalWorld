@@ -32,6 +32,17 @@ public class GameManagerBuilder {
 		initBasicSpecies();
 		initBasicGameManager(game);
 		return game;
+	}	
+
+	/**
+	* @param width
+	* @param height
+	* @return the newly created game manager with some basic settings
+	*/ 
+	public static GameManager buildFullLoadedGame(String saveFilePath) {
+		GameManager game = Saver.loadGame(saveFilePath);
+		game.initTransientFields();
+		return game != null ? game : buildEmptyGame(10,10) ;
 	}
 
 	/**
@@ -76,7 +87,9 @@ public class GameManagerBuilder {
 		chicken = new Species("Chicken", "res/Animal_Chicken.png");
 		boar = new Species("Boar", "res/Animal_Boar.png");
 		birch = new Species("Birch", "res/Tree_Birch.png");
+		birch.setTriggerTime(10);
 		oak = new Species("Oak", "res/Tree_Oak.png");
+		oak.setTriggerTime(15);
 	}
 
 	private static void initBasicGameManager(GameManager game) {

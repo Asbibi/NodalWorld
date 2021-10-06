@@ -60,7 +60,7 @@ public class ElementDetailPanel extends JPanel {
 	public void setElement(Element e) {
 		if (e!= null) {
 			nameField.setFieldString(e.toString());
-			imageField.setImage(e.getImage());	
+			imageField.setImage(e.getImageFile());	
 			imageField.setIsEnabled(true);
 		} else {
 			nameField.setFieldString("");
@@ -77,6 +77,6 @@ public class ElementDetailPanel extends JPanel {
 			return;		
 
 		e.setName(nameField.getFieldString());
-		e.setImage(imageField.getImage());
+		e.setImageFile(imageField.getImageFile());
 	}
 }

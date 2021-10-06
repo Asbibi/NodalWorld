@@ -1,10 +1,12 @@
 package gamelogic;
 
+import java.io.Serializable;
+
 /**
 * An instance of the Vec2D class is a 2D vector with integer coordinates.
 * Some basic operations for these vectors are implemented, such as addition, substraction and equality testing. 
 */
-public class Vec2D {
+public class Vec2D implements Serializable {
 
 	private Integer x, y;
 

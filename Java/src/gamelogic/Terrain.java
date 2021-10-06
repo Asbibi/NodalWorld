@@ -35,6 +35,11 @@ public class Terrain implements Serializable {
 		slots = new ArrayList<TerrainSlot>();
 		listeners = new LinkedList<ChangeListener>();
 	}
+	
+	public void initTransientFields() {
+		if (listeners == null)
+			listeners = new LinkedList<ChangeListener>();
+	}
 
 	/**
 	* @return the terrain's width

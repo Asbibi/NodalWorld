@@ -17,21 +17,20 @@ public class Species extends Element{
 	private Collection<Entity> members;
 	private Integer triggerTime;
 
+	
+	/**
+	* @param name
+	*/ 
+	public Species(String name) {
+		this(name, null);
+	}
+	
 	/**
 	* @param name
 	* @param path to the image
 	*/ 
 	public Species(String name, String imagePath) {
-		this(name, Toolkit.getDefaultToolkit().getImage(imagePath));
-	}
-	
-	/**
-	* @param name
-	* @param image of the species for display
-	*/ 
-	public Species(String name, Image image) {
-		this.name = name;
-		this.image = image;
+		super(name, imagePath);
 		members = new ArrayList<Entity>();
 		triggerTime = 1;
 	}

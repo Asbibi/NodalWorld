@@ -54,7 +54,7 @@ public class ControlPanel extends JPanel {
 		speciesToolBar = new ElementManagerToolBar<>(Species.class, gameManager, new SpeciesDetailPanel()) { 
 			@Override
 			public Species createElement(String name) {
-				return new Species(name, "");
+				return new Species(name);
 			}
 		};
 		toolBarPanel.add(terrainToolBar);

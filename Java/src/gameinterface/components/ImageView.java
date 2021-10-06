@@ -20,7 +20,7 @@ public class ImageView {
 			g.setColor(ImageComponent.getNullColor());
 	        g.fillRoundRect(0, 0, owner.getWidth(), owner.getHeight(), 0, 0);
 		} else {
-	        g.drawImage(owner.getImage(), 0, 0, owner.getWidth(), owner.getHeight(), owner);
+	        g.drawImage(image, 0, 0, owner.getWidth(), owner.getHeight(), owner);
 		}
 	}
 }

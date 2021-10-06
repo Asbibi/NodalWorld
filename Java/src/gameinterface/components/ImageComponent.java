@@ -11,6 +11,8 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import gamelogic.ImageFile;
+
 /**
 * A clickable display of an Image object.
 * When clicked, it opens a JFileChooser to replace the image.
@@ -27,7 +29,7 @@ public class ImageComponent extends JComponent{
 	
 	private ImageView view;
 	private ImageModel model;
-	private Image image;
+	private ImageFile image;
 	private JFileChooser imageChooser;
 	
 	public ImageComponent() {
@@ -73,6 +75,14 @@ public class ImageComponent extends JComponent{
 	* @return the image displayed
 	*/ 
 	public Image getImage() {
+		if (image == null)
+			return null;
+		return image.getImage();
+	}
+	/**
+	* @return the image displayed
+	*/ 
+	public ImageFile getImageFile() {
 		return image;
 	}
 
@@ -88,7 +98,7 @@ public class ImageComponent extends JComponent{
 	/**
 	* @param the image displayed
 	*/ 
-	public void setImage(Image image) {
+	public void setImage(ImageFile image) {
 		this.image = image;
 		model.triggerChangeListeners();
 	}
@@ -101,15 +111,9 @@ public class ImageComponent extends JComponent{
 		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Images", "jpg","gif","png");
 		imageChooser.addChoosableFileFilter(imageFilter);
 		int result = imageChooser.showOpenDialog(this);
-		if (result == JFileChooser.APPROVE_OPTION) {			
-			try {
-				File selectedImage = imageChooser.getSelectedFile();
-				System.out.println("Image set from file, yeay !");
-				setImage(ImageIO.read(selectedImage));
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedImage = imageChooser.getSelectedFile();
+			image = new ImageFile(selectedImage.getPath());
 		}		
 	}
 }

@@ -72,6 +72,16 @@ public class GameManager implements Serializable {
 		surfaceListeners = new LinkedList<ChangeListener>();
 		speciesListeners = new LinkedList<ChangeListener>();
 	}
+	
+	public void initTransientFields() {
+		terrain.initTransientFields();
+		if (gameListeners == null)
+			gameListeners = new LinkedList<ChangeListener>();
+		if (surfaceListeners == null)
+			surfaceListeners = new LinkedList<ChangeListener>();
+		if (speciesListeners == null)
+			speciesListeners = new LinkedList<ChangeListener>();		
+	}
 
 	/**
 	* @return the grid's width

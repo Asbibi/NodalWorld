@@ -19,8 +19,8 @@ public class Main {
 	* Static main method that will instanciate the gamemanager and a gameframe linked to it
 	*/ 
 	public static void main(String[] args) {
-		int width = 10;
-		int height = 10;
+		int width=-1;
+		int height=-1;
 		if (args.length > 1) {
 			try {
 				width = Integer.parseInt(args[0]);
@@ -31,8 +31,10 @@ public class Main {
 			}
 		}		
 		
-		gameManager = GameManagerBuilder.buildBasicGame(width, height);
+		//gameManager = GameManagerBuilder.buildBasicGame(width, height);
+		gameManager = GameManagerBuilder.buildFullLoadedGame("/savetest.nws");
 		gameFrame = new GameFrame(gameManager);
-		gameFrame.addSaveActionListener( e -> Saver.SaveGame("/savetest", gameManager) );
+		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, true) );
+		//gameFrame.addNew_LoadActionListener( e -> Saver.loadGame("/savetest.nws", gameManager) );
 	}
 }
