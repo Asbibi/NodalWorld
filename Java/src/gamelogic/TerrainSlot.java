@@ -1,12 +1,14 @@
 package gamelogic;
 
+import java.io.Serializable;
+
 /**
 * Representation of a slot used to link the terrain network to the actual terrain model.
 *  
 * @see Terrain
 * @see TerrainNode
 */ 
-public class TerrainSlot {
+public class TerrainSlot implements Serializable {
 
 	private boolean occupied;
 	private TerrainNode terrainNode;

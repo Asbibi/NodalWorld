@@ -180,6 +180,18 @@ public class GameFrame extends JFrame {
 		speedButton.addActionListener(action);
 	}
 
+	/**
+	* @param the ActionListener to add to the save button
+	*/
+	public void addSaveActionListener(ActionListener action) {
+		saveButton.addActionListener(action);
+	}
+	/**
+	* @param the ActionListener to add to the new/load button
+	*/
+	public void addNew_LoadActionListener(ActionListener action) {
+		newButton.addActionListener(action);
+	}
 	
 
 	/**

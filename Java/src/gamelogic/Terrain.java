@@ -1,6 +1,7 @@
 package gamelogic;
 
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -14,13 +15,13 @@ import javax.swing.event.ChangeEvent;
 * 
 * @see TerrainSlot
 */ 
-public class Terrain {
+public class Terrain implements Serializable {
 
 	private int width, height;
 	private int triggerTime;
 	private List<TerrainSlot> slots;
 
-	private List<ChangeListener> listeners;
+	private transient List<ChangeListener> listeners;
 
 	/**
 	* @param width

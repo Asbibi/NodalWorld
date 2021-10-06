@@ -1,5 +1,6 @@
 package gamelogic;
 
+import java.io.Serializable;
 import java.lang.Object;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ import java.util.Collection;
 * @see Network
 * @see TerminalNode
 */ 
-public abstract class Rule<T extends TerminalNode> {
+public abstract class Rule<T extends TerminalNode> implements Serializable {
 
 	private static int idCounter = 0;
 

@@ -3,6 +3,7 @@ package game;
 import gameinterface.GameFrame;
 import gamelogic.GameManager;
 import gamelogic.GameManagerBuilder;
+import gamelogic.Saver;
 
 /**
 * Main instancier of the game
@@ -32,5 +33,6 @@ public class Main {
 		
 		gameManager = GameManagerBuilder.buildBasicGame(width, height);
 		gameFrame = new GameFrame(gameManager);
+		gameFrame.addSaveActionListener( e -> Saver.SaveGame("/savetest", gameManager) );
 	}
 }

@@ -1,12 +1,14 @@
 package gamelogic;
 
+import java.io.Serializable;
+
 /**
 * Abstract representation of a terrain model.
 * Its only role is to determine if a given position contains surface or not.
 *  
 * @see TerrainNode
 */ 
-public interface TerrainModel {
+public interface TerrainModel extends Serializable {
 
 	/**
 	* @param pos 

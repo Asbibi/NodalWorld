@@ -1,6 +1,7 @@
 package gamelogic;
 
 import java.lang.Object;
+import java.io.Serializable;
 import java.lang.Class;
 
 /**
@@ -10,7 +11,7 @@ import java.lang.Class;
 * @see Input
 * @see Node
 */ 
-public class Output {
+public class Output implements Serializable {
 
 	private static int idCounter = 0;
 

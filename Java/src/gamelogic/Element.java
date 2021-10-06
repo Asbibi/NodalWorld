@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.Serializable;
 
 /**
 * A simple class that hold a name and image attributes, useful for reusing interface elements on species and surfaces
@@ -9,9 +10,9 @@ import java.awt.Toolkit;
 * @see Entity
 * @see Surface, Species
 */ 
-public class Element {
+public class Element implements Serializable {
 	protected String name = "";
-	protected Image image = null;
+	protected transient Image image = null;
 	
 	
 	/**
