@@ -20,17 +20,11 @@ public class ImageModel {
 
 
     /**
-    * @return if the clickable image is pressed
+    * Method to call when the image component is clicked
     */ 
-    public boolean getIsPressed() { return this.isPressed; }
-    /**
-    * @param if the clickable image is pressed
-    */ 
-    public void setIsPressed(boolean pressed) {
-        if (pressed != isPressed) {
-            this.isPressed = pressed;
-            //triggerChangeListeners();
-        }
+    public void click() {
+    	triggerActionListeners();
+    	triggerChangeListeners();
     }
     /**
     * @return if the clickable image is enabled (= clickable)
@@ -39,7 +33,7 @@ public class ImageModel {
     /**
     * @param if the clickable image is enabled (= clickable)
     */ 
-    public void setIsEnabled(boolean pressed) { isEnabled = !isEnabled; }
+    public void setIsEnabled(boolean enabled) { isEnabled = enabled; }
 
 
     /**
@@ -65,7 +59,7 @@ public class ImageModel {
     	if (isEnabled) {
             for (ActionListener listener : actionListeners) {
                 listener.actionPerformed(
-                        new ActionEvent(this, ActionEvent.ACTION_FIRST, "fire"));
+                        new ActionEvent(this, ActionEvent.ACTION_FIRST, "triggerAL"));
             }    		
     	}
     }

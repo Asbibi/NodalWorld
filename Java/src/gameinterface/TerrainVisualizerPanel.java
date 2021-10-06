@@ -20,11 +20,17 @@ import gamelogic.Terrain;
 public class TerrainVisualizerPanel extends JPanel {
 	private TerrainStackVisualizer visualizer;
 	private JScrollPane visuScrollPanel;
+	
 	private TerrainStackVisualizerVectors visuVectors;
 	private JButton focusUp;
 	private JButton focusDown;
 	private JLabel currentFocusLabel;
 	private JToggleButton focusColor;
+	
+	private JButton upButton;
+	private JButton downButton;
+	private JButton removeButton;
+	private JButton addButton;
 	
 
 	TerrainVisualizerPanel(Terrain terrain) {
@@ -36,12 +42,12 @@ public class TerrainVisualizerPanel extends JPanel {
 		add(visuScrollPanel);
 
 		Dimension buttonDimension = new Dimension(25,25);
-		JPanel buttonPanel = new JPanel();
-		ImageIcon upIcon = new ImageIcon("res/_System_UpArrow.png");
-		ImageIcon downIcon = new ImageIcon("res/_System_DownArrow.png");
+		JPanel focusButtonsPanel = new JPanel();
+		ImageIcon upFocusIcon = new ImageIcon("res/_System_EyeUpArrow.png");
+		ImageIcon downFocusIcon = new ImageIcon("res/_System_EyeDownArrow.png");
 		ImageIcon eyeIcon = new ImageIcon("res/_System_Eye.png");
-		focusUp = new JButton(upIcon);
-		focusDown = new JButton(downIcon);
+		focusUp = new JButton(upFocusIcon);
+		focusDown = new JButton(downFocusIcon);
 		currentFocusLabel = new JLabel();
 		updateLayerLabelText();
 		focusColor = new JToggleButton(eyeIcon);
@@ -63,13 +69,36 @@ public class TerrainVisualizerPanel extends JPanel {
 		visuVectors = new TerrainStackVisualizerVectors(visualizer);		
 		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);		
 		separator.setForeground(GameFrame.getSeparatorColor());
-		buttonPanel.add(visuVectors);
-		buttonPanel.add(separator);
-		buttonPanel.add(focusUp);
-		buttonPanel.add(focusDown);
-		buttonPanel.add(currentFocusLabel);
-		buttonPanel.add(focusColor);
-		add(buttonPanel);		
+		focusButtonsPanel.add(visuVectors);
+		focusButtonsPanel.add(separator);
+		focusButtonsPanel.add(focusUp);
+		focusButtonsPanel.add(focusDown);
+		focusButtonsPanel.add(currentFocusLabel);
+		focusButtonsPanel.add(focusColor);
+		add(focusButtonsPanel);	
+		
+		JPanel manageButtonsPanel = new JPanel();
+		ImageIcon addIcon = new ImageIcon("res/_System_Add.png");
+		ImageIcon upIcon = new ImageIcon("res/_System_UpArrow.png");
+		ImageIcon downIcon = new ImageIcon("res/_System_DownArrow.png");
+		ImageIcon delIcon = new ImageIcon("res/_System_DeleteCroce.png");
+		addButton = new JButton(addIcon);
+		upButton = new JButton(upIcon);
+		downButton = new JButton(downIcon);
+		removeButton = new JButton(delIcon);
+		addButton.setPreferredSize(buttonDimension);
+		upButton.setPreferredSize(buttonDimension);
+		downButton.setPreferredSize(buttonDimension);
+		removeButton.setPreferredSize(buttonDimension);
+		addButton.addActionListener( e -> addTerrainSlot() );
+		upButton.addActionListener( e -> moveUpTerrainSlot() );
+		downButton.addActionListener( e -> moveDownTerrainSlot() );
+		removeButton.addActionListener( e -> removeTerrainSlot() );
+		manageButtonsPanel.add(addButton);
+		manageButtonsPanel.add(upButton);
+		manageButtonsPanel.add(downButton);
+		manageButtonsPanel.add(removeButton);
+		add(manageButtonsPanel);
 	}
 	
 	/**
@@ -77,5 +106,25 @@ public class TerrainVisualizerPanel extends JPanel {
 	*/
 	private void updateLayerLabelText() {
 		currentFocusLabel.setText(Integer.toString(visualizer.getFocusedLayer()));
+	}
+
+	
+	private void addTerrainSlot() {
+		// TODO
+	}
+	private void moveUpTerrainSlot() {
+		// TODO
+	}
+	private void moveDownTerrainSlot() {
+		// TODO
+	}
+	private void removeTerrainSlot() {
+		int focused = visualizer.getFocusedLayer();
+		if (focused < 0)
+			return;
+		int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete the Slot n°" + focused +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
+        if (reply != JOptionPane.YES_OPTION)
+            return;
+		// TODO
 	}
 }
