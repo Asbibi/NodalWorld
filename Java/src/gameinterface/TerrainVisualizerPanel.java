@@ -112,7 +112,7 @@ public class TerrainVisualizerPanel extends JPanel {
 	private void addTerrainSlot() {
 		int focused = visualizer.getFocusedLayer();
 		visualizer.getTerrain().addSlot(focused);
-		revalidate();
+		visualizer.revalidate();
 		repaint();
 	}
 	private void moveUpTerrainSlot() {
@@ -137,7 +137,7 @@ public class TerrainVisualizerPanel extends JPanel {
     	if (focused != 0)
     		visualizer.focusPreviousLayer();
     	else {
-    		revalidate();
+    		visualizer.revalidate();
     		repaint();    		
     	}
 	}

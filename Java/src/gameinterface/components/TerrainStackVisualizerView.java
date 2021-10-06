@@ -39,7 +39,7 @@ public class TerrainStackVisualizerView {
 				focus = true;
 				paintOneLayer(g2d, model.getTerrain(), model.getTerrain().getSlot(i), delta_x, y, delta_x, delta_y, focus);
 				paintBorderLayer(g2d, model.getTerrain(), delta_x, y, delta_x, delta_y);
-				model.setParentScrollPosition(y - model.getTerrain().getWidth() * delta_y + 0*delta_y);
+				//model.setFocusedLayerPositionOnParentScrollBar(y - model.getTerrain().getWidth() * delta_y + 0*delta_y);
 				y -= model.getOffset_Focus_y();
 				focus = false;
 			}

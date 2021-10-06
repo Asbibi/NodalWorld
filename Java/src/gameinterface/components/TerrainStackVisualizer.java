@@ -30,6 +30,8 @@ public class TerrainStackVisualizer extends JComponent {
 	private int delta_y = 3;
 	private int offsetFactor_y = 5;
 	
+	private int focusedLayerPositionOnParentScrollBar = 0;
+	
 	
 	
 	public TerrainStackVisualizer(Terrain terrain) {
@@ -122,7 +124,7 @@ public class TerrainStackVisualizer extends JComponent {
 	* @return the width this should have
 	*/
 	private int computePreferredWidth() {
-		return (terrain.getWidth()+terrain.getHeight()) * delta_x;
+		return (terrain.getWidth()+terrain.getHeight()) * delta_x + 4;	// + 4 is because we have a border with a stroke size of 2 that has a missing part otherwise
 	}
 	/**
 	* @return the height this should have
@@ -130,19 +132,28 @@ public class TerrainStackVisualizer extends JComponent {
 	private int computePreferredHeigth() {
 		return getOffset_Starting_y() - getOffset_y() + delta_y * terrain.getHeight();
 	}
-	/**
-	* @return the height the its parent panel should have
+	/** 
+	* @return the height the its parent panel should have (0 if there are currently no slots)
 	*/
 	private int computeParentPreferredHeigth() {
+		if (terrain.getSlots().isEmpty())
+			return 0;
+		
 		return (terrain.getWidth() + terrain.getHeight() + 5) * delta_y;
 	}
 	/**
 	* Sets the parent's scroll bar position (the parent should be a JScrollPane) to be centered on the focused layer
 	*/
-	public void setParentScrollPosition(int scrollPosition) {
+	public void computeFocusedLayerPositionOnParentScrollBar() {
+		focusedLayerPositionOnParentScrollBar = (getOffset_Starting_y() - getOffset_y()*(getTerrain().getSlots().size() - focusedLayer)) - getTerrain().getWidth() * delta_y;
+		applyFocusedLayerPositionOnParentScrollBar();
+	}
+	private void applyFocusedLayerPositionOnParentScrollBar() {
 		JScrollPane scrollParent = (JScrollPane)(getParent().getParent());
-		if (scrollParent != null)
-			scrollParent.getVerticalScrollBar().setValue(scrollPosition);
+		if (scrollParent == null)
+			return;
+		
+		scrollParent.getVerticalScrollBar().setValue(focusedLayerPositionOnParentScrollBar);
 	}
 	
 	
@@ -155,6 +166,7 @@ public class TerrainStackVisualizer extends JComponent {
 		if (focusedLayer < terrain.getSlots().size() -1) {
 			focusedLayer++;
 			revalidate();
+			computeFocusedLayerPositionOnParentScrollBar();
 			repaint();
 		}
 	}
@@ -166,6 +178,7 @@ public class TerrainStackVisualizer extends JComponent {
 		if (focusedLayer > 0) {
 			focusedLayer--;
 			revalidate();
+			computeFocusedLayerPositionOnParentScrollBar();
 			repaint();
 		}
 	}

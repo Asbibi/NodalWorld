@@ -2,7 +2,6 @@ package gameinterface;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
 
@@ -164,7 +163,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	/**
 	* Callback for the add button : create a new element using the addTextField's text as the element's name.
 	* If the name inputed is empty or already used, the addTextField will become have the "wrong" color from the ColorPanel and the add won't happen.
-	* If the add is succesful the callback will also reset the addTextField's text to an empty string.
+	* If the add is successful the callback will also reset the addTextField's text to an empty string.
 	* 
 	* @see ControlPanel.getWrongFieldColor
 	*/ 
