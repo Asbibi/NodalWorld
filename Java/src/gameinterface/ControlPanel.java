@@ -45,13 +45,13 @@ public class ControlPanel extends JPanel {
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
 		terrainToolBar = new TerrainManagerToolBar(gameManager.getTerrain());
-		surfaceToolBar = new ElementManagerToolBar<>("Surface", gameManager.getSurfaceArray(), new SurfaceDetailPanel()) { 
+		surfaceToolBar = new ElementManagerToolBar<>(Surface.class, gameManager, new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
 				return new Surface(name);
 			}
 		};
-		speciesToolBar = new ElementManagerToolBar<>("Species", gameManager.getSpeciesArray(), new SpeciesDetailPanel()) { 
+		speciesToolBar = new ElementManagerToolBar<>(Species.class, gameManager, new SpeciesDetailPanel()) { 
 			@Override
 			public Species createElement(String name) {
 				return new Species(name, "");

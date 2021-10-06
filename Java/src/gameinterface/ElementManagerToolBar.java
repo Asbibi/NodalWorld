@@ -6,7 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.swing.*;
 
+import gamelogic.GameManager;
+import gamelogic.Surface;
+import gamelogic.Species;
 import gamelogic.Element;
+
+import java.lang.Class;
+import java.util.stream.Collectors;
 
 /**
 * Create an element manager as a tool bar.
@@ -19,7 +25,8 @@ import gamelogic.Element;
 * @see Element
 */
 public class ElementManagerToolBar<T extends Element> extends JToolBar {
-	private List<T> elements;
+	private GameManager game;
+	private Class<T> eltClass;
 	private JList<Element> scrollList;
 	private JButton upButton;
 	private JButton downButton;
@@ -28,10 +35,11 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private JTextField addTextField;
 	private ElementDetailPanel detailPanel;
 	
-	public ElementManagerToolBar(String className, List<T> elements, ElementDetailPanel detailPanel) {
+	public ElementManagerToolBar(Class<T> eltClass, GameManager game, ElementDetailPanel detailPanel) {
 		super(null, JToolBar.VERTICAL);
-		this.elements = elements;
-		setUpUI(className, detailPanel);
+		this.eltClass = eltClass;
+		this.game = game;
+		setUpUI(getElementClassName(), detailPanel);
 		CopyElementsToJList();
 	}
 	
@@ -45,8 +53,8 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 			@Override
 			public void setSelectedIndex(int index) {
 				super.setSelectedIndex(index);
-				if (index >= 0 && index < elements.size())
-					detailPanel.setElement(elements.get(index));
+				if (index >= 0 && index < getElements().size())
+					detailPanel.setElement(getElement(index));
 				else
 					detailPanel.setElement(null);
 			}
@@ -59,7 +67,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	                	return;
 	                int index = target.locationToIndex(me.getPoint());
 	                if (index >= 0)
-	                	detailPanel.setElement(elements.get(index));
+	                	detailPanel.setElement(getElement(index));
 	             }
 	          }
 	       });
@@ -107,7 +115,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
             	int selectedIndex = scrollList.getSelectedIndex();
             	if (selectedIndex < 0)
             		return;
-            	detailPanel.applyModificationsToElement(elements.get(selectedIndex));
+            	detailPanel.applyModificationsToElement(getElement(selectedIndex));
             }
         });
 		add(this.detailPanel);
@@ -168,7 +176,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 		
 		// check if the name has already be given
-		for (Element e : elements) {
+		for (Element e : getElements()) {
 			if(e.toString().equals(name) ) {
 				addTextField.setBackground(ControlPanel.getWrongFieldColor());
 				return;
@@ -179,7 +187,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		if (newElement == null)
 			return;
 		addElementArray(newElement);
-		scrollList.setSelectedIndex(elements.size() -1);
+		scrollList.setSelectedIndex(getElements().size() -1);
 		addTextField.setText("");
 		addTextField.setBackground(ControlPanel.getStandardFieldColor());
 	}
@@ -198,23 +206,21 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	* @param the new element to add to the list
 	*/ 
 	public void addElementArray(T element) {
-		elements.add(element);
+		addElement(element);
 		CopyElementsToJList();
 	}
 	/**
 	* @param the index of the element to remove to the list
 	*/ 
 	public void removeElementArray(int elementIndex) {
-		elements.remove(elementIndex);
+		removeElement(elementIndex);
 		CopyElementsToJList();
 	}
 	/**
 	* @param the indexes of the elements to swap in the list
 	*/ 
 	public void swapElementArray(int firstElementIndex, int secondElementIndex) {
-		T temp = elements.get(firstElementIndex);
-		elements.set(firstElementIndex, elements.get(secondElementIndex));
-		elements.set(secondElementIndex, temp);
+		swapElements(firstElementIndex, secondElementIndex);
 		CopyElementsToJList();
 	}
 	/**
@@ -222,10 +228,49 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	* Should be called every time the ArrayList elements is modified. 
 	*/
 	private void CopyElementsToJList() {
-		Element[] elementArray = new Element[elements.size()];
-		for (int i = 0; i < elements.size(); i++) {
-			elementArray[i] = elements.get(i);
+		Element[] elementArray = new Element[getElements().size()];
+		int idx = 0;
+		for (T elt : getElements()) {
+			elementArray[idx] = elt;
+			idx++;
 		}
 		scrollList.setListData(elementArray);
 	}
+
+
+	// ========== Link to game manager method, depending on element class ==========
+
+	private String getElementClassName() {
+		if(eltClass.equals(Surface.class)) return "Surface";
+		else if(eltClass.equals(Species.class)) return "Species";
+		return null;
+	}
+
+	private List<T> getElements() {
+		if(eltClass.equals(Surface.class)) return game.getSurfaceArray().stream().map(elt -> eltClass.cast(elt)).collect(Collectors.toList());
+		else if(eltClass.equals(Species.class)) return game.getSpeciesArray().stream().map(elt -> eltClass.cast(elt)).collect(Collectors.toList());
+		return null;
+	}
+
+	private T getElement(int index) {
+		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index));
+		else if(eltClass.equals(Species.class)) return eltClass.cast(game.getSpecies(index));
+		return null;
+	}
+
+	private void addElement(T elt) {
+		if(eltClass.equals(Surface.class)) game.addSurface((Surface) elt);
+		else if(eltClass.equals(Species.class)) game.addSpecies((Species) elt);
+	}
+
+	private void removeElement(int index) {
+		if(eltClass.equals(Surface.class)) return; // TODO
+		else if(eltClass.equals(Species.class)) return; // TODO
+	}
+
+	private void swapElements(int indexFst, int indexSnd) {
+		if(eltClass.equals(Surface.class)) return; // TODO
+		else if(eltClass.equals(Species.class)) return; // TODO
+	}
+
 }
