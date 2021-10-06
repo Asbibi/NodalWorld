@@ -153,7 +153,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	public void removeCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
 		if (selectedIndex != -1) {
-			int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete "+ elements.get(selectedIndex).toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
+			int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete "+ getElement(selectedIndex).toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
             if (reply != JOptionPane.YES_OPTION)
                 return;
 			
