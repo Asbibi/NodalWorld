@@ -4,14 +4,30 @@ import gameinterface.GameFrame;
 import gamelogic.GameManager;
 import gamelogic.GameManagerBuilder;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
 * Main instancier of the game
 * 
-* @see ControlPanel, WorldPanel
+* @see ControlPanel
+* @see WorldPanel
 */ 
 public class Main {
+
 	static GameManager gameManager;
 	static GameFrame gameFrame;
+
+	static TimerTask task = new TimerTask() {
+		@Override
+		public void run() {
+			int frame = gameManager.evolveGameState();
+			gameFrame.updateWorld(frame);
+		}
+	};
 	
 	
 	/**
@@ -28,9 +44,17 @@ public class Main {
 				width = 10;
 				height = 10;
 			}
-		}		
+		}	
 		
 		gameManager = GameManagerBuilder.buildBasicGame(width, height);
 		gameFrame = new GameFrame(gameManager);
+
+		gameFrame.addPauseActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Timer timer = new Timer();
+				timer.scheduleAtFixedRate(task, 1000, 1000);
+			}
+		});
 	}
 }
