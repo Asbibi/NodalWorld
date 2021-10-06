@@ -20,7 +20,7 @@ public class GameFrame extends JFrame {
 	private	WorldPanel 		worldPanel;
 	private	ControlPanel 	controlPanel;
 	
-	private JButton			pauseButton;
+	private JToggleButton	pauseButton;
 	private JButton			slowButton;
 	private JButton			speedButton;
 	private JToggleButton	gridButton;
@@ -28,7 +28,8 @@ public class GameFrame extends JFrame {
 	private JButton			zoomPlusButton;
 	private JButton			zoomMinusButton;
 	private JButton			zoomResetButton;
-	private JButton			restartButton;
+	private JButton			saveButton;
+	private JButton			newButton;
 
 	
 	/**
@@ -39,8 +40,9 @@ public class GameFrame extends JFrame {
 		worldPanel = new WorldPanel(gameManager);
 		controlPanel = new ControlPanel(gameManager);
 		setupUI();
-		/*
-		 addWindowListener(new WindowAdapter() {
+		
+		// === TO UNCOMENT WHEN SAVE WORKS ===
+		/* addWindowListener(new WindowAdapter() {
 	      	public void windowClosing(WindowEvent we) {
 		        int result = JOptionPane.showConfirmDialog(frame,
 		            "Do you want to Save ?", "Save",
@@ -90,11 +92,18 @@ public class GameFrame extends JFrame {
 	*/ 
 	private void setupMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		pauseButton = new JButton("Pause");
-		slowButton = new JButton("Slow Down");
-		speedButton = new JButton("Speed Up");
-		
 		Dimension buttonDimension = new Dimension(110,25);
+		
+		ImageIcon pauseIcon = new ImageIcon("res/_System_PlayPause.png");
+		ImageIcon slowIcon = new ImageIcon("res/_System_SlowPlay.png");
+		ImageIcon fastIcon = new ImageIcon("res/_System_FastPlay.png");
+		pauseButton = new JToggleButton("Pause",pauseIcon);
+		slowButton = new JButton("Slow",slowIcon);
+		speedButton = new JButton("Faster",fastIcon);
+		pauseButton.setPreferredSize(buttonDimension);
+		slowButton.setPreferredSize(buttonDimension);
+		speedButton.setPreferredSize(buttonDimension);
+		
 		ImageIcon gridIcon = new ImageIcon("res/_System_Grid.png");
 		ImageIcon eyeIcon = new ImageIcon("res/_System_Eye.png");
 		ImageIcon zoomPIcon = new ImageIcon("res/_System_ZoomPlus.png");
@@ -116,7 +125,14 @@ public class GameFrame extends JFrame {
 		zoomMinusButton.addActionListener(e -> worldPanel.decreaseTileSize() );
 		zoomResetButton.addActionListener(e -> worldPanel.resetTileSizeToMinimal() );
 		
-		restartButton = new JButton("Delete & Restart a world");
+		ImageIcon saveIcon = new ImageIcon("res/_System_Save.png");
+		ImageIcon newIcon = new ImageIcon("res/_System_New.png");
+		saveButton = new JButton("Save",saveIcon);
+		newButton = new JButton("New",newIcon);
+		saveButton.setPreferredSize(buttonDimension);
+		newButton.setPreferredSize(buttonDimension);
+		
+		// =============== ADD TIME =================
 		
 		menuBar.add(pauseButton);
 		menuBar.add(slowButton);
@@ -132,7 +148,8 @@ public class GameFrame extends JFrame {
 		
 		menuBar.add(new JSeparator(SwingConstants.VERTICAL));
 		
-		menuBar.add(restartButton);
+		menuBar.add(saveButton);
+		menuBar.add(newButton);
 	    setJMenuBar(menuBar);
 	}
 	
@@ -178,7 +195,6 @@ public class GameFrame extends JFrame {
 
 
 /* TODO :
-- find a way to ask to update toolbar if the gamemanager changes	=>	listeners ?
 - find a way to ask to update world if element image changed		=>		"
 ------//----
 - restart with presets
