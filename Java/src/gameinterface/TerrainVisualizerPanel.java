@@ -43,8 +43,8 @@ public class TerrainVisualizerPanel extends JPanel {
 
 		Dimension buttonDimension = new Dimension(25,25);
 		JPanel focusButtonsPanel = new JPanel();
-		ImageIcon upFocusIcon = new ImageIcon("res/_System_EyeUpArrow.png");
-		ImageIcon downFocusIcon = new ImageIcon("res/_System_EyeDownArrow.png");
+		ImageIcon upFocusIcon = new ImageIcon("res/_System_FocusUpArrow.png");
+		ImageIcon downFocusIcon = new ImageIcon("res/_System_FocusDownArrow.png");
 		ImageIcon eyeIcon = new ImageIcon("res/_System_Eye.png");
 		focusUp = new JButton(upFocusIcon);
 		focusDown = new JButton(downFocusIcon);
@@ -110,13 +110,20 @@ public class TerrainVisualizerPanel extends JPanel {
 
 	
 	private void addTerrainSlot() {
-		// TODO
+		int focused = visualizer.getFocusedLayer();
+		visualizer.getTerrain().addSlot(focused);
+		revalidate();
+		repaint();
 	}
 	private void moveUpTerrainSlot() {
-		// TODO
+		int focused = visualizer.getFocusedLayer();
+		visualizer.getTerrain().swapSlots(focused, focused-1);
+		visualizer.focusPreviousLayer();
 	}
 	private void moveDownTerrainSlot() {
-		// TODO
+		int focused = visualizer.getFocusedLayer();
+		visualizer.getTerrain().swapSlots(focused, focused+1);
+		visualizer.focusNextLayer();
 	}
 	private void removeTerrainSlot() {
 		int focused = visualizer.getFocusedLayer();
@@ -124,7 +131,14 @@ public class TerrainVisualizerPanel extends JPanel {
 			return;
 		int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete the Slot n°" + focused +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
         if (reply != JOptionPane.YES_OPTION)
-            return;
-		// TODO
+        	return;
+        
+    	visualizer.getTerrain().removeSlot(focused);
+    	if (focused != 0)
+    		visualizer.focusPreviousLayer();
+    	else {
+    		revalidate();
+    		repaint();    		
+    	}
 	}
 }

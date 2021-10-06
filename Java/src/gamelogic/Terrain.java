@@ -80,10 +80,45 @@ public class Terrain {
 	}
 
 	/**
-	* Add a new slot on top of the others
+	* Add a new slot on top of the others (end of list)
 	*/ 
 	public void addSlot() {
-		slots.add(new TerrainSlot());
+		addSlot(-1);
+	}
+	/**
+	* Add a new slot at the specified index
+	* @param the index of the new slot (0 = bottom of the list)
+	*/ 
+	public void addSlot(int index) {
+		if (index < 0 || index > slots.size())
+			index = slots.size();
+		slots.add(index, new TerrainSlot());
+		triggerChangeListeners();
+	}
+	/**
+	* Add a new slot on top of the others
+	*/ 
+	public void swapSlots(int indexFirst, int indexSecond) {
+		if (indexFirst < 0 || indexFirst >= slots.size() || indexSecond < 0 || indexSecond >= slots.size())
+			return;
+		TerrainSlot tempSlot = slots.get(indexFirst);
+		slots.set(indexFirst, slots.get(indexSecond));
+		slots.set(indexSecond, tempSlot);
+		triggerChangeListeners();
+	}
+	/**
+	* Add a new slot on top of the others
+	*/ 
+	public void removeSlot() {
+		removeSlot(-1);
+	}
+	/**
+	* Add a new slot on top of the others
+	*/ 
+	public void removeSlot(int index) {
+		if (index < 0 || index >= slots.size())
+			index = slots.size() - 1;
+		slots.remove(index);
 		triggerChangeListeners();
 	}
 
