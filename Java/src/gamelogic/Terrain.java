@@ -64,12 +64,20 @@ public class Terrain {
 	}
 
 	/**
+	* @param frame
+	* @return true if terrain is triggered at the given frame, otherwise false
+	*/ 
+	public boolean trigger(Integer frame) {
+		return (frame%triggerTime == 0);
+	}
+
+	/**
 	* @param pos
 	* @return the surface element in the tile at the given position
 	*/ 
 	public Surface getSurfaceAt(Vec2D pos) {
 		if(slots.isEmpty()) return Surface.getEmpty();
-		for(int i=slots.size()-1; i>= 0; i++) {
+		for(int i=slots.size()-1; i>= 0; i--) {
 			TerrainSlot slot = slots.get(i);
 			if(slot.isOccupied()) {
 				Surface surface = slot.getTerrainNode().getSurfaceAt(pos);

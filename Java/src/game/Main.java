@@ -26,6 +26,7 @@ public class Main {
 		public void run() {
 			int frame = gameManager.evolveGameState();
 			gameFrame.updateWorld(frame);
+			//System.out.println(gameManager);
 		}
 	};
 	

@@ -180,7 +180,7 @@ public class WorldPanel extends JPanel{
 		gridDimension = newDimensions;
 		updateAllSpeciesDisplay();
 		computeMinimalTileSize();
-		System.out.println(getPreferredSize());
+		//System.out.println(newDimensions);
         setPreferredSize(getPreferredSize());
 	}
 	
