@@ -18,7 +18,7 @@ import gameinterface.components.ColorWheelComponent;
 * 
 * @see ColorWheelComponent
 */ 
-public class ColorDialogBox extends JDialog{
+public class ColorDialogBox extends JDialog {
 	private boolean confirm = false;
 	private ColorWheelComponent colorWheel;
 	private JButton OKButton;

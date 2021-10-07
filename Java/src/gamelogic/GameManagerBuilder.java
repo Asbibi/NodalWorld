@@ -2,6 +2,8 @@ package gamelogic;
 
 import java.awt.Color;
 
+import gameinterface.NewWorldTemplate;
+
 /**
 * Class with only static methods meant to build new game managers when the user wants to start a new project.
 * 
@@ -11,6 +13,35 @@ public class GameManagerBuilder {
 
 	// ========== PUBLIC ==========
 
+	/**
+	* @param template
+	* @param width
+	* @param height
+	* @return the newly created empty game manager
+	*/ 
+	public static GameManager buildGameFromTemplate(NewWorldTemplate template, int width, int height) {
+		if (template.isEqual(NewWorldTemplate.empty))
+			return buildEmptyGame(width, height);
+		else if (template.isEqual(NewWorldTemplate.basic))
+			return buildBasicGame(width, height);
+		else if (template.isEqual(NewWorldTemplate.island))
+			return null;
+		else if (template.isEqual(NewWorldTemplate.completeDemo))
+			return buildDemoGame(width, height);
+		else if (template.isEqual(NewWorldTemplate.loadElements))
+			return null;
+		else if (template.isEqual(NewWorldTemplate.loadElementsTerrain))
+			return null;
+		else if (template.isEqual(NewWorldTemplate.loadElementsAllNodes))
+			return null;
+		else if (template.isEqual(NewWorldTemplate.loadFullSave))
+			return buildFullLoadedGame("/savetest.nws",width, height);
+		else {
+			System.err.println("Template given is incorrect");
+			return null;
+		}
+	}
+	
 	/**
 	* @param width
 	* @param height
@@ -39,10 +70,10 @@ public class GameManagerBuilder {
 	* @param height
 	* @return the newly created game manager with some basic settings
 	*/ 
-	public static GameManager buildFullLoadedGame(String saveFilePath) {
+	public static GameManager buildFullLoadedGame(String saveFilePath, int width, int height) {
 		GameManager game = Saver.loadGame(saveFilePath);
 		game.initTransientFields();
-		return game != null ? game : buildEmptyGame(10,10) ;
+		return game != null ? game : buildEmptyGame(width, height);
 	}
 
 	/**

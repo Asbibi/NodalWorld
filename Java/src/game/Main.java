@@ -1,6 +1,7 @@
 package game;
 
 import gameinterface.GameFrame;
+import gameinterface.NewWorldDialogBox;
 import gamelogic.GameManager;
 import gamelogic.GameManagerBuilder;
 import gamelogic.Saver;
@@ -17,9 +18,23 @@ public class Main {
 	* Static main method that will instanciate the gamemanager and a gameframe linked to it
 	*/ 
 	public static void main(String[] args) {
+		GameManager gameManager = getGameManager(args);
+		if (gameManager == null)
+			return;
+		
+		GameFrame gameFrame = new GameFrame(gameManager);
+		GamePlayer gamePlayer = new GamePlayer(gameManager, gameFrame);
+
+		// === for testing purposes, must be cleaned up late ===
+		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, true) );		
+	}
+	
+	
+	private static GameManager getGameManager(String[] args) {
 		int width=-1;
 		int height=-1;
 		if (args.length > 1) {
+			System.out.println(args.length);
 			try {
 				width = Integer.parseInt(args[0]);
 				height = Integer.parseInt(args[1]);
@@ -27,14 +42,15 @@ public class Main {
 				width = 10;
 				height = 10;
 			}
+			return GameManagerBuilder.buildBasicGame(width, height);
+			//return GameManagerBuilder.buildFullLoadedGame("/savetest.nws", 10,10);
 		}
-	
-		GameManager gameManager = GameManagerBuilder.buildBasicGame(width, height);
-		//GameManager gameManager = GameManagerBuilder.buildFullLoadedGame("/savetest.nws");
-		GameFrame gameFrame = new GameFrame(gameManager);
-		GamePlayer gamePlayer = new GamePlayer(gameManager, gameFrame);
-
-		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, true) );
-		gameFrame.setVisible(true);
+		else {
+			NewWorldDialogBox dialogBox = new NewWorldDialogBox(null);
+			if (!dialogBox.getConfirm())
+				return null;
+			
+			return GameManagerBuilder.buildGameFromTemplate(dialogBox.getSelectedTemplate(), dialogBox.getTemplateWidth(), dialogBox.getTemplateHeight());
+		}
 	}
 }

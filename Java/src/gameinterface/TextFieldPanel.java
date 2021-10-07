@@ -39,4 +39,9 @@ public class TextFieldPanel extends PropertyFieldPanel {
 	* @param the color to set to the inputField background
 	*/
 	public void setFieldColor(Color color) { textField.setBackground(color); }
+	
+	public void setEnable(boolean enable) {
+		textField.setEnabled(enable);
+		setFieldColor(enable ? ControlPanel.getStandardFieldColor() : Color.lightGray);
+	}
 }

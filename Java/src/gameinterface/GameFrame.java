@@ -71,6 +71,7 @@ public class GameFrame extends JFrame {
 				updateWorld(frame);
 			}
 		});
+		setVisible(true);
 	}
 	
 	/**
