@@ -5,12 +5,6 @@ import gamelogic.GameManager;
 import gamelogic.GameManagerBuilder;
 import gamelogic.Saver;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
 * Main instancier of the game
 * 
@@ -35,12 +29,12 @@ public class Main {
 			}
 		}
 	
-		gameManager = GameManagerBuilder.buildBasicGame(width, height);
-		//gameManager = GameManagerBuilder.buildFullLoadedGame("/savetest.nws");
-		gameFrame = new GameFrame(gameManager);
+		GameManager gameManager = GameManagerBuilder.buildBasicGame(width, height);
+		//GameManager gameManager = GameManagerBuilder.buildFullLoadedGame("/savetest.nws");
+		GameFrame gameFrame = new GameFrame(gameManager);
 		GamePlayer gamePlayer = new GamePlayer(gameManager, gameFrame);
 
 		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, true) );
-		window.setVisible(true);
+		gameFrame.setVisible(true);
 	}
 }
