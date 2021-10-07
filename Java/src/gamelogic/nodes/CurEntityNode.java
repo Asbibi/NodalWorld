@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Entity;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to get the entity being processed. <br/>
@@ -27,7 +28,7 @@ public class CurEntityNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		getOutput("entity").setData(game.getCurrentEntity());
 	}
 

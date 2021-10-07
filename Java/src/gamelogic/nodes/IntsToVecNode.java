@@ -5,6 +5,7 @@ import gamelogic.GameManager;
 import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to gather two integers to form a 2D vector. <br/>
@@ -30,7 +31,7 @@ public class IntsToVecNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Integer x = getInput("x").getData(Integer.class);
 		Integer y = getInput("y").getData(Integer.class);
 		getOutput("vec").setData(new Vec2D(x, y));

@@ -101,25 +101,29 @@ public class Input implements Serializable {
 		}
 	}
 
-	public <T> T getManualValue(Class<T> requestClass) {
-		if(manual && dataClass.equals(requestClass)) {
+	public <T> T getManualValue(Class<T> requestClass) throws NetworkIOException {
+		if(value == null) {
+			throw new NetworkIOException("No manual value defined on input " + name);
+		}
+		if(dataClass.equals(requestClass)) {
 			return requestClass.cast(value);
 		}
-		return null;
+		throw new NetworkIOException("Request class do not match data class of input " + name);
 	}
 
 	/**
 	* @param requestClass a class object representing the type expected by the object calling this method
 	* @return the data retrieved by the input, null if the request type doesn't match the data type or if the input isn't connected to an output
 	*/ 
-	public <T> T getData(Class<T> requestClass) {
+	public <T> T getData(Class<T> requestClass) throws NetworkIOException {
 		if(source==null) {
-			return getManualValue(requestClass);
+			if(manual) return getManualValue(requestClass);
+			else throw new NetworkIOException("Cannot read data from input " + name);
 		}
 		if(dataClass.equals(requestClass)) {
 			return source.getData(requestClass);
 		}
-		return null;
+		throw new NetworkIOException("Request class do not match data class of input " + name);
 	}
 
 }

@@ -34,7 +34,7 @@ public class NodalEditorModel {
 	private Class<? extends Rule> ruleClass;
 	private int sideBoxWidth, sideBoxHeight;
 
-	private boolean editingLink, movingSelection, selectingArea, linkingSpecies, linkingTerrainSlot;
+	private boolean editingLink, movingSelection, selectingArea, linkingSpecies, linkingTerrainSlot, onAlert;
 	private int xCursor, yCursor, xRef, yRef;
 	private Port curPort;
 	private Map<NodeBox, Boolean> selected;
@@ -63,6 +63,7 @@ public class NodalEditorModel {
 		selectingArea = false;
 		linkingSpecies = false;
 		linkingTerrainSlot = false;
+		onAlert = false;
 		selected = new HashMap<NodeBox, Boolean>();
 		curInfoPanel = null;
 		defaultInfoPanel = new JPanel();
@@ -304,6 +305,15 @@ public class NodalEditorModel {
 	}
 
 	public boolean isLinkingTerrainSlot() { return linkingTerrainSlot; }
+
+	public void setOnAlert(boolean b) {
+		if(onAlert != b) {
+			onAlert = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isOnAlert() { return onAlert; }
 
 	public void setCursorPos(int x, int y) {
 		xCursor = x;

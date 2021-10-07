@@ -3,6 +3,7 @@ package gamelogic.nodes;
 import gamelogic.GameManager;
 import gamelogic.TerminalNode;
 import gamelogic.Input;
+import gamelogic.NetworkIOException;
 import gamelogic.rules.DeathRule;
 
 /**
@@ -14,6 +15,8 @@ import gamelogic.rules.DeathRule;
 * @see DeathRule
 */ 
 public class KillNode extends TerminalNode<DeathRule> {
+
+	private boolean kill;
 
 	/**
 	* 
@@ -32,17 +35,15 @@ public class KillNode extends TerminalNode<DeathRule> {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
-		return;
+	public void evaluate(GameManager game) throws NetworkIOException {
+		kill = getInput("kill").getData(Boolean.class);
 	}
 
 	/**
 	* @return the data retrieved in the "kill" input, used to decide if an entity should be removed or not
 	*/ 
 	public boolean kill() {
-		Boolean result = getInput("kill").getData(Boolean.class);
-		if(result==null) return false;
-		else return result;
+		return kill;
 	}
 
 }

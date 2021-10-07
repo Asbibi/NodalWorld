@@ -5,6 +5,7 @@ import gamelogic.TerrainNode;
 import gamelogic.terrains.TerrainModelRectangle;
 import gamelogic.Vec2D;
 import gamelogic.Input;
+import gamelogic.NetworkIOException;
 
 public class TerrainNodeRectangle extends TerrainNode<TerrainModelRectangle> {
 
@@ -15,7 +16,7 @@ public class TerrainNodeRectangle extends TerrainNode<TerrainModelRectangle> {
 	}
 
 	@Override
-	public void initModel() {
+	public void initModel() throws NetworkIOException {
 		Vec2D corner = getInput("corner").getData(Vec2D.class);
 		if(corner == null) {
 			corner = new Vec2D(0, 0);
@@ -27,11 +28,6 @@ public class TerrainNodeRectangle extends TerrainNode<TerrainModelRectangle> {
 			dim = new Vec2D(0, 0);
 		}
 		model.setDimensions(dim);
-	}
-
-	@Override
-	public void evaluate(GameManager game) {
-		return;
 	}
 
 }

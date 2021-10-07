@@ -52,6 +52,13 @@ public class NodalEditor extends JComponent {
 			}
 		});
 
+		network.addAlertListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				setOnAlert(true);
+			}
+		});
+
 		model = new NodalEditorModel(game, network);
 		model.addChangeListener(new ChangeListener() {
 			@Override
@@ -162,6 +169,10 @@ public class NodalEditor extends JComponent {
 	public void setLinkingTerrainSlot(boolean b) { model.setLinkingTerrainSlot(b); }
 
 	public boolean isLinkingTerrainSlot() { return model.isLinkingTerrainSlot(); }
+
+	public void setOnAlert(boolean b) { model.setOnAlert(b); }
+
+	public boolean isOnAlert() { return model.isOnAlert(); }
 
 	public void setCursorPos(int x, int y) { model.setCursorPos(x, y); }
 

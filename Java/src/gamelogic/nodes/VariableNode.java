@@ -5,6 +5,7 @@ import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
 import gamelogic.Surface;
+import gamelogic.NetworkIOException;
 
 import java.lang.Class;
 
@@ -35,7 +36,7 @@ public class VariableNode<T> extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		T variable = getInput("var").getData(dataClass);
 		getOutput("var").setData(variable);
 	}

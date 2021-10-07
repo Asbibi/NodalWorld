@@ -9,6 +9,7 @@ package gamelogic;
 */ 
 public abstract class TerrainNode<T extends TerrainModel> extends Node {
 
+	private Surface surface;
 	protected T model;
 
 	/**
@@ -26,16 +27,23 @@ public abstract class TerrainNode<T extends TerrainModel> extends Node {
 	* @return the surface computed by the model at the given position
 	*/ 
 	public Surface getSurfaceAt(Vec2D pos) {
-		initModel();
 		if(model.hasSurfaceAt(pos)) {
-			return getInput("surface").getData(Surface.class);
+			return surface;
 		}
 		return Surface.getEmpty();
 	}
 
 	/**
+	* @param game
+	*/ 
+	public void evaluate(GameManager game) throws NetworkIOException {
+		surface = getInput("surface").getData(Surface.class);
+		initModel();
+	}
+
+	/**
 	* Specifies the correspondance between the node's inputs and the model parameters.
 	*/ 
-	protected abstract void initModel();
+	protected abstract void initModel() throws NetworkIOException;
 
 }

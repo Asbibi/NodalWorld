@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 import java.util.Random;
 
@@ -33,7 +34,7 @@ public class RandIntNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Integer bound = getInput("bound").getData(Integer.class);
 		Integer val = rand.nextInt(bound);
 		getOutput("val").setData(val);

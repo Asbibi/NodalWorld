@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Set;
+import java.util.HashSet;
+
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 /**
 * This class provides the abstract model for the networks with in the nodal system when defining rules for the game.
@@ -23,14 +28,19 @@ import java.util.Optional;
 public class Network implements Serializable {
 
 	private List<Node> nodes;
-	private Map<Node, Collection<Edge>> mapToEdges;
+	private Map<Node, Collection<Edge>> outEdges, inEdges;
+
+	private transient List<ChangeListener> alertListeners;
 
 	/**
 	* Creates an empty network.
 	*/ 
 	public Network() {
 		nodes = new ArrayList<Node>();
-		mapToEdges = new HashMap<Node, Collection<Edge>>();
+		outEdges = new HashMap<Node, Collection<Edge>>();
+		inEdges = new HashMap<Node, Collection<Edge>>();
+
+		alertListeners = new LinkedList<ChangeListener>();
 	}
 
 	/**
@@ -43,14 +53,9 @@ public class Network implements Serializable {
 	*/ 
 	public void addNode(Node node) {
 		nodes.add(node);
-		mapToEdges.put(node, new ArrayList<Edge>());
+		outEdges.put(node, new ArrayList<Edge>());
+		inEdges.put(node, new ArrayList<Edge>());
 	}
-
-	/**
-	* @param node
-	* @return all the edges coming out of the node
-	*/ 
-	public Collection<Edge> getEdges(Node node) { return mapToEdges.get(node); }
 
 	/**
 	* @param source
@@ -67,12 +72,13 @@ public class Network implements Serializable {
 		}
 
 		Edge edge = new Edge(source, target);
-		mapToEdges.get(source).add(edge);
+		outEdges.get(source).add(edge);
 		boolean isDAG = sortNodes();
 		if(!isDAG) {
-			mapToEdges.get(source).remove(edge);
+			outEdges.get(source).remove(edge);
 			return false;
 		}
+		inEdges.get(target).add(edge);
 
 		input.setSource(output);
 		output.setTarget(input);
@@ -92,24 +98,48 @@ public class Network implements Serializable {
 		output.removeTarget();
 		input.removeSource();
 
-		Optional<Edge> optEdge = mapToEdges.get(source).stream()
+		Optional<Edge> optEdge = outEdges.get(source).stream()
 									.filter(edge -> edge.getTarget().equals(target))
 									.findFirst();
 		if(optEdge.isPresent()) {
-			mapToEdges.get(source).remove(optEdge.get());
+			outEdges.get(source).remove(optEdge.get());
+			inEdges.get(target).remove(optEdge.get());
 		}
 	}
 
 	/**
 	* @param game
 	*/ 
-	public void evaluate(GameManager game) {
-		if(checkConnections()) {
+	public void evaluate(GameManager game, Node sink) throws NetworkIOException {
+		try {
+			Set<Node> dependencies = findDependencies(sink);
+
 			for(Node node : nodes) {
-				node.evaluate(game);
+				if(dependencies.contains(node))
+					node.evaluate(game);
 			}
+
+		} catch(NetworkIOException e) {
+			triggerAlertListeners();
+			throw e;
 		}
 	}
+
+	/**
+	* @param listener
+	*/ 
+	public void addAlertListener(ChangeListener listener) { alertListeners.add(listener); }
+
+	/**
+	*
+	*/ 
+	public void triggerAlertListeners() {
+		for(ChangeListener listener : alertListeners) 
+			listener.stateChanged(new ChangeEvent(this));
+	}
+
+
+	// ========== PRIVATE ==========
 
 	private boolean sortNodes() {
 		Map<Node, Integer> inDegree = new HashMap<Node, Integer>();
@@ -117,7 +147,7 @@ public class Network implements Serializable {
 			inDegree.put(node, 0);
 		}
 		for(Node source : nodes) {
-			for(Edge edge : mapToEdges.get(source)) {
+			for(Edge edge : outEdges.get(source)) {
 				Node target = edge.getTarget();
 				inDegree.replace(target, inDegree.get(target)+1);
 			}
@@ -137,7 +167,7 @@ public class Network implements Serializable {
 
 		while(!queue.isEmpty()) {
 			Node source = queue.poll();
-			for(Edge edge : mapToEdges.get(source)) {
+			for(Edge edge : outEdges.get(source)) {
 				Node target = edge.getTarget();
 				inDegree.replace(target, inDegree.get(target)-1);
 				if(inDegree.get(target)==0) {
@@ -161,8 +191,23 @@ public class Network implements Serializable {
 		return true;
 	}
 
-	private boolean checkConnections() {
-		return nodes.stream().allMatch(node -> node.allInputsValid());
+	private Set<Node> findDependencies(Node sink) {
+		Set<Node> dependencies = new HashSet<Node>();
+
+		LinkedList<Node> queue = new LinkedList<Node>();
+		queue.add(sink);
+		dependencies.add(sink);
+
+		while(!queue.isEmpty()) {
+			Node head = queue.pollFirst();
+
+			for(Edge edge : inEdges.get(head)) {
+				Node ancestor = edge.getSource();
+				if(dependencies.add(ancestor)) queue.add(ancestor);
+			}
+		}
+
+		return dependencies;
 	}
 
 }

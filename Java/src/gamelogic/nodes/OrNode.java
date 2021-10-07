@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to perform logical OR. <br/>
@@ -29,7 +30,7 @@ public class OrNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Boolean val1 = getInput("val1").getData(Boolean.class);
 		Boolean val2 = getInput("val2").getData(Boolean.class);
 		getOutput("res").setData(val1 || val2);

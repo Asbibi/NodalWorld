@@ -5,6 +5,7 @@ import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
 import gamelogic.Species;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to extract data from a species. <br/>
@@ -27,7 +28,7 @@ public class SpeciesNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Species sp = getInput("species").getData(Species.class);
 		getOutput("size").setData(sp.getMembers().size());
 	}

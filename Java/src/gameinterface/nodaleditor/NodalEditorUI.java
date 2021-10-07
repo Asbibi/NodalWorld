@@ -39,6 +39,10 @@ public class NodalEditorUI {
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				// TODO : check if editor is frozen
+
+				editor.setOnAlert(false);
+
 				Port portHit = editor.getPort(e.getX(), e.getY());
 				if(portHit != null) {
 					if(portHit.hasInput()) {
@@ -102,6 +106,8 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// TODO : check if editor is frozen
+
 				if(SwingUtilities.isRightMouseButton(e)) {
 					editor.showNodeMenu(e.getX(), e.getY());
 				}
@@ -109,6 +115,8 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				// TODO : check if editor is frozen
+
 				if(editor.isEditingLink()) {
 					Port portHit = editor.getPort(e.getX(), e.getY());
 					if(portHit != null) {
@@ -165,6 +173,8 @@ public class NodalEditorUI {
 		editor.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				// TODO : check if editor is frozen
+
 				editor.setCursorPos(e.getX(), e.getY());
 			}
 		});
@@ -282,6 +292,12 @@ public class NodalEditorUI {
 			Rectangle2D selectRect = new Rectangle2D.Double(x, y, w, h);
 			g2d.setColor(new Color(255, 255, 0, 50));
 			g2d.fill(selectRect);
+		}
+
+		if(editor.isOnAlert()) {
+			g2d.setColor(new Color(255, 0, 0, 100));
+			Rectangle2D alertRect = new Rectangle2D.Double(0, 0, editor.getSize().width, editor.getSize().height);
+			g2d.fill(alertRect);
 		}
 	}
 

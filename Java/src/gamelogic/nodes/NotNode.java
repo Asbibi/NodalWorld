@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to negate a boolean. <br/>
@@ -28,7 +29,7 @@ public class NotNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Boolean val = getInput("val").getData(Boolean.class);
 		getOutput("res").setData(!val);
 	}

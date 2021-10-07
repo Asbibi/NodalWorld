@@ -106,6 +106,6 @@ public abstract class Node implements Serializable {
 	* 
 	* @param game
 	*/ 
-	public abstract void evaluate(GameManager game);
+	public abstract void evaluate(GameManager game) throws NetworkIOException;
 
 }

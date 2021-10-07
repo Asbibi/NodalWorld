@@ -6,6 +6,7 @@ import gamelogic.Surface;
 import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to get the surface in the tile at a given position. <br/>
@@ -30,7 +31,7 @@ public class SurfaceAtNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Vec2D pos = getInput("position").getData(Vec2D.class);
 		getOutput("surface").setData(game.surfaceAt(pos));
 	}

@@ -3,6 +3,7 @@ package gamelogic.nodes;
 import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class RandDoubleNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Double val = rand.nextDouble();
 		getOutput("val").setData(val);
 	}

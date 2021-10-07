@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to compute the euclidean division of an integer (dividend) by another integer (divisor). <br/>
@@ -30,7 +31,7 @@ public class EuclDivNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Integer dividend = getInput("dividend").getData(Integer.class);
 		Integer divisor = getInput("divisor").getData(Integer.class);
 		getOutput("quotient").setData(dividend/divisor);

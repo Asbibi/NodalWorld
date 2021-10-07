@@ -61,7 +61,10 @@ public class Output implements Serializable {
 	/**
 	* @param data
 	*/ 
-	public void setData(Object data) {
+	public void setData(Object data) throws NetworkIOException {
+		if(data == null) {
+			throw new NetworkIOException("Cannot write null to output " + name);
+		}
 		if(this.dataClass.isInstance(data)) {
 			this.data = data;
 		}
@@ -71,11 +74,14 @@ public class Output implements Serializable {
 	* @param requestClass a class object representing the type expected by the object calling this method
 	* @return the data held by the output, null if the request type doesn't match the data type
 	*/ 
-	public <T> T getData(Class<T> requestClass) {
+	public <T> T getData(Class<T> requestClass) throws NetworkIOException {
+		if(data == null) {
+			throw new NetworkIOException("Cannot read data from output " + name);
+		}
 		if(this.dataClass.equals(requestClass)) {
 			return requestClass.cast(data);
 		}
-		return null;
+		throw new NetworkIOException("Request class do not match data class of output " + name);
 	}
 
 	public void setTarget(Input target) {

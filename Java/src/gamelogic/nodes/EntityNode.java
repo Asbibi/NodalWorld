@@ -7,6 +7,7 @@ import gamelogic.Output;
 import gamelogic.Species;
 import gamelogic.Entity;
 import gamelogic.Vec2D;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to extract data from an entity. <br/>
@@ -30,7 +31,7 @@ public class EntityNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Entity entity = getInput("entity").getData(Entity.class);
 		getOutput("pos").setData(entity.getPos());
 		getOutput("species").setData(entity.getSpecies());

@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 import java.lang.Class;
 
@@ -36,7 +37,7 @@ public class IfElseNode<T> extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		Boolean cond = getInput("cond").getData(Boolean.class);
 		T val1 = getInput("val1").getData(dataClass);
 		T val2 = getInput("val2").getData(dataClass);

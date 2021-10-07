@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Species;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to get the species being processed. <br/>
@@ -27,7 +28,7 @@ public class CurSpeciesNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		getOutput("species").setData(game.getCurrentSpecies());
 	}
 

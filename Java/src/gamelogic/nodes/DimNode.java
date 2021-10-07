@@ -3,6 +3,7 @@ package gamelogic.nodes;
 import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Output;
+import gamelogic.NetworkIOException;
 
 /**
 * The node model used to get the game's grid dimensions. <br/>
@@ -27,7 +28,7 @@ public class DimNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
+	public void evaluate(GameManager game) throws NetworkIOException {
 		getOutput("width").setData(game.gridWidth());
 		getOutput("height").setData(game.gridHeight());
 	}

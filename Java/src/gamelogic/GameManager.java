@@ -282,19 +282,28 @@ public class GameManager implements Serializable {
 	* Applies the rules and executes the corresponding actions in the following order : generation, movement, death.
 	*/ 
 	public void evolveGameState() {
-		if(terrain.trigger(frame)) terrainNet.evaluate(this);
+		if(terrain.trigger(frame)) {
+			for(TerrainSlot slot : terrain.getSlots())
+				if(slot.isOccupied()) {
+					apply(slot);
+				}
+		}
 
 		for(Species sp : species) {
-			if(speciesToGenRule.containsKey(sp)) {
-				apply(speciesToGenRule.get(sp), sp);
-			}
+			if(sp.trigger(frame)) {
+				currentSpecies = sp;
 
-			if(speciesToMoveRule.containsKey(sp)) {
-				apply(speciesToMoveRule.get(sp), sp);
-			}
+				if(speciesToMoveRule.containsKey(sp)) {
+					apply(speciesToMoveRule.get(sp), sp);
+				}
 
-			if(speciesToDeathRule.containsKey(sp)) {
-				apply(speciesToDeathRule.get(sp), sp);
+				if(speciesToDeathRule.containsKey(sp)) {
+					apply(speciesToDeathRule.get(sp), sp);
+				}
+
+				if(speciesToGenRule.containsKey(sp)) {
+					apply(speciesToGenRule.get(sp), sp);
+				}
 			}
 		}
 
@@ -303,30 +312,47 @@ public class GameManager implements Serializable {
 		frame++;			// TODO : think about frame number limit ?
 	}
 
+	private void apply(TerrainSlot slot) {
+		try {
+			terrainNet.evaluate(this, slot.getTerrainNode());
+		} catch(NetworkIOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void apply(GenerationRule rule, Species sp) {
-		if(sp.trigger(frame)) {
-			currentSpecies = sp;
-			genNet.evaluate(this);
+		try {
+			genNet.evaluate(this, rule.getTerminalNode());
 			rule.apply(this);
+		} catch(NetworkIOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	private void apply(MovementRule rule, Species sp) {
-		if(sp.trigger(frame) && !sp.getMembers().isEmpty()) {
-			for(Entity member : sp.getMembers()) {
-				currentEntity = member;
-				moveNet.evaluate(this);
+		if(sp.getMembers().isEmpty()) return;
+
+		for(Entity member : sp.getMembers()) {
+			currentEntity = member;
+			try {
+				moveNet.evaluate(this, rule.getTerminalNode());
 				rule.apply(this);
+			} catch(NetworkIOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
 	private void apply(DeathRule rule, Species sp) {
-		if(sp.trigger(frame) && !sp.getMembers().isEmpty()) {
-			for(Entity member : sp.getMembers()) {
-				currentEntity = member;
-				deathNet.evaluate(this);
+		if(sp.getMembers().isEmpty()) return;
+
+		for(Entity member : sp.getMembers()) {
+			currentEntity = member;
+			try {
+				deathNet.evaluate(this, rule.getTerminalNode());
 				rule.apply(this);
+			} catch(NetworkIOException e) {
+				e.printStackTrace();
 			}
 		}
 	}

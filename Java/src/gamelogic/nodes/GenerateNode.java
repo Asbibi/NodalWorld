@@ -4,6 +4,7 @@ import gamelogic.GameManager;
 import gamelogic.TerminalNode;
 import gamelogic.Input;
 import gamelogic.Vec2D;
+import gamelogic.NetworkIOException;
 import gamelogic.rules.GenerationRule;
 
 /**
@@ -15,6 +16,9 @@ import gamelogic.rules.GenerationRule;
 * @see GenerationRule
 */ 
 public class GenerateNode extends TerminalNode<GenerationRule> {
+
+	private boolean generate;
+	private Vec2D position;
 
 	/**
 	* 
@@ -34,24 +38,23 @@ public class GenerateNode extends TerminalNode<GenerationRule> {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
-		return;
+	public void evaluate(GameManager game) throws NetworkIOException {
+		generate = getInput("generate").getData(Boolean.class);
+		position = getInput("position").getData(Vec2D.class);
 	}
 
 	/**
 	* @return the data retrieved in the "generate" input, used to decide if a new entity should be created or not
 	*/ 
 	public boolean generate() {
-		Boolean result = getInput("generate").getData(Boolean.class);
-		if(result==null) return false;
-		return result;
+		return generate;
 	}
 
 	/**
 	* return the data retrieved in the "position" input, used to decide where a newly created entity should be placed
 	*/ 
 	public Vec2D position() {
-		return getInput("position").getData(Vec2D.class);
+		return position;
 	}
 
 }

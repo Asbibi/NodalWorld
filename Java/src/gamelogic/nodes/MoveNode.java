@@ -4,6 +4,7 @@ import gamelogic.GameManager;
 import gamelogic.TerminalNode;
 import gamelogic.Input;
 import gamelogic.Vec2D;
+import gamelogic.NetworkIOException;
 import gamelogic.rules.MovementRule;
 
 /**
@@ -15,6 +16,8 @@ import gamelogic.rules.MovementRule;
 * @see MovementRule
 */ 
 public class MoveNode extends TerminalNode<MovementRule> {
+
+	private Vec2D position;
 
 	/**
 	*
@@ -33,15 +36,15 @@ public class MoveNode extends TerminalNode<MovementRule> {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) {
-		return;
+	public void evaluate(GameManager game) throws NetworkIOException {
+		position = getInput("position").getData(Vec2D.class);
 	}
 
 	/**
 	* return the data retrieved in the "position" input, used to decide where an entity should move
 	*/ 
 	public Vec2D position() {
-		return getInput("position").getData(Vec2D.class);
+		return position;
 	}
 
 }
