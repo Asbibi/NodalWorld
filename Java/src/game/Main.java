@@ -34,7 +34,7 @@ public class Main {
 		//gameManager = GameManagerBuilder.buildBasicGame(width, height);
 		gameManager = GameManagerBuilder.buildFullLoadedGame("/savetest.nws");
 		gameFrame = new GameFrame(gameManager);
-		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, true) );
+		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, false) );
 		//gameFrame.addNew_LoadActionListener( e -> Saver.loadGame("/savetest.nws", gameManager) );
 	}
 }

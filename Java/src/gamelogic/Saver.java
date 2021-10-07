@@ -98,16 +98,18 @@ public class Saver {
 		if (bufferedImage == null)
 			return;
 		
+		String path = element.getImageFile().getPath();
+		String lineToWrite;
 		
-		String lineToWrite = element.toString() + "\ta\t" + element.getImageFile().getPath() + "\n";	// a indicates it's an absolute path
-		
-		if (packImages) {
+		// Asks : do you want to save the image in the save file or is your image not linked to a real file (ie already loaded from a save file) ?
+		if (packImages || path == null) {
 			File currentImageFile = new File(saveFilePath + "\\_images_" + element.toString() + ".png");
 			ImageIO.write(bufferedImage, "png", currentImageFile);
 			imagesFiles.add(currentImageFile);
 			
 			lineToWrite = element.toString() + "\ts\t" + currentImageFile.getName() + "\n";	// s indicates it's a save path
-		}
+		} else
+			lineToWrite = element.toString() + "\ta\t" + element.getImageFile().getPath() + "\n";	// a indicates it's an absolute path
 		
 		
 		imageOut.write(lineToWrite);
@@ -267,24 +269,28 @@ public class Saver {
         System.out.println("Absolute Image loaded for element: " + element.toString() + "\t | " + imagePath);
 	}
 	private static void loadElementImage_Saved(Element element, String imageName, ArrayList<File> files) {
-		if (element == null){
-			System.err.println("Element is null -> Save file may be corrupted");
-			return;
-		}
-		
-		File image = null;
-		for (int i = 0; i < files.size(); i++) {
-			if (files.get(i).getName().equals(imageName)) {
-				image = files.get(i);
-				break;
+		try {
+			if (element == null){
+				System.err.println("Element is null -> Save file may be corrupted");
+				return;
 			}
+			
+			File image = null;
+			for (int i = 0; i < files.size(); i++) {
+				if (files.get(i).getName().equals(imageName)) {
+					image = files.get(i);
+					break;
+				}
+			}
+			
+			if (image == null)
+				return;			
+		
+			element.setImageFile(new ImageFile(ImageIO.read(image)));
+	        System.out.println("Image loaded for element: " + element.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		if (image == null)
-			return;
-		
-		element.setImageFile(new ImageFile(image.getAbsolutePath()));		
-        System.out.println("Image loaded for element: " + element.toString());
 	}
 	
 	private static File unzipSaveFiles(String saveFilePath, ArrayList<File> files) {
