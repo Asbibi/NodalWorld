@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Collection;
 * @see Input
 * @see Output
 */ 
-public abstract class Node {
+public abstract class Node implements Serializable {
 
 	private static int idCounter = 0;
 

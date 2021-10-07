@@ -22,23 +22,22 @@ public class Species extends Element{
 	private Collection<Entity> members;
 	private Integer triggerTime;
 
+	
 	/**
 	* @param name
-	* @param path to the image
 	*/ 
-	public Species(String name, String imagePath) {
-		this(name, Toolkit.getDefaultToolkit().getImage(imagePath));
+	public Species(String name) {
+		this(name, null);
 	}
 	
 	/**
 	* @param name
-	* @param image of the species for display
-	*/ 
-	public Species(String name, Image image) {
+	* @param path to the image
+	*/ 	
+	public Species(String name, String imagePath) {
+		super(name, imagePath);
 		id = idCounter;
 		idCounter++;
-		this.name = name;
-		this.image = image;
 		members = new ArrayList<Entity>();
 		triggerTime = 1;
 	}

@@ -189,17 +189,24 @@ public class GameFrame extends JFrame {
 		speedButton.addActionListener(listener);
 	}
 
+	/**
+	* @param the ActionListener to add to the save button
+	*/
+	public void addSaveActionListener(ActionListener action) {
+		saveButton.addActionListener(action);
+	}
+	/**
+	* @param the ActionListener to add to the new/load button
+	*/
+	public void addNew_LoadActionListener(ActionListener action) {
+		newButton.addActionListener(action);
+	}
 	
 
 	/**
 	* @return the color the separator should use in the interface
 	*/
 	static public Color getSeparatorColor() { return separatorColor; }
-	
-	
-	// ===== TEST ONLY =====
-	public WorldPanel gWP_test() { return worldPanel;}
-	public ControlPanel gCTRL_test() { return controlPanel;}
 }
 
 
@@ -209,4 +216,6 @@ public class GameFrame extends JFrame {
 - restart with presets
 - saving (+ saving on exit)
 - loading as restart
+------//----
+- debug element list : if clicked then drag then release on another element, for JList it will be the selected one but not for the detail panel
 */

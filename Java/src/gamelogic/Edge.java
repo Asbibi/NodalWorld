@@ -1,11 +1,13 @@
 package gamelogic;
 
+import java.io.Serializable;
+
 /**
 * This class provides the abstract edge model for the edges used in the nodal system.
 * 
 * @see Node
 */ 
-public class Edge {
+public class Edge implements Serializable {
 
 	private Node source, target;
 

@@ -39,7 +39,6 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 		if (species != null) {
 			triggerTimeField.setFieldString(species.getTriggerTime().toString());
 			memberCount.setLabelString(Integer.toString(species.getMembers().size()));
-			System.out.println("Species set");
 		} else {
 			triggerTimeField.setFieldString("");
 			memberCount.setLabelString("-");

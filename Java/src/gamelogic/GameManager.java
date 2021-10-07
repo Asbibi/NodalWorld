@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 import java.lang.StringBuilder;
+import java.io.Serializable;
 import java.lang.Class;
 
 import javax.swing.event.ChangeListener;
@@ -21,7 +22,7 @@ import javax.swing.event.ChangeEvent;
 * @see Species
 * @see Entity
 */
-public class GameManager {
+public class GameManager implements Serializable {
 
 	private Integer frame;
 
@@ -34,12 +35,12 @@ public class GameManager {
 	private Map<Species, MovementRule> speciesToMoveRule;
 	private Map<Species, DeathRule> speciesToDeathRule;
 
-	private Species currentSpecies;
-	private Entity currentEntity;
+	private transient Species currentSpecies;
+	private transient Entity currentEntity;
 
 	private Network terrainNet, genNet, moveNet, deathNet;
 
-	private List<ChangeListener> gameListeners, surfaceListeners, speciesListeners;
+	private transient List<ChangeListener> gameListeners, surfaceListeners, speciesListeners;
 
 	/**
 	* @param width
@@ -70,6 +71,16 @@ public class GameManager {
 		gameListeners = new LinkedList<ChangeListener>();
 		surfaceListeners = new LinkedList<ChangeListener>();
 		speciesListeners = new LinkedList<ChangeListener>();
+	}
+	
+	public void initTransientFields() {
+		terrain.initTransientFields();
+		if (gameListeners == null)
+			gameListeners = new LinkedList<ChangeListener>();
+		if (surfaceListeners == null)
+			surfaceListeners = new LinkedList<ChangeListener>();
+		if (speciesListeners == null)
+			speciesListeners = new LinkedList<ChangeListener>();		
 	}
 
 	/**

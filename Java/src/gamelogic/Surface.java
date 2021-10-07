@@ -21,26 +21,18 @@ public class Surface extends Element{
 	* @param name
 	*/ 
 	public Surface(String name) {
-		this(name, (Image)null);
+		this(name, null);
 	}
 	/**
 	* @param name
 	* @param image path
 	*/ 
 	public Surface(String name, String imagePath) {
-		this(name, Toolkit.getDefaultToolkit().getImage(imagePath));
-	}
-	/**
-	* @param name
-	* @param image
-	*/ 
-	public Surface(String name, Image image) {
+		super(name, imagePath);
 		id = idCounter;
 		idCounter++;
-		this.name = name;
-		this.image = image;
 		color = Color.lightGray;
-	}	
+	}
 
 	/**
 	* Checks the equality between two surfaces by verifying that their ids are the same.
