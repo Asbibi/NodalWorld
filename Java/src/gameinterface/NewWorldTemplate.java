@@ -8,15 +8,15 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class NewWorldTemplate {
-	public static NewWorldTemplate empty 					= new NewWorldTemplate("Empty", 			"A completely empty world", "",								"res/_System_New.png", true);
-	public static NewWorldTemplate basic 					= new NewWorldTemplate("Basic", 			"An empty world but with", "already existing assets", 		"res/_System_New.png", true);
-	public static NewWorldTemplate island 					= new NewWorldTemplate("Island", 			"A simple world with a", "terrain in a shape of an island",	"res/_System_New.png", true);
-	public static NewWorldTemplate completeDemo				= new NewWorldTemplate("Demo", 				"A complete demo world to", "use as example",				"res/_System_New.png", false);
+	public static NewWorldTemplate empty 					= new NewWorldTemplate("Empty", 			"A completely empty world.", "",								"res/_System_Template_Empty.png", true);
+	public static NewWorldTemplate basic 					= new NewWorldTemplate("Basic", 			"An empty world but with", "already existing assets.", 			"res/_System_Template_Basic.png", true);
+	public static NewWorldTemplate island 					= new NewWorldTemplate("Island", 			"A simple world with an", "island shaped terrain.",				"res/_System_Template_Island.png", true);
+	public static NewWorldTemplate completeDemo				= new NewWorldTemplate("Demo", 				"A complete demo world to", "use as example.",					"res/_System_Template_Demo.png", false);
 	
-	public static NewWorldTemplate loadElements 			= new NewWorldTemplate("Import Data", 		"Load surfaces & species", "from a save file", 				"res/_System_New.png", true);
-	public static NewWorldTemplate loadElementsTerrain 		= new NewWorldTemplate("Import Terrain",	"Load surfaces, species &", "terrain graph from a save file","res/_System_New.png", false);
-	public static NewWorldTemplate loadElementsAllNodes 	= new NewWorldTemplate("Import Graphs", 	"Load surfaces, species &", "all graphs from a save file", 	"res/_System_New.png", false);
-	public static NewWorldTemplate loadFullSave 			= new NewWorldTemplate("Complete Load", 	"Resume from a save file", "", 								"res/_System_New.png", false);
+	public static NewWorldTemplate loadElements 			= new NewWorldTemplate("Import Data", 		"Load surfaces & species", "from a save file.", 				"res/_System_Template_LoadElements.png", true);
+	public static NewWorldTemplate loadElementsTerrain 		= new NewWorldTemplate("Import Terrain",	"Load surfaces, species &", "terrain from a save file.",		"res/_System_Template_LoadEleTerrain.png", false);
+	public static NewWorldTemplate loadElementsAllNodes 	= new NewWorldTemplate("Import Graphs", 	"Load surfaces, species &", "all graphs from a save file.", 	"res/_System_Template_LoadEleTerGraphs.png", false);
+	public static NewWorldTemplate loadFullSave 			= new NewWorldTemplate("Complete Load", 	"Resume from a save file.", "", 								"res/_System_Template_LoadFull.png", false);
 	
 	// ====================================================
 	
