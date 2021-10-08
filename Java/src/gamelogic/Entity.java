@@ -1,5 +1,7 @@
 package gamelogic;
 
+import java.io.Serializable;
+
 /**
 * Each entity is part of a species.
 * At each frame it can move and/or die.
@@ -8,7 +10,7 @@ package gamelogic;
 * @see MovementRule
 * @see DeathRule
 */ 
-public class Entity {
+public class Entity implements Serializable {
 
 	private Species species;
 	private Vec2D pos;

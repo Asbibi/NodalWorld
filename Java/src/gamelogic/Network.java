@@ -42,6 +42,10 @@ public class Network implements Serializable {
 
 		alertListeners = new LinkedList<ChangeListener>();
 	}
+	public void initTransientFields() {
+		if (alertListeners == null)
+			alertListeners = new LinkedList<ChangeListener>();
+	}
 
 	/**
 	* @return all the network's nodes

@@ -65,7 +65,13 @@ public class Species extends Element{
 	public void removeMember(Entity member) {
 		members.remove(member);
 	}
-
+	
+	/**
+	* @return all the members of the species
+	*/ 
+	public void removeAllMembers() {
+		members.clear();
+	}
 	
 	/**
 	* @return all the members of the species
@@ -96,4 +102,17 @@ public class Species extends Element{
 		return (frame%triggerTime == 0);
 	}
 
+	
+	// =========================		Statis fields		===================================
+	
+	
+	
+	private static Species empty = new Species("empty");
+
+	/**
+	* @return an "empty" surface used as a default values in terrains
+	*/ 
+	public static Species getEmpty() {
+		return empty;
+	}
 }

@@ -29,11 +29,11 @@ public class GameManagerBuilder {
 		else if (template.isEqual(NewWorldTemplate.completeDemo))
 			return buildDemoGame(width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElements))
-			return null;
+			return buildDataLoadedGame("/savetest.nws",width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElementsTerrain))
-			return null;
+			return buildTerrainLoadedGame("/savetest.nws",width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElementsAllNodes))
-			return null;
+			return buildAllNetsLoadedGame("/savetest.nws",width, height);
 		else if (template.isEqual(NewWorldTemplate.loadFullSave))
 			return buildFullLoadedGame("/savetest.nws",width, height);
 		else {
@@ -68,17 +68,6 @@ public class GameManagerBuilder {
 	/**
 	* @param width
 	* @param height
-	* @return the newly created game manager with some basic settings
-	*/ 
-	public static GameManager buildFullLoadedGame(String saveFilePath, int width, int height) {
-		GameManager game = Saver.loadGame(saveFilePath);
-		game.initTransientFields();
-		return game != null ? game : buildEmptyGame(width, height);
-	}
-
-	/**
-	* @param width
-	* @param height
 	* @return the newly created game manager used for demonstration purposes
 	*/ 
 	public static GameManager buildDemoGame(int width, int height) {
@@ -91,6 +80,62 @@ public class GameManagerBuilder {
 		addDemoMoveRule(game);
 		addDemoDeathRule(game);
 		return game;
+	}
+
+	
+	
+	/**
+	* @param width
+	* @param height
+	* @return the newly created game manager with some basic settings
+	*/ 
+	public static GameManager buildDataLoadedGame(String saveFilePath, int width, int height) {
+		GameManager game = buildEmptyGame(width, height);
+		GameManager gameSaved = Saver.loadGame(saveFilePath);
+		if (gameSaved != null)
+			copyElementsGameManager(game, gameSaved);
+		
+		return game;
+	}
+	
+	/**
+	* @param width
+	* @param height
+	* @return the newly created game manager with some basic settings
+	*/ 
+	public static GameManager buildTerrainLoadedGame(String saveFilePath, int width, int height) {
+		GameManager game = buildEmptyGame(width, height);
+		GameManager gameSaved = Saver.loadGame(saveFilePath);
+		if (gameSaved != null) {
+			gameSaved.initTransientFields();
+			copyElementsGameManager(game, gameSaved);
+			game.copyTerrain_TerrainNet(gameSaved);
+		}
+		
+		return game;
+	}
+	
+	/**
+	* @param width
+	* @param height
+	* @return the newly created game manager with some basic settings
+	*/ 
+	public static GameManager buildAllNetsLoadedGame(String saveFilePath, int width, int height) {
+		GameManager game = Saver.loadGame(saveFilePath);
+		game.initTransientFields();
+		game.reinitWorld();
+		return game != null ? game : buildEmptyGame(width, height);
+	}
+	
+	/**
+	* @param width width used in case the loading fails
+	* @param height height used in case the loading fails
+	* @return the exact replica of the gamemanager saved
+	*/ 
+	public static GameManager buildFullLoadedGame(String saveFilePath, int width, int height) {
+		GameManager game = Saver.loadGame(saveFilePath);
+		game.initTransientFields();
+		return game != null ? game : buildEmptyGame(width, height);
 	}
 
 
@@ -160,4 +205,12 @@ public class GameManagerBuilder {
 		// die if too old or if in water
 	}
 
+	private static void copyElementsGameManager(GameManager gameCopy, GameManager gameCopied) {
+		for (int i = 1; i < gameCopied.getSurfaceArray().size(); i++)
+				gameCopy.addSurface(gameCopied.getSurfaceArray().get(i));
+		for (int i = 1; i < gameCopied.getSpeciesArray().size(); i++) {
+			gameCopied.getSpeciesArray().get(i).removeAllMembers();
+			gameCopy.addSpecies(gameCopied.getSpeciesArray().get(i));
+		}
+	}
 }

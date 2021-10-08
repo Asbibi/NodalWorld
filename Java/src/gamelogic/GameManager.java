@@ -55,6 +55,7 @@ public class GameManager implements Serializable {
 		surfaces.add(Surface.getEmpty());
 
 		species = new LinkedList<Species>();
+		species.add(Species.getEmpty());
 
 		speciesToGenRule = new HashMap<Species, GenerationRule>();
 		speciesToMoveRule = new HashMap<Species, MovementRule>();
@@ -75,12 +76,20 @@ public class GameManager implements Serializable {
 	
 	public void initTransientFields() {
 		terrain.initTransientFields();
+		terrainNet.initTransientFields();
+		genNet.initTransientFields();
+		moveNet.initTransientFields();
+		deathNet.initTransientFields();
 		if (gameListeners == null)
 			gameListeners = new LinkedList<ChangeListener>();
 		if (surfaceListeners == null)
 			surfaceListeners = new LinkedList<ChangeListener>();
 		if (speciesListeners == null)
 			speciesListeners = new LinkedList<ChangeListener>();		
+	}
+	public void reinitWorld() {
+		frame = 0;
+		exterminateSpeciesMembers();
 	}
 
 	/**
@@ -184,6 +193,15 @@ public class GameManager implements Serializable {
 		species.add(sp);
 		triggerSpeciesListeners();
 	}
+	
+	/**
+	* Delete all the members of all the species
+	*/
+	public void exterminateSpeciesMembers() {
+		for (Species sp : species)
+			sp.removeAllMembers();
+		triggerSpeciesListeners();
+	}
 
 	/**
 	* @return the species being processed in the game loop
@@ -215,6 +233,15 @@ public class GameManager implements Serializable {
 	*/ 
 	public Network getDeathNet() { return deathNet; }
 
+	/**
+	* @return the death netork
+	*/ 
+	public void copyTerrain_TerrainNet(GameManager copiedManager) { 
+		terrain = copiedManager.getTerrain();
+		terrainNet = copiedManager.getTerrainNet();
+	}
+	
+	
 	/**
 	* Ensures that each species has at most one generation rule.
 	* 
