@@ -15,6 +15,9 @@ import java.util.Set;
 import java.util.HashSet;
 
 import javax.swing.event.ChangeListener;
+
+import gameinterface.nodaleditor.NodalEditorModel;
+
 import javax.swing.event.ChangeEvent;
 
 /**
@@ -29,6 +32,8 @@ public class Network implements Serializable {
 
 	private List<Node> nodes;
 	private Map<Node, Collection<Edge>> outEdges, inEdges;
+	
+	private NodalEditorModel attachedModel = null;
 
 	private transient List<ChangeListener> alertListeners;
 
@@ -45,6 +50,11 @@ public class Network implements Serializable {
 	public void initTransientFields() {
 		if (alertListeners == null)
 			alertListeners = new LinkedList<ChangeListener>();
+	}
+	public void copyFromLoadedAndAttachEditorModel(NodalEditorModel newModel) {
+		if (attachedModel != null)
+			newModel.copyNonTransientFields(attachedModel);
+		attachedModel = newModel;
 	}
 
 	/**

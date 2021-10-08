@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.awt.event.ActionEvent;
 
 import java.awt.Component;
@@ -29,7 +30,7 @@ import java.awt.Dimension;
 * 
 * @see Input
 */ 
-public class NodeInfoPanel extends JPanel {
+public class NodeInfoPanel extends JPanel implements Serializable {
 
 	/**
 	* @param game 

@@ -1,5 +1,7 @@
 package gameinterface.nodaleditor;
 
+import java.io.Serializable;
+
 import gamelogic.Input;
 import gamelogic.Output;
 
@@ -10,7 +12,7 @@ import gamelogic.Output;
 * @see Output
 * @see NodeBox
 */ 
-public class Port {
+public class Port implements Serializable {
 
 	private NodeBox parent;
 	private int x, y, size;

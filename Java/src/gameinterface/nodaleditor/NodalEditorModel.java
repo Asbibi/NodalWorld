@@ -9,7 +9,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 import java.awt.FontMetrics;
-
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -24,24 +24,25 @@ import java.lang.Class;
 *  
 * @see NodalEditor
 */ 
-public class NodalEditorModel {
+public class NodalEditorModel implements Serializable {
 
-	private GameManager game;
-	private Network network;
+	private transient GameManager game;
+	private transient Network network;
+	
 	private Collection<NodeBox> boxes;
 	private Map<Node, NodeInfoPanel> infoPanels;
 	private boolean usingRules, usingTerrains;
 	private Class<? extends Rule> ruleClass;
 	private int sideBoxWidth, sideBoxHeight;
 
-	private boolean editingLink, movingSelection, selectingArea, linkingSpecies, linkingTerrainSlot, onAlert;
-	private int xCursor, yCursor, xRef, yRef;
-	private Port curPort;
+	private transient boolean editingLink, movingSelection, selectingArea, linkingSpecies, linkingTerrainSlot, onAlert;
+	private transient int xCursor, yCursor, xRef, yRef;
+	private transient Port curPort;
 	private Map<NodeBox, Boolean> selected;
-	private JPanel curInfoPanel, defaultInfoPanel;
-	private int curSpeciesRow, curTerrainSlotRow;
+	private transient JPanel curInfoPanel, defaultInfoPanel;
+	private transient int curSpeciesRow, curTerrainSlotRow;
 
-	private Collection<ChangeListener> changeListeners;
+	private transient Collection<ChangeListener> changeListeners;
 
 	/**
 	* @param game
@@ -72,6 +73,19 @@ public class NodalEditorModel {
 		curTerrainSlotRow = -1;
 
 		changeListeners = new LinkedList<ChangeListener>();
+		
+		// copy needed model data from loded save file
+		network.copyFromLoadedAndAttachEditorModel(this);
+	}
+	public void copyNonTransientFields(NodalEditorModel otherModel) {
+		boxes = otherModel.boxes;
+		infoPanels = otherModel.infoPanels;
+		usingRules = otherModel.usingRules;
+		usingTerrains = otherModel.usingTerrains;
+		ruleClass = otherModel.ruleClass;
+		sideBoxWidth = otherModel.sideBoxWidth;
+		sideBoxHeight = otherModel.sideBoxHeight;
+		selected = otherModel.selected;
 	}
 
 

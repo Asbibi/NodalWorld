@@ -5,7 +5,7 @@ import gamelogic.Input;
 import gamelogic.Output;
 
 import java.awt.FontMetrics;
-
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -15,7 +15,7 @@ import java.util.LinkedList;
 * @see Node
 * @see Port
 */ 
-public class NodeBox {
+public class NodeBox implements Serializable {
 
 	private Node node;
 	private int x, y;
