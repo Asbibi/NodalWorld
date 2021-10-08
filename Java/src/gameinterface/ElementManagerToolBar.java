@@ -130,7 +130,6 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	*/ 
 	public void moveUpCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
-		System.out.println(selectedIndex);
 		if (selectedIndex > 0) {
 			swapElementArray(selectedIndex, selectedIndex -1);
 			scrollList.setSelectedIndex(selectedIndex - 1);
@@ -227,9 +226,11 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	* Should be called every time the ArrayList elements is modified. 
 	*/
 	private void CopyElementsToJList() {
-		Element[] elementArray = new Element[getElements().size()];
+		Element[] elementArray = new Element[getElements().size() - 1];
 		int idx = 0;
 		for (T elt : getElements()) {
+			if (elt.equals(Surface.getEmpty()) || elt.equals(Species.getEmpty()))
+				continue;
 			elementArray[idx] = elt;
 			idx++;
 		}
@@ -252,8 +253,8 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	}
 
 	private T getElement(int index) {
-		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index));
-		else if(eltClass.equals(Species.class)) return eltClass.cast(game.getSpecies(index));
+		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index + 1));
+		else if(eltClass.equals(Species.class)) return eltClass.cast(game.getSpecies(index + 1));
 		return null;
 	}
 
@@ -263,13 +264,15 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	}
 
 	private void removeElement(int index) {
-		if(eltClass.equals(Surface.class)) return; // TODO
-		else if(eltClass.equals(Species.class)) return; // TODO
+		if(eltClass.equals(Surface.class)) 
+			return; // TODO
+		else if(eltClass.equals(Species.class)) 
+			return; // TODO
 	}
 
-	private void swapElements(int indexFst, int indexSnd) {
-		if(eltClass.equals(Surface.class)) return; // TODO
-		else if(eltClass.equals(Species.class)) return; // TODO
+	private void swapElements(int indexFst, int indexSnd) {	// +1 because we exclude empty from the display so the JList index has an offset
+		if(eltClass.equals(Surface.class)) game.swapSurfaces(indexFst +1, indexSnd+1);
+		else if(eltClass.equals(Species.class)) game.swapSpecies(indexFst +1, indexSnd+1);
 	}
 
 }

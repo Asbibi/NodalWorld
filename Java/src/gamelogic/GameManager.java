@@ -156,6 +156,16 @@ public class GameManager implements Serializable {
 		surfaces.add(surf);
 		triggerSurfaceListeners();
 	}
+	
+	/**
+	* Swap two surfaces positions in the surfaces list (no check on indexes)
+	*/
+	public void swapSurfaces(int firstIndex, int secondIndex) {
+		Surface surfTemp = surfaces.get(firstIndex);
+		surfaces.set(firstIndex, surfaces.get(secondIndex));
+		surfaces.set(secondIndex, surfTemp);
+		triggerSurfaceListeners();
+	}
 
 	/**
 	* @return reference to the surface list
@@ -191,6 +201,16 @@ public class GameManager implements Serializable {
 	*/
 	public void addSpecies(Species sp) {
 		species.add(sp);
+		triggerSpeciesListeners();
+	}
+	
+	/**
+	* Swap two species positions in the species list (no check on indexes)
+	*/
+	public void swapSpecies(int firstIndex, int secondIndex) {
+		Species spTemp = species.get(firstIndex);
+		species.set(firstIndex, species.get(secondIndex));
+		species.set(secondIndex, spTemp);
 		triggerSpeciesListeners();
 	}
 	
