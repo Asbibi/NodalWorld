@@ -128,6 +128,17 @@ public class Network implements Serializable {
 			throw e;
 		}
 	}
+	
+	public void replaceSurfaceByEmpty(Surface replacedSurface) {
+		for (Node node : nodes) {
+			node.replaceSurfaceInputByEmpty(replacedSurface);
+		}
+	}
+	public void replaceSpeciesByEmpty(Species replacedSpecies) {
+		for (Node node : nodes) {
+			node.replaceSpeciesInputByEmpty(replacedSpecies);
+		}
+	}
 
 	/**
 	* @param listener

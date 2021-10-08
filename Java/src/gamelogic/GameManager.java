@@ -166,6 +166,22 @@ public class GameManager implements Serializable {
 		surfaces.set(secondIndex, surfTemp);
 		triggerSurfaceListeners();
 	}
+	
+	/**
+	* @param index of the species in the array
+	*/
+	public void removeSurface(int index) {
+		if (index < 0 || index >= surfaces.size())
+			return;
+
+		Surface removedSurface = surfaces.get(index);
+		terrainNet.replaceSurfaceByEmpty(removedSurface);
+		genNet.replaceSurfaceByEmpty(removedSurface);
+		moveNet.replaceSurfaceByEmpty(removedSurface);
+		deathNet.replaceSurfaceByEmpty(removedSurface);
+		surfaces.remove(index);
+		triggerSurfaceListeners();
+	}
 
 	/**
 	* @return reference to the surface list
@@ -211,6 +227,23 @@ public class GameManager implements Serializable {
 		Species spTemp = species.get(firstIndex);
 		species.set(firstIndex, species.get(secondIndex));
 		species.set(secondIndex, spTemp);
+		triggerSpeciesListeners();
+	}
+	
+	/**
+	* @param index of the species in the array
+	*/
+	public void removeSpecies(int index) {
+		if (index < 0 || index >= species.size())
+			return;
+
+		Species removedSpecies = species.get(index);
+		disconnectAllRulesFromSpecies(removedSpecies);
+		terrainNet.replaceSpeciesByEmpty(removedSpecies);
+		genNet.replaceSpeciesByEmpty(removedSpecies);
+		moveNet.replaceSpeciesByEmpty(removedSpecies);
+		deathNet.replaceSpeciesByEmpty(removedSpecies);
+		species.remove(index);
 		triggerSpeciesListeners();
 	}
 	
@@ -302,6 +335,21 @@ public class GameManager implements Serializable {
 		} else {
 			speciesToDeathRule.put(sp, rule);
 		}
+	}
+	
+	/**
+	* Remove all generation, movement & death rules linked to the specified species.
+	* 
+	* @param rule
+	* @param sp
+	*/
+	public void disconnectAllRulesFromSpecies(Species sp) {
+		if(speciesToGenRule.containsKey(sp))
+			speciesToGenRule.remove(sp);
+		if(speciesToMoveRule.containsKey(sp))
+			speciesToMoveRule.remove(sp);
+		if(speciesToDeathRule.containsKey(sp))
+			speciesToDeathRule.remove(sp);
 	}
 
 	public <R extends Rule> void connectRuleToSpecies(R rule, Species sp) {

@@ -252,7 +252,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		return null;
 	}
 
-	private T getElement(int index) {
+	private T getElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
 		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index + 1));
 		else if(eltClass.equals(Species.class)) return eltClass.cast(game.getSpecies(index + 1));
 		return null;
@@ -263,11 +263,11 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		else if(eltClass.equals(Species.class)) game.addSpecies((Species) elt);
 	}
 
-	private void removeElement(int index) {
+	private void removeElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
 		if(eltClass.equals(Surface.class)) 
-			return; // TODO
+			game.removeSurface(index + 1);
 		else if(eltClass.equals(Species.class)) 
-			return; // TODO
+			game.removeSpecies(index + 1);
 	}
 
 	private void swapElements(int indexFst, int indexSnd) {	// +1 because we exclude empty from the display so the JList index has an offset

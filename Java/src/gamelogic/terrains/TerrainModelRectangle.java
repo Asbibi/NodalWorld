@@ -17,6 +17,9 @@ public class TerrainModelRectangle implements TerrainModel {
 
 	@Override
 	public boolean hasSurfaceAt(Vec2D pos) {
+		if (corner == null || dimensions == null)
+			return false;
+		
 		return (pos.getX() >= corner.getX() 
 				&& pos.getX() < corner.getX()+dimensions.getX() 
 				&& pos.getY() >= corner.getY() 

@@ -107,5 +107,27 @@ public abstract class Node implements Serializable {
 	* @param game
 	*/ 
 	public abstract void evaluate(GameManager game) throws NetworkIOException;
-
+	
+	public void replaceSurfaceInputByEmpty(Surface replacedSurface) {
+		for (Input input : inputs.values()) {
+			try {
+				if (input.isManual() && (input.<Surface>getManualValue(Surface.class)).equals(replacedSurface))
+					input.setManualValue(Surface.getEmpty());
+			} catch (NetworkIOException e) {
+				// this catch is normal : it happens when adressing an input that isn't a Surface -> ignore it
+				return;
+			}
+		}
+	}
+	public void replaceSpeciesInputByEmpty(Species replacedSpecies) {
+		for (Input input : inputs.values()) {
+			try {
+				if (input.isManual() && (input.<Species>getManualValue(Species.class)).equals(replacedSpecies))
+					input.setManualValue(Species.getEmpty());
+			} catch (NetworkIOException e) {
+				// this catch is normal : it happens when adressing an input that isn't a Species -> ignore it				
+				return;
+			}
+		}
+	}	
 }
