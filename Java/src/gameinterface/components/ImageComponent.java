@@ -36,7 +36,11 @@ public class ImageComponent extends JComponent{
 		image = null;
 		view = new ImageView();
 		model = new ImageModel();
-		imageChooser = new JFileChooser();
+		
+		imageChooser = new JFileChooser();imageChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		imageChooser.setAcceptAllFileFilterUsed(false);
+		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Images", "jpg","gif","png");
+		imageChooser.addChoosableFileFilter(imageFilter);
 		
         addMouseListener(new MouseAdapter() {
             @Override
@@ -106,10 +110,6 @@ public class ImageComponent extends JComponent{
 	* Sets the image displayed using a JFileChooser.
 	*/ 
 	private void setImageFromFile() {		
-		imageChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		imageChooser.setAcceptAllFileFilterUsed(false);
-		FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Images", "jpg","gif","png");
-		imageChooser.addChoosableFileFilter(imageFilter);
 		int result = imageChooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			File selectedImage = imageChooser.getSelectedFile();

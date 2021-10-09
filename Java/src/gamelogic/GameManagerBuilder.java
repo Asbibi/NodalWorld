@@ -19,7 +19,7 @@ public class GameManagerBuilder {
 	* @param height
 	* @return the newly created empty game manager
 	*/ 
-	public static GameManager buildGameFromTemplate(NewWorldTemplate template, int width, int height) {
+	public static GameManager buildGameFromTemplate(NewWorldTemplate template, int width, int height, String savefilePath) {
 		if (template.isEqual(NewWorldTemplate.empty))
 			return buildEmptyGame(width, height);
 		else if (template.isEqual(NewWorldTemplate.basic))
@@ -29,13 +29,13 @@ public class GameManagerBuilder {
 		else if (template.isEqual(NewWorldTemplate.completeDemo))
 			return buildDemoGame(width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElements))
-			return buildDataLoadedGame("/savetest.nws",width, height);
+			return buildDataLoadedGame(savefilePath,width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElementsTerrain))
-			return buildTerrainLoadedGame("/savetest.nws",width, height);
+			return buildTerrainLoadedGame(savefilePath,width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElementsAllNodes))
-			return buildAllNetsLoadedGame("/savetest.nws",width, height);
+			return buildAllNetsLoadedGame(savefilePath,width, height);
 		else if (template.isEqual(NewWorldTemplate.loadFullSave))
-			return buildFullLoadedGame("/savetest.nws",width, height);
+			return buildFullLoadedGame(savefilePath,width, height);
 		else {
 			System.err.println("Template given is incorrect");
 			return null;

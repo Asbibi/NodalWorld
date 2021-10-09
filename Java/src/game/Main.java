@@ -24,9 +24,6 @@ public class Main {
 		
 		GameFrame gameFrame = new GameFrame(gameManager);
 		GamePlayer gamePlayer = new GamePlayer(gameManager, gameFrame);
-
-		// === for testing purposes, must be cleaned up late ===
-		gameFrame.addSaveActionListener( e -> Saver.saveGame("/savetest", gameManager, true) );		
 	}
 	
 	
@@ -50,7 +47,7 @@ public class Main {
 			if (!dialogBox.getConfirm())
 				return null;
 			
-			return GameManagerBuilder.buildGameFromTemplate(dialogBox.getSelectedTemplate(), dialogBox.getTemplateWidth(), dialogBox.getTemplateHeight());
+			return GameManagerBuilder.buildGameFromTemplate(dialogBox.getSelectedTemplate(), dialogBox.getTemplateWidth(), dialogBox.getTemplateHeight(), dialogBox.getSelectedSaveFilePath());
 		}
 	}
 }

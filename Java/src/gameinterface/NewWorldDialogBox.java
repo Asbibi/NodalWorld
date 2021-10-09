@@ -4,14 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import gameinterface.components.NewWorldTemplateComponent;
+import gamelogic.ImageFile;
 
 public class NewWorldDialogBox extends JDialog {
 
@@ -19,6 +23,7 @@ public class NewWorldDialogBox extends JDialog {
 	private NewWorldTemplate template = NewWorldTemplate.empty;
 	private int width = 10;
 	private int height = 10;
+	private JFileChooser savefileChooser;
 	
 	private JButton OKButton;
 	private JButton CancelButton;
@@ -37,6 +42,13 @@ public class NewWorldDialogBox extends JDialog {
 	
 	public NewWorldDialogBox(JFrame owner) {
 		super(owner, "Choose a starting template", true);
+		
+		savefileChooser = new JFileChooser();
+		savefileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		savefileChooser.setAcceptAllFileFilterUsed(false);
+		FileNameExtensionFilter savefileFilter = new FileNameExtensionFilter("Nodal World Save File (.nws)", "nws");
+		savefileChooser.addChoosableFileFilter(savefileFilter);
+		
 		setLayout(new BorderLayout());
 		
 		JPanel templatePanel = new JPanel();
@@ -126,6 +138,15 @@ public class NewWorldDialogBox extends JDialog {
 			if(!confirm)
 				return;
 		}
+		
+		if (template.getAskLoading()) {
+			int result = savefileChooser.showOpenDialog(this);
+			if (result != JFileChooser.APPROVE_OPTION) {
+				confirm = false;
+				return;
+			}
+		}
+		
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 	
@@ -143,5 +164,12 @@ public class NewWorldDialogBox extends JDialog {
 
 	public int getTemplateHeight() {
 		return height;
+	}
+
+	public String getSelectedSaveFilePath() {
+		if (savefileChooser.getSelectedFile() != null)
+			return savefileChooser.getSelectedFile().getPath();
+		else
+			return null;
 	}
 }

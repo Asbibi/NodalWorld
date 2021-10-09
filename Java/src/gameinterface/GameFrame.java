@@ -2,12 +2,16 @@ package gameinterface;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.event.ChangeEvent;
 
 import javax.swing.*;
 
 import gamelogic.GameManager;
+import gamelogic.Saver;
 
 /**
 * This class manages the display of the whole game in its own window
@@ -32,6 +36,8 @@ public class GameFrame extends JFrame {
 	private JButton			zoomResetButton;
 	private JButton			saveButton;
 	private JButton			newButton;
+	
+	private JFileChooser 	savefileChooser;
 
 	
 	/**
@@ -41,7 +47,13 @@ public class GameFrame extends JFrame {
 		super("Nodal World");
 		worldPanel = new WorldPanel(gameManager);
 		controlPanel = new ControlPanel(gameManager);
-		setupUI();
+		setupUI(gameManager);
+		
+		savefileChooser = new JFileChooser();
+		savefileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		savefileChooser.setAcceptAllFileFilterUsed(false);
+		FileNameExtensionFilter savefileFilter = new FileNameExtensionFilter("Nodal World Save File (.nws)", "nws");
+		savefileChooser.addChoosableFileFilter(savefileFilter);
 		
 		// === TO UNCOMENT WHEN SAVE WORKS ===
 		/* addWindowListener(new WindowAdapter() {
@@ -79,10 +91,10 @@ public class GameFrame extends JFrame {
 	* - Creates the menubar
 	* - Separate the empty space into 2 areas of the same size (GridLayout) : one for the ControlPanel and one for the WorldPanel 
 	*/
-	private void setupUI() {
+	private void setupUI(GameManager gameManager) {
         setPreferredSize(new Dimension(1280, 720));
         
-        setupMenuBar();
+        setupMenuBar(gameManager);
         
         JPanel worldParentPanel = new JPanel() { @Override public void setSize(Dimension d) { super.setSize(d); worldPanel.computeMinimalTileSize(); }};
         worldParentPanel.setLayout(new FlowLayout());
@@ -100,7 +112,7 @@ public class GameFrame extends JFrame {
 	/**
 	* Creates the menubar of the game
 	*/ 
-	private void setupMenuBar() {
+	private void setupMenuBar(GameManager gameManager) {
 		JMenuBar menuBar = new JMenuBar();
 		Dimension buttonDimension = new Dimension(110,25);
 		
@@ -141,6 +153,7 @@ public class GameFrame extends JFrame {
 		newButton = new JButton("New",newIcon);
 		saveButton.setPreferredSize(buttonDimension);
 		newButton.setPreferredSize(buttonDimension);
+		saveButton.addActionListener( e -> saveGameManager(gameManager) );
 		
 		// =============== ADD TIME =================
 		
@@ -189,21 +202,33 @@ public class GameFrame extends JFrame {
 	public void addSpeedUpListener(ActionListener listener) {
 		speedButton.addActionListener(listener);
 	}
-
-	/**
-	* @param the ActionListener to add to the save button
-	*/
-	public void addSaveActionListener(ActionListener action) {
-		saveButton.addActionListener(action);
-	}
+	
 	/**
 	* @param the ActionListener to add to the new/load button
 	*/
 	public void addNew_LoadActionListener(ActionListener action) {
 		newButton.addActionListener(action);
 	}
+
+	
+	
+	
+	
+	/**
+	* @param the GameManager to save
+	*/
+	public void saveGameManager(GameManager gameManager) {
+        int res = savefileChooser.showSaveDialog(this);
+        if(res == JFileChooser.APPROVE_OPTION){
+   			Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);	//"/savetest"
+        }
+	}
 	
 
+	
+	
+	
+	
 	/**
 	* @return the color the separator should use in the interface
 	*/
@@ -212,11 +237,10 @@ public class GameFrame extends JFrame {
 
 
 /* TODO :
-- find a way to ask to update world if element image changed		=>		"
+- find a way to ask to update world if element image changed		=>		listener
 ------//----
-- restart with presets
-- saving (+ saving on exit)
-- loading as restart
+- saving on exit
+- button load to restart
 ------//----
 - debug element list : if clicked then drag then release on another element, for JList it will be the selected one but not for the detail panel
 */

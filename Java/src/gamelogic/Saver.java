@@ -23,7 +23,11 @@ public class Saver {
 	// ===========	Save Methods	===========
 	
 	public static void saveGame(String saveFilePath, GameManager manager, boolean packImages) {
-		try {			
+		try {
+			String ext = saveFilePath.substring(saveFilePath.length() - 4);
+			if (ext.equals(".nws"))
+				saveFilePath = saveFilePath.substring(0, saveFilePath.length() - 4);
+			
 			ArrayList<File> tempSaveFiles = new ArrayList<>();
 			File tempFolder = new File(saveFilePath);
 	    	tempFolder.mkdir();
