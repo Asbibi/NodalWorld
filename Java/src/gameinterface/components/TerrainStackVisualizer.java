@@ -191,6 +191,9 @@ public class TerrainStackVisualizer extends JComponent {
 		repaint();
 	}
 	
+	public void setTerrain(Terrain terrain) {
+		this.terrain = terrain;
+	}
 	
 	
 	

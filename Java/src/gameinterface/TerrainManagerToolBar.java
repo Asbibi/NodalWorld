@@ -59,6 +59,7 @@ public class TerrainManagerToolBar extends JToolBar {
 	*/ 
 	public void setTerrain(Terrain terrain) {
 		this.terrain = terrain;
+		visualizer.setTerrain(this.terrain);
 		updateFromTerrain();
 	}
 	

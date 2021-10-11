@@ -22,9 +22,10 @@ public class ControlPanel extends JPanel {
 	static private Color standardFieldColor = Color.white;
 	static private Color wrongFieldColor = Color.red;
 	
+	private JSplitPane splitPanel;
 	private JTabbedPane nodeEditorPanel;
 	
-	private JToolBar terrainToolBar;
+	private TerrainManagerToolBar terrainToolBar;
 	private ElementManagerToolBar<Surface> surfaceToolBar;
 	private ElementManagerToolBar<Species> speciesToolBar;
 
@@ -45,13 +46,13 @@ public class ControlPanel extends JPanel {
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.Y_AXIS));
 		terrainToolBar = new TerrainManagerToolBar(gameManager.getTerrain());
-		surfaceToolBar = new ElementManagerToolBar<>(Surface.class, gameManager, new SurfaceDetailPanel()) { 
+		surfaceToolBar = new ElementManagerToolBar<>(Surface.class, new SurfaceDetailPanel()) { 
 			@Override
 			public Surface createElement(String name) {
 				return new Surface(name);
 			}
 		};
-		speciesToolBar = new ElementManagerToolBar<>(Species.class, gameManager, new SpeciesDetailPanel()) { 
+		speciesToolBar = new ElementManagerToolBar<>(Species.class, new SpeciesDetailPanel()) { 
 			@Override
 			public Species createElement(String name) {
 				return new Species(name);
@@ -69,11 +70,17 @@ public class ControlPanel extends JPanel {
 		
 		
 		
-		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, toolScrollPanel, nodeEditorPanel);
+		splitPanel = new JSplitPane(SwingConstants.VERTICAL, toolScrollPanel, nodeEditorPanel);
 		add(splitPanel);
 		splitPanel.setDividerLocation(toolScrollPanel.getPreferredSize().width);
 	}
-
+	public  void connectGameManager(GameManager gameManager) {
+		nodeEditorPanel = NodalEditorBuilder.buildTabbedEditors(gameManager);
+		splitPanel.setRightComponent(nodeEditorPanel);
+		terrainToolBar.setTerrain(gameManager.getTerrain());
+		surfaceToolBar.setGameManager(gameManager);
+		speciesToolBar.setGameManager(gameManager);
+	}
 	
 	
 	/**

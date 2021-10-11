@@ -101,6 +101,12 @@ public class TerrainVisualizerPanel extends JPanel {
 		add(manageButtonsPanel);
 	}
 	
+	public void setTerrain(Terrain terrain) {
+		visualizer.setTerrain(terrain);
+		revalidate();
+		repaint();
+	}
+	
 	/**
 	* Update the index of the focused layer displayed to the actual focused layer index
 	*/

@@ -34,12 +34,10 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private JTextField addTextField;
 	private ElementDetailPanel detailPanel;
 	
-	public ElementManagerToolBar(Class<T> eltClass, GameManager game, ElementDetailPanel detailPanel) {
+	public ElementManagerToolBar(Class<T> eltClass, ElementDetailPanel detailPanel) {
 		super(null, JToolBar.VERTICAL);
 		this.eltClass = eltClass;
-		this.game = game;
 		setUpUI(getElementClassName(), detailPanel);
-		CopyElementsToJList();
 	}
 	
 	/**
@@ -118,6 +116,12 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
             }
         });
 		add(this.detailPanel);
+	}
+	
+	public void setGameManager(GameManager game) {
+		this.game = game;
+		CopyElementsToJList();
+		repaint();
 	}
 	
 	
@@ -247,23 +251,27 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	}
 
 	private List<T> getElements() {
+		if (game == null) return null;
 		if(eltClass.equals(Surface.class)) return game.getSurfaceArray().stream().map(elt -> eltClass.cast(elt)).collect(Collectors.toList());
 		else if(eltClass.equals(Species.class)) return game.getSpeciesArray().stream().map(elt -> eltClass.cast(elt)).collect(Collectors.toList());
 		return null;
 	}
 
 	private T getElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
+		if (game == null) return null;
 		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index + 1));
 		else if(eltClass.equals(Species.class)) return eltClass.cast(game.getSpecies(index + 1));
 		return null;
 	}
 
 	private void addElement(T elt) {
+		if (game == null) return;
 		if(eltClass.equals(Surface.class)) game.addSurface((Surface) elt);
 		else if(eltClass.equals(Species.class)) game.addSpecies((Species) elt);
 	}
 
 	private void removeElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
+		if (game == null) return;
 		if(eltClass.equals(Surface.class)) 
 			game.removeSurface(index + 1);
 		else if(eltClass.equals(Species.class)) 
@@ -271,6 +279,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	}
 
 	private void swapElements(int indexFst, int indexSnd) {	// +1 because we exclude empty from the display so the JList index has an offset
+		if (game == null) return;
 		if(eltClass.equals(Surface.class)) game.swapSurfaces(indexFst +1, indexSnd+1);
 		else if(eltClass.equals(Species.class)) game.swapSpecies(indexFst +1, indexSnd+1);
 	}

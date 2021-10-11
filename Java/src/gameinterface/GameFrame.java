@@ -29,6 +29,7 @@ public class GameFrame extends JFrame {
 	private	ControlPanel 	controlPanel;
 	
 	private JToggleButton	pauseButton;
+	private JLabel			frameCount;
 	private JButton			slowButton;
 	private JButton			speedButton;
 	private JToggleButton	gridButton;
@@ -41,6 +42,8 @@ public class GameFrame extends JFrame {
 	
 	private JFileChooser 	savefileChooser;
 	private ArrayList<ActionListener> onLoadListener;
+	private ImageIcon pauseIcon;
+	private ImageIcon playIcon;
 
 	
 	/**
@@ -93,7 +96,8 @@ public class GameFrame extends JFrame {
         
         setupMenuBar();
         
-        JPanel worldParentPanel = new JPanel() { @Override public void setSize(Dimension d) { super.setSize(d); worldPanel.computeMinimalTileSize(); }};
+        JPanel worldParentPanel = new JPanel() {
+        	@Override public void setSize(Dimension d) { super.setSize(d); worldPanel.computeMinimalTileSize(); }};
         worldParentPanel.setLayout(new FlowLayout());
         worldParentPanel.setBorder( BorderFactory.createEmptyBorder(-5, -5, -5, -5) );
         worldParentPanel.setBackground(Color.darkGray);
@@ -113,15 +117,20 @@ public class GameFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		Dimension buttonDimension = new Dimension(110,25);
 		
-		ImageIcon pauseIcon = new ImageIcon("res/_System_PlayPause.png");
+		pauseIcon = new ImageIcon("res/_System_Pause.png");
+		playIcon = new ImageIcon("res/_System_Play.png");
 		ImageIcon slowIcon = new ImageIcon("res/_System_SlowPlay.png");
 		ImageIcon fastIcon = new ImageIcon("res/_System_FastPlay.png");
-		pauseButton = new JToggleButton("Pause",pauseIcon);
+		pauseButton = new JToggleButton("Play",playIcon);
+		frameCount = new JLabel("Time: 0", JLabel.CENTER);
 		slowButton = new JButton("Slow",slowIcon);
 		speedButton = new JButton("Faster",fastIcon);
 		pauseButton.setPreferredSize(buttonDimension);
+		frameCount.setPreferredSize(buttonDimension);
 		slowButton.setPreferredSize(buttonDimension);
 		speedButton.setPreferredSize(buttonDimension);
+		pauseButton.addActionListener(e -> pauseButton.setText(pauseButton.isSelected() ? "Pause" : "Play") );
+		pauseButton.addActionListener(e -> pauseButton.setIcon(pauseButton.isSelected() ? pauseIcon : playIcon) );
 		
 		ImageIcon gridIcon = new ImageIcon("res/_System_Grid.png");
 		ImageIcon eyeIcon = new ImageIcon("res/_System_Eye.png");
@@ -159,6 +168,7 @@ public class GameFrame extends JFrame {
 		// =============== ADD TIME =================
 		
 		menuBar.add(pauseButton);
+		menuBar.add(frameCount);
 		menuBar.add(slowButton);
 		menuBar.add(speedButton);
 		
@@ -196,6 +206,8 @@ public class GameFrame extends JFrame {
 		
 		// World Connection
 		worldPanel.connectGameManager(gameManager);
+		// Control Panel Connection
+		controlPanel.connectGameManager(gameManager);
 	}
 	
 	/**
@@ -204,6 +216,7 @@ public class GameFrame extends JFrame {
 	*/
 	public void updateWorld(int frame) {
 		worldPanel.updateMap(frame);
+		frameCount.setText("Time: " + frame);
 	}
 	
 	/**
