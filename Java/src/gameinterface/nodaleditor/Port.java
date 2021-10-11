@@ -15,22 +15,29 @@ import gamelogic.Output;
 public class Port implements Serializable {
 
 	private NodeBox parent;
-	private int x, y, size;
+	private double x, y, scale, size;
 	private Input input;
 	private Output output;
+
+	private double tx, ty, ds;
 
 	/**
 	* @param parent
 	* @param x
 	* @param y
 	*/ 
-	public Port(NodeBox parent, int x, int y, int size) {
+	public Port(NodeBox parent, double x, double y, double scale, double size) {
 		this.parent = parent;
 		this.x = x;
 		this.y = y;
+		this.scale = scale;
 		this.size = size;
 		input = null;
 		output = null;
+
+		tx = 0;
+		ty = 0;
+		ds = 0;
 	}
 
 	/**
@@ -39,8 +46,8 @@ public class Port implements Serializable {
 	* @param y
 	* @param input
 	*/ 
-	public Port(NodeBox parent, int x, int y, int size, Input input) {
-		this(parent, x, y, size);
+	public Port(NodeBox parent, double x, double y, double scale, double size, Input input) {
+		this(parent, x, y, scale, size);
 		this.input = input;
 	}
 
@@ -50,8 +57,8 @@ public class Port implements Serializable {
 	* @param y
 	* @param output
 	*/ 
-	public Port(NodeBox parent, int x, int y, int size, Output output) {
-		this(parent, x, y, size);
+	public Port(NodeBox parent, double x, double y, double scale, double size, Output output) {
+		this(parent, x, y, scale, size);
 		this.output = output;
 	}
 
@@ -60,29 +67,47 @@ public class Port implements Serializable {
 	*/ 
 	public NodeBox getBox() { return parent; }
 
+	public double getScale() { return scale*(1+ds); }
+
 	/**
 	* @return x coordinate
 	*/ 
-	public int getX() { return x; }
+	public double getX() { return x*getScale() + tx; }
 
 	/**
 	* @return y coordinate
 	*/ 
-	public int getY() { return y; }
+	public double getY() { return y*getScale() + ty; }
 
 	/**
-	* @param dx
-	* @param dy
+	* @param tx
+	* @param ty
 	*/ 
-	public void translate(int dx, int dy) {
-		x += dx;
-		y += dy;
+	public void translate(double tx, double ty) {
+		this.tx = tx;
+		this.ty = ty;
+	}
+
+	public void commitTranslate() {
+		x += tx/getScale();
+		y += ty/getScale();
+		tx = 0;
+		ty = 0;
+	}
+
+	public void scale(double ds) {
+		this.ds = ds;
+	}
+
+	public void commitScale() {
+		this.scale *= 1+ds;
+		ds = 0;
 	}
 
 	/**
 	* @return the port size
 	*/ 
-	public int getSize() { return size; }
+	public double getSize() { return size*getScale(); }
 
 	/**
 	* @return the port corresponds to an input
@@ -107,8 +132,8 @@ public class Port implements Serializable {
 	/**
 	* @return true if the pos is at a distance smaller than size to the port, otherwise false
 	*/ 
-	public boolean hit(int xPos, int yPos) {
-		return ((x-xPos)*(x-xPos)+(y-yPos)*(y-yPos) <= size*size);
+	public boolean hit(double xPos, double yPos) {
+		return ((getX()-xPos)*(getX()-xPos)+(getY()-yPos)*(getY()-yPos) <= getSize()*getSize());
 	}
 
 }

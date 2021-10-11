@@ -14,7 +14,6 @@ import java.awt.RenderingHints;
 import java.awt.Color;
 import java.awt.BasicStroke;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.FontMetrics;
@@ -27,6 +26,7 @@ import java.util.Optional;
 * @see NodalEditor
 */ 
 public class NodalEditorUI {
+
 
 	// ========== Interaction ==========
 
@@ -42,6 +42,13 @@ public class NodalEditorUI {
 				// TODO : check if editor is frozen
 
 				editor.setOnAlert(false);
+
+				if(e.isShiftDown()) {
+					editor.setReferencePos(e.getX(), e.getY());
+					editor.setCursorPos(e.getX(), e.getY());
+					editor.setScaling(true);
+					return;
+				}
 
 				Port portHit = editor.getPort(e.getX(), e.getY());
 				if(portHit != null) {
@@ -131,12 +138,18 @@ public class NodalEditorUI {
 					editor.setEditingLink(false);
 
 				} else if(editor.isMovingSelection()) {
-					int dx = editor.getXCursor()-editor.getXReference();
-					int dy = editor.getYCursor()-editor.getYReference();
 					for(NodeBox box : editor.getBoxes()) {
-						if(editor.isSelected(box)) box.translate(dx, dy);
+						if(editor.isSelected(box)) box.commitTranslate();
 					}
 					editor.setMovingSelection(false);
+
+				} else if(editor.isScaling()) {
+					for(NodeBox box : editor.getBoxes()) {
+						box.commitScale();
+					}
+					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
+					editor.setScale(editor.getScale()*(1+ds));
+					editor.setScaling(false);
 
 				} else if(editor.isSelectingArea()) {
 					int x = Math.min(editor.getXCursor(), editor.getXReference());
@@ -176,6 +189,19 @@ public class NodalEditorUI {
 				// TODO : check if editor is frozen
 
 				editor.setCursorPos(e.getX(), e.getY());
+
+				if(editor.isMovingSelection()) {
+					int tx = editor.getXCursor()-editor.getXReference();
+					int ty = editor.getYCursor()-editor.getYReference();
+					for(NodeBox box : editor.getBoxes()) {
+						if(editor.isSelected(box)) box.translate(tx, ty);
+					}
+				} else if(editor.isScaling()) {
+					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
+					for(NodeBox box : editor.getBoxes()) {
+						box.scale(ds);
+					}
+				}
 			}
 		});
 	}
@@ -196,7 +222,7 @@ public class NodalEditorUI {
 			if(!box.isValid()) {
 				box.init(6, 5, 4, g2d.getFontMetrics());
 			}
-			paintNode(g2d, editor, box);
+			box.paint(g2d, editor);
 		}
 
 		if(editor.isUsingRules()) {
@@ -213,11 +239,8 @@ public class NodalEditorUI {
 
 				if(game.getRule(editor.getRuleClass(), sp) != null) {
 					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
-					boolean translate = editor.isMovingSelection() && editor.isSelected(box);
-					int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
-					int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
 					g2d.setColor(Color.green);
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX()+dx, box.getY()+dy));
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX(), box.getY()));
 				}
 
 				row++;
@@ -243,11 +266,8 @@ public class NodalEditorUI {
 
 				if(slot.isOccupied()) {
 					NodeBox box = editor.getBox(slot.getTerrainNode());
-					boolean translate = editor.isMovingSelection() && editor.isSelected(box);
-					int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
-					int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
 					g2d.setColor(Color.green);
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX()+dx, box.getY()+dy));
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX(), box.getY()));
 				}
 
 				row++;
@@ -264,16 +284,7 @@ public class NodalEditorUI {
 			for(Port p : box.getPorts()) {
 				if(p.hasOutput() && p.getOutput().hasTarget()) {
 					Port q = editor.getPort(p.getOutput().getTarget());
-
-					boolean translateP = editor.isMovingSelection() && editor.isSelected(box);
-					int dxP = (translateP) ? editor.getXCursor()-editor.getXReference() : 0;
-					int dyP = (translateP) ? editor.getYCursor()-editor.getYReference() : 0;
-
-					boolean translateQ = editor.isMovingSelection() && editor.isSelected(q.getBox());
-					int dxQ = (translateQ) ? editor.getXCursor()-editor.getXReference() : 0;
-					int dyQ = (translateQ) ? editor.getYCursor()-editor.getYReference() : 0;
-
-					g2d.draw(new Line2D.Double(p.getX()+dxP, p.getY()+dyP, q.getX()+dxQ, q.getY()+dyQ));
+					g2d.draw(new Line2D.Double(p.getX(), p.getY(), q.getX(), q.getY()));
 				}
 			}
 		}
@@ -298,40 +309,6 @@ public class NodalEditorUI {
 			g2d.setColor(new Color(255, 0, 0, 100));
 			Rectangle2D alertRect = new Rectangle2D.Double(0, 0, editor.getSize().width, editor.getSize().height);
 			g2d.fill(alertRect);
-		}
-	}
-
-	private void paintNode(Graphics2D g2d, NodalEditor editor, NodeBox box) {
-		FontMetrics metrics = g2d.getFontMetrics();
-		int lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
-
-		boolean translate = editor.isMovingSelection() && editor.isSelected(box);
-		int dx = (translate) ? editor.getXCursor()-editor.getXReference() : 0;
-		int dy = (translate) ? editor.getYCursor()-editor.getYReference() : 0;
-
-		RoundRectangle2D rect = new RoundRectangle2D.Double(box.getX()-box.getPadding()+dx, box.getY()+dy, box.getWidth()+2*box.getPadding(), box.getHeight(), 2*box.getPadding(), 2*box.getPadding());
-		if(editor.isSelected(box)) {
-			g2d.setStroke(new BasicStroke(3));
-			g2d.setColor(Color.pink);
-			g2d.draw(rect);
-		}
-		g2d.setColor(Color.lightGray);
-		g2d.fill(rect);
-
-		g2d.setColor(Color.black);
-		int titleWidth = metrics.stringWidth(box.getNode().toString());
-		g2d.drawString(box.getNode().toString(), box.getX()+(box.getWidth()-titleWidth)/2+dx, box.getY()+lineHeight+dy);
-
-		for(Port port : box.getPorts()) {
-			g2d.setColor(Color.red);
-			g2d.fill(new Ellipse2D.Double(port.getX()-port.getSize()+dx, port.getY()-port.getSize()+dy, 2*port.getSize(), 2*port.getSize()));
-			g2d.setColor(Color.black);
-			if(port.hasInput()) {
-				g2d.drawString(port.getInput().toString(), box.getX()+dx, port.getY()+dy);
-			} else {
-				int wordWidth = metrics.stringWidth(port.getOutput().toString());
-				g2d.drawString(port.getOutput().toString(), box.getX()+box.getWidth()-wordWidth+dx, port.getY()+dy);
-			}
 		}
 	}
 

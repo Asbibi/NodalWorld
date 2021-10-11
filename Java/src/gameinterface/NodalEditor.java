@@ -118,6 +118,10 @@ public class NodalEditor extends JComponent {
 
 	public Port getPort(int x, int y) { return model.getPort(x, y); }
 
+	public double getScale() { return model.getScale(); }
+
+	public void setScale(double scale) { model.setScale(scale); }
+
 	// Rules and Terrains
 
 	public void setRuleCreator(Class<? extends Rule> ruleClass) { model.setRuleCreator(ruleClass); }
@@ -161,6 +165,10 @@ public class NodalEditor extends JComponent {
 	public void setSelectingArea(boolean b) { model.setSelectingArea(b); }
 
 	public boolean isSelectingArea() { return model.isSelectingArea(); }
+
+	public void setScaling(boolean b) { model.setScaling(b); }
+
+	public boolean isScaling() { return model.isScaling(); }
 
 	public void setLinkingSpecies(boolean b) { model.setLinkingSpecies(b); }
 

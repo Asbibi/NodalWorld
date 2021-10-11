@@ -9,12 +9,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 import java.awt.FontMetrics;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Map;
 import java.util.HashMap;
+
+import java.io.Serializable;
 
 import java.lang.Class;
 
@@ -30,14 +31,16 @@ public class NodalEditorModel implements Serializable {
 	private transient Network network;
 	
 	private Collection<NodeBox> boxes;
+	private double scale;
 	private Map<Node, NodeInfoPanel> infoPanels;
 	private boolean usingRules, usingTerrains;
 	private Class<? extends Rule> ruleClass;
 	private int sideBoxWidth, sideBoxHeight;
 
-	private transient boolean editingLink, movingSelection, selectingArea, linkingSpecies, linkingTerrainSlot, onAlert;
+	private transient boolean editingLink, movingSelection, selectingArea, scaling, linkingSpecies, linkingTerrainSlot, onAlert;
 	private transient int xCursor, yCursor, xRef, yRef;
 	private transient Port curPort;
+
 	private Map<NodeBox, Boolean> selected;
 	private transient JPanel curInfoPanel, defaultInfoPanel;
 	private transient int curSpeciesRow, curTerrainSlotRow;
@@ -52,6 +55,7 @@ public class NodalEditorModel implements Serializable {
 		this.game = game;
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
+		scale = 1;
 		infoPanels = new HashMap<Node, NodeInfoPanel>();
 		usingRules = false;
 		usingTerrains = false;
@@ -62,6 +66,7 @@ public class NodalEditorModel implements Serializable {
 		editingLink = false;
 		movingSelection = false;
 		selectingArea = false;
+		scaling = false;
 		linkingSpecies = false;
 		linkingTerrainSlot = false;
 		onAlert = false;
@@ -112,7 +117,7 @@ public class NodalEditorModel implements Serializable {
 	public void addNode(Node node, int x, int y) {
 		network.addNode(node);
 
-		NodeBox box = new NodeBox(node, x, y);
+		NodeBox box = new NodeBox(node, x, y, scale);
 		boxes.add(box);
 
 		NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
@@ -227,6 +232,10 @@ public class NodalEditorModel implements Serializable {
 		return opt.orElse(null);
 	}
 
+	public double getScale() { return scale; }
+
+	public void setScale(double scale) { this.scale = scale; }
+
 
 	// ========== Rules and Terrains ==========
 
@@ -301,6 +310,15 @@ public class NodalEditorModel implements Serializable {
 	}
 
 	public boolean isSelectingArea() { return selectingArea; }
+
+	public void setScaling(boolean b) {
+		if(scaling != b) {
+			scaling = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isScaling() { return scaling; }
 
 	public void setLinkingSpecies(boolean b) {
 		if(linkingSpecies != b) {

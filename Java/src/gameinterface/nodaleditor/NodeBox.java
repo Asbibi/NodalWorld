@@ -3,11 +3,20 @@ package gameinterface.nodaleditor;
 import gamelogic.Node;
 import gamelogic.Input;
 import gamelogic.Output;
+import gameinterface.NodalEditor;
 
+import java.awt.Graphics2D;
 import java.awt.FontMetrics;
-import java.io.Serializable;
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.geom.Ellipse2D;
+
 import java.util.Collection;
 import java.util.LinkedList;
+
+import java.io.Serializable;
 
 /**
 * Geometric representation and interaction methods for a node in the nodal editor.
@@ -18,27 +27,34 @@ import java.util.LinkedList;
 public class NodeBox implements Serializable {
 
 	private Node node;
-	private int x, y;
+	private double x, y, scale;
 
-	private int padding;
-	private int width, height;
+	private double padding;
+	private double width, height;
 	private Collection<Port> ports;
 	private boolean valid;
+
+	private double tx, ty, ds;
 
 	/**
 	* @param node
 	* @param x
 	* @param y
 	*/ 
-	public NodeBox(Node node, int x, int y) {
+	public NodeBox(Node node, double x, double y, double scale) {
 		this.node = node;
 		this.x = x;
 		this.y = y;
+		this.scale = scale;
 
 		width = 0;
 		height = 0;
 		ports = new LinkedList<Port>();
 		valid = false;
+
+		tx = 0;
+		ty = 0;
+		ds = 0;
 	}
 
 	/**
@@ -47,15 +63,15 @@ public class NodeBox implements Serializable {
 	* @param portRadius
 	* @param metrics
 	*/ 
-	public void init(int padding, int spacing, int portRadius, FontMetrics metrics) {
+	public void init(double padding, double spacing, double portRadius, FontMetrics metrics) {
 		// Padding
 		this.padding = padding;
 
 		// Box dimensions
-		int lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
-		int spaceWidth = metrics.stringWidth("    ");
-		int offset = lineHeight+spacing;
-		int maxWidth, dy;
+		double lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
+		double spaceWidth = metrics.stringWidth("    ");
+		double offset = lineHeight+spacing;
+		double maxWidth, dy;
 
 		width = spaceWidth;
 		height = 0;
@@ -80,20 +96,20 @@ public class NodeBox implements Serializable {
 		width += maxWidth;
 		height = Math.max(height, dy);
 
-		int titleWidth = metrics.stringWidth(node.toString()) + 2*spaceWidth;
+		double titleWidth = metrics.stringWidth(node.toString()) + 2*spaceWidth;
 		width = Math.max(width, titleWidth);
 
 		// Ports
 		dy = lineHeight; // reserve one line for node's name
 		for(Input input : node.getInputs()) {
 			dy += offset;
-			ports.add(new Port(this, x-padding, y+dy, portRadius, input));
+			ports.add(new Port(this, x-padding, y+dy, scale, portRadius, input));
 		}
 
 		dy = lineHeight; // reserve one line for node's name
 		for(Output output : node.getOutputs()) {
 			dy += offset;
-			ports.add(new Port(this, x+width+padding, y+dy, portRadius, output));
+			ports.add(new Port(this, x+width+padding, y+dy, scale, portRadius, output));
 		}
 
 		// Valid geometry and variables
@@ -105,24 +121,45 @@ public class NodeBox implements Serializable {
 	*/ 
 	public Node getNode() { return node; }
 
+	public double getScale() { return scale*(1+ds); }
+
 	/**
 	* @return top left x coordinate
 	*/ 
-	public int getX() { return x; }
+	public double getX() { return x*getScale() + tx; }
 
 	/**
 	* @return top left y coordinate
 	*/ 
-	public int getY() { return y; }
+	public double getY() { return y*getScale() + ty; }
 
 	/**
-	* @param dx
-	* @param dy
+	* @param tx
+	* @param ty
 	*/ 
-	public void translate(int dx, int dy) {
-		x += dx;
-		y += dy;
-		for(Port port : ports) port.translate(dx, dy);
+	public void translate(double tx, double ty) {
+		this.tx = tx;
+		this.ty = ty;
+		for(Port port : ports) port.translate(tx, ty);
+	}
+
+	public void commitTranslate() {
+		x += tx/getScale();
+		y += ty/getScale();
+		tx = 0;
+		ty = 0;
+		for(Port port : ports) port.commitTranslate();
+	}
+
+	public void scale(double ds) {
+		this.ds = ds;
+		for(Port port : ports) port.scale(ds);
+	}
+
+	public void commitScale() {
+		this.scale *= 1+ds;
+		ds = 0; 
+		for(Port port : ports) port.commitScale();
 	}
 
 	/**
@@ -133,17 +170,17 @@ public class NodeBox implements Serializable {
 	/**
 	* @return the padding on left and right of the box
 	*/ 
-	public int getPadding() { return padding; }
+	public double getPadding() { return padding*getScale(); }
 
 	/**
 	* @return box width
 	*/ 
-	public int getWidth() { return width; }
+	public double getWidth() { return width*getScale(); }
 
 	/**
 	* @return box height
 	*/ 
-	public int getHeight() { return height; }
+	public double getHeight() { return height*getScale(); }
 
 	/**
 	* @return the ports of the box
@@ -153,8 +190,42 @@ public class NodeBox implements Serializable {
 	/**
 	* @return true if the pos is inside the box, otherwise false
 	*/ 
-	public boolean hit(int xPos, int yPos) {
-		return (xPos >= x-padding && xPos <= x+width+padding && yPos >= y && yPos <= y+height);
+	public boolean hit(double xPos, double yPos) {
+		return (xPos >= getX()-getPadding() 
+				&& xPos <= getX()+getWidth()+getPadding() 
+				&& yPos >= getY() 
+				&& yPos <= getY()+getHeight());
+	}
+
+	public void paint(Graphics2D g2d, NodalEditor editor) {
+		FontMetrics metrics = g2d.getFontMetrics();
+		int lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
+
+		RoundRectangle2D rect = new RoundRectangle2D.Double(getX()-getPadding(), getY(), getWidth()+2*getPadding(), getHeight(), 2*getPadding(), 2*getPadding());
+		if(editor.isSelected(this)) {
+			g2d.setStroke(new BasicStroke(3));
+			g2d.setColor(Color.pink);
+			g2d.draw(rect);
+		}
+		g2d.setColor(Color.lightGray);
+		g2d.fill(rect);
+
+		g2d.setColor(Color.black);
+		int titleWidth = metrics.stringWidth(node.toString());
+		g2d.drawString(node.toString(), (int) (getX()+(getWidth()-titleWidth)/2), (int) (getY()+lineHeight));
+
+		for(Port port : ports) {
+			g2d.setColor(Color.red);
+			g2d.fill(new Ellipse2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize()));
+
+			g2d.setColor(Color.black);
+			if(port.hasInput()) {
+				g2d.drawString(port.getInput().toString(), (int) getX(), (int) (port.getY()));
+			} else {
+				int wordWidth = metrics.stringWidth(port.getOutput().toString());
+				g2d.drawString(port.getOutput().toString(), (int) (getX()+getWidth()-wordWidth), (int) (port.getY()));
+			}
+		}
 	}
 
 }
