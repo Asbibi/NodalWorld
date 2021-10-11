@@ -46,9 +46,14 @@ public class WorldPanel extends JPanel{
 	
 	public WorldPanel(GameManager gameManager) {
 		tiles = new ArrayList<TileComponent>();
+		gridDimension = new Dimension(-1,-1);
+		speciesDisplayed = new ArrayList<>();
+		terrain = null;
+	}
+	
+	public  void connectGameManager(GameManager gameManager) {
 		speciesDisplayed = gameManager.getSpeciesArray();
 		terrain = gameManager.getTerrain();
-		gridDimension = new Dimension(-1,-1);
 		speciesSlotNumber_sqrt = 0;
 		
 		computeMinimalTileSize();

@@ -3,6 +3,7 @@ package gameinterface;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -11,6 +12,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.*;
 
 import gamelogic.GameManager;
+import gamelogic.GameManagerBuilder;
 import gamelogic.Saver;
 
 /**
@@ -38,6 +40,7 @@ public class GameFrame extends JFrame {
 	private JButton			newButton;
 	
 	private JFileChooser 	savefileChooser;
+	private ArrayList<ActionListener> onLoadListener;
 
 	
 	/**
@@ -47,7 +50,8 @@ public class GameFrame extends JFrame {
 		super("Nodal World");
 		worldPanel = new WorldPanel(gameManager);
 		controlPanel = new ControlPanel(gameManager);
-		setupUI(gameManager);
+		setupUI();
+		connectGameManager(gameManager);
 		
 		savefileChooser = new JFileChooser();
 		savefileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -75,14 +79,7 @@ public class GameFrame extends JFrame {
 		
 		updateWorld(0);
 		worldPanel.resetTileSizeToMinimal();
-
-		gameManager.addGameListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				int frame = gameManager.getFrame();
-				updateWorld(frame);
-			}
-		});
+		
 		setVisible(true);
 	}
 	
@@ -91,10 +88,10 @@ public class GameFrame extends JFrame {
 	* - Creates the menubar
 	* - Separate the empty space into 2 areas of the same size (GridLayout) : one for the ControlPanel and one for the WorldPanel 
 	*/
-	private void setupUI(GameManager gameManager) {
+	private void setupUI() {
         setPreferredSize(new Dimension(1280, 720));
         
-        setupMenuBar(gameManager);
+        setupMenuBar();
         
         JPanel worldParentPanel = new JPanel() { @Override public void setSize(Dimension d) { super.setSize(d); worldPanel.computeMinimalTileSize(); }};
         worldParentPanel.setLayout(new FlowLayout());
@@ -112,7 +109,7 @@ public class GameFrame extends JFrame {
 	/**
 	* Creates the menubar of the game
 	*/ 
-	private void setupMenuBar(GameManager gameManager) {
+	private void setupMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		Dimension buttonDimension = new Dimension(110,25);
 		
@@ -153,7 +150,11 @@ public class GameFrame extends JFrame {
 		newButton = new JButton("New",newIcon);
 		saveButton.setPreferredSize(buttonDimension);
 		newButton.setPreferredSize(buttonDimension);
-		saveButton.addActionListener( e -> saveGameManager(gameManager) );
+		newButton.addActionListener( e -> startNew_LoadedGame() );
+		onLoadListener = new ArrayList<ActionListener>();
+		addNew_LoadActionListener(e -> System.out.println("Loaded"));
+		addNew_LoadActionListener(e -> connectGameManager(((LoadEvent)e).getLoadedManager()));
+		addNew_LoadActionListener(e -> updateWorld(0));
 		
 		// =============== ADD TIME =================
 		
@@ -174,6 +175,27 @@ public class GameFrame extends JFrame {
 		menuBar.add(saveButton);
 		menuBar.add(newButton);
 	    setJMenuBar(menuBar);
+	}
+	private void connectGameManager(GameManager gameManager) {
+		if (gameManager == null)
+			return;
+		
+		// Save Button
+		for (ActionListener l : saveButton.getActionListeners())
+			saveButton.removeActionListener(l);
+		saveButton.addActionListener( e -> saveGameManager(gameManager) );
+		
+		// Update display on game evolve
+		gameManager.addGameListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int frame = gameManager.getFrame();
+				updateWorld(frame);
+			}
+		});
+		
+		// World Connection
+		worldPanel.connectGameManager(gameManager);
 	}
 	
 	/**
@@ -203,11 +225,13 @@ public class GameFrame extends JFrame {
 		speedButton.addActionListener(listener);
 	}
 	
+	
 	/**
-	* @param the ActionListener to add to the new/load button
+	* This list of action listeners is called after a load is performed, and they are triggered with a LoadEvent 
+	* @param the ActionListener to add to the new/load action listener list
 	*/
 	public void addNew_LoadActionListener(ActionListener action) {
-		newButton.addActionListener(action);
+		onLoadListener.add(action);
 	}
 
 	
@@ -217,11 +241,25 @@ public class GameFrame extends JFrame {
 	/**
 	* @param the GameManager to save
 	*/
-	public void saveGameManager(GameManager gameManager) {
+	private void saveGameManager(GameManager gameManager) {
         int res = savefileChooser.showSaveDialog(this);
         if(res == JFileChooser.APPROVE_OPTION){
    			Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);	//"/savetest"
         }
+	}
+	/**
+	* Creates a new GameManager based on the template selected in the dialog box this method will open (same than when the app starts).
+	*/
+	private void startNew_LoadedGame() {
+		NewWorldDialogBox dialogBox = new NewWorldDialogBox(this);
+		if (!dialogBox.getConfirm())
+			return;
+		
+		GameManager newGamemanager = GameManagerBuilder.buildGameFromTemplate(dialogBox.getSelectedTemplate(), dialogBox.getTemplateWidth(), dialogBox.getTemplateHeight(), dialogBox.getSelectedSaveFilePath());
+	
+		if (newGamemanager != null)
+			for (ActionListener loadListener : onLoadListener)
+				loadListener.actionPerformed(new LoadEvent(this, newGamemanager));
 	}
 	
 

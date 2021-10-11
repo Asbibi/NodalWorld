@@ -2,6 +2,7 @@ package game;
 
 import gamelogic.GameManager;
 import gameinterface.GameFrame;
+import gameinterface.LoadEvent;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -55,6 +56,13 @@ public class GamePlayer {
 			public void actionPerformed(ActionEvent e) {
 				speedUp();
 			}
+		});
+		
+		window.addNew_LoadActionListener( e -> {
+			GameManager manager = ((LoadEvent)e).getLoadedManager();
+			if (manager != null)
+				this.game = manager;
+			System.out.println(this.game);
 		});
 	}
 
@@ -111,7 +119,7 @@ public class GamePlayer {
 			@Override
 			public void run() {
 				game.evolveGameState();
-				//System.out.println(gameManager);
+				System.out.println(game);
 			}
 		};
 	}
