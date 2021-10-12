@@ -46,7 +46,14 @@ public class NodalEditorUI {
 				if(e.isShiftDown()) {
 					editor.setReferencePos(e.getX(), e.getY());
 					editor.setCursorPos(e.getX(), e.getY());
-					editor.setScaling(true);
+					editor.setZooming(true);
+					return;
+				}
+
+				if(e.isControlDown()) {
+					editor.setReferencePos(e.getX(), e.getY());
+					editor.setCursorPos(e.getX(), e.getY());
+					editor.setPanning(true);
 					return;
 				}
 
@@ -143,9 +150,13 @@ public class NodalEditorUI {
 					}
 					editor.setMovingSelection(false);
 
-				} else if(editor.isScaling()) {
+				} else if(editor.isPanning()) {
+					for(NodeBox box : editor.getBoxes()) box.commitTranslate();
+					editor.setPanning(false);
+
+				} else if(editor.isZooming()) {
 					editor.commitScale();
-					editor.setScaling(false);
+					editor.setZooming(false);
 
 				} else if(editor.isSelectingArea()) {
 					int x = Math.min(editor.getXCursor(), editor.getXReference());
@@ -192,7 +203,14 @@ public class NodalEditorUI {
 					for(NodeBox box : editor.getBoxes()) {
 						if(editor.isSelected(box)) box.translate(tx, ty);
 					}
-				} else if(editor.isScaling()) {
+				} else if(editor.isPanning()) {
+					int tx = editor.getXCursor()-editor.getXReference();
+					int ty = editor.getYCursor()-editor.getYReference();
+					for(NodeBox box : editor.getBoxes()) {
+						box.translate(tx, ty);
+					}
+
+				} else if(editor.isZooming()) {
 					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
 					editor.scale(ds);
 				}

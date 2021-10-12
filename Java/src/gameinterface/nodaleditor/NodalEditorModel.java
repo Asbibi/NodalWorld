@@ -37,7 +37,7 @@ public class NodalEditorModel implements Serializable {
 	private Class<? extends Rule> ruleClass;
 	private int sideBoxWidth, sideBoxHeight;
 
-	private transient boolean editingLink, movingSelection, selectingArea, scaling, linkingSpecies, linkingTerrainSlot, onAlert;
+	private transient boolean editingLink, movingSelection, selectingArea, panning, zooming, linkingSpecies, linkingTerrainSlot, onAlert;
 	private transient int xCursor, yCursor, xRef, yRef;
 	private transient Port curPort;
 
@@ -67,7 +67,8 @@ public class NodalEditorModel implements Serializable {
 		editingLink = false;
 		movingSelection = false;
 		selectingArea = false;
-		scaling = false;
+		panning = false;
+		zooming = false;
 		linkingSpecies = false;
 		linkingTerrainSlot = false;
 		onAlert = false;
@@ -323,14 +324,23 @@ public class NodalEditorModel implements Serializable {
 
 	public boolean isSelectingArea() { return selectingArea; }
 
-	public void setScaling(boolean b) {
-		if(scaling != b) {
-			scaling = b;
+	public void setPanning(boolean b) {
+		if(panning != b) {
+			panning = b;
 			triggerChangeListeners();
 		}
 	}
 
-	public boolean isScaling() { return scaling; }
+	public boolean isPanning() { return panning; }
+
+	public void setZooming(boolean b) {
+		if(zooming != b) {
+			zooming = b;
+			triggerChangeListeners();
+		}
+	}
+
+	public boolean isZooming() { return zooming; }
 
 	public void setLinkingSpecies(boolean b) {
 		if(linkingSpecies != b) {

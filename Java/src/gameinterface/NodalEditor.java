@@ -168,9 +168,13 @@ public class NodalEditor extends JComponent {
 
 	public boolean isSelectingArea() { return model.isSelectingArea(); }
 
-	public void setScaling(boolean b) { model.setScaling(b); }
+	public void setPanning(boolean b) { model.setPanning(b); }
 
-	public boolean isScaling() { return model.isScaling(); }
+	public boolean isPanning() { return model.isPanning(); }
+
+	public void setZooming(boolean b) { model.setZooming(b); }
+
+	public boolean isZooming() { return model.isZooming(); }
 
 	public void setLinkingSpecies(boolean b) { model.setLinkingSpecies(b); }
 
