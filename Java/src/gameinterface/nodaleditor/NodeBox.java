@@ -4,12 +4,19 @@ import gamelogic.Node;
 import gamelogic.Input;
 import gamelogic.Output;
 import gameinterface.NodalEditor;
+import gamelogic.Vec2D;
+import gamelogic.Surface;
+import gamelogic.TerrainModel;
+import gamelogic.Species;
+import gamelogic.Entity;
 
 import java.awt.Graphics2D;
 import java.awt.FontMetrics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.geom.Ellipse2D;
 
@@ -17,6 +24,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import java.io.Serializable;
+
+import java.lang.Class;
 
 /**
 * Geometric representation and interaction methods for a node in the nodal editor.
@@ -215,8 +224,8 @@ public class NodeBox implements Serializable {
 		g2d.drawString(node.toString(), (int) (getX()+(getWidth()-titleWidth)/2), (int) (getY()+lineHeight));
 
 		for(Port port : ports) {
-			g2d.setColor(Color.red);
-			g2d.fill(new Ellipse2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize()));
+			g2d.setColor(portColor(port));
+			g2d.fill(portShape(port));
 
 			g2d.setColor(Color.black);
 			if(port.hasInput()) {
@@ -226,6 +235,42 @@ public class NodeBox implements Serializable {
 				g2d.drawString(port.getOutput().toString(), (int) (getX()+getWidth()-wordWidth), (int) (port.getY()));
 			}
 		}
+	}
+
+
+	// ========== PRIVATE UTILITY METHODS ==========
+
+	private Shape portShape(Port port) {
+		if(port.hasInput() && !port.getInput().hasSource()) {
+			Class<?> dataClass = port.getInput().getDataClass();
+			if(dataClass != Boolean.class && dataClass != Integer.class && dataClass != Double.class && dataClass != Surface.class) 
+				return new Rectangle2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize());
+		}
+
+		return new Ellipse2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize());
+	}
+
+	private Color portColor(Port port) {
+		Class<?> dataClass = port.hasInput() ? port.getInput().getDataClass() : port.getOutput().getDataClass();
+
+		if(dataClass == Boolean.class) {
+			return Color.blue;
+
+		} else if(dataClass == Integer.class) {
+			return Color.red;
+
+		} else if(dataClass == Double.class) {
+			return Color.yellow;
+
+		} else if(dataClass == Vec2D.class) {
+			return Color.pink;
+
+		} else if(dataClass == Surface.class) {
+			return Color.green;
+
+		}
+
+		return Color.black;
 	}
 
 }
