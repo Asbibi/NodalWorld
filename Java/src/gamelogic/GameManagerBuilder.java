@@ -141,7 +141,7 @@ public class GameManagerBuilder {
 
 	// ========== PRIVATE ==========
 
-	private static Surface ground, water, grassD, grassB;
+	private static Surface ground, water, grassD, grassB, sand, stoneD, stoneB, magma, lava;
 	private static Species human, chicken, boar, birch, oak;
 
 	private static void initBasicSurfaces() {
@@ -156,6 +156,17 @@ public class GameManagerBuilder {
 
 		grassB = new Surface("Grass Bright", "res/Tile_GrassBright.png");
 		grassB.setColor(new Color(50,182,98));
+
+		sand = new Surface("Sand", "res/Tile_Sand.png");
+		sand.setColor(new Color(229,212,155));
+		stoneD = new Surface("Stone Dark", "res/Tile_StoneDark.png");
+		stoneD.setColor(new Color(50,47,47));
+		stoneB = new Surface("Stone Bright", "res/Tile_Stone.png");
+		stoneB.setColor(new Color(154,134,134));
+		magma = new Surface("Magma", "res/Tile_Magma.png");
+		magma.setColor(new Color(82,6,0));
+		lava = new Surface("Lava", "res/Tile_Lava.png");
+		lava.setColor(new Color(214,77,24));
 	}
 
 	private static void initBasicSpecies() {
@@ -174,6 +185,11 @@ public class GameManagerBuilder {
 		game.addSurface(water);
 		game.addSurface(grassD);
 		game.addSurface(grassB);
+		game.addSurface(sand);
+		game.addSurface(stoneD);
+		game.addSurface(stoneB);
+		game.addSurface(magma);
+		game.addSurface(lava);
 
 		// Species
 		game.addSpecies(human);
