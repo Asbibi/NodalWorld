@@ -15,12 +15,12 @@ import gamelogic.NetworkIOException;
 * 
 * @see GameManager
 */
-public class IntsToVecNode extends Node {
+public class GatherNode extends Node {
 
 	/**
 	*
 	*/ 
-	public IntsToVecNode() {
+	public GatherNode() {
 		super("Gather");
 		addInput(new Input("x", Integer.class));
 		addInput(new Input("y", Integer.class));

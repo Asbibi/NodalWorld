@@ -71,7 +71,7 @@ public class NodalEditorBuilder {
 		editor.setRuleCreator(GenerationRule.class);
 		disable(editor, new String[] {
 			"Movement", "Death", 
-			"Terrain Rectangle", 
+			"Terrain Unit", "Terrain Rectangle", "Terrain Ellipse",  
 			"Current Entity"
 		});
 
@@ -98,7 +98,7 @@ public class NodalEditorBuilder {
 		editor.setRuleCreator(MovementRule.class);
 		disable(editor, new String[] {
 			"Generation", "Death", 
-			"Terrain Rectangle"
+			"Terrain Unit", "Terrain Rectangle", "Terrain Ellipse"
 		});
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
@@ -124,7 +124,7 @@ public class NodalEditorBuilder {
 		editor.setRuleCreator(DeathRule.class);
 		disable(editor, new String[] {
 			"Generation", "Movement", 
-			"Terrain Rectangle"
+			"Terrain Unit", "Terrain Rectangle", "Terrain Ellipse"
 		});
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());

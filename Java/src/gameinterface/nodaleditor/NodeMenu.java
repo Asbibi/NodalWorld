@@ -68,7 +68,9 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenu buildMenuTerrain() {
 		JMenu menuTerrain = new JMenu("Terrain");
+		menuTerrain.add(buildNodeItem(() -> new TerrainNodeUnit()));
 		menuTerrain.add(buildNodeItem(() -> new TerrainNodeRectangle()));
+		menuTerrain.add(buildNodeItem(() -> new TerrainNodeEllipse()));
 		return menuTerrain;
 	}
 
@@ -87,8 +89,8 @@ public class NodeMenu extends JPopupMenu {
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Integer>("Variable : Int", Integer.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Double>("Variable : Double", Double.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Surface>("Variable : Surface", Surface.class)));
-		menuUtils.add(buildNodeItem(() -> new VecToIntsNode()));
-		menuUtils.add(buildNodeItem(() -> new IntsToVecNode()));
+		menuUtils.add(buildNodeItem(() -> new SplitNode()));
+		menuUtils.add(buildNodeItem(() -> new GatherNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
 		return menuUtils;
