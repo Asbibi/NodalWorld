@@ -71,6 +71,7 @@ public class NodeMenu extends JPopupMenu {
 		menuTerrain.add(buildNodeItem(() -> new TerrainNodeUnit()));
 		menuTerrain.add(buildNodeItem(() -> new TerrainNodeRectangle()));
 		menuTerrain.add(buildNodeItem(() -> new TerrainNodeEllipse()));
+		menuTerrain.add(buildNodeItem(() -> new TerrainNodeMask()));
 		return menuTerrain;
 	}
 

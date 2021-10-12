@@ -20,6 +20,7 @@ public abstract class TerrainNode<T extends TerrainModel> extends Node {
 		super(name);
 		this.model = model;
 		addInput(new Input("surface", Surface.class));
+		addOutput(new Output("layer", TerrainModel.class));
 	}
 
 	/**
@@ -39,6 +40,7 @@ public abstract class TerrainNode<T extends TerrainModel> extends Node {
 	public void evaluate(GameManager game) throws NetworkIOException {
 		surface = getInput("surface").getData(Surface.class);
 		initModel();
+		getOutput("layer").setData(model);
 	}
 
 	/**
