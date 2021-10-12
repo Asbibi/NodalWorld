@@ -2,7 +2,10 @@ package gameinterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -16,14 +19,33 @@ import javax.swing.JPanel;
 * @see TextFixedFieldPanel
 */
 public class PropertyFieldPanel extends JPanel {
-
+	private JButton propertyButton;
+	
 	/**
 	* @param the property name, displayed on the left side of the field with a fixed size
-	*/ 
-	public PropertyFieldPanel(String fieldName) {
+	* @param withButton indicates if there should be a button
+	*/
+	public PropertyFieldPanel(String fieldName, boolean withButton) {
 		setLayout(new BorderLayout());
 		JLabel itemLabel = new JLabel(fieldName);
 		itemLabel.setPreferredSize(new Dimension(50, 16));
 		add(itemLabel, BorderLayout.WEST);
+		if (withButton) {
+			propertyButton = new JButton();
+			propertyButton.setPreferredSize(new Dimension(16,16));
+			add(propertyButton, BorderLayout.EAST);		
+		}
+		else
+			propertyButton = null;
 	}
+	
+	public void setButtonIcon(ImageIcon buttonIcon) {
+		if (propertyButton == null)
+			return;
+		
+		propertyButton.setIcon(buttonIcon);
+	}
+	
+	public void removeAllButtonActionListener() { for (ActionListener l : propertyButton.getActionListeners())		propertyButton.removeActionListener(l); }
+	public void addButtonActionListener(ActionListener l) { propertyButton.addActionListener(l); }
 }

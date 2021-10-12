@@ -217,7 +217,7 @@ public class WorldPanel extends JPanel{
 	* @see updateOneSpeciesDisplayed
 	*/
 	public void updateAllSpeciesDisplay() {
-		boolean hasChanged = computeSpeciesSlotNumber_sqrt(speciesDisplayed.size());	// set speciesSlotNumber_sqrt
+		boolean hasChanged = computeSpeciesSlotNumber_sqrt(speciesDisplayed.size() - 1);	// set speciesSlotNumber_sqrt ; -1 is because the first "species" in the list is the empty species
 		if (hasChanged) {
 			// reset all tiles arrays to fit the new potential size
 			for (int i = 0; i < tiles.size() ; i++) 
@@ -232,7 +232,7 @@ public class WorldPanel extends JPanel{
 	* @param the species to update
 	*/
 	public void updateSpeciesDisplay(Species speciesToUpdate) {
-		updateSpeciesDisplay(speciesDisplayed.indexOf(speciesToUpdate));
+		updateSpeciesDisplay(speciesDisplayed.indexOf(speciesToUpdate) -1);	// -1 is because the first "species" in the list is the empty species
 	}
 	
 	/**

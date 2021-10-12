@@ -121,6 +121,24 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	public void setGameManager(GameManager game) {
 		this.game = game;
 		CopyElementsToJList();
+		if (eltClass == Species.class) {
+			((SpeciesDetailPanel)detailPanel).replaceMemberButtonActionListener(
+			e -> {
+				int selectedIndex = scrollList.getSelectedIndex();
+				if (selectedIndex == -1)
+					return;
+				
+				Species sp = (Species)getSelectedElement();
+				if (sp == null)
+					return;
+				
+				int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete all members of "+ getSelectedElement().toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
+	            if (reply != JOptionPane.YES_OPTION)
+	                return;				
+				
+				game.exterminateSpeciesMembers(sp);				
+			});
+		}
 		repaint();
 	}
 	
@@ -155,7 +173,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	public void removeCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
 		if (selectedIndex != -1) {
-			int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete "+ getElement(selectedIndex).toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
+			int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete "+ getSelectedElement().toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
             if (reply != JOptionPane.YES_OPTION)
                 return;
 			
@@ -257,6 +275,14 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		return null;
 	}
 
+	private T getSelectedElement() {
+		int selectedIndex = scrollList.getSelectedIndex();
+		if (selectedIndex != -1) 
+			return getElement(selectedIndex);
+		else
+			return null;
+	}
+	
 	private T getElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
 		if (game == null) return null;
 		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index + 1));

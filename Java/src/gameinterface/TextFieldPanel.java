@@ -16,8 +16,11 @@ import gameinterface.components.TerrainStackVisualizerVectors;
 public class TextFieldPanel extends PropertyFieldPanel {
 	JTextField textField;
 	
-	public TextFieldPanel(String fieldName) {
-		super(fieldName);
+	public TextFieldPanel(String fieldName) { 
+		this(fieldName, false);
+	}
+	public TextFieldPanel(String fieldName, boolean withButton) {
+		super(fieldName, withButton);
 		textField = new JTextField(5);
 		add(textField, BorderLayout.CENTER);
 	}

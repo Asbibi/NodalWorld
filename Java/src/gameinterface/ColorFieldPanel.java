@@ -18,8 +18,11 @@ import gameinterface.components.ColorWheelComponent;
 public class ColorFieldPanel extends PropertyFieldPanel {
 	ColorButton colorField;
 
-	public ColorFieldPanel(String fieldName) {
-		super(fieldName);
+	public ColorFieldPanel(String fieldName) { 
+		this(fieldName, false);
+	}
+	public ColorFieldPanel(String fieldName, boolean withButton) {
+		super(fieldName, withButton);
 		colorField = new ColorButton(Color.LIGHT_GRAY);
 		add(colorField, BorderLayout.CENTER);
 	}

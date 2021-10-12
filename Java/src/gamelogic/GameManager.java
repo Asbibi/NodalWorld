@@ -89,7 +89,7 @@ public class GameManager implements Serializable {
 	}
 	public void reinitWorld() {
 		frame = 0;
-		exterminateSpeciesMembers();
+		exterminateAllSpeciesMembers();
 	}
 
 	/**
@@ -250,10 +250,16 @@ public class GameManager implements Serializable {
 	/**
 	* Delete all the members of all the species
 	*/
-	public void exterminateSpeciesMembers() {
+	public void exterminateAllSpeciesMembers() {
 		for (Species sp : species)
-			sp.removeAllMembers();
+			exterminateSpeciesMembers(sp);
 		triggerSpeciesListeners();
+	}
+	/**
+	* Delete all the members of a specific species
+	*/
+	public void exterminateSpeciesMembers(Species sp) {
+		sp.removeAllMembers();
 	}
 
 	/**

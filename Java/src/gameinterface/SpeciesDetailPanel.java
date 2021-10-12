@@ -1,5 +1,9 @@
 package gameinterface;
 
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+
 import gamelogic.Element;
 import gamelogic.Species;
 
@@ -19,7 +23,8 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 		super();
 		triggerTimeField = new TextFieldPanel("Period");
 		add(triggerTimeField);
-		memberCount = new TextFixedFieldPanel("Count");
+		memberCount = new TextFixedFieldPanel("Count", true);
+		memberCount.setButtonIcon(new ImageIcon("res/_System_DeleteCroce_Mini.png"));
 		add(memberCount);
 		addApplyButton();
 	}
@@ -59,4 +64,6 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 			triggerTimeField.setFieldColor(ControlPanel.getWrongFieldColor());		
 		}
 	}
+	
+	public void replaceMemberButtonActionListener(ActionListener l) { memberCount.removeAllButtonActionListener(); memberCount.addButtonActionListener(l); }
 }

@@ -12,7 +12,10 @@ public class TextFixedFieldPanel extends PropertyFieldPanel {
 	JLabel textLabel;
 	
 	public TextFixedFieldPanel(String fieldName) {
-		super(fieldName);
+		this(fieldName, false);
+	}
+	public TextFixedFieldPanel(String fieldName, boolean withButton) {
+		super(fieldName, withButton);
 		textLabel = new JLabel("-", SwingConstants.CENTER);
 		add(textLabel, BorderLayout.CENTER);
 	}
