@@ -39,8 +39,6 @@ public class NodalEditorUI {
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				// TODO : check if editor is frozen
-
 				editor.setOnAlert(false);
 
 				if(e.isShiftDown()) {
@@ -70,15 +68,7 @@ public class NodalEditorUI {
 							editor.setCurrentPort(portHit);
 						}
 					} else {
-						Output output = portHit.getOutput();
-						if(output.hasTarget()) {
-							Input input = output.getTarget();
-							Port portIn = editor.getPort(input);
-							editor.unlink(portHit);
-							editor.setCurrentPort(portIn);
-						} else {
-							editor.setCurrentPort(portHit);
-						}
+						editor.setCurrentPort(portHit);
 					}
 					editor.setCursorPos(e.getX(), e.getY());
 					editor.setEditingLink(true);
@@ -120,8 +110,6 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO : check if editor is frozen
-
 				if(SwingUtilities.isRightMouseButton(e)) {
 					editor.showNodeMenu(e.getX(), e.getY());
 				}
@@ -129,8 +117,6 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO : check if editor is frozen
-
 				if(editor.isEditingLink()) {
 					Port portHit = editor.getPort(e.getX(), e.getY());
 					if(portHit != null) {
@@ -193,8 +179,6 @@ public class NodalEditorUI {
 		editor.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				// TODO : check if editor is frozen
-
 				editor.setCursorPos(e.getX(), e.getY());
 
 				if(editor.isMovingSelection()) {
@@ -299,8 +283,8 @@ public class NodalEditorUI {
 		g2d.setColor(Color.magenta);
 		for(NodeBox box : editor.getBoxes()) {
 			for(Port p : box.getPorts()) {
-				if(p.hasOutput() && p.getOutput().hasTarget()) {
-					Port q = editor.getPort(p.getOutput().getTarget());
+				if(p.hasInput() && p.getInput().hasSource()) {
+					Port q = editor.getPort(p.getInput().getSource());
 					g2d.draw(new Line2D.Double(p.getX(), p.getY(), q.getX(), q.getY()));
 				}
 			}

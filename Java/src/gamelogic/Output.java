@@ -1,7 +1,11 @@
 package gamelogic;
 
-import java.lang.Object;
+import java.util.Set;
+import java.util.HashSet;
+
 import java.io.Serializable;
+
+import java.lang.Object;
 import java.lang.Class;
 
 /**
@@ -19,7 +23,7 @@ public class Output implements Serializable {
 	private String name;
 	private Class<?> dataClass;
 	private Object data;
-	private Input target;
+	private Set<Input> targets;
 
 	/**
 	* @param name
@@ -31,7 +35,7 @@ public class Output implements Serializable {
 		this.name = name;
 		this.dataClass = dataClass;
 		data = null;
-		target = null;
+		targets = new HashSet<Input>();
 	}
 
 	@Override
@@ -84,20 +88,20 @@ public class Output implements Serializable {
 		throw new NetworkIOException("Request class do not match data class of output " + name);
 	}
 
-	public void setTarget(Input target) {
-		this.target = target;
+	public void addTarget(Input target) {
+		targets.add(target);
 	}
 
-	public void removeTarget() {
-		this.target = null;
+	public void removeTarget(Input target) {
+		targets.remove(target);
 	}
 
 	public boolean hasTarget() {
-		return target != null;
+		return !targets.isEmpty();
 	}
 
-	public Input getTarget() {
-		return target;
+	public Set<Input> getTargets() {
+		return targets;
 	}
 
 }

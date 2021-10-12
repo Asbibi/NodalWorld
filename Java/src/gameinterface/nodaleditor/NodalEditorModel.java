@@ -151,13 +151,7 @@ public class NodalEditorModel implements Serializable {
 	* @param port
 	*/ 
 	public void unlink(Port port) {
-		if(port.hasOutput() && port.getOutput().hasTarget()) {
-			Node source = port.getBox().getNode();
-			Output output = port.getOutput();
-			Input input = output.getTarget();
-			Node target = getPort(input).getBox().getNode();
-			network.unlink(source, output.toString(), target, input.toString());
-		} else if(port.hasInput() && port.getInput().hasSource()) {
+		if(port.hasInput() && port.getInput().hasSource()) {
 			Node target = port.getBox().getNode();
 			Input input = port.getInput();
 			Output output = input.getSource();

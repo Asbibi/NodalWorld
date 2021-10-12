@@ -95,7 +95,7 @@ public class Network implements Serializable {
 		inEdges.get(target).add(edge);
 
 		input.setSource(output);
-		output.setTarget(input);
+		output.addTarget(input);
 		return true;
 	}
 
@@ -109,7 +109,7 @@ public class Network implements Serializable {
 		Output output = source.getOutput(outputName);
 		Input input = target.getInput(inputName);
 		
-		output.removeTarget();
+		output.removeTarget(input);
 		input.removeSource();
 
 		Optional<Edge> optEdge = outEdges.get(source).stream()
