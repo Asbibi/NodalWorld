@@ -31,7 +31,7 @@ public class NodalEditorModel implements Serializable {
 	private transient Network network;
 	
 	private Collection<NodeBox> boxes;
-	private double scale;
+	private double scale, ds;
 	private Map<Node, NodeInfoPanel> infoPanels;
 	private boolean usingRules, usingTerrains;
 	private Class<? extends Rule> ruleClass;
@@ -56,6 +56,7 @@ public class NodalEditorModel implements Serializable {
 		this.network = network;
 		boxes = new LinkedList<NodeBox>();
 		scale = 1;
+		ds = 0;
 		infoPanels = new HashMap<Node, NodeInfoPanel>();
 		usingRules = false;
 		usingTerrains = false;
@@ -232,9 +233,20 @@ public class NodalEditorModel implements Serializable {
 		return opt.orElse(null);
 	}
 
-	public double getScale() { return scale; }
+	public double getScale() { return scale*(1+ds); }
 
-	public void setScale(double scale) { this.scale = scale; }
+	public void scale(double ds) {
+		this.ds = ds;
+		for(NodeBox box : boxes) box.scale(ds);
+		triggerChangeListeners();
+	}
+
+	public void commitScale() {
+		scale = getScale();
+		ds = 0;
+		for(NodeBox box : boxes) box.commitScale();
+		triggerChangeListeners();
+	}
 
 
 	// ========== Rules and Terrains ==========

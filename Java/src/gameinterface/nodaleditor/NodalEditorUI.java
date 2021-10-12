@@ -144,11 +144,7 @@ public class NodalEditorUI {
 					editor.setMovingSelection(false);
 
 				} else if(editor.isScaling()) {
-					for(NodeBox box : editor.getBoxes()) {
-						box.commitScale();
-					}
-					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
-					editor.setScale(editor.getScale()*(1+ds));
+					editor.commitScale();
 					editor.setScaling(false);
 
 				} else if(editor.isSelectingArea()) {
@@ -198,9 +194,7 @@ public class NodalEditorUI {
 					}
 				} else if(editor.isScaling()) {
 					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
-					for(NodeBox box : editor.getBoxes()) {
-						box.scale(ds);
-					}
+					editor.scale(ds);
 				}
 			}
 		});
@@ -222,7 +216,6 @@ public class NodalEditorUI {
 			if(!box.isValid()) {
 				box.init(6, 5, 4, g2d.getFontMetrics());
 			}
-			box.paint(g2d, editor);
 		}
 
 		if(editor.isUsingRules()) {
@@ -277,6 +270,12 @@ public class NodalEditorUI {
 				g2d.setColor(Color.red);
 				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*editor.getCurrentTerrainSlotRow()+10, editor.getXCursor(), editor.getYCursor()));
 			}
+		}
+
+		double baseFontSize = g2d.getFont().getSize();
+		g2d.setFont(g2d.getFont().deriveFont((float) (baseFontSize*editor.getScale())));
+		for(NodeBox box : editor.getBoxes()) {
+			box.paint(g2d, editor);
 		}
 
 		g2d.setColor(Color.magenta);

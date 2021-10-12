@@ -120,7 +120,9 @@ public class NodalEditor extends JComponent {
 
 	public double getScale() { return model.getScale(); }
 
-	public void setScale(double scale) { model.setScale(scale); }
+	public void scale(double ds) { model.scale(ds); }
+
+	public void commitScale() { model.commitScale(); }
 
 	// Rules and Terrains
 
