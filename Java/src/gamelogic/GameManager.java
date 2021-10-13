@@ -387,13 +387,22 @@ public class GameManager implements Serializable {
 		}
 	}
 
+	public void disconnectGenRuleFromSpecies(Species sp) {
+		speciesToGenRule.remove(sp);
+	}
+
+	public void disconnectMoveRuleFromSpecies(Species sp) {
+		speciesToMoveRule.remove(sp);
+	}
+
+	public void disconnectDeathRuleFromSpecies(Species sp) {
+		speciesToDeathRule.remove(sp);
+	}
+
 	public void disconnectAllRulesFromSpecies(Species sp) {
-		if(speciesToGenRule.containsKey(sp))
-			speciesToGenRule.remove(sp);
-		if(speciesToMoveRule.containsKey(sp))
-			speciesToMoveRule.remove(sp);
-		if(speciesToDeathRule.containsKey(sp))
-			speciesToDeathRule.remove(sp);
+		disconnectGenRuleFromSpecies(sp);
+		disconnectMoveRuleFromSpecies(sp);
+		disconnectDeathRuleFromSpecies(sp);
 	}
 
 	public <R extends Rule> R getRule(Class<R> ruleClass, Species sp) {

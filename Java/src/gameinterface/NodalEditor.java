@@ -134,9 +134,13 @@ public class NodalEditor extends JComponent {
 
 	public Class<? extends Rule> getRuleClass() { return model.getRuleClass(); }
 
+	public void disconnectSpecies(int row) { model.disconnectSpecies(row); }
+
 	public void setTerrainCreator() { model.setTerrainCreator(); }
 
 	public boolean isUsingTerrains() { return model.isUsingTerrains(); }
+
+	public void disconnectTerrainSlot(int row) { model.disconnectTerrainSlot(row); }
 
 	public int getSideBoxWidth() { return model.getSideBoxWidth(); }
 
