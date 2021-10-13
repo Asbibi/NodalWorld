@@ -253,7 +253,8 @@ public class WorldPanel extends JPanel{
 		// for each entity of the species, increment the species count
 		int width = gridDimension.width;
 		for(Entity entity : speciesDisplayed.get(speciesIndex).getMembers())
-			tiles.get(entity.getPos().getX() + entity.getPos().getY() * width).incrementCountArraySpecies(speciesIndex -1);
+			if (entity.isInArea(new Vec2D(0,0), new Vec2D(width, gridDimension.height)))
+				tiles.get(entity.getPos().getX() + entity.getPos().getY() * width).incrementCountArraySpecies(speciesIndex -1);
 	}
 	
 	/**

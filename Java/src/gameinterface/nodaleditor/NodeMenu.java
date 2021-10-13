@@ -128,6 +128,7 @@ public class NodeMenu extends JPopupMenu {
 		menuUtils.add(buildNodeItem(() -> new OneMinusNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
+		menuUtils.add(buildNodeItem(() -> new EntityInAreaNode()));
 		return menuUtils;
 	}
 

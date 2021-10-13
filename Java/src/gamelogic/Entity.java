@@ -54,5 +54,15 @@ public class Entity implements Serializable {
 	public Integer getBirthTime() {
 		return birthTime;
 	}
+	
+	public boolean isInArea(Vec2D areaStartPosition, Vec2D areaDimensions) {
+		int replacedX = pos.getX() - areaStartPosition.getX();
+		int replacedY = pos.getY() - areaStartPosition.getY();
+		if (replacedX < 0 || replacedX >= areaDimensions.getX())
+			return false;
+		if (replacedY < 0 || replacedY >= areaDimensions.getY())
+			return false;
+		return true;
+	}
 
 }
