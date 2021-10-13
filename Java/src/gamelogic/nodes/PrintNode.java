@@ -18,6 +18,10 @@ public class PrintNode<T> extends Node {
 		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("val", dataClass));
+		addInput(new Input("label", String.class));
+		Input enableInput = new Input("enable", Boolean.class);
+		enableInput.setManualValue(true);
+		addInput(enableInput);
 		addOutput(new Output("val", dataClass));
 	}
 
@@ -27,7 +31,8 @@ public class PrintNode<T> extends Node {
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
 		T val = getInput("val").getData(dataClass);
-		System.out.println("Node Print: " + val.toString());
+		if (getInput("enable").getData(Boolean.class))		
+			System.out.println("Node Print: " + getInput("label").getData(String.class) + "\t| " +val.toString());
 		getOutput("val").setData(val);
 	}
 

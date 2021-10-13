@@ -55,6 +55,7 @@ public class NodeMenu extends JPopupMenu {
 		add(buildMenuRules());
 		add(buildMenuTerrain());
 		add(buildMenuRandom());
+		add(buildMenuTrigo());
 		add(buildMenuVariables());
 		add(buildMenuUtils());
 		add(buildMenuOperations());
@@ -88,6 +89,17 @@ public class NodeMenu extends JPopupMenu {
 		menuRandom.add(buildNodeItem(() -> new RandGaussDoubleNode()));
 		return menuRandom;	
 	}
+	//
+	private JMenu buildMenuTrigo() {
+		JMenu menuTrigo = new JMenu("Trigonometry");
+		menuTrigo.add(buildNodeItem(() -> new TrigoPINode()));
+		menuTrigo.add(buildNodeItem(() -> new TrigoCosNode()));
+		menuTrigo.add(buildNodeItem(() -> new TrigoSinNode()));
+		menuTrigo.add(buildNodeItem(() -> new TrigoAngleVectorsNode()));
+		menuTrigo.add(buildNodeItem(() -> new TrigoConvertRadDegNode()));
+		menuTrigo.add(buildNodeItem(() -> new TrigoConvertDegRadNode()));
+		return menuTrigo;	
+	}
 	
 	private JMenu buildMenuVariables() {
 		JMenu menuVariable = new JMenu("Variable");
@@ -102,11 +114,18 @@ public class NodeMenu extends JPopupMenu {
 	
 	private JMenu buildMenuUtils() {
 		JMenu menuUtils = new JMenu("Utils");
-		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntNode()));
-		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
-		menuUtils.add(buildNodeItem(() -> new VectSplitNode()));
-		menuUtils.add(buildNodeItem(() -> new VectNormNode()));
-		menuUtils.add(buildNodeItem(() -> new VectScalarProduct()));
+		JMenu menuConversion = new JMenu("Convert");
+		menuUtils.add(menuConversion);
+		menuConversion.add(buildNodeItem(() -> new ConvertDoubleIntNode()));
+		menuConversion.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
+		menuConversion.add(buildNodeItem(() -> new ConvertIntDoubleNode()));
+		JMenu menuVector = new JMenu("Vector");
+		menuUtils.add(menuVector);
+		menuVector.add(buildNodeItem(() -> new VectSplitNode()));
+		menuVector.add(buildNodeItem(() -> new VectNormNode()));
+		menuVector.add(buildNodeItem(() -> new VectScalarProduct()));
+		//--------
+		menuUtils.add(buildNodeItem(() -> new OneMinusNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
 		return menuUtils;
@@ -130,14 +149,13 @@ public class NodeMenu extends JPopupMenu {
 		menuMul.add(buildNodeItem(() -> MultiplyNode.buildMulDoubleNode()));
 		menuMul.add(buildNodeItem(() -> MultiplyVectorNode.buildMulVecIntNode()));
 		menuMul.add(buildNodeItem(() -> MultiplyVectorNode.buildMulVecDoubleNode()));
-
 		JMenu menuDiv = new JMenu("Div");
 		menuOperations.add(menuDiv);
 		menuDiv.add(buildNodeItem(() -> new DivEuclNode()));
+		menuDiv.add(buildNodeItem(() -> new DivIntNode()));
 		menuDiv.add(buildNodeItem(() -> new DivDoubleNode()));
 		menuDiv.add(buildNodeItem(() -> DivVectorNode.buildDivVecIntNode()));
 		menuDiv.add(buildNodeItem(() -> DivVectorNode.buildDivVecDoubleNode()));
-		
 		JMenu menuOpposite = new JMenu("Opp");
 		menuOperations.add(menuOpposite);
 		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppIntNode()));
@@ -175,9 +193,10 @@ public class NodeMenu extends JPopupMenu {
 		JMenu menuIfElse = new JMenu("If-Else");
 		menuPredicates.add(menuIfElse);
 		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Integer>("If-Else : Int", Integer.class)));
-		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Vec2D>("If-Else : Vector", Vec2D.class)));
 		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Double>("If-Else : Double", Double.class)));
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Vec2D>("If-Else : Vector", Vec2D.class)));
 		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Surface>("If-Else : Surface", Surface.class)));
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Species>("If-Else : Species", Species.class)));
 		return menuPredicates;
 	}
 

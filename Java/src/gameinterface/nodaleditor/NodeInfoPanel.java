@@ -2,6 +2,7 @@ package gameinterface.nodaleditor;
 
 import gamelogic.GameManager;
 import gamelogic.Node;
+import gamelogic.Species;
 import gamelogic.Input;
 import gamelogic.Surface;
 import gamelogic.NetworkIOException;
@@ -13,6 +14,7 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 
@@ -116,7 +118,44 @@ public class NodeInfoPanel extends JPanel implements Serializable {
 						}
 					});
 
-				}
+				} else if(input.getDataClass().equals(Species.class)) {
+					JComboBox comboBox = new JComboBox<Species>();
+					for(Species species : game.getSpeciesArray()) 
+						comboBox.addItem(species);
+					comboBox.setSelectedItem(input.getManualValue(Species.class));
+					comboBox.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							input.setManualValue((Species) (comboBox.getSelectedItem()));
+						}
+					});
+					comboBox.setMaximumSize(new Dimension(200, 25));
+					panel.add(comboBox);
+
+					game.addSurfaceListener(new ChangeListener() {
+						@Override
+						public void stateChanged(ChangeEvent e) {
+							comboBox.removeAllItems();
+							for(Species species : game.getSpeciesArray()) 
+								comboBox.addItem(species);
+							try { comboBox.setSelectedItem(input.getManualValue(Species.class)); }
+							catch(NetworkIOException exception) { exception.printStackTrace(); }
+						}
+					});
+
+				} else if(input.getDataClass().equals(String.class)) {
+					JTextField textField = new JTextField(input.getManualValue(String.class));
+					textField.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							input.setManualValue(textField.getText());
+						}
+					});
+					textField.setMaximumSize(new Dimension(200, 25));
+					textField.setPreferredSize(new Dimension(200, 25));
+					panel.add(textField);
+
+				} 
 			} catch(NetworkIOException exception) {
 				exception.printStackTrace();
 			}

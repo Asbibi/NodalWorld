@@ -21,7 +21,8 @@ public class SpeciesNode extends Node {
 	public SpeciesNode() {
 		super("Species Data");
 		addInput(new Input("species", Species.class));
-		addOutput(new Output("size", Integer.class));
+		addOutput(new Output("period", Integer.class));
+		addOutput(new Output("count", Integer.class));
 	}
 
 	/**
@@ -30,7 +31,8 @@ public class SpeciesNode extends Node {
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
 		Species sp = getInput("species").getData(Species.class);
-		getOutput("size").setData(sp.getMembers().size());
+		getOutput("count").setData(sp.getMembers().size());
+		getOutput("period").setData(sp.getTriggerTime());
 	}
 
 }

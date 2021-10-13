@@ -18,8 +18,13 @@ public abstract class DivVectorNode<T> extends Node {
 		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("vec", Vec2D.class));
-		addInput(new Input("a", dataClass));
-		addOutput(new Output("vec/a", Vec2D.class));
+		Input input = new Input("b", dataClass);
+		if (dataClass == Integer.class)
+			input.setManualValue(1);
+		else
+			input.setManualValue(1.);
+		addInput(input);
+		addOutput(new Output("vec/b", Vec2D.class));
 	}
 
 	/**
@@ -28,8 +33,8 @@ public abstract class DivVectorNode<T> extends Node {
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
 		Vec2D vector = getInput("vec").getData(Vec2D.class);
-		T scalar = getInput("a").getData(dataClass);
-		getOutput("vec/a").setData(div(vector ,scalar));
+		T scalar = getInput("b").getData(dataClass);
+		getOutput("vec/b").setData(div(vector ,scalar));
 	}
 
 	/**

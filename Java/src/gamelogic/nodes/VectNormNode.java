@@ -21,6 +21,6 @@ public class VectNormNode extends Node{
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
 		Vec2D vec = getInput("vec").getData(Vec2D.class);
-		getOutput("norm").setData(Math.sqrt(vec.getX() * vec.getX() + vec.getY() * vec.getY()));
+		getOutput("norm").setData(vec.getNorm());
 	}
 }

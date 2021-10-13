@@ -27,8 +27,13 @@ public class RandBoolNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
+		Double p = getInput("proba").getData(Double.class);
+		if ( p < 0 || 1 < p) {
+			getOutput("val").setData(null);
+			return;
+		}
 		Double val = rand.nextDouble();
-		getOutput("val").setData(val < getInput("val").getData(Double.class));
+		getOutput("val").setData(val < p);
 	}
 
 }

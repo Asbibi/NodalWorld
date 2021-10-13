@@ -22,7 +22,9 @@ public class DivEuclNode extends Node {
 	public DivEuclNode() {
 		super("Divide : int (Euclidean)");
 		addInput(new Input("a", Integer.class));
-		addInput(new Input("b", Integer.class));
+		Input input = new Input("b", Integer.class);
+		input.setManualValue(1);
+		addInput(input);
 		addOutput(new Output("a/b", Integer.class));
 		addOutput(new Output("remainder", Integer.class));
 	}

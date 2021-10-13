@@ -49,6 +49,14 @@ public class Input implements Serializable {
 			manual = true;
 			value = Surface.getEmpty();
 
+		} else if(dataClass.equals(Species.class)) {
+			manual = true;
+			value = Species.getEmpty();
+
+		} else if(dataClass.equals(String.class)) {
+			manual = true;
+			value = "";
+
 		} else {
 			manual = false;
 			value = null;

@@ -34,6 +34,13 @@ public class Vec2D implements Serializable {
 	}
 
 	/**
+	* @return the 2nd dimension of the vector
+	*/ 
+	public double getNorm() {
+		return Math.sqrt(x*x + y*y);
+	}
+	
+	/**
 	* @param u
 	* @param v
 	* @return the u+v vector
@@ -49,14 +56,6 @@ public class Vec2D implements Serializable {
 	*/ 
 	public static Vec2D sub(Vec2D u, Vec2D v) {
 		return new Vec2D(u.getX()-v.getX(), u.getY()-v.getY());
-	}
-	/**
-	* @param u
-	* @param v
-	* @return the scalar product of u and v
-	*/ 
-	public static int scalar(Vec2D u, Vec2D v) {
-		return u.getX()*v.getX() + u.getY()*v.getY();
 	}
 	
 	/**
@@ -95,7 +94,40 @@ public class Vec2D implements Serializable {
 		if (a == 0)
 			return null;
 		return new Vec2D((int)(u.getX() / a), (int)(u.getY() / a));
+	}	
+
+	/**
+	* @param u
+	* @param v
+	* @return the scalar product of u and v
+	*/ 
+	public static int scalar(Vec2D u, Vec2D v) {
+		return u.getX()*v.getX() + u.getY()*v.getY();
 	}
+
+	/**
+	* @param u
+	* @param v
+	* @return the scalar product of u and v
+	*/ 
+	public static int vectorialProduct(Vec2D u, Vec2D v) {
+		return u.getX()*v.getY() - u.getY()*v.getX();
+	}
+
+	/**
+	* @param u
+	* @param v
+	* @return the scalar product of u and v
+	*/ 
+	public static double angleBetween(Vec2D u, Vec2D v) {
+		double normProduct = u.getNorm() * v.getNorm();
+		if (normProduct == 0)
+			return 0;
+		double cosAngle = scalar(u,v)/(normProduct);
+		int signAngle = vectorialProduct(u,v);
+		return (signAngle < 0 ? -1 : 1) * Math.acos(cosAngle);
+	}
+	
 
 	/**
 	* Checks the component-wise equality of the two vectors

@@ -62,7 +62,6 @@ public class GamePlayer {
 			GameManager manager = ((LoadEvent)e).getLoadedManager();
 			if (manager != null)
 				this.game = manager;
-			System.out.println(this.game);
 		});
 	}
 
@@ -119,7 +118,7 @@ public class GamePlayer {
 			@Override
 			public void run() {
 				game.evolveGameState();
-				System.out.println(game);
+				//System.out.println(game);
 			}
 		};
 	}
