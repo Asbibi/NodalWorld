@@ -124,6 +124,11 @@ public class NodeMenu extends JPopupMenu {
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubIntNode()));
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubDoubleNode()));
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubVecNode()));
+		JMenu menuOpposite = new JMenu("Opposite");
+		menuOperations.add(menuOpposite);
+		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppIntNode()));
+		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppDoubleNode()));
+		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppVecNode()));
 		return menuOperations;
 	}
 

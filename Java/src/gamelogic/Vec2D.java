@@ -50,6 +50,40 @@ public class Vec2D implements Serializable {
 	public static Vec2D sub(Vec2D u, Vec2D v) {
 		return new Vec2D(u.getX()-v.getX(), u.getY()-v.getY());
 	}
+	
+	/**
+	* @param a
+	* @param u
+	* @return the a*u vector
+	*/ 
+	public static Vec2D multiply(int a, Vec2D u) {
+		return new Vec2D(u.getX() * a, u.getY() * a);
+	}
+	/**
+	* @param a
+	* @param u
+	* @return the u/a vector
+	*/ 
+	public static Vec2D divide(int a, Vec2D u) {
+		return new Vec2D(u.getX() / a, u.getY() / a);
+	}
+	
+	/**
+	* @param a
+	* @param u
+	* @return the a*u vector
+	*/ 
+	public static Vec2D multiply(double a, Vec2D u) {
+		return new Vec2D((int)(u.getX() * a), (int)(u.getY() * a));
+	}
+	/**
+	* @param a
+	* @param u
+	* @return the u/a vector
+	*/ 
+	public static Vec2D divide(double a, Vec2D u) {
+		return new Vec2D((int)(u.getX() / a), (int)(u.getY() / a));
+	}
 
 	/**
 	* Checks the component-wise equality of the two vectors

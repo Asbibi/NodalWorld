@@ -71,7 +71,7 @@ public abstract class SubNode<T> extends Node {
 	}
 
 	public static SubNode<Vec2D> buildSubVecNode() {
-		return new SubNode<Vec2D>("Sub : Vec", Vec2D.class) {
+		return new SubNode<Vec2D>("Sub : Vector", Vec2D.class) {
 			@Override
 			protected Vec2D sub(Vec2D val1, Vec2D val2) {
 				return Vec2D.sub(val1, val2);

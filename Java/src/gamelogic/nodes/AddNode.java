@@ -71,7 +71,7 @@ public abstract class AddNode<T> extends Node {
 	}
 
 	public static AddNode<Vec2D> buildAddVecNode() {
-		return new AddNode<Vec2D>("Add : Vec", Vec2D.class) {
+		return new AddNode<Vec2D>("Add : Vector", Vec2D.class) {
 			@Override
 			protected Vec2D add(Vec2D val1, Vec2D val2) {
 				return Vec2D.add(val1, val2);
