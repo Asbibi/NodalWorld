@@ -67,7 +67,7 @@ public class WorldPanel extends JPanel{
 	*/
 	public void updateMap(int frame) {
 		updateTerrain();
-		for (int i =1; i < speciesDisplayed.size(); i++) {
+		for (int i = 1; i < speciesDisplayed.size(); i++) {	// for starting at 1 to prevent using the empty species
 			if(speciesDisplayed.get(i).trigger(frame))
 				updateSpeciesDisplay(i);
 		}
@@ -222,8 +222,8 @@ public class WorldPanel extends JPanel{
 			// reset all tiles arrays to fit the new potential size
 			for (int i = 0; i < tiles.size() ; i++) 
 				tiles.get(i).setEmptyArraySpecies(speciesSlotNumber_sqrt * speciesSlotNumber_sqrt);
-			for (int s = 0; s < speciesDisplayed.size(); s++)
-				updateSpeciesDisplay(s);			
+			for (int s = 1; s < speciesDisplayed.size(); s++)
+				updateSpeciesDisplay(s - 1);			
 		}
 	}
 	
@@ -232,7 +232,8 @@ public class WorldPanel extends JPanel{
 	* @param the species to update
 	*/
 	public void updateSpeciesDisplay(Species speciesToUpdate) {
-		updateSpeciesDisplay(speciesDisplayed.indexOf(speciesToUpdate) -1);	// -1 is because the first "species" in the list is the empty species
+		if (!speciesToUpdate.equals(Species.getEmpty()))
+			updateSpeciesDisplay(speciesDisplayed.indexOf(speciesToUpdate));
 	}
 	
 	/**
@@ -242,14 +243,17 @@ public class WorldPanel extends JPanel{
 	* @param the index of the species to update
 	*/
 	public void updateSpeciesDisplay(int speciesIndex) {
+		if (speciesIndex == 0)	// The first species of the list is always the empty species
+			return;
+		
 		// for each tiles, reset the count of the species to 0
 		for (int i = 0; i < tiles.size() ; i++)
-			tiles.get(i).resetCountArraySpecies(speciesIndex);
+			tiles.get(i).resetCountArraySpecies(speciesIndex -1);
 		
-		// for each entity of the species, inc the species count
+		// for each entity of the species, increment the species count
 		int width = gridDimension.width;
 		for(Entity entity : speciesDisplayed.get(speciesIndex).getMembers())
-			tiles.get(entity.getPos().getX() + entity.getPos().getY() * width).incrementCountArraySpecies(speciesIndex);
+			tiles.get(entity.getPos().getX() + entity.getPos().getY() * width).incrementCountArraySpecies(speciesIndex -1);
 	}
 	
 	/**

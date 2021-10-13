@@ -30,7 +30,9 @@ public class Element implements Serializable {
 	* @return the image for display of the element
 	*/ 
 	public Image getImage() {
-		return image.getImage();
+		if (image != null)
+			return image.getImage();
+		return null;
 	}	
 	/**
 	* @return the image with its file path

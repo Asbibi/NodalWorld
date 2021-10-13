@@ -67,7 +67,7 @@ public class TileView {
 		
 		int currentLine = 0;
 		int currentRow = 0;
-		int currentCount = 0;	// defined here to avoid defining as int at each loop 
+		int currentCount = 0;	// defined here to avoid defining an int at each loop 
 		for (int i = 0; i < tile.getSpeciesNumber(); i++) {
 			// Placement and value getting
 			currentCount = tile.getSpeciesCount(i);
@@ -85,7 +85,7 @@ public class TileView {
 			if (currentCount == 0)
 				continue;
 			
-			Image speciesImage = tile.getOwner().getSpeciesImage(i);
+			Image speciesImage = tile.getOwner().getSpeciesImage(i + 1);	// as the empty species isn't represent in the tile species
 			if (speciesImage == null || speciesImage.getHeight(null) < 0) {
 				g.setColor(tile.getOwner().getMissingSpeciesImageColor());
 		        g.fillRoundRect(x, y, speciesWidth, speciesHeight, 0, 0);
