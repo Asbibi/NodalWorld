@@ -14,16 +14,16 @@ import gamelogic.NetworkIOException;
 * 
 * @see GameManager
 */
-public class EuclDivNode extends Node {
+public class DivEuclNode extends Node {
 
 	/**
 	*
 	*/ 
-	public EuclDivNode() {
-		super("Euclidean Division");
-		addInput(new Input("dividend", Integer.class));
-		addInput(new Input("divisor", Integer.class));
-		addOutput(new Output("quotient", Integer.class));
+	public DivEuclNode() {
+		super("Divide : int (Euclidean)");
+		addInput(new Input("a", Integer.class));
+		addInput(new Input("b", Integer.class));
+		addOutput(new Output("a/b", Integer.class));
 		addOutput(new Output("remainder", Integer.class));
 	}
 
@@ -32,9 +32,14 @@ public class EuclDivNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		Integer dividend = getInput("dividend").getData(Integer.class);
-		Integer divisor = getInput("divisor").getData(Integer.class);
-		getOutput("quotient").setData(dividend/divisor);
+		int dividend = getInput("a").getData(Integer.class);
+		int divisor = getInput("b").getData(Integer.class);
+		if (divisor == 0) {
+			getOutput("a/b").setData(null);
+			getOutput("remainder").setData(null);
+			return;
+		}
+		getOutput("a/b").setData(dividend/divisor);
 		getOutput("remainder").setData(dividend%divisor);
 	}
 

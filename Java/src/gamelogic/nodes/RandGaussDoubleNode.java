@@ -20,7 +20,7 @@ public class RandGaussDoubleNode extends Node {
 		rand = new Random();
 		addInput(new Input("Mean", Double.class));
 		Input input = new Input("Deviation", Double.class);
-		input.setManualValue((Double)1.);
+		input.setManualValue(1.);
 		addInput(input);
 		addOutput(new Output("val", Double.class));
 	}

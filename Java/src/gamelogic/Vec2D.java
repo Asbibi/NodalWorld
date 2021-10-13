@@ -50,6 +50,14 @@ public class Vec2D implements Serializable {
 	public static Vec2D sub(Vec2D u, Vec2D v) {
 		return new Vec2D(u.getX()-v.getX(), u.getY()-v.getY());
 	}
+	/**
+	* @param u
+	* @param v
+	* @return the scalar product of u and v
+	*/ 
+	public static int scalar(Vec2D u, Vec2D v) {
+		return u.getX()*v.getX() + u.getY()*v.getY();
+	}
 	
 	/**
 	* @param a
@@ -65,6 +73,8 @@ public class Vec2D implements Serializable {
 	* @return the u/a vector
 	*/ 
 	public static Vec2D divide(int a, Vec2D u) {
+		if (a == 0)
+			return null;
 		return new Vec2D(u.getX() / a, u.getY() / a);
 	}
 	
@@ -82,6 +92,8 @@ public class Vec2D implements Serializable {
 	* @return the u/a vector
 	*/ 
 	public static Vec2D divide(double a, Vec2D u) {
+		if (a == 0)
+			return null;
 		return new Vec2D((int)(u.getX() / a), (int)(u.getY() / a));
 	}
 
