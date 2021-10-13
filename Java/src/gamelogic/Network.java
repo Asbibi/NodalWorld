@@ -88,9 +88,19 @@ public class Network implements Serializable {
 			}
 		}
 
-		nodes.remove(node);
+		for(Edge edge : inEdges.get(node)) {
+			Node source = edge.getSource();
+			outEdges.get(source).remove(edge);
+		}
 		inEdges.remove(node);
+
+		for(Edge edge : outEdges.get(node)) {
+			Node target = edge.getTarget();
+			inEdges.get(target).remove(edge);
+		}
 		outEdges.remove(node);
+
+		nodes.remove(node);
 	}
 
 	/**
