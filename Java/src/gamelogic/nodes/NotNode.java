@@ -21,8 +21,8 @@ public class NotNode extends Node {
 	*/ 
 	public NotNode() {
 		super("Not");
-		addInput(new Input("val", Boolean.class));
-		addOutput(new Output("res", Boolean.class));
+		addInput(new Input("a", Boolean.class));
+		addOutput(new Output("!a", Boolean.class));
 	}
 
 	/**
@@ -30,8 +30,8 @@ public class NotNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		Boolean val = getInput("val").getData(Boolean.class);
-		getOutput("res").setData(!val);
+		Boolean val = getInput("a").getData(Boolean.class);
+		getOutput("!a").setData(!val);
 	}
 
 }

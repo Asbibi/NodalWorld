@@ -28,9 +28,9 @@ public class CompareNode<T extends Comparable<T>> extends Node {
 	public CompareNode(String name, Class<T> dataClass) {
 		super(name);
 		this.dataClass = dataClass;
-		addInput(new Input("val1", dataClass));
-		addInput(new Input("val2", dataClass));
-		addOutput(new Output("res", Boolean.class));
+		addInput(new Input("a", dataClass));
+		addInput(new Input("b", dataClass));
+		addOutput(new Output("a<b", Boolean.class));
 	}
 
 	/**
@@ -38,10 +38,10 @@ public class CompareNode<T extends Comparable<T>> extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		T val1 = getInput("val1").getData(dataClass);
-		T val2 = getInput("val2").getData(dataClass);
+		T val1 = getInput("a").getData(dataClass);
+		T val2 = getInput("b").getData(dataClass);
 		int comp = val1.compareTo(val2);
-		getOutput("res").setData(comp < 0);
+		getOutput("a<b").setData(comp < 0);
 	}
 
 }

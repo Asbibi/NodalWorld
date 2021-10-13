@@ -54,12 +54,12 @@ public class NodeMenu extends JPopupMenu {
 	private void buildMenu() {
 		add(buildMenuRules());
 		add(buildMenuTerrain());
+		add(buildMenuVariables());
+		add(buildMenuOperations());
+		add(buildMenuUtils());
+		add(buildMenuPredicates());
 		add(buildMenuRandom());
 		add(buildMenuTrigo());
-		add(buildMenuVariables());
-		add(buildMenuUtils());
-		add(buildMenuOperations());
-		add(buildMenuPredicates());
 		add(buildMenuGame());
 		add(buildMenuPrinters());
 	}
@@ -107,9 +107,9 @@ public class NodeMenu extends JPopupMenu {
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Boolean>("Variable : Bool", Boolean.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Integer>("Variable : Int", Integer.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Double>("Variable : Double", Double.class)));
+		menuVariable.add(buildNodeItem(() -> new VectGatherNode()));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Surface>("Variable : Surface", Surface.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Species>("Variable : Species", Species.class)));
-		menuVariable.add(buildNodeItem(() -> new VectGatherNode()));
 		return menuVariable;
 	}
 	
@@ -120,15 +120,19 @@ public class NodeMenu extends JPopupMenu {
 		menuConversion.add(buildNodeItem(() -> new ConvertDoubleIntNode()));
 		menuConversion.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
 		menuConversion.add(buildNodeItem(() -> new ConvertIntDoubleNode()));
+		menuConversion.add(buildNodeItem(() -> new ConvertSpeciesInt()));
+		menuConversion.add(buildNodeItem(() -> new ConvertIntSpecies()));
 		JMenu menuVector = new JMenu("Vector");
 		menuUtils.add(menuVector);
 		menuVector.add(buildNodeItem(() -> new VectSplitNode()));
 		menuVector.add(buildNodeItem(() -> new VectNormNode()));
-		menuVector.add(buildNodeItem(() -> new VectScalarProduct()));
+		menuVector.add(buildNodeItem(() -> new VectScalarProductNode()));
+		menuVector.add(buildNodeItem(() -> new VectVectorialProductNode()));
 		//--------
 		menuUtils.add(buildNodeItem(() -> new OneMinusNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
+		menuUtils.add(buildNodeItem(() -> new SpeciesInAreaNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityInAreaNode()));
 		return menuUtils;
 	}
@@ -158,6 +162,16 @@ public class NodeMenu extends JPopupMenu {
 		menuDiv.add(buildNodeItem(() -> new DivDoubleNode()));
 		menuDiv.add(buildNodeItem(() -> DivVectorNode.buildDivVecIntNode()));
 		menuDiv.add(buildNodeItem(() -> DivVectorNode.buildDivVecDoubleNode()));
+		JMenu menuPow = new JMenu("Pow");
+		menuOperations.add(menuPow);
+		menuPow.add(buildNodeItem(() -> PowNode.buildPowIntNode()));
+		menuPow.add(buildNodeItem(() -> PowNode.buildPowDoubleNode()));
+		menuPow.add(buildNodeItem(() -> PowNode.buildPowVecNode()));
+		JMenu menuAbs = new JMenu("Abs");
+		menuOperations.add(menuAbs);
+		menuAbs.add(buildNodeItem(() -> AbsNode.buildAbsIntNode()));
+		menuAbs.add(buildNodeItem(() -> AbsNode.buildAbsDoubleNode()));
+		menuAbs.add(buildNodeItem(() -> AbsNode.buildAbsVecNode()));
 		JMenu menuOpposite = new JMenu("Opp");
 		menuOperations.add(menuOpposite);
 		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppIntNode()));
@@ -180,14 +194,19 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenu buildMenuPredicates() {
 		JMenu menuPredicates = new JMenu("Predicates");
-		menuPredicates.add(buildNodeItem(() -> new NotNode()));
-		menuPredicates.add(buildNodeItem(() -> new AndNode()));
-		menuPredicates.add(buildNodeItem(() -> new OrNode()));
+		JMenu menuOperation = new JMenu("Bool Operations");
+		menuPredicates.add(menuOperation);
+		menuOperation.add(buildNodeItem(() -> new NotNode()));
+		menuOperation.add(buildNodeItem(() -> new AndNode()));
+		menuOperation.add(buildNodeItem(() -> new OrNode()));
+		menuOperation.add(buildNodeItem(() -> new XorNode()));
 		JMenu menuEqual = new JMenu("Equal");
 		menuPredicates.add(menuEqual);
 		menuEqual.add(buildNodeItem(() -> new EqualNode<Integer>("Equal : Int", Integer.class)));
+		menuEqual.add(buildNodeItem(() -> new EqualNode<Double>("Equal : Double", Double.class)));
 		menuEqual.add(buildNodeItem(() -> new EqualNode<Vec2D>("Equal : Vector", Vec2D.class)));
 		menuEqual.add(buildNodeItem(() -> new EqualNode<Surface>("Equal : Surface", Surface.class)));
+		menuEqual.add(buildNodeItem(() -> new EqualNode<Species>("Equal : Species", Species.class)));
 		JMenu menuCompare = new JMenu("Compare");
 		menuPredicates.add(menuCompare);
 		menuCompare.add(buildNodeItem(() -> new CompareNode<Integer>("Compare : Int", Integer.class)));
@@ -219,9 +238,9 @@ public class NodeMenu extends JPopupMenu {
 		menuPrinters.add(buildNodeItem(() -> new PrintNode<Double>	("Print : Double", Double.class)));
 		menuPrinters.add(buildNodeItem(() -> new PrintNode<Vec2D>	("Print : Vector", Vec2D.class)));
 		menuPrinters.add(buildNodeItem(() -> new PrintNode<Surface>	("Print : Surface", Surface.class)));
-		menuPrinters.add(buildNodeItem(() -> new PrintNode<TerrainModel>	("Print : Terrain Layer", TerrainModel.class)));
 		menuPrinters.add(buildNodeItem(() -> new PrintNode<Species>	("Print : Species", Species.class)));
-		menuPrinters.add(buildNodeItem(() -> new PrintNode<Entity>	("Print : Member", Entity.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Entity>	("Print : Entity", Entity.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<TerrainModel> ("Print : Terrain Layer", TerrainModel.class)));
 		return menuPrinters;
 	}
 	

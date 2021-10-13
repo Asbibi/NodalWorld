@@ -255,8 +255,10 @@ public class NodalEditorUI {
 
 				if(game.getRule(editor.getRuleClass(), sp) != null) {
 					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
-					g2d.setColor(Color.green);
+					g2d.setColor(new Color(120,255,0));
+					g2d.setStroke(new BasicStroke(5));
 					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX(), box.getY()));
+					g2d.setStroke(new BasicStroke(3));
 				}
 
 				row++;
@@ -301,11 +303,11 @@ public class NodalEditorUI {
 			box.paint(g2d, editor);
 		}
 
-		g2d.setColor(Color.magenta);
 		for(NodeBox box : editor.getBoxes()) {
 			for(Port p : box.getPorts()) {
 				if(p.hasInput() && p.getInput().hasSource()) {
 					Port q = editor.getPort(p.getInput().getSource());
+					g2d.setColor(q.getColor());
 					g2d.draw(new Line2D.Double(p.getX(), p.getY(), q.getX(), q.getY()));
 				}
 			}

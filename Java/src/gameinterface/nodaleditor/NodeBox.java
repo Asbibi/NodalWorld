@@ -224,7 +224,7 @@ public class NodeBox implements Serializable {
 		g2d.drawString(node.toString(), (int) (getX()+(getWidth()-titleWidth)/2), (int) (getY()+lineHeight));
 
 		for(Port port : ports) {
-			g2d.setColor(portColor(port));
+			g2d.setColor(port.getColor());
 			g2d.fill(portShape(port));
 
 			g2d.setColor(Color.black);
@@ -249,32 +249,4 @@ public class NodeBox implements Serializable {
 
 		return new Ellipse2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize());
 	}
-
-	private Color portColor(Port port) {
-		Class<?> dataClass = port.hasInput() ? port.getInput().getDataClass() : port.getOutput().getDataClass();
-
-		if(dataClass == Boolean.class) {				return boolColor;
-		} else if(dataClass == Integer.class) {			return intColor;
-		} else if(dataClass == Double.class) {			return doubleColor;
-		} else if(dataClass == Vec2D.class) {			return vectColor;
-		} else if(dataClass == Surface.class) {			return surfaceColor;
-		} else if(dataClass == TerrainModel.class) {	return slotColor;
-		} else if(dataClass == Species.class) {			return speciesColor;
-		} else if(dataClass == Entity.class) {			return entityColor;
-		}
-
-		return otherColor;
-	}
-
-	
-	// ===== Static colors =====
-	final private static Color boolColor = new Color(213,52,44);
-	final private static Color intColor = new Color(80,194,81);
-	final private static Color doubleColor = new Color(0,231,167);
-	final private static Color vectColor = new Color(247,222,0);
-	final private static Color surfaceColor = new Color(189,108,240);
-	final private static Color slotColor = new Color(255,68,255);
-	final private static Color speciesColor = new Color(80,118,156);
-	final private static Color entityColor = new Color(59,173,255);
-	final private static Color otherColor = new Color(148,115,118);
 }

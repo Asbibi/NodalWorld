@@ -28,8 +28,8 @@ public class IfElseNode<T> extends Node {
 		super(name);
 		this.dataClass = dataClass;
 		addInput(new Input("cond", Boolean.class));
-		addInput(new Input("val1", dataClass));
-		addInput(new Input("val2", dataClass));
+		addInput(new Input("true val", dataClass));
+		addInput(new Input("false val", dataClass));
 		addOutput(new Output("res", dataClass));
 	}
 
@@ -39,8 +39,8 @@ public class IfElseNode<T> extends Node {
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
 		Boolean cond = getInput("cond").getData(Boolean.class);
-		T val1 = getInput("val1").getData(dataClass);
-		T val2 = getInput("val2").getData(dataClass);
+		T val1 = getInput("true val").getData(dataClass);
+		T val2 = getInput("false val").getData(dataClass);
 		if(cond) getOutput("res").setData(val1);
 		else getOutput("res").setData(val2);
 	}

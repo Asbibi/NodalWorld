@@ -16,7 +16,7 @@ public class RandGaussDoubleNode extends Node {
 	* 
 	*/ 
 	public RandGaussDoubleNode() {
-		super("Gaussian");
+		super("Gaussian Double");
 		Input inputSeed = new Input("seed", Integer.class);
 		inputSeed.setManualValue(-1);
 		addInput(inputSeed);
@@ -36,8 +36,8 @@ public class RandGaussDoubleNode extends Node {
 		int seed = getInput("seed").getData(Integer.class);
 		Random randUsed = seed < 0 ? rand : new Random(getInput("seed").getData(Integer.class));
 		
-		Double mean = getInput("Mean").getData(Double.class);
-		Double devia = getInput("Deviation").getData(Double.class);
+		Double mean = getInput("mean").getData(Double.class);
+		Double devia = getInput("deviation").getData(Double.class);
 		Double val = randUsed.nextGaussian() * devia + mean;
 		getOutput("res").setData(val);
 	}

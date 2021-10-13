@@ -50,6 +50,10 @@ public class Species extends Element{
 		Species sp = (Species) o;
 		return id == sp.id;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
 	/**
 	* @param pos

@@ -21,9 +21,9 @@ public class AndNode extends Node {
 	*/ 
 	public AndNode() {
 		super("And");
-		addInput(new Input("val1", Boolean.class));
-		addInput(new Input("val2", Boolean.class));
-		addOutput(new Output("res", Boolean.class));
+		addInput(new Input("a", Boolean.class));
+		addInput(new Input("b", Boolean.class));
+		addOutput(new Output("a&b", Boolean.class));
 	}
 
 	/**
@@ -31,9 +31,9 @@ public class AndNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		Boolean val1 = getInput("val1").getData(Boolean.class);
-		Boolean val2 = getInput("val2").getData(Boolean.class);
-		getOutput("res").setData(val1 && val2);
+		Boolean val1 = getInput("a").getData(Boolean.class);
+		Boolean val2 = getInput("b").getData(Boolean.class);
+		getOutput("a&b").setData(val1 && val2);
 	}
 
 }
