@@ -257,8 +257,7 @@ public class NodalEditorUI {
 					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
 					g2d.setColor(new Color(120,255,0));
 					g2d.setStroke(new BasicStroke(5));
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX(), box.getY()));
-					g2d.setStroke(new BasicStroke(3));
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
 				}
 
 				row++;
@@ -266,7 +265,7 @@ public class NodalEditorUI {
 
 			if(editor.isLinkingSpecies()) {
 				g2d.setColor(Color.red);
-				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*editor.getCurrentSpeciesRow()+10, editor.getXCursor(), editor.getYCursor()));
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentSpeciesRow()+0.5), editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 
@@ -285,7 +284,7 @@ public class NodalEditorUI {
 				if(slot.isOccupied()) {
 					NodeBox box = editor.getBox(slot.getTerrainNode());
 					g2d.setColor(Color.green);
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX(), box.getY()));
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
 				}
 
 				row++;
@@ -293,7 +292,7 @@ public class NodalEditorUI {
 
 			if(editor.isLinkingTerrainSlot()) {
 				g2d.setColor(Color.red);
-				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*editor.getCurrentTerrainSlotRow()+10, editor.getXCursor(), editor.getYCursor()));
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentTerrainSlotRow()+0.5), editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 
