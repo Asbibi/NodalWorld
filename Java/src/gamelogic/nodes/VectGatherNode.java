@@ -15,13 +15,13 @@ import gamelogic.NetworkIOException;
 * 
 * @see GameManager
 */
-public class GatherNode extends Node {
+public class VectGatherNode extends Node {
 
 	/**
 	*
 	*/ 
-	public GatherNode() {
-		super("Gather");
+	public VectGatherNode() {
+		super("Variable : Vector");
 		addInput(new Input("x", Integer.class));
 		addInput(new Input("y", Integer.class));
 		addOutput(new Output("vec", Vec2D.class));

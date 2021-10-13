@@ -1,7 +1,10 @@
 package gameinterface.nodaleditor;
 
+import gamelogic.Entity;
 import gamelogic.Node;
+import gamelogic.Species;
 import gamelogic.Surface;
+import gamelogic.TerrainModel;
 import gamelogic.Vec2D;
 import gamelogic.nodes.*;
 
@@ -52,10 +55,12 @@ public class NodeMenu extends JPopupMenu {
 		add(buildMenuRules());
 		add(buildMenuTerrain());
 		add(buildMenuRandom());
+		add(buildMenuVariables());
 		add(buildMenuUtils());
 		add(buildMenuOperations());
 		add(buildMenuPredicates());
 		add(buildMenuGame());
+		add(buildMenuPrinters());
 	}
 
 	private JMenu buildMenuRules() {
@@ -83,19 +88,23 @@ public class NodeMenu extends JPopupMenu {
 		menuRandom.add(buildNodeItem(() -> new RandGaussDoubleNode()));
 		return menuRandom;	
 	}
-
-	private JMenu buildMenuUtils() {
-		JMenu menuUtils = new JMenu("Utils");
+	
+	private JMenu buildMenuVariables() {
 		JMenu menuVariable = new JMenu("Variable");
-		menuUtils.add(menuVariable);
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Boolean>("Variable : Bool", Boolean.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Integer>("Variable : Int", Integer.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Double>("Variable : Double", Double.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Surface>("Variable : Surface", Surface.class)));
+		menuVariable.add(buildNodeItem(() -> new VariableNode<Species>("Variable : Species", Species.class)));
+		menuVariable.add(buildNodeItem(() -> new VectGatherNode()));
+		return menuVariable;
+	}
+	
+	private JMenu buildMenuUtils() {
+		JMenu menuUtils = new JMenu("Utils");
 		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntNode()));
 		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
-		menuUtils.add(buildNodeItem(() -> new SplitNode()));
-		menuUtils.add(buildNodeItem(() -> new GatherNode()));
+		menuUtils.add(buildNodeItem(() -> new VectSplitNode()));
 		menuUtils.add(buildNodeItem(() -> new VectNormNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
@@ -126,7 +135,7 @@ public class NodeMenu extends JPopupMenu {
 		JMenu menuEqual = new JMenu("Equal");
 		menuPredicates.add(menuEqual);
 		menuEqual.add(buildNodeItem(() -> new EqualNode<Integer>("Equal : Int", Integer.class)));
-		menuEqual.add(buildNodeItem(() -> new EqualNode<Vec2D>("Equal : Vec", Vec2D.class)));
+		menuEqual.add(buildNodeItem(() -> new EqualNode<Vec2D>("Equal : Vector", Vec2D.class)));
 		menuEqual.add(buildNodeItem(() -> new EqualNode<Surface>("Equal : Surface", Surface.class)));
 		JMenu menuCompare = new JMenu("Compare");
 		menuPredicates.add(menuCompare);
@@ -135,7 +144,7 @@ public class NodeMenu extends JPopupMenu {
 		JMenu menuIfElse = new JMenu("If-Else");
 		menuPredicates.add(menuIfElse);
 		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Integer>("If-Else : Int", Integer.class)));
-		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Vec2D>("If-Else : Vec", Vec2D.class)));
+		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Vec2D>("If-Else : Vector", Vec2D.class)));
 		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Double>("If-Else : Double", Double.class)));
 		menuIfElse.add(buildNodeItem(() -> new IfElseNode<Surface>("If-Else : Surface", Surface.class)));
 		return menuPredicates;
@@ -150,6 +159,20 @@ public class NodeMenu extends JPopupMenu {
 		menuGame.add(buildNodeItem(() -> new CurSpeciesNode()));
 		return menuGame;
 	}
+	
+	private JMenu buildMenuPrinters() {
+		JMenu menuPrinters = new JMenu("Printers");
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Boolean>	("Print : Boolean", Boolean.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Integer>	("Print : Int", Integer.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Double>	("Print : Double", Double.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Vec2D>	("Print : Vector", Vec2D.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Surface>	("Print : Surface", Surface.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<TerrainModel>	("Print : Terrain Layer", TerrainModel.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Species>	("Print : Species", Species.class)));
+		menuPrinters.add(buildNodeItem(() -> new PrintNode<Entity>	("Print : Member", Entity.class)));
+		return menuPrinters;
+	}
+	
 
 	private JMenuItem buildNodeItem(Supplier<Node> supplier) {
 		Node node = supplier.get();

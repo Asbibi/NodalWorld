@@ -15,12 +15,12 @@ import gamelogic.NetworkIOException;
 * 
 * @see GameManager
 */
-public class SplitNode extends Node {
+public class VectSplitNode extends Node {
 
 	/**
 	*
 	*/ 
-	public SplitNode() {
+	public VectSplitNode() {
 		super("Split");
 		addInput(new Input("vec", Vec2D.class));
 		addOutput(new Output("x", Integer.class));
