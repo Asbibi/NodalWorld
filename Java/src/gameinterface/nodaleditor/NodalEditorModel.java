@@ -1,6 +1,7 @@
 package gameinterface.nodaleditor;
 
 import gamelogic.*;
+import gamelogic.rules.*;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -284,6 +285,15 @@ public class NodalEditorModel implements Serializable {
 	*/ 
 	public Class<? extends Rule> getRuleClass() { return ruleClass; }
 
+	public void disconnectSpecies(int row) {
+		Species sp = game.getSpecies(row);
+		if(ruleClass == GenerationRule.class) game.disconnectGenRuleFromSpecies(sp);
+		else if(ruleClass == MovementRule.class) game.disconnectMoveRuleFromSpecies(sp);
+		else if(ruleClass == DeathRule.class) game.disconnectDeathRuleFromSpecies(sp);
+
+		triggerChangeListeners();
+	}
+
 	/**
 	* Enables the editor th handle terrains
 	*/ 
@@ -295,6 +305,13 @@ public class NodalEditorModel implements Serializable {
 	* @return true if the editor can handle terrains, otherwise false
 	*/ 
 	public boolean isUsingTerrains() { return usingTerrains; }
+
+	public void disconnectTerrainSlot(int row) {
+		TerrainSlot slot = game.getTerrain().getSlot(row);
+		if(slot.isOccupied()) slot.disconnect();
+
+		triggerChangeListeners();
+	}
 
 	/**
 	* @return width of side box for specific handling behaviours (rules or terrains)

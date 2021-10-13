@@ -95,6 +95,7 @@ public class NodalEditorUI {
 				int speciesRow = editor.getSpeciesRow(e.getX(), e.getY());
 				if(speciesRow >= 0) {
 					editor.setCurrentSpeciesRow(speciesRow);
+					editor.disconnectSpecies(speciesRow);
 					editor.setCursorPos(e.getX(), e.getY());
 					editor.setLinkingSpecies(true);
 					return;
@@ -103,6 +104,7 @@ public class NodalEditorUI {
 				int terrainSlotRow = editor.getTerrainSlotRow(e.getX(), e.getY());
 				if(terrainSlotRow >= 0) {
 					editor.setCurrentTerrainSlotRow(terrainSlotRow);
+					editor.disconnectTerrainSlot(terrainSlotRow);
 					editor.setCursorPos(e.getX(), e.getY());
 					editor.setLinkingTerrainSlot(true);
 					return;
