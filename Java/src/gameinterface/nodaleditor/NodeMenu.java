@@ -77,8 +77,10 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenu buildMenuRandom() {
 		JMenu menuRandom = new JMenu("Random");
+		menuRandom.add(buildNodeItem(() -> new RandBoolNode()));		
 		menuRandom.add(buildNodeItem(() -> new RandDoubleNode()));
 		menuRandom.add(buildNodeItem(() -> new RandIntNode()));
+		menuRandom.add(buildNodeItem(() -> new RandGaussDoubleNode()));
 		return menuRandom;	
 	}
 
@@ -90,8 +92,11 @@ public class NodeMenu extends JPopupMenu {
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Integer>("Variable : Int", Integer.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Double>("Variable : Double", Double.class)));
 		menuVariable.add(buildNodeItem(() -> new VariableNode<Surface>("Variable : Surface", Surface.class)));
+		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntNode()));
+		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
 		menuUtils.add(buildNodeItem(() -> new SplitNode()));
 		menuUtils.add(buildNodeItem(() -> new GatherNode()));
+		menuUtils.add(buildNodeItem(() -> new VectNormNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
 		return menuUtils;
