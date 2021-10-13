@@ -106,6 +106,7 @@ public class NodeMenu extends JPopupMenu {
 		menuUtils.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
 		menuUtils.add(buildNodeItem(() -> new VectSplitNode()));
 		menuUtils.add(buildNodeItem(() -> new VectNormNode()));
+		menuUtils.add(buildNodeItem(() -> new VectScalarProduct()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
 		return menuUtils;
@@ -113,7 +114,6 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenu buildMenuOperations() {
 		JMenu menuOperations = new JMenu("Operations");
-		menuOperations.add(buildNodeItem(() -> new EuclDivNode()));
 		JMenu menuAdd = new JMenu("Add");
 		menuOperations.add(menuAdd);
 		menuAdd.add(buildNodeItem(() -> AddNode.buildAddIntNode()));
@@ -124,11 +124,37 @@ public class NodeMenu extends JPopupMenu {
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubIntNode()));
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubDoubleNode()));
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubVecNode()));
-		JMenu menuOpposite = new JMenu("Opposite");
+		JMenu menuMul = new JMenu("Mul");
+		menuOperations.add(menuMul);
+		menuMul.add(buildNodeItem(() -> MultiplyNode.buildMulIntNode()));
+		menuMul.add(buildNodeItem(() -> MultiplyNode.buildMulDoubleNode()));
+		menuMul.add(buildNodeItem(() -> MultiplyVectorNode.buildMulVecIntNode()));
+		menuMul.add(buildNodeItem(() -> MultiplyVectorNode.buildMulVecDoubleNode()));
+
+		JMenu menuDiv = new JMenu("Div");
+		menuOperations.add(menuDiv);
+		menuDiv.add(buildNodeItem(() -> new DivEuclNode()));
+		menuDiv.add(buildNodeItem(() -> new DivDoubleNode()));
+		menuDiv.add(buildNodeItem(() -> DivVectorNode.buildDivVecIntNode()));
+		menuDiv.add(buildNodeItem(() -> DivVectorNode.buildDivVecDoubleNode()));
+		
+		JMenu menuOpposite = new JMenu("Opp");
 		menuOperations.add(menuOpposite);
 		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppIntNode()));
 		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppDoubleNode()));
 		menuOpposite.add(buildNodeItem(() -> OppositeValueNode.buildOppVecNode()));
+		JMenu menuMax = new JMenu("Max");
+		menuOperations.add(menuMax);
+		menuMax.add(buildNodeItem(() -> MaxNode.buildMaxIntNode()));
+		menuMax.add(buildNodeItem(() -> MaxNode.buildMaxDoubleNode()));
+		JMenu menuMin = new JMenu("Min");
+		menuOperations.add(menuMin);
+		menuMin.add(buildNodeItem(() -> MinNode.buildMinIntNode()));
+		menuMin.add(buildNodeItem(() -> MinNode.buildMinDoubleNode()));
+		JMenu menuClamp = new JMenu("Clamp");
+		menuOperations.add(menuClamp);
+		menuClamp.add(buildNodeItem(() -> ClampNode.buildClampIntNode()));
+		menuClamp.add(buildNodeItem(() -> ClampNode.buildClampDoubleNode()));
 		return menuOperations;
 	}
 
