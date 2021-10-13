@@ -8,6 +8,8 @@ import javax.swing.SwingUtilities;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -18,6 +20,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.FontMetrics;
 
+import java.util.LinkedList;
 import java.util.Optional;
 
 /**
@@ -36,10 +39,13 @@ public class NodalEditorUI {
 	* @param editor
 	*/ 
 	public void installUI(NodalEditor editor) {
+		editor.setFocusable(true);
+
 		editor.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				editor.setOnAlert(false);
+				editor.requestFocus();
 
 				if(e.isShiftDown()) {
 					editor.setReferencePos(e.getX(), e.getY());
@@ -110,13 +116,8 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
+				if(SwingUtilities.isRightMouseButton(e)) {
 					editor.showNodeMenu(e.getX(), e.getY());
-				} else if(SwingUtilities.isRightMouseButton(e)) {
-					NodeBox box = editor.getBox(e.getX(), e.getY());
-					if(box != null) {
-						editor.removeNode(box);
-					}
 				}
 			}
 
@@ -202,6 +203,19 @@ public class NodalEditorUI {
 				} else if(editor.isZooming()) {
 					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
 					editor.scale(ds);
+				}
+			}
+		});
+
+		editor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e)  {
+				if(e.getKeyCode() == KeyEvent.VK_DELETE) {
+					LinkedList<NodeBox> boxesToRemove = new LinkedList<NodeBox>();
+					for(NodeBox box : editor.getBoxes()) {
+						if(editor.isSelected(box)) boxesToRemove.add(box);
+					}
+					for(NodeBox box : boxesToRemove) editor.removeNode(box);
 				}
 			}
 		});
