@@ -132,6 +132,24 @@ public class NodalEditorModel implements Serializable {
 		triggerChangeListeners();
 	}
 
+	public void removeNode(NodeBox box) {
+		network.removeNode(box.getNode());
+		infoPanels.remove(box.getNode());
+		boxes.remove(box);
+
+		if(isUsingRules() && box.getNode() instanceof TerminalNode) {
+			game.disconnectRule(((TerminalNode) box.getNode()).getRule());
+		}
+
+		if(isUsingTerrains() && box.getNode() instanceof TerrainNode) {
+			for(TerrainSlot slot : game.getTerrain().getSlots()) {
+				if(slot.isOccupied() && slot.getTerrainNode() == box.getNode()) slot.disconnect();
+			}
+		}
+
+		triggerChangeListeners();
+	}
+
 	/**
 	* @param portOut
 	* @param portIn

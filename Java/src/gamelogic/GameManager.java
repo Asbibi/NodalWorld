@@ -342,22 +342,13 @@ public class GameManager implements Serializable {
 			speciesToDeathRule.put(sp, rule);
 		}
 	}
-	
+
 	/**
 	* Remove all generation, movement & death rules linked to the specified species.
 	* 
 	* @param rule
 	* @param sp
 	*/
-	public void disconnectAllRulesFromSpecies(Species sp) {
-		if(speciesToGenRule.containsKey(sp))
-			speciesToGenRule.remove(sp);
-		if(speciesToMoveRule.containsKey(sp))
-			speciesToMoveRule.remove(sp);
-		if(speciesToDeathRule.containsKey(sp))
-			speciesToDeathRule.remove(sp);
-	}
-
 	public <R extends Rule> void connectRuleToSpecies(R rule, Species sp) {
 		if(rule instanceof GenerationRule) {
 			connectRuleToSpecies((GenerationRule) rule, sp);
@@ -366,6 +357,43 @@ public class GameManager implements Serializable {
 		} else if(rule instanceof DeathRule) {
 			connectRuleToSpecies((DeathRule) rule, sp);
 		}
+	}
+
+	public void disconnectRule(GenerationRule rule) {
+		for(Species sp : species) {
+			if(speciesToGenRule.containsKey(sp) && speciesToGenRule.get(sp) == rule) speciesToGenRule.remove(sp);
+		}
+	}
+
+	public void disconnectRule(MovementRule rule) {
+		for(Species sp : species) {
+			if(speciesToMoveRule.containsKey(sp) && speciesToMoveRule.get(sp) == rule) speciesToMoveRule.remove(sp);
+		}
+	}
+
+	public void disconnectRule(DeathRule rule) {
+		for(Species sp : species) {
+			if(speciesToDeathRule.containsKey(sp) && speciesToDeathRule.get(sp) == rule) speciesToDeathRule.remove(sp);
+		}
+	}
+
+	public void disconnectRule(Rule rule) {
+		if(rule instanceof GenerationRule) {
+			disconnectRule((GenerationRule) rule);
+		} else if(rule instanceof MovementRule) {
+			disconnectRule((MovementRule) rule);
+		} else if(rule instanceof DeathRule) {
+			disconnectRule((DeathRule) rule);
+		}
+	}
+
+	public void disconnectAllRulesFromSpecies(Species sp) {
+		if(speciesToGenRule.containsKey(sp))
+			speciesToGenRule.remove(sp);
+		if(speciesToMoveRule.containsKey(sp))
+			speciesToMoveRule.remove(sp);
+		if(speciesToDeathRule.containsKey(sp))
+			speciesToDeathRule.remove(sp);
 	}
 
 	public <R extends Rule> R getRule(Class<R> ruleClass, Species sp) {

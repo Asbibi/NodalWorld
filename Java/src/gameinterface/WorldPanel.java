@@ -67,7 +67,7 @@ public class WorldPanel extends JPanel{
 	*/
 	public void updateMap(int frame) {
 		updateTerrain();
-		for (int i =0; i < speciesDisplayed.size(); i++) {
+		for (int i =1; i < speciesDisplayed.size(); i++) {
 			if(speciesDisplayed.get(i).trigger(frame))
 				updateSpeciesDisplay(i);
 		}

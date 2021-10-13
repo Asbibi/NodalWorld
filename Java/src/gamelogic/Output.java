@@ -96,6 +96,10 @@ public class Output implements Serializable {
 		targets.remove(target);
 	}
 
+	public void clearTargets() {
+		targets.clear();
+	}
+
 	public boolean hasTarget() {
 		return !targets.isEmpty();
 	}

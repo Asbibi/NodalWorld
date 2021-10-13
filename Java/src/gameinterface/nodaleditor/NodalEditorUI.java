@@ -110,8 +110,13 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(SwingUtilities.isRightMouseButton(e)) {
+				if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2) {
 					editor.showNodeMenu(e.getX(), e.getY());
+				} else if(SwingUtilities.isRightMouseButton(e)) {
+					NodeBox box = editor.getBox(e.getX(), e.getY());
+					if(box != null) {
+						editor.removeNode(box);
+					}
 				}
 			}
 

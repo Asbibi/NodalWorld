@@ -71,6 +71,28 @@ public class Network implements Serializable {
 		inEdges.put(node, new ArrayList<Edge>());
 	}
 
+	public void removeNode(Node node) {
+		for(Input input : node.getInputs()) {
+			if(input.hasSource()) {
+				Output output = input.getSource();
+				input.removeSource();
+				output.removeTarget(input);
+			}
+		}
+		for(Output output : node.getOutputs()) {
+			if(output.hasTarget()) {
+				for(Input input : output.getTargets()) {
+					input.removeSource();
+				}
+				output.clearTargets();
+			}
+		}
+
+		nodes.remove(node);
+		inEdges.remove(node);
+		outEdges.remove(node);
+	}
+
 	/**
 	* @param source
 	* @param outputName

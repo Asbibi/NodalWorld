@@ -104,6 +104,8 @@ public class NodalEditor extends JComponent {
 
 	public void unlink(Port port) { model.unlink(port); }
 
+	public void removeNode(NodeBox box) { model.removeNode(box); }
+
 	// Node Boxes
 
 	public Collection<NodeBox> getBoxes() { return model.getBoxes(); }
