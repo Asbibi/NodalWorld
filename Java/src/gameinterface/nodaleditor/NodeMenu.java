@@ -124,6 +124,14 @@ public class NodeMenu extends JPopupMenu {
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubIntNode()));
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubDoubleNode()));
 		menuSub.add(buildNodeItem(() -> SubNode.buildSubVecNode()));
+		JMenu menuMax = new JMenu("Max");
+		menuOperations.add(menuMax);
+		menuMax.add(buildNodeItem(() -> MaxNode.buildMaxIntNode()));
+		menuMax.add(buildNodeItem(() -> MaxNode.buildMaxDoubleNode()));
+		JMenu menuMin = new JMenu("Min");
+		menuOperations.add(menuMin);
+		menuMin.add(buildNodeItem(() -> MinNode.buildMinIntNode()));
+		menuMin.add(buildNodeItem(() -> MinNode.buildMinDoubleNode()));
 		return menuOperations;
 	}
 
