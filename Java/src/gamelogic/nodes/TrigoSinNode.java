@@ -14,7 +14,7 @@ public class TrigoSinNode  extends Node {
 	*/ 
 	public TrigoSinNode() {
 		super("Sinus");
-		addInput(new Input("t (rad)", Double.class));	
+		addInput(new Input("t", Double.class));	
 		addOutput(new Output("sin(t)", Double.class));
 	}
 
@@ -23,7 +23,7 @@ public class TrigoSinNode  extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		getOutput("sin(t)").setData(Math.sin(getInput("t (rad)").getData(Double.class)));
+		getOutput("sin(t)").setData(Math.sin(getInput("t").getData(Double.class)));
 	}
 
 }

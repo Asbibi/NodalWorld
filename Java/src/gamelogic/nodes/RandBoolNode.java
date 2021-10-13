@@ -17,9 +17,12 @@ public class RandBoolNode extends Node {
 	*/ 
 	public RandBoolNode() {
 		super("Random Boolean");
+		Input input = new Input("seed", Integer.class);
+		input.setManualValue(-1);
+		addInput(input);
 		rand = new Random();
 		addInput(new Input("proba", Double.class));
-		addOutput(new Output("val", Boolean.class));
+		addOutput(new Output("res", Boolean.class));
 	}
 
 	/**
@@ -27,13 +30,12 @@ public class RandBoolNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		Double p = getInput("proba").getData(Double.class);
-		if ( p < 0 || 1 < p) {
-			getOutput("val").setData(null);
-			return;
-		}
-		Double val = rand.nextDouble();
-		getOutput("val").setData(val < p);
+		int seed = getInput("seed").getData(Integer.class);
+		Random randUsed = seed < 0 ? rand : new Random(getInput("seed").getData(Integer.class));
+		
+		Double p = getInput("proba").getData(Double.class);		
+		Double val = randUsed.nextDouble();
+		getOutput("res").setData(val < p);
 	}
 
 }

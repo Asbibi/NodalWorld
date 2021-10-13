@@ -96,6 +96,7 @@ public class NodeMenu extends JPopupMenu {
 		menuTrigo.add(buildNodeItem(() -> new TrigoCosNode()));
 		menuTrigo.add(buildNodeItem(() -> new TrigoSinNode()));
 		menuTrigo.add(buildNodeItem(() -> new TrigoAngleVectorsNode()));
+		menuTrigo.add(buildNodeItem(() -> new TrigoRadialToVector()));
 		menuTrigo.add(buildNodeItem(() -> new TrigoConvertRadDegNode()));
 		menuTrigo.add(buildNodeItem(() -> new TrigoConvertDegRadNode()));
 		return menuTrigo;	

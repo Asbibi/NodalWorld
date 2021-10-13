@@ -2,6 +2,7 @@ package gamelogic.nodes;
 
 import gamelogic.Node;
 import gamelogic.GameManager;
+import gamelogic.Input;
 import gamelogic.Output;
 import gamelogic.NetworkIOException;
 
@@ -24,8 +25,11 @@ public class RandDoubleNode extends Node {
 	*/ 
 	public RandDoubleNode() {
 		super("Random Double");
+		Input input = new Input("seed", Integer.class);
+		input.setManualValue(-1);
+		addInput(input);
 		rand = new Random();
-		addOutput(new Output("val", Double.class));
+		addOutput(new Output("res", Double.class));
 	}
 
 	/**
@@ -33,8 +37,11 @@ public class RandDoubleNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		Double val = rand.nextDouble();
-		getOutput("val").setData(val);
+		int seed = getInput("seed").getData(Integer.class);
+		Random randUsed = seed < 0 ? rand : new Random(getInput("seed").getData(Integer.class));
+		
+		Double val = randUsed.nextDouble();
+		getOutput("res").setData(val);
 	}
 
 }

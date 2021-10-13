@@ -14,7 +14,7 @@ public class TrigoCosNode extends Node {
 	*/ 
 	public TrigoCosNode() {
 		super("Cosinus");
-		addInput(new Input("t (rad)", Double.class));	
+		addInput(new Input("t", Double.class));	
 		addOutput(new Output("cos(t)", Double.class));
 	}
 
@@ -23,7 +23,7 @@ public class TrigoCosNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		getOutput("cos(t)").setData(Math.cos(getInput("t (rad)").getData(Double.class)));
+		getOutput("cos(t)").setData(Math.cos(getInput("t").getData(Double.class)));
 	}
 
 }

@@ -17,12 +17,15 @@ public class RandGaussDoubleNode extends Node {
 	*/ 
 	public RandGaussDoubleNode() {
 		super("Gaussian");
+		Input inputSeed = new Input("seed", Integer.class);
+		inputSeed.setManualValue(-1);
+		addInput(inputSeed);
 		rand = new Random();
-		addInput(new Input("Mean", Double.class));
-		Input input = new Input("Deviation", Double.class);
+		addInput(new Input("mean", Double.class));
+		Input input = new Input("deviation", Double.class);
 		input.setManualValue(1.);
 		addInput(input);
-		addOutput(new Output("val", Double.class));
+		addOutput(new Output("res", Double.class));
 	}
 
 	/**
@@ -30,11 +33,13 @@ public class RandGaussDoubleNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
+		int seed = getInput("seed").getData(Integer.class);
+		Random randUsed = seed < 0 ? rand : new Random(getInput("seed").getData(Integer.class));
+		
 		Double mean = getInput("Mean").getData(Double.class);
 		Double devia = getInput("Deviation").getData(Double.class);
-		Double val = rand.nextGaussian() * devia + mean;
-		getOutput("val").setData(val);
-		
+		Double val = randUsed.nextGaussian() * devia + mean;
+		getOutput("res").setData(val);
 	}
 
 }
