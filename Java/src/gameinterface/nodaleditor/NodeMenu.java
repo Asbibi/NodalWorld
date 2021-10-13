@@ -102,14 +102,14 @@ public class NodeMenu extends JPopupMenu {
 		menuOperations.add(buildNodeItem(() -> new EuclDivNode()));
 		JMenu menuAdd = new JMenu("Add");
 		menuOperations.add(menuAdd);
-		menuAdd.add(buildNodeItem(() -> new IntAddNode()));
-		menuAdd.add(buildNodeItem(() -> new DoubleAddNode()));
-		menuAdd.add(buildNodeItem(() -> new VecAddNode()));
+		menuAdd.add(buildNodeItem(() -> AddNode.buildAddIntNode()));
+		menuAdd.add(buildNodeItem(() -> AddNode.buildAddDoubleNode()));
+		menuAdd.add(buildNodeItem(() -> AddNode.buildAddVecNode()));
 		JMenu menuSub = new JMenu("Sub");
 		menuOperations.add(menuSub);
-		menuSub.add(buildNodeItem(() -> new IntSubNode()));
-		menuSub.add(buildNodeItem(() -> new DoubleSubNode()));
-		menuSub.add(buildNodeItem(() -> new VecSubNode()));
+		menuSub.add(buildNodeItem(() -> SubNode.buildSubIntNode()));
+		menuSub.add(buildNodeItem(() -> SubNode.buildSubDoubleNode()));
+		menuSub.add(buildNodeItem(() -> SubNode.buildSubVecNode()));
 		return menuOperations;
 	}
 

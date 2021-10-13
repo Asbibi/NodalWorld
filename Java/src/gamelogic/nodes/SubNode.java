@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.Vec2D;
 import gamelogic.NetworkIOException;
 
 import java.lang.Class;
@@ -47,5 +48,35 @@ public abstract class SubNode<T> extends Node {
 	* @return the difference between val1 and val2
 	*/ 
 	abstract T sub(T val1, T val2); 
+
+
+	// ========== CONCRETE SUBCLASSES ==========
+
+	public static SubNode<Integer> buildSubIntNode() {
+		return new SubNode<Integer>("Sub : Int", Integer.class) {
+			@Override
+			protected Integer sub(Integer val1, Integer val2) {
+				return val1-val2;
+			}
+		};
+	}
+
+	public static SubNode<Double> buildSubDoubleNode() {
+		return new SubNode<Double>("Sub : Double", Double.class) {
+			@Override
+			protected Double sub(Double val1, Double val2) {
+				return val1-val2;
+			}
+		};
+	}
+
+	public static SubNode<Vec2D> buildSubVecNode() {
+		return new SubNode<Vec2D>("Sub : Vec", Vec2D.class) {
+			@Override
+			protected Vec2D sub(Vec2D val1, Vec2D val2) {
+				return Vec2D.sub(val1, val2);
+			}
+		};
+	}
 
 }

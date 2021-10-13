@@ -65,7 +65,6 @@ public class TileComponent extends JComponent{
 	* @param index of the species to reset
 	*/
 	public void resetCountArraySpecies(int speciesIndex) {
-		System.out.println(speciesIndex);
 		currenSpeciesCounts.set(speciesIndex, 0);
 	}
 	/**

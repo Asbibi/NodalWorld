@@ -4,6 +4,7 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
+import gamelogic.Vec2D;
 import gamelogic.NetworkIOException;
 
 import java.lang.Class;
@@ -38,7 +39,7 @@ public abstract class AddNode<T> extends Node {
 	public void evaluate(GameManager game) throws NetworkIOException {
 		T val1 = getInput("val1").getData(dataClass);
 		T val2 = getInput("val2").getData(dataClass);
-		getOutput("res").setData(add(val1, val2));
+		getOutput("res").setData(add(val1 ,val2));
 	}
 
 	/**
@@ -46,6 +47,36 @@ public abstract class AddNode<T> extends Node {
 	* @param val2
 	* @return the sum of val1 and val2
 	*/ 
-	abstract T add(T val1, T val2); 
+	protected abstract T add(T val1, T val2);
+
+
+	// ========== CONCRETE SUBCLASSES ==========
+
+	public static AddNode<Integer> buildAddIntNode() {
+		return new AddNode<Integer>("Add : Int", Integer.class) {
+			@Override
+			protected Integer add(Integer val1, Integer val2) {
+				return val1+val2;
+			}
+		};
+	}
+
+	public static AddNode<Double> buildAddDoubleNode() {
+		return new AddNode<Double>("Add : Double", Double.class) {
+			@Override
+			protected Double add(Double val1, Double val2) {
+				return val1+val2;
+			}
+		};
+	}
+
+	public static AddNode<Vec2D> buildAddVecNode() {
+		return new AddNode<Vec2D>("Add : Vec", Vec2D.class) {
+			@Override
+			protected Vec2D add(Vec2D val1, Vec2D val2) {
+				return Vec2D.add(val1, val2);
+			}
+		};
+	}
 
 }
