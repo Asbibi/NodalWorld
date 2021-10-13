@@ -34,11 +34,11 @@ public class Saver {
 			
 
 			// === Create and add the important text files at the begining of the list ===
-			File managerFile = new File(saveFilePath + "\\_manager.txt");
+			File managerFile = new File(saveFilePath + File.separator + "_manager.txt");
 			tempSaveFiles.add(managerFile);
-			File surfaceImageFile = new File(saveFilePath + "\\_surfacesImages.txt");
+			File surfaceImageFile = new File(saveFilePath + File.separator + "_surfacesImages.txt");
 			tempSaveFiles.add(surfaceImageFile);
-			File speciesImageFile = new File(saveFilePath + "\\_speciesImages.txt");
+			File speciesImageFile = new File(saveFilePath + File.separator + "_speciesImages.txt");
 			tempSaveFiles.add(speciesImageFile);
 	    	
 	    	
@@ -107,7 +107,7 @@ public class Saver {
 		
 		// Asks : do you want to save the image in the save file or is your image not linked to a real file (ie already loaded from a save file) ?
 		if (packImages || path == null) {
-			File currentImageFile = new File(saveFilePath + "\\_images_" + element.toString() + ".png");
+			File currentImageFile = new File(saveFilePath + File.separator + "_images_" + element.toString() + ".png");
 			ImageIO.write(bufferedImage, "png", currentImageFile);
 			imagesFiles.add(currentImageFile);
 			
