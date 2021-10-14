@@ -243,21 +243,23 @@ public class NodalEditorUI {
 
 		if(editor.isUsingRules()) {
 			GameManager game = editor.getGameManager();
-			int row = 0;
+			int row = -1;
 			for(Species sp : game.getSpeciesArray()) {
-				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
-				g2d.setColor(Color.lightGray);
-				g2d.fill(rect);
-				g2d.setColor(Color.gray);
-				g2d.draw(rect);
-				g2d.setColor(Color.black);
-				g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
+				if(row >= 0) {
+					Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
+					g2d.setColor(Color.lightGray);
+					g2d.fill(rect);
+					g2d.setColor(Color.gray);
+					g2d.draw(rect);
+					g2d.setColor(Color.black);
+					g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
 
-				if(game.getRule(editor.getRuleClass(), sp) != null) {
-					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
-					g2d.setColor(new Color(120,255,0));
-					g2d.setStroke(new BasicStroke(5));
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
+					if(game.getRule(editor.getRuleClass(), sp) != null) {
+						NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
+						g2d.setColor(new Color(120,255,0));
+						g2d.setStroke(new BasicStroke(5));
+						g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
+					}
 				}
 
 				row++;
