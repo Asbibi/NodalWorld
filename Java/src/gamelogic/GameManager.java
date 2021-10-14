@@ -37,6 +37,7 @@ public class GameManager implements Serializable {
 
 	private transient Species currentSpecies;
 	private transient Entity currentEntity;
+	private transient List<Entity> deadEntities;
 
 	private Network terrainNet, genNet, moveNet, deathNet;
 
@@ -63,6 +64,7 @@ public class GameManager implements Serializable {
 
 		currentSpecies = null;
 		currentEntity = null;
+		deadEntities = null;
 
 		terrainNet = new Network();
 		genNet = new Network();
@@ -427,6 +429,7 @@ public class GameManager implements Serializable {
 				}
 		}
 
+		deadEntities = new LinkedList<Entity>();
 		for(Species sp : species) {
 			if(sp.trigger(frame)) {
 				currentSpecies = sp;
@@ -444,6 +447,7 @@ public class GameManager implements Serializable {
 				}
 			}
 		}
+		removeDeadEntities();
 
 		triggerGameListeners();
 
@@ -493,6 +497,14 @@ public class GameManager implements Serializable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public void addDeadEntity(Entity entity) {
+		deadEntities.add(entity);
+	}
+
+	private void removeDeadEntities() {
+		for(Entity entity : deadEntities) entity.getSpecies().removeMember(entity);
 	}
 
 	/**

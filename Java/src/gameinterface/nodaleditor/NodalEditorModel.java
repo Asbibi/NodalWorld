@@ -286,7 +286,7 @@ public class NodalEditorModel implements Serializable {
 	public Class<? extends Rule> getRuleClass() { return ruleClass; }
 
 	public void disconnectSpecies(int row) {
-		Species sp = game.getSpecies(row);
+		Species sp = game.getSpecies(row+1);
 		if(ruleClass == GenerationRule.class) game.disconnectGenRuleFromSpecies(sp);
 		else if(ruleClass == MovementRule.class) game.disconnectMoveRuleFromSpecies(sp);
 		else if(ruleClass == DeathRule.class) game.disconnectDeathRuleFromSpecies(sp);
@@ -457,7 +457,7 @@ public class NodalEditorModel implements Serializable {
 
 	public int getCurrentSpeciesRow() { return curSpeciesRow; }
 
-	public Species getCurrentSpecies() { return game.getSpecies(curSpeciesRow); }
+	public Species getCurrentSpecies() { return game.getSpecies(curSpeciesRow+1); }
 
 	public void setCurrentTerrainSlotRow(int row) {
 		curTerrainSlotRow = row;

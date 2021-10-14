@@ -27,7 +27,7 @@ public class DeathRule extends Rule<KillNode> {
 	@Override
 	public void apply(GameManager game) {
 		if(terminalNode.kill()) {
-			game.getCurrentEntity().getSpecies().removeMember(game.getCurrentEntity());
+			game.addDeadEntity(game.getCurrentEntity());
 		}
 	}
 

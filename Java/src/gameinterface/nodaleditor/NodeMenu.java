@@ -225,6 +225,7 @@ public class NodeMenu extends JPopupMenu {
 		JMenu menuGame = new JMenu("Game");
 		menuGame.add(buildNodeItem(() -> new TimeNode()));
 		menuGame.add(buildNodeItem(() -> new DimNode()));
+		menuGame.add(buildNodeItem(() -> new OutsideNode()));
 		menuGame.add(buildNodeItem(() -> new SurfaceAtNode()));
 		menuGame.add(buildNodeItem(() -> new CurEntityNode()));
 		menuGame.add(buildNodeItem(() -> new CurSpeciesNode()));
