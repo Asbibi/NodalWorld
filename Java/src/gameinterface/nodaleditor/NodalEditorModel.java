@@ -87,13 +87,24 @@ public class NodalEditorModel implements Serializable {
 	}
 	public void copyNonTransientFields(NodalEditorModel otherModel) {
 		boxes = otherModel.boxes;
-		infoPanels = otherModel.infoPanels;
 		usingRules = otherModel.usingRules;
 		usingTerrains = otherModel.usingTerrains;
 		ruleClass = otherModel.ruleClass;
 		sideBoxWidth = otherModel.sideBoxWidth;
 		sideBoxHeight = otherModel.sideBoxHeight;
 		selected = otherModel.selected;
+
+		//infoPanels = otherModel.infoPanels;
+		for (Node node : otherModel.infoPanels.keySet()) {
+			NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
+			infoPanels.put(node, infoPanel);
+		}
+		System.out.println("info panel loaded with: " + game);
+		
+		/*
+		 NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
+		infoPanels.put(node, infoPanel);
+		 */
 	}
 
 

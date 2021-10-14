@@ -191,6 +191,9 @@ public class Saver {
         }
 		folder.delete();
 		
+		
+		Surface.synchIdCounter(manager.getSurfaceArray());
+		Species.synchIdCounter(manager.getSpeciesArray());
 		return manager;
 	}
 	

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.lang.Object;
+import java.util.List;
 
 /**
 * Each instance of this class represents a different kind of surface that can be stored on a tile.
@@ -34,6 +35,7 @@ public class Surface extends Element{
 		id = idCounter;
 		idCounter++;
 		color = Color.lightGray;
+		System.out.println(id);
 	}
 
 	/**
@@ -70,5 +72,17 @@ public class Surface extends Element{
 	*/ 
 	public static Surface getEmpty() {
 		return empty;
+	}
+	
+	/**
+	* This method synchronizes the idCounter on a bunch of surfaces, so that the id of a new surface will be coherent with the ids of the surfaces gave.
+	* This method can only make the idCounter increase, which will happen if the idCounter is lower or equal at the id of one of the surfaces gave. 
+	* @param surfaces the list of the surfaces to sync the idCounter on
+	*/ 
+	public static void synchIdCounter(List<Surface> surfaces) {
+		int lastId = 0;
+		for (Surface surf : surfaces)
+			lastId = Math.max(lastId, surf.id);
+		idCounter = Math.max(idCounter, lastId+1);	// +1 because we want the counter to be the id of the NEXT surface, and not the newer one
 	}
 }

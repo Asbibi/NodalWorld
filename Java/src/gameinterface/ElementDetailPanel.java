@@ -36,6 +36,11 @@ public class ElementDetailPanel extends JPanel {
 	}
 	
 	/**
+	* This method should be override so at each call, every property field that is purely display (not interactable) should updates itself to the current element value.
+	*/
+	public void updateVariableElementInfo(Element e) {}
+	
+	/**
 	* Add the "Apply" button to the panel.
 	* It's a separated method as it needs to be called at the END of the derivated classes constructor.
 	* That way it will be displayed at the end of the panel.

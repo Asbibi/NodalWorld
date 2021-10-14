@@ -1,6 +1,7 @@
 package gamelogic;
 
 import java.util.Collection;
+import java.util.List;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -134,5 +135,17 @@ public class Species extends Element{
 	*/ 
 	public static Species getEmpty() {
 		return empty;
+	}
+	
+	/**
+	* This method synchronizes the idCounter on a bunch of species, so that the id of a new species will be coherent with the ids of the species gave.
+	* This method can only make the idCounter increase, which will happen if the idCounter is lower or equal at the id of one of the species gave. 
+	* @param species the list of the species to sync the idCounter on
+	*/ 
+	public static void synchIdCounter(List<Species> species) {
+		int lastId = 0;
+		for (Species sp : species)
+			lastId = Math.max(lastId, sp.id);
+		idCounter = Math.max(idCounter, lastId+1);	// +1 because we want the counter to be the id of the NEXT species, and not the newer one
 	}
 }

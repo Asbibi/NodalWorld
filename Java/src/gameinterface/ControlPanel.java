@@ -77,12 +77,18 @@ public class ControlPanel extends JPanel {
 		add(splitPanel);
 		splitPanel.setDividerLocation(toolScrollPanel.getPreferredSize().width);
 	}
-	public  void connectGameManager(GameManager gameManager) {
+	public void connectGameManager(GameManager gameManager) {
 		nodeEditorPanel = NodalEditorBuilder.buildTabbedEditors(gameManager);
 		splitPanel.setRightComponent(nodeEditorPanel);
 		terrainToolBar.setTerrain(gameManager.getTerrain());
 		surfaceToolBar.setGameManager(gameManager);
 		speciesToolBar.setGameManager(gameManager);
+	}
+	
+	public void update() {
+		terrainToolBar.updateFromTerrain(false);
+		//surfaceToolBar.updateDetails(); 		// useless since surfaces don't have display only properties
+		speciesToolBar.updateDetails();
 	}
 	
 	

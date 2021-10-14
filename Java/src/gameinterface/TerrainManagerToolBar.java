@@ -46,7 +46,7 @@ public class TerrainManagerToolBar extends JToolBar {
 		periodField = new TextFieldPanel("Period");
 		periodField.addActionListener( e -> applyToTerrain() );
 		
-		updateFromTerrain();
+		updateFromTerrain(true);
 		
 		add(widthField);
 		add(heightField);
@@ -60,20 +60,21 @@ public class TerrainManagerToolBar extends JToolBar {
 	public void setTerrain(Terrain terrain) {
 		this.terrain = terrain;
 		visualizer.setTerrain(this.terrain);
-		updateFromTerrain();
+		updateFromTerrain(true);
 	}
 	
 	/**
 	* Update the visualisation and the fields value from the terrain reference held (set during instanciation)
 	*/ 
-	private void updateFromTerrain() {
+	public void updateFromTerrain(boolean complete) {
 		if (terrain == null)
 			return;
 		
 		visualizer.repaint();
 		widthField.setLabelString(Integer.toString(terrain.getWidth()));
 		heightField.setLabelString(Integer.toString(terrain.getHeight()));
-		periodField.setFieldString(Integer.toString(terrain.getTriggerTime()));
+		if (complete)
+			periodField.setFieldString(Integer.toString(terrain.getTriggerTime()));
 	}
 	
 	/**

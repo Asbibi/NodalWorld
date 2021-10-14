@@ -29,6 +29,12 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 		addApplyButton();
 	}
 	
+	@Override
+	public void updateVariableElementInfo(Element e) {
+		Species species = (Species)e;
+		if (species != null)
+			memberCount.setLabelString(Integer.toString(species.getMembers().size()));
+	}
 	
 	@Override
 	public void setElement(Element e) {

@@ -161,7 +161,6 @@ public class GameFrame extends JFrame {
 		newButton.setPreferredSize(buttonDimension);
 		newButton.addActionListener( e -> startNew_LoadedGame() );
 		onLoadListener = new ArrayList<ActionListener>();
-		addNew_LoadActionListener(e -> System.out.println("Loaded"));
 		addNew_LoadActionListener(e -> connectGameManager(((LoadEvent)e).getLoadedManager()));
 		addNew_LoadActionListener(e -> updateWorld(0));
 		
@@ -216,6 +215,7 @@ public class GameFrame extends JFrame {
 	*/
 	public void updateWorld(int frame) {
 		worldPanel.updateMap(frame);
+		controlPanel.update();
 		frameCount.setText("Time: " + frame);
 	}
 	
@@ -257,7 +257,14 @@ public class GameFrame extends JFrame {
 	private void saveGameManager(GameManager gameManager) {
         int res = savefileChooser.showSaveDialog(this);
         if(res == JFileChooser.APPROVE_OPTION){
-   			Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);	//"/savetest"
+        	String[] options = {"Pack images (Recommended)", "Use absolute paths"};        	
+        	int resPack = JOptionPane.showOptionDialog(this,"Do you want to pack the images in the save file ?\n\nPacking the images in the save file makes it larger in memory.\nBut it will also make it independent of the image files used.","Pack images ?", 0,JOptionPane.INFORMATION_MESSAGE,null,options,null);
+                    //JOptionPane.YES_NO_OPTION,
+                    //JOptionPane.QUESTION_MESSAGE);
+             if(resPack == JOptionPane.YES_OPTION)
+            	 Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);
+        	 else if (resPack == JOptionPane.NO_OPTION)
+            	 Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, false);
         }
 	}
 	/**
