@@ -226,6 +226,8 @@ public class NodalEditorUI {
 
 	// ========== Painting ==========
 
+	private static Color slotDisconnectedColor = new Color(192,192,222);
+	private static Color slotConnectedColor = new Color(192,222,192);
 	/**
 	* @param g2d
 	* @param editor
@@ -246,14 +248,15 @@ public class NodalEditorUI {
 			int row = 0;
 			for(Species sp : game.getSpeciesArray()) {
 				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
-				g2d.setColor(Color.lightGray);
+				boolean isConnected = game.getRule(editor.getRuleClass(), sp) != null;
+				g2d.setColor(isConnected ? slotConnectedColor : slotDisconnectedColor);
 				g2d.fill(rect);
 				g2d.setColor(Color.gray);
 				g2d.draw(rect);
 				g2d.setColor(Color.black);
-				g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
+				g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+30);
 
-				if(game.getRule(editor.getRuleClass(), sp) != null) {
+				if(isConnected) {
 					NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
 					g2d.setColor(new Color(120,255,0));
 					g2d.setStroke(new BasicStroke(5));
@@ -275,14 +278,15 @@ public class NodalEditorUI {
 			int row = 0;
 			for(TerrainSlot slot : terrain.getSlots()) {
 				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
-				g2d.setColor(Color.lightGray);
+				boolean isConnected = slot.isOccupied();
+				g2d.setColor(isConnected ? slotConnectedColor : slotDisconnectedColor);
 				g2d.fill(rect);
 				g2d.setColor(Color.gray);
 				g2d.draw(rect);
 				g2d.setColor(Color.black);
-				g2d.drawString("slot "+row, editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
+				g2d.drawString("slot "+row, editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+30);
 
-				if(slot.isOccupied()) {
+				if(isConnected) {
 					NodeBox box = editor.getBox(slot.getTerrainNode());
 					g2d.setColor(Color.green);
 					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*row+10, box.getX(), box.getY()));

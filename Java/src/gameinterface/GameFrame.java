@@ -100,7 +100,7 @@ public class GameFrame extends JFrame {
         	@Override public void setSize(Dimension d) { super.setSize(d); worldPanel.computeMinimalTileSize(); }};
         worldParentPanel.setLayout(new FlowLayout());
         worldParentPanel.setBorder( BorderFactory.createEmptyBorder(-5, -5, -5, -5) );
-        worldParentPanel.setBackground(Color.darkGray);
+        worldParentPanel.setBackground(Color.gray);
         worldParentPanel.add(worldPanel);
 		JSplitPane splitPanel = new JSplitPane(SwingConstants.VERTICAL, controlPanel, new JScrollPane(worldParentPanel));
 		add(splitPanel);
