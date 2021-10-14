@@ -8,7 +8,8 @@ import java.lang.Object;
 /**
 * Each instance of this class represents a different kind of surface that can be stored on a tile.
 * 
-* @see TerrainLayer, Element
+* @see TerrainLayer
+* @see Element
 */
 public class Surface extends Element{
 
@@ -23,6 +24,7 @@ public class Surface extends Element{
 	public Surface(String name) {
 		this(name, null);
 	}
+
 	/**
 	* @param name
 	* @param image path
@@ -44,18 +46,22 @@ public class Surface extends Element{
 		return (this.id == surf.id);
 	}
 	
+	/**
+	* @return the surface color
+	*/ 
 	public Color getColor() {
 		return color;
 	}
+
+	/**
+	* @param color
+	*/ 
 	public void setColor(Color color) {
 		this.color = color;
 	}
 	
 	
-	
-	// =========================		Statis fields		===================================
-	
-	
+	// ========== EMPTY SURFACE ==========
 	
 	private static Surface empty = new Surface("empty");
 

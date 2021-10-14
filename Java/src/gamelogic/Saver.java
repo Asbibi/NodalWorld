@@ -18,10 +18,21 @@ import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 
+/**
+* The goal of the Saver class is to save and load a project's game manager.
+* 
+* @see GameManager
+*/ 
 public class Saver {
+
 
 	// ===========	Save Methods	===========
 	
+	/**
+	* @param saveFilePath
+	* @param manager
+	* @param packImages
+	*/ 
 	public static void saveGame(String saveFilePath, GameManager manager, boolean packImages) {
 		try {
 			String ext = saveFilePath.substring(saveFilePath.length() - 4);
@@ -145,15 +156,13 @@ public class Saver {
 	    }
    }
 	
-	
-	
-	
-	
-	
 
 	// ===========	Load Methods	===========
 	
-	
+	/**
+	* @param saveFilePath
+	* @return the loaded game manager
+	*/ 
 	public static GameManager loadGame(String saveFilePath) {
 		File saveFile = new File(saveFilePath);
 		if (!saveFile.exists()) {

@@ -16,13 +16,19 @@ import javax.swing.event.ChangeEvent;
 
 /**
 * The game manager is responsible for the initialization and evolution of the game state at each frame using the rules defined by the user.
+* It also centralizes the game data storage, like the list of surfaces, the list of species, the terrain, the species-rule connections and the networks.
+* Its changes can be monitered by other objects using change listeners.
 * 
 * @see Rule
 * @see Terrain
+* @see Network
 * @see Species
 * @see Entity
 */
 public class GameManager implements Serializable {
+
+
+	// ========== MEMBER VARIABLES ==========
 
 	private Integer frame;
 
@@ -43,9 +49,14 @@ public class GameManager implements Serializable {
 
 	private transient List<ChangeListener> gameListeners, surfaceListeners, speciesListeners;
 
+
+	// ========== INITIALIZATION ==========
+
 	/**
-	* @param width
-	* @param height
+	* Class constructor, creates an empty game with no species, rule or terrain.
+	* 
+	* @param width width of the world grid
+	* @param height height of the world grid
 	*/ 
 	public GameManager(int width, int height) {
 		frame = 0;
@@ -76,6 +87,9 @@ public class GameManager implements Serializable {
 		speciesListeners = new LinkedList<ChangeListener>();
 	}
 	
+	/**
+	* Utility method for initializing transient fields when loading a saved game manager from memory.
+	*/ 
 	public void initTransientFields() {
 		terrain.initTransientFields();
 		terrainNet.initTransientFields();
@@ -89,10 +103,17 @@ public class GameManager implements Serializable {
 		if (speciesListeners == null)
 			speciesListeners = new LinkedList<ChangeListener>();		
 	}
+
+	/**
+	* Retart time and clear all members of every species.
+	*/ 
 	public void reinitWorld() {
 		frame = 0;
 		exterminateAllSpeciesMembers();
 	}
+
+
+	// ========== DIMENSIONS AND TIME ==========
 
 	/**
 	* @return the grid's width
@@ -109,12 +130,14 @@ public class GameManager implements Serializable {
 	}
 
 	/**
-	* @return the current frame
+	* @return the current frame (used as the time variable in the game)
 	*/
 	public Integer getFrame() { return frame; }
 
+
+	// ========== TERRAIN AND SURFACES ==========
+
 	/**
-	 * Mainly used for display on the interface
 	* @return the current terrain
 	*/
 	public Terrain getTerrain() { return terrain; }
@@ -152,7 +175,9 @@ public class GameManager implements Serializable {
 	}
 	
 	/**
-	* @param sp
+	* Add a new surface to the surface list.
+	* 
+	* @param surf the surface to add
 	*/
 	public void addSurface(Surface surf) {
 		surfaces.add(surf);
@@ -160,7 +185,7 @@ public class GameManager implements Serializable {
 	}
 	
 	/**
-	* Swap two surfaces positions in the surfaces list (no check on indexes)
+	* Swap two surfaces positions in the surfaces list (no check on indexes).
 	*/
 	public void swapSurfaces(int firstIndex, int secondIndex) {
 		Surface surfTemp = surfaces.get(firstIndex);
@@ -170,6 +195,8 @@ public class GameManager implements Serializable {
 	}
 	
 	/**
+	* Remove a surface from the surface list.
+	* 
 	* @param index of the species in the array
 	*/
 	public void removeSurface(int index) {
@@ -185,8 +212,11 @@ public class GameManager implements Serializable {
 		triggerSurfaceListeners();
 	}
 
+
+	// ========== SPECIES ==========
+
 	/**
-	* @return reference to the surface list
+	* @return reference to the species list
 	*/
 	public List<Species> getSpeciesArray() {
 		return species;
@@ -215,7 +245,10 @@ public class GameManager implements Serializable {
 	}
 
 	/**
-	* @param sp
+	* Add a new species to the species list.
+	* The order of the species list is the order used when evaluating the rules.
+	* 
+	* @param sp the species to add
 	*/
 	public void addSpecies(Species sp) {
 		species.add(sp);
@@ -233,6 +266,8 @@ public class GameManager implements Serializable {
 	}
 	
 	/**
+	* Remove the species at the given index. 
+	* 
 	* @param index of the species in the array
 	*/
 	public void removeSpecies(int index) {
@@ -257,22 +292,28 @@ public class GameManager implements Serializable {
 			exterminateSpeciesMembers(sp);
 		triggerSpeciesListeners();
 	}
+
 	/**
 	* Delete all the members of a specific species
+	* 
+	* @param sp the species to clear
 	*/
 	public void exterminateSpeciesMembers(Species sp) {
 		sp.removeAllMembers();
 	}
 
 	/**
-	* @return the species being processed in the game loop
+	* @return the species being currently processed in the game loop
 	*/
 	public Species getCurrentSpecies() { return currentSpecies; }
 
 	/**
-	* @return the entity being processed in the game loop
+	* @return the entity being currently processed in the game loop
 	*/
 	public Entity getCurrentEntity() { return currentEntity; }
+
+
+	// ========== NETWORKS ==========
 
 	/**
 	* @return the terrain network
@@ -295,16 +336,19 @@ public class GameManager implements Serializable {
 	public Network getDeathNet() { return deathNet; }
 
 	/**
-	* @return the death netork
+	* @param copiedManager
 	*/ 
 	public void copyTerrain_TerrainNet(GameManager copiedManager) { 
 		terrain = copiedManager.getTerrain();
 		terrainNet = copiedManager.getTerrainNet();
 	}
-	
+
+
+	// ========== RULES AND THEIR CONNECTIONS TO SPECIES ==========
 	
 	/**
-	* Ensures that each species has at most one generation rule.
+	* Connect a new generation rule to a species 
+	* and ensure that each species has at most one generation rule.
 	* 
 	* @param rule
 	* @param sp
@@ -318,7 +362,8 @@ public class GameManager implements Serializable {
 	}
 
 	/**
-	* Ensures that each species has at most one movement rule.
+	* Connect a new movement rule to a species 
+	* and ensures that each species has at most one movement rule.
 	* 
 	* @param rule
 	* @param sp
@@ -332,7 +377,8 @@ public class GameManager implements Serializable {
 	}
 
 	/**
-	* Ensures that each species has at most one death rule.
+	* Connect a new death rule to a species 
+	* and ensures that each species has at most one death rule.
 	* 
 	* @param rule
 	* @param sp
@@ -361,24 +407,44 @@ public class GameManager implements Serializable {
 		}
 	}
 
+	/**
+	* Disconnect a generation rule from all the species it is applying to.
+	* 
+	* @param rule
+	*/ 
 	public void disconnectRule(GenerationRule rule) {
 		for(Species sp : species) {
 			if(speciesToGenRule.containsKey(sp) && speciesToGenRule.get(sp) == rule) speciesToGenRule.remove(sp);
 		}
 	}
 
+	/**
+	* Disconnect a movement rule from all the species it is applying to.
+	* 
+	* @param rule
+	*/ 
 	public void disconnectRule(MovementRule rule) {
 		for(Species sp : species) {
 			if(speciesToMoveRule.containsKey(sp) && speciesToMoveRule.get(sp) == rule) speciesToMoveRule.remove(sp);
 		}
 	}
 
+	/**
+	* Disconnect a death rule from all the species it is applying to.
+	* 
+	* @param rule
+	*/ 
 	public void disconnectRule(DeathRule rule) {
 		for(Species sp : species) {
 			if(speciesToDeathRule.containsKey(sp) && speciesToDeathRule.get(sp) == rule) speciesToDeathRule.remove(sp);
 		}
 	}
 
+	/**
+	* Disconnect a given rule from all the species it is applying to.
+	* 
+	* @param rule
+	*/ 
 	public void disconnectRule(Rule rule) {
 		if(rule instanceof GenerationRule) {
 			disconnectRule((GenerationRule) rule);
@@ -389,24 +455,51 @@ public class GameManager implements Serializable {
 		}
 	}
 
+	/**
+	* Disconnect all generation rules linked to the specified species.
+	* 
+	* @param sp
+	*/ 
 	public void disconnectGenRuleFromSpecies(Species sp) {
 		speciesToGenRule.remove(sp);
 	}
 
+	/**
+	* Disconnect all movement rules linked to the specified species.
+	* 
+	* @param sp
+	*/ 
 	public void disconnectMoveRuleFromSpecies(Species sp) {
 		speciesToMoveRule.remove(sp);
 	}
 
+	/**
+	* Disconnect all death rules linked to the specified species.
+	* 
+	* @param sp
+	*/ 
 	public void disconnectDeathRuleFromSpecies(Species sp) {
 		speciesToDeathRule.remove(sp);
 	}
 
+	/**
+	* Disconnect all generation, movement & death rules linked to the specified species.
+	* 
+	* @param sp
+	*/ 
 	public void disconnectAllRulesFromSpecies(Species sp) {
 		disconnectGenRuleFromSpecies(sp);
 		disconnectMoveRuleFromSpecies(sp);
 		disconnectDeathRuleFromSpecies(sp);
 	}
 
+	/**
+	* Get the rule of the given subclass connected to the given species. 
+	* 
+	* @param ruleClass
+	* @param sp
+	* @return a rule of type corresponding to ruleClass connected to species sp (if it exists)
+	*/ 
 	public <R extends Rule> R getRule(Class<R> ruleClass, Species sp) {
 		if(ruleClass.equals(GenerationRule.class)) {
 			return ruleClass.cast(speciesToGenRule.get(sp));
@@ -417,6 +510,9 @@ public class GameManager implements Serializable {
 		}
 		return null;
 	}
+
+
+	// ========== GAME EVOLUTION : WORLD SIMULATION BY EVALUATING NETWORKS AND APPLYING RULES ==========
 
 	/**
 	* Applies the rules and executes the corresponding actions in the following order : generation, movement, death.
@@ -499,6 +595,11 @@ public class GameManager implements Serializable {
 		}
 	}
 
+	/**
+	* Mark an entity as dead and to be removed from its species members list (entitites cannot be removed directly to avoid concurrency errors).
+	* 
+	* @param entity
+	*/ 
 	public void addDeadEntity(Entity entity) {
 		deadEntities.add(entity);
 	}
@@ -507,9 +608,14 @@ public class GameManager implements Serializable {
 		for(Entity entity : deadEntities) entity.getSpecies().removeMember(entity);
 	}
 
+
+	// ========== PRINTING ==========
+
 	/**
 	* Gives a written description of the current state of the game.
 	* Can be useful for basic testing.
+	* 
+	* @return a string descrption of the current game state
 	*/ 
 	@Override
 	public String toString() {
@@ -542,6 +648,9 @@ public class GameManager implements Serializable {
 		return sb.toString();
 	}
 
+	/**
+	* @return a string description of the surface species lists
+	*/ 
 	public String arraysToString() {
 		StringBuilder sb = new StringBuilder();
 
@@ -563,7 +672,7 @@ public class GameManager implements Serializable {
 	}
 
 
-	// ========== Change Listeners ==========
+	// ========== CHANGE LISTENERS ==========
 
 	/**
 	* The listener will receive an event when the game state gets updated 
@@ -572,6 +681,9 @@ public class GameManager implements Serializable {
 	*/ 
 	public void addGameListener(ChangeListener listener) { gameListeners.add(listener); }
 
+	/**
+	* Notify listeners when game state changes
+	*/ 
 	private void triggerGameListeners() {
 		for(ChangeListener listener : gameListeners) 
 			listener.stateChanged(new ChangeEvent(this));
@@ -584,6 +696,9 @@ public class GameManager implements Serializable {
 	*/ 
 	public void addSurfaceListener(ChangeListener listener) { surfaceListeners.add(listener); }
 
+	/**
+	* Notify listeners when something related to surfaces happens 
+	*/ 
 	private void triggerSurfaceListeners() {
 		for(ChangeListener listener : surfaceListeners) 
 			listener.stateChanged(new ChangeEvent(this));
@@ -596,6 +711,9 @@ public class GameManager implements Serializable {
 	*/ 
 	public void addSpeciesListener(ChangeListener listener) { speciesListeners.add(listener); }
 
+	/**
+	* Notify listeners when something related to species happens
+	*/ 
 	private void triggerSpeciesListeners() {
 		for(ChangeListener listener : speciesListeners) 
 			listener.stateChanged(new ChangeEvent(this));

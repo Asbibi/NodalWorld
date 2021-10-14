@@ -14,6 +14,6 @@ public interface TerrainModel extends Serializable {
 	* @param pos 
 	* @return true if there is a surface element at the given position, otherwise false
 	*/ 
-	public abstract boolean hasSurfaceAt(Vec2D pos);
+	public boolean hasSurfaceAt(Vec2D pos);
 
 }

@@ -22,6 +22,8 @@ public class TerrainSlot implements Serializable {
 	}
 
 	/**
+	* Connect the slot to the given terrain node 
+	* 
 	* @param terrainNode
 	*/
 	public void connect(TerrainNode terrainNode) {
@@ -30,7 +32,7 @@ public class TerrainSlot implements Serializable {
 	}
 
 	/**
-	*
+	* Disconnect the slot from any potential terrain node
 	*/
 	public void disconnect() {
 		occupied = false;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
 * An instance of the Vec2D class is a 2D vector with integer coordinates.
-* Some basic operations for these vectors are implemented, such as addition, substraction and equality testing. 
+* Some basic operations for these vectors are implemented, such as addition, substraction, equality testing, dot product, etc.
 */
 public class Vec2D implements Serializable {
 
@@ -34,7 +34,7 @@ public class Vec2D implements Serializable {
 	}
 
 	/**
-	* @return the 2nd dimension of the vector
+	* @return the norm of the vector
 	*/ 
 	public double getNorm() {
 		return Math.sqrt(x*x + y*y);
@@ -80,7 +80,7 @@ public class Vec2D implements Serializable {
 	/**
 	* @param a
 	* @param u
-	* @return the a*u vector
+	* @return the a*u vector (the components are truncated so that they remain integers)
 	*/ 
 	public static Vec2D multiply(double a, Vec2D u) {
 		return new Vec2D((int)(u.getX() * a), (int)(u.getY() * a));
@@ -88,7 +88,7 @@ public class Vec2D implements Serializable {
 	/**
 	* @param a
 	* @param u
-	* @return the u/a vector
+	* @return the u/a vector (the components are truncated so that they remain integers)
 	*/ 
 	public static Vec2D divide(double a, Vec2D u) {
 		if (a == 0)
@@ -108,7 +108,7 @@ public class Vec2D implements Serializable {
 	/**
 	* @param u
 	* @param v
-	* @return the scalar product of u and v
+	* @return the vectorial product of u and v
 	*/ 
 	public static int vectorialProduct(Vec2D u, Vec2D v) {
 		return u.getX()*v.getY() - u.getY()*v.getX();
@@ -117,7 +117,7 @@ public class Vec2D implements Serializable {
 	/**
 	* @param u
 	* @param v
-	* @return the scalar product of u and v
+	* @return the angle between u and v
 	*/ 
 	public static double angleBetween(Vec2D u, Vec2D v) {
 		double normProduct = u.getNorm() * v.getNorm();
@@ -131,6 +131,8 @@ public class Vec2D implements Serializable {
 
 	/**
 	* Checks the component-wise equality of the two vectors
+	* 
+	* @return true if both components are equal, otherwise false
 	*/ 
 	@Override
 	public boolean equals(Object o) {

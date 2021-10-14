@@ -47,6 +47,9 @@ public abstract class Rule<T extends TerminalNode> implements Serializable {
 	}
 
 	/**
+	* Once the network corresponding to the terminal node has been evaluated, retrieve data from that node and apply actions accordingly.
+	* These actions will depend on the specific rule subclass.
+	* 
 	* @param game
 	*/ 
 	public abstract void apply(GameManager game);

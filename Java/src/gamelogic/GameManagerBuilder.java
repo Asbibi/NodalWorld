@@ -5,13 +5,13 @@ import java.awt.Color;
 import gameinterface.NewWorldTemplate;
 
 /**
-* Class with only static methods meant to build new game managers when the user wants to start a new project.
+* Class with only static methods meant to build new game managers when the user wants to start a new project or to load previously saved projects.
 * 
 * @see GameManager
 */ 
 public class GameManagerBuilder {
 
-	// ========== PUBLIC ==========
+	// ========== BUILDER METHODS ==========
 
 	/**
 	* @param template
@@ -139,7 +139,7 @@ public class GameManagerBuilder {
 	}
 
 
-	// ========== PRIVATE ==========
+	// ========== UTILITY METHODS ==========
 
 	private static Surface ground, water, grassD, grassB, sand, stoneD, stoneB, magma, lava;
 	private static Species human, chicken, boar, birch, oak;

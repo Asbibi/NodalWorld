@@ -12,9 +12,13 @@ import java.lang.Object;
 * At each frame it can generate new entities.
 * 
 * @see Entity
-* @see GenerationRule, Element
+* @see GenerationRule
+* @see Element
 */ 
 public class Species extends Element{
+
+
+	// ========== MEMBER VARIABLES ==========
 
 	private static int idCounter = 0;
 
@@ -22,6 +26,8 @@ public class Species extends Element{
 	private Collection<Entity> members;
 	private Integer triggerTime;
 
+
+	// ========== INITIALIZATION ==========
 	
 	/**
 	* @param name
@@ -42,6 +48,9 @@ public class Species extends Element{
 		triggerTime = 1;
 	}
 
+	/**
+	* Check if two species are the same (using a unique id generated for each species)
+	*/ 
 	@Override
 	public boolean equals(Object o) {
 		if(o == null) return false;
@@ -51,11 +60,16 @@ public class Species extends Element{
 		return id == sp.id;
 	}
 	
+	/**
+	* @return the unique species id
+	*/ 
 	public int getId() {
 		return id;
 	}
 
 	/**
+	* Create a new member of this species at a given position ans birth time
+	* 
 	* @param pos
 	* @param birthTime
 	*/ 
@@ -64,6 +78,8 @@ public class Species extends Element{
 	}
 
 	/**
+	* Remove a member from this species
+	* 
 	* @param member
 	*/ 
 	public void removeMember(Entity member) {
@@ -71,7 +87,7 @@ public class Species extends Element{
 	}
 	
 	/**
-	* @return all the members of the species
+	* Clear the members list
 	*/ 
 	public void removeAllMembers() {
 		members.clear();
@@ -107,14 +123,14 @@ public class Species extends Element{
 	}
 
 	
-	// =========================		Static fields		===================================
+	// ========== EMPTY SPECIES ==========
 	
 	
 	
 	private static Species empty = new Species("empty");
 
 	/**
-	* @return an "empty" surface used as a default values in terrains
+	* @return an "empty" species used as a default values when one is needed
 	*/ 
 	public static Species getEmpty() {
 		return empty;

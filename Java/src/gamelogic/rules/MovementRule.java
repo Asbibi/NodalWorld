@@ -23,6 +23,8 @@ public class MovementRule extends Rule<MoveNode> {
 	}
 
 	/**
+	* Read the terminal node to decide where to move the currently processed entity.
+	* 
 	* @param game
 	*/ 
 	@Override

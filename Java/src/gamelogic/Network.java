@@ -30,12 +30,18 @@ import javax.swing.event.ChangeEvent;
 */ 
 public class Network implements Serializable {
 
+
+	// ========== MEMBER VARIABLES =========
+
 	private List<Node> nodes;
 	private Map<Node, Collection<Edge>> outEdges, inEdges;
 	
 	private NodalEditorModel attachedModel = null;
 
 	private transient List<ChangeListener> alertListeners;
+
+
+	// ========== INITIALIZATION ==========
 
 	/**
 	* Creates an empty network.
@@ -57,6 +63,9 @@ public class Network implements Serializable {
 		attachedModel = newModel;
 	}
 
+
+	// ========== NODES ==========
+
 	/**
 	* @return all the network's nodes
 	*/ 
@@ -71,6 +80,9 @@ public class Network implements Serializable {
 		inEdges.put(node, new ArrayList<Edge>());
 	}
 
+	/**
+	* @param node
+	*/ 
 	public void removeNode(Node node) {
 		for(Input input : node.getInputs()) {
 			if(input.hasSource()) {
@@ -102,6 +114,9 @@ public class Network implements Serializable {
 
 		nodes.remove(node);
 	}
+
+
+	// ========== CONNECTIONS ==========
 
 	/**
 	* @param source
@@ -154,7 +169,10 @@ public class Network implements Serializable {
 	}
 
 	/**
+	* Find all the nodes in the network the sink node depends on and evaluate them (using the network's topological order). 
+	* 
 	* @param game
+	* @param sink
 	*/ 
 	public void evaluate(GameManager game, Node sink) throws NetworkIOException {
 		try {
@@ -170,17 +188,9 @@ public class Network implements Serializable {
 			throw e;
 		}
 	}
-	
-	public void replaceSurfaceByEmpty(Surface replacedSurface) {
-		for (Node node : nodes) {
-			node.replaceSurfaceInputByEmpty(replacedSurface);
-		}
-	}
-	public void replaceSpeciesByEmpty(Species replacedSpecies) {
-		for (Node node : nodes) {
-			node.replaceSpeciesInputByEmpty(replacedSpecies);
-		}
-	}
+
+
+	// ========== LISTENERS FOR NETWORK IO EXCEPTION ==========
 
 	/**
 	* @param listener
@@ -188,7 +198,7 @@ public class Network implements Serializable {
 	public void addAlertListener(ChangeListener listener) { alertListeners.add(listener); }
 
 	/**
-	*
+	* Notify listeners if a NetworkIOException occured
 	*/ 
 	public void triggerAlertListeners() {
 		for(ChangeListener listener : alertListeners) 
@@ -196,8 +206,29 @@ public class Network implements Serializable {
 	}
 
 
-	// ========== PRIVATE ==========
+	// ========== UTILITY METHODS ==========
+	
+	/**
+	* @param replacedSurface
+	*/ 
+	public void replaceSurfaceByEmpty(Surface replacedSurface) {
+		for (Node node : nodes) {
+			node.replaceSurfaceInputByEmpty(replacedSurface);
+		}
+	}
 
+	/**
+	* @param replacedSpecies
+	*/ 
+	public void replaceSpeciesByEmpty(Species replacedSpecies) {
+		for (Node node : nodes) {
+			node.replaceSpeciesInputByEmpty(replacedSpecies);
+		}
+	}
+
+	// Topolical sort
+	// used to ensure that there are no cycles
+	// and to maintain a global ordering on the nodes, used for network evaluation
 	private boolean sortNodes() {
 		Map<Node, Integer> inDegree = new HashMap<Node, Integer>();
 		for(Node node : nodes) {
@@ -248,6 +279,8 @@ public class Network implements Serializable {
 		return true;
 	}
 
+	// Backward breadth-first search
+	// used to find the nodes a given sink node depends on
 	private Set<Node> findDependencies(Node sink) {
 		Set<Node> dependencies = new HashSet<Node>();
 

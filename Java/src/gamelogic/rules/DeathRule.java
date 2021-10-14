@@ -22,6 +22,8 @@ public class DeathRule extends Rule<KillNode> {
 	}
 
 	/**
+	* Read the terminal node to decide if the currently processed entity should be killed.
+	* 
 	* @param game
 	*/ 
 	@Override

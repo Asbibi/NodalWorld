@@ -55,6 +55,11 @@ public class Entity implements Serializable {
 		return birthTime;
 	}
 	
+	/**
+	* @param areaStartPosition
+	* @param areaDimensions
+	* @return true if the entity is in the rectangle defined by the area start position and dimenions, otherwise false
+	*/ 
 	public boolean isInArea(Vec2D areaStartPosition, Vec2D areaDimensions) {
 		int replacedX = pos.getX() - areaStartPosition.getX();
 		int replacedY = pos.getY() - areaStartPosition.getY();

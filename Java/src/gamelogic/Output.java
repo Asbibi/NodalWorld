@@ -11,6 +11,7 @@ import java.lang.Class;
 /**
 * This class provides the abstract model for the output(s) of the nodes in the nodal system.
 * An output is used to store some data once it has been calculated by a node, and then pass it on.
+* It is parameterized at construction time by the type of data it contains using class objects.
 * 
 * @see Input
 * @see Node
@@ -62,8 +63,12 @@ public class Output implements Serializable {
 		return dataClass;
 	}
 
+
+	// ========== MANIPULATE DATA ==========
+
 	/**
 	* @param data
+	* @throws NetworkIOException if the data is null
 	*/ 
 	public void setData(Object data) throws NetworkIOException {
 		if(data == null) {
@@ -76,7 +81,8 @@ public class Output implements Serializable {
 
 	/**
 	* @param requestClass a class object representing the type expected by the object calling this method
-	* @return the data held by the output, null if the request type doesn't match the data type
+	* @return the data held by the output
+	* @throws NetworkIOException if the data is null or if the request class doesn't match the output data class
 	*/ 
 	public <T> T getData(Class<T> requestClass) throws NetworkIOException {
 		if(data == null) {
@@ -88,22 +94,39 @@ public class Output implements Serializable {
 		throw new NetworkIOException("Request class do not match data class of output " + name);
 	}
 
+	// ========== TARGET INPUTS THE OUTPUT POINTS TO ==========
+
+	/**
+	* @param target
+	*/ 
 	public void addTarget(Input target) {
 		targets.add(target);
 	}
 
+	/**
+	* @param target
+	*/ 
 	public void removeTarget(Input target) {
 		targets.remove(target);
 	}
 
+	/**
+	* Remove all targets
+	*/ 
 	public void clearTargets() {
 		targets.clear();
 	}
 
+	/**
+	* @return true if the output has at least on target, otherwise false
+	*/ 
 	public boolean hasTarget() {
 		return !targets.isEmpty();
 	}
 
+	/**
+	* @return the set of all targets
+	*/ 
 	public Set<Input> getTargets() {
 		return targets;
 	}

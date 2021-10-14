@@ -1,8 +1,8 @@
 package gamelogic;
 
 /**
-* Abstract model for specific nodes used in the terrain network to define a specific terrain layer.
-* It is parameterized by a terrain model.
+* Abstract model for nodes used in the terrain network to define a specific terrain layer.
+* It is parameterized by a terrain model and a surface.
 *  
 * @see TerrainSlot
 * @see TerrainModel

@@ -6,6 +6,7 @@ import java.lang.Class;
 /**
 * This class provides the abstract model for the input(s) of the nodes in the nodal system.
 * An input is used to retrieve some data from an output, so it can be used for further calculations.
+* It is parameterized at construction time by the type of data it contains using class objects.
 * 
 * @see Output
 * @see Node
@@ -84,6 +85,9 @@ public class Input implements Serializable {
 	*/ 
 	public Class<?> getDataClass() { return dataClass; }
 
+
+	// ========== SOURCE OUTPUT ==========
+
 	/**
 	* @param source
 	*/ 
@@ -99,16 +103,33 @@ public class Input implements Serializable {
 	*/ 
 	public boolean hasSource() { return (source != null); }
 
+	/**
+	* @return the output used a source for the data
+	*/ 
 	public Output getSource() { return source; }
 
+
+	// ========== MANIPULATE DATA ==========
+
+	/**
+	* @return true if the input can be set manually, otherwise false
+	*/ 
 	public boolean isManual() { return manual; }
 
+	/**
+	* @param val the value to set manually in the input
+	*/ 
 	public void setManualValue(Object val) {
 		if(dataClass.isInstance(val) && manual) {
 			value = val;
 		}
 	}
 
+	/**
+	* @param requestClass
+	* @return the value that was set manually
+	* @throws NetworkIOException if the value is null or if the request class differs from the input data class
+	*/ 
 	public <T> T getManualValue(Class<T> requestClass) throws NetworkIOException {
 		if(value == null) {
 			throw new NetworkIOException("No manual value defined on input " + name);
@@ -122,6 +143,7 @@ public class Input implements Serializable {
 	/**
 	* @param requestClass a class object representing the type expected by the object calling this method
 	* @return the data retrieved by the input, null if the request type doesn't match the data type or if the input isn't connected to an output
+	* @throws NetworkIOException if the request class differs from the input data class or if the data and the manual value are null
 	*/ 
 	public <T> T getData(Class<T> requestClass) throws NetworkIOException {
 		if(source==null) {

@@ -17,11 +17,17 @@ import javax.swing.event.ChangeEvent;
 */ 
 public class Terrain implements Serializable {
 
+
+	// ========== MEMBERS VARIABLES ==========
+
 	private int width, height;
 	private int triggerTime;
 	private List<TerrainSlot> slots;
 
 	private transient List<ChangeListener> listeners;
+
+
+	// ========== INITIALIZATION ==========
 
 	/**
 	* @param width
@@ -36,10 +42,15 @@ public class Terrain implements Serializable {
 		listeners = new LinkedList<ChangeListener>();
 	}
 	
+	/**
+	* Utility method used when loading a terrain from a saved project.
+	*/ 
 	public void initTransientFields() {
 		if (listeners == null)
 			listeners = new LinkedList<ChangeListener>();
 	}
+
+	// ========== BASIC GETTERS AND SETTERS ==========
 
 	/**
 	* @return the terrain's width
@@ -77,9 +88,12 @@ public class Terrain implements Serializable {
 		return (frame%triggerTime == 0);
 	}
 
+
+	// ========== METHOD USED FOR FINAL TERRAIN RENDERING ==========
+
 	/**
 	* @param pos
-	* @return the surface element in the tile at the given position
+	* @return the surface element in the tile at the given position, the empty surface if nothing is found or if the position is outside the terrain
 	*/ 
 	public Surface getSurfaceAt(Vec2D pos) {
 		if(slots.isEmpty()) return Surface.getEmpty();
@@ -93,15 +107,20 @@ public class Terrain implements Serializable {
 		return Surface.getEmpty();
 	}
 
+
+	// ========== SLOT MANIPULATION ==========
+
 	/**
 	* Add a new slot on top of the others (end of list)
 	*/ 
 	public void addSlot() {
 		addSlot(-1);
 	}
+
 	/**
 	* Add a new slot at the specified index
-	* @param the index of the new slot (0 = bottom of the list)
+	* 
+	* @param index the index of the new slot (0 = bottom of the list)
 	*/ 
 	public void addSlot(int index) {
 		if (index < 0 || index > slots.size())
@@ -109,8 +128,12 @@ public class Terrain implements Serializable {
 		slots.add(index, new TerrainSlot());
 		triggerChangeListeners();
 	}
+
 	/**
-	* Add a new slot on top of the others
+	* Swap the slots at the given indexes
+	* 
+	* @param indexFirst
+	* @param indexSecond
 	*/ 
 	public void swapSlots(int indexFirst, int indexSecond) {
 		if (indexFirst < 0 || indexFirst >= slots.size() || indexSecond < 0 || indexSecond >= slots.size())
@@ -120,14 +143,18 @@ public class Terrain implements Serializable {
 		slots.set(indexSecond, tempSlot);
 		triggerChangeListeners();
 	}
+
 	/**
-	* Add a new slot on top of the others
+	* Remove the top slot
 	*/ 
 	public void removeSlot() {
 		removeSlot(-1);
 	}
+
 	/**
-	* Add a new slot on top of the others
+	* Remove the slot at the given index
+	* 
+	* @param index
 	*/ 
 	public void removeSlot(int index) {
 		if (index < 0 || index >= slots.size())
@@ -152,13 +179,16 @@ public class Terrain implements Serializable {
 	}
 
 
-	// ========== Change Listeners ==========
+	// ========== CHANGE LISTENERS ==========
 
 	/**
 	* @param listener
 	*/ 
 	public void addChangeListener(ChangeListener listener) { listeners.add(listener); }
 
+	/**
+	* Notify listeners when something related to the terrain happens
+	*/ 
 	private void triggerChangeListeners() {
 		for(ChangeListener listener : listeners) 
 			listener.stateChanged(new ChangeEvent(this));

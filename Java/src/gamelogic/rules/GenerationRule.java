@@ -22,6 +22,8 @@ public class GenerationRule extends Rule<GenerateNode> {
 	}
 
 	/**
+	* Read the terminal node to decide if a new member should be created in the currently processed species.
+	* 
 	* @param game
 	*/ 
 	@Override
