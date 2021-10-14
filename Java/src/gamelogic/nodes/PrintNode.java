@@ -1,5 +1,8 @@
 package gamelogic.nodes;
 
+import gameinterface.PrinterComponent;
+import gameinterface.PrinterMessage;
+
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;
@@ -31,8 +34,12 @@ public class PrintNode<T> extends Node {
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
 		T val = getInput("val").getData(dataClass);
-		if (getInput("enable").getData(Boolean.class))		
-			System.out.println("Node Print: " + getInput("label").getData(String.class) + "\t| " +val.toString());
+		if (getInput("enable").getData(Boolean.class))	{
+			String label = getInput("label").getData(String.class);
+			String message = label.equals("") ? val.toString() : label + "     \t|     " + val.toString();
+			System.out.println("Node Print: " + message);
+			PrinterComponent.addMessage(new PrinterMessage(game.getFrame(), message));
+		}
 		getOutput("val").setData(val);
 	}
 

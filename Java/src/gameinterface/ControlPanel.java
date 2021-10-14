@@ -28,6 +28,7 @@ public class ControlPanel extends JPanel {
 	private TerrainManagerToolBar terrainToolBar;
 	private ElementManagerToolBar<Surface> surfaceToolBar;
 	private ElementManagerToolBar<Species> speciesToolBar;
+	private PrinterToolBar printerToolBar;
 
 	
 	public ControlPanel(GameManager gameManager) {
@@ -58,9 +59,11 @@ public class ControlPanel extends JPanel {
 				return new Species(name);
 			}
 		};
+		printerToolBar = new PrinterToolBar();
 		toolBarPanel.add(terrainToolBar);
 		toolBarPanel.add(surfaceToolBar);
 		toolBarPanel.add(speciesToolBar);
+		toolBarPanel.add(printerToolBar);
 		JScrollPane toolScrollPanel = new JScrollPane(toolBarPanel);
 		toolScrollPanel.setPreferredSize(new Dimension(160,1000));
 
