@@ -10,19 +10,19 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to substract two objects. <br/>
+* The abstract node model used to substract two objects (concrete subclasses are instanciated by static methods). <br/>
 * 
-* Inputs : val1, val2 <br/>
-* Outputs : res
+* Inputs : a, b <br/>
+* Outputs : a-b
 * 
-* @see GameManager
 */
 public abstract class SubNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being substracted
+	* @param name 
+	* @param dataClass
 	*/ 
 	public SubNode(String name, Class<T> dataClass) {
 		super(name);
@@ -52,6 +52,9 @@ public abstract class SubNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to substract two integers
+	*/ 
 	public static SubNode<Integer> buildSubIntNode() {
 		return new SubNode<Integer>("Sub : Int", Integer.class) {
 			@Override
@@ -61,6 +64,9 @@ public abstract class SubNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to substract two doubles
+	*/ 
 	public static SubNode<Double> buildSubDoubleNode() {
 		return new SubNode<Double>("Sub : Double", Double.class) {
 			@Override
@@ -70,6 +76,9 @@ public abstract class SubNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a nodel model used to substract two vectors
+	*/  
 	public static SubNode<Vec2D> buildSubVecNode() {
 		return new SubNode<Vec2D>("Sub : Vector", Vec2D.class) {
 			@Override

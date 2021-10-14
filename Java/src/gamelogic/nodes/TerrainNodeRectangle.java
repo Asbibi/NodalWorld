@@ -7,6 +7,13 @@ import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;
 
+/**
+* The node model used to create a rectangular terrain layer. <br/>
+* 
+* Inputs : surface, corner, dim <br/>
+* Outputs : layer
+* 
+*/
 public class TerrainNodeRectangle extends TerrainNode<TerrainModelRectangle> {
 
 	public TerrainNodeRectangle() {

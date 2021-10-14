@@ -10,19 +10,19 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to add two objects. <br/>
+* The abstract node model used to add two objects (concrete subclasses are instanciated by static methods). <br/>
 * 
-* Inputs : val1, val2 <br/>
-* Outputs : res
+* Inputs : a, b <br/>
+* Outputs : a+b
 * 
-* @see GameManager
 */
 public abstract class AddNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public AddNode(String name, Class<T> dataClass) {
 		super(name);
@@ -52,6 +52,9 @@ public abstract class AddNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to add two integers
+	*/ 
 	public static AddNode<Integer> buildAddIntNode() {
 		return new AddNode<Integer>("Add : Int", Integer.class) {
 			@Override
@@ -61,6 +64,9 @@ public abstract class AddNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to add two doubles
+	*/ 
 	public static AddNode<Double> buildAddDoubleNode() {
 		return new AddNode<Double>("Add : Double", Double.class) {
 			@Override
@@ -70,6 +76,9 @@ public abstract class AddNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to add two vectors
+	*/ 
 	public static AddNode<Vec2D> buildAddVecNode() {
 		return new AddNode<Vec2D>("Add : Vector", Vec2D.class) {
 			@Override

@@ -7,12 +7,20 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The abstract node model used to perform a power calculation. <br/>
+* 
+* Inputs : x, n <br/>
+* Outputs : x^n
+* 
+*/
 public abstract class PowNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public PowNode(String name, Class<T> dataClass) {
 		super(name);
@@ -43,6 +51,9 @@ public abstract class PowNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to compute the power of an integer by a double, truncated to an integer
+	*/ 
 	public static PowNode<Integer> buildPowIntNode() {
 		return new PowNode<Integer>("Pow : Int", Integer.class) {
 			@Override
@@ -54,6 +65,9 @@ public abstract class PowNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to compute the power of an double by another one
+	*/ 
 	public static PowNode<Double> buildPowDoubleNode() {
 		return new PowNode<Double>("Pow : Double", Double.class) {
 			@Override
@@ -65,6 +79,9 @@ public abstract class PowNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to compute the power of both components of a vector by a double, and then truncate the results to obtain a new vector
+	*/ 
 	public static PowNode<Vec2D> buildPowVecNode() {
 		return new PowNode<Vec2D>("Pow : Vector", Vec2D.class) {
 			@Override

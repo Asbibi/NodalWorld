@@ -9,10 +9,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to get the entity being processed. <br/>
 * 
-* Inputs : none <br/>
+* Inputs : <br/>
 * Outputs : entity
 * 
-* @see GameManager
 */
 public class CurEntityNode extends Node {
 

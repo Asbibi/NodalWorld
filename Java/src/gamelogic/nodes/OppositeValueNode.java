@@ -7,12 +7,20 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The abstract node model used to compute the opposite of a value (concrete subclasses are instanciated by static methods). <br/>
+* 
+* Inputs : val <br/>
+* Outputs : -val
+* 
+*/
 public abstract class OppositeValueNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public OppositeValueNode(String name, Class<T> dataClass) {
 		super(name);
@@ -40,6 +48,9 @@ public abstract class OppositeValueNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to get the opposite of an integer
+	*/ 
 	public static OppositeValueNode<Integer> buildOppIntNode() {
 		return new OppositeValueNode<Integer>("Opposite : Int", Integer.class) {
 			@Override
@@ -49,6 +60,9 @@ public abstract class OppositeValueNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to get the opposite of a double
+	*/ 
 	public static OppositeValueNode<Double> buildOppDoubleNode() {
 		return new OppositeValueNode<Double>("Opposite : Double", Double.class) {
 			@Override
@@ -58,6 +72,9 @@ public abstract class OppositeValueNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to get the opposite of a vector
+	*/ 
 	public static OppositeValueNode<Vec2D> buildOppVecNode() {
 		return new OppositeValueNode<Vec2D>("Opposite : Vector", Vec2D.class) {
 			@Override

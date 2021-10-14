@@ -11,7 +11,7 @@ import gamelogic.rules.MovementRule;
 * The node model used as terminal node in a movement rule's network. <br/>
 * 
 * Inputs : position <br/>
-* Outputs : none
+* Outputs :
 * 
 * @see MovementRule
 */ 

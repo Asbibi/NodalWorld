@@ -6,6 +6,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to calculate the eXclusive-OR (XOR) on two booleans. <br/>
+* 
+* Inputs : a, b <br/>
+* Outputs : a^b
+* 
+*/
 public class XorNode extends Node {
 
 	/**

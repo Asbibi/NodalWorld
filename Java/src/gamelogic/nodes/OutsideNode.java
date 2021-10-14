@@ -13,7 +13,6 @@ import gamelogic.NetworkIOException;
 * Inputs : pos <br/>
 * Outputs : is out
 * 
-* @see GameManager
 */
 public class OutsideNode extends Node {
 

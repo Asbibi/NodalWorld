@@ -7,12 +7,20 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The abstract node model used to compute the absolute value of a value (concrete subclasses are instanciated by static methods). <br/>
+* 
+* Inputs : a <br/>
+* Outputs : |a|
+* 
+*/
 public abstract class AbsNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public AbsNode(String name, Class<T> dataClass) {
 		super(name);
@@ -41,6 +49,9 @@ public abstract class AbsNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to compute the absolute value of an integer
+	*/ 
 	public static AbsNode<Integer> buildAbsIntNode() {
 		return new AbsNode<Integer>("Abs : Int", Integer.class) {
 			@Override
@@ -50,6 +61,9 @@ public abstract class AbsNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to compute the absolute value of a double
+	*/ 
 	public static AbsNode<Double> buildAbsDoubleNode() {
 		return new AbsNode<Double>("Abs : Double", Double.class) {
 			@Override
@@ -59,6 +73,9 @@ public abstract class AbsNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to compute the absolute value on a vector component-wise
+	*/ 
 	public static AbsNode<Vec2D> buildAbsVecNode() {
 		return new AbsNode<Vec2D>("Abs : Vector", Vec2D.class) {
 			@Override

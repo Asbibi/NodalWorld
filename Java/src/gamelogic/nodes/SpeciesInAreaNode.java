@@ -9,11 +9,17 @@ import gamelogic.Output;
 import gamelogic.Species;
 import gamelogic.Vec2D;
 
+/**
+* The node model used to detect if a species has at least one member in a rectangular area, and if so record its position. <br/>
+* 
+* Inputs : species, position, dimension <br/>
+* Outputs : inside, position
+* 
+*/
 public class SpeciesInAreaNode  extends Node {
 
-
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	*
 	*/ 
 	public SpeciesInAreaNode() {
 		super("Species In Area");

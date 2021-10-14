@@ -11,10 +11,9 @@ import java.util.Random;
 /**
 * The node model used to generate a random number in the range [0, 1[. <br/>
 * 
-* Inputs : none <br/>
-* Outputs : val
+* Inputs : seed <br/>
+* Outputs : red
 * 
-* @see GameManager
 */
 public class RandDoubleNode extends Node {
 

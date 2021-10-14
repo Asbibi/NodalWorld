@@ -9,10 +9,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to perform logical AND. <br/>
 * 
-* Inputs : val1, val2 <br/>
-* Outputs : res
+* Inputs : a, b <br/>
+* Outputs : a&b
 * 
-* @see GameManager
 */
 public class AndNode extends Node {
 

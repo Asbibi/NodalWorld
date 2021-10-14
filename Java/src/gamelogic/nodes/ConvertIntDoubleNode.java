@@ -6,6 +6,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to cast an integer as a double. <br/>
+* 
+* Inputs : val <br/>
+* Outputs : val
+* 
+*/
 public class ConvertIntDoubleNode extends Node {
 
 	/**

@@ -7,12 +7,20 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The abstract node model used to multiply a vector with a value (concrete subclasses are instanciated by static methods). <br/>
+* 
+* Inputs : vec, a <br/>
+* Outputs : vec*a
+* 
+*/
 public abstract class MultiplyVectorNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public MultiplyVectorNode(String name, Class<T> dataClass) {
 		super(name);
@@ -42,6 +50,9 @@ public abstract class MultiplyVectorNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to multiply a vector with an integer
+	*/ 
 	public static MultiplyVectorNode<Integer> buildMulVecIntNode() {
 		return new MultiplyVectorNode<Integer>("Multiply : Vect-Int", Integer.class) {
 			@Override
@@ -51,6 +62,9 @@ public abstract class MultiplyVectorNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to multiply a vector with a double, and then truncate the components
+	*/ 
 	public static MultiplyVectorNode<Double> buildMulVecDoubleNode() {
 		return new MultiplyVectorNode<Double>("Multiply : Vect-Double", Double.class) {
 			@Override

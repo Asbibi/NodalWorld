@@ -9,12 +9,11 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to clamp a value in a specific range. <br/>
+* The abstract node model used to clamp a value in a specific range (concrete subclasses are instanciated by static methods). <br/>
 * 
 * Inputs : val, rmin, rmax <br/>
 * Outputs : res
 * 
-* @see GameManager
 */
 public abstract class ClampNode<T> extends Node {
 
@@ -54,6 +53,9 @@ public abstract class ClampNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to clamp an integer between two integers
+	*/ 
 	public static ClampNode<Integer> buildClampIntNode() {
 		return new ClampNode<Integer>("Clamp : Int", Integer.class) {
 			@Override
@@ -64,6 +66,9 @@ public abstract class ClampNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to clamp an double between two doubles
+	*/ 
 	public static ClampNode<Double> buildClampDoubleNode() {
 		return new ClampNode<Double>("Clamp : Double", Double.class) {
 			@Override

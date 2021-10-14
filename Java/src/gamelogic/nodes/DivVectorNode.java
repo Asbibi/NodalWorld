@@ -7,12 +7,20 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The abstract node model used to divide a vector with a value (concrete subclasses are instanciated by static methods). <br/>
+* 
+* Inputs : vec, b <br/>
+* Outputs : vec/b
+* 
+*/
 public abstract class DivVectorNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public DivVectorNode(String name, Class<T> dataClass) {
 		super(name);
@@ -47,6 +55,9 @@ public abstract class DivVectorNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to divide a vector with an integer
+	*/ 
 	public static DivVectorNode<Integer> buildDivVecIntNode() {
 		return new DivVectorNode<Integer>("Divide : Vect-Int", Integer.class) {
 			@Override
@@ -56,6 +67,9 @@ public abstract class DivVectorNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to divide a vector with a double, and then truncate the components
+	*/ 
 	public static DivVectorNode<Double> buildDivVecDoubleNode() {
 		return new DivVectorNode<Double>("Divide : Vect-Double", Double.class) {
 			@Override

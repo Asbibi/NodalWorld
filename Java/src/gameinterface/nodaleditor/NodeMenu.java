@@ -120,8 +120,6 @@ public class NodeMenu extends JPopupMenu {
 		menuConversion.add(buildNodeItem(() -> new ConvertDoubleIntNode()));
 		menuConversion.add(buildNodeItem(() -> new ConvertDoubleIntApproxNode()));
 		menuConversion.add(buildNodeItem(() -> new ConvertIntDoubleNode()));
-		menuConversion.add(buildNodeItem(() -> new ConvertSpeciesInt()));
-		menuConversion.add(buildNodeItem(() -> new ConvertIntSpecies()));
 		JMenu menuVector = new JMenu("Vector");
 		menuUtils.add(menuVector);
 		menuVector.add(buildNodeItem(() -> new VectSplitNode()));

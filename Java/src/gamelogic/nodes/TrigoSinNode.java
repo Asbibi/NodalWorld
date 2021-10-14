@@ -6,11 +6,17 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to calculate the sine of an angle. <br/>
+* 
+* Inputs : t <br/>
+* Outputs : sin(t)
+* 
+*/
 public class TrigoSinNode  extends Node {
 
-
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* 
 	*/ 
 	public TrigoSinNode() {
 		super("Sinus");

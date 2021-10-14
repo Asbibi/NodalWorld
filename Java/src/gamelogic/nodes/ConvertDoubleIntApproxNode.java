@@ -6,6 +6,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to replace a double with the closest integer. <br/>
+* 
+* Inputs : val <br/>
+* Outputs : val
+* 
+*/
 public class ConvertDoubleIntApproxNode extends Node {
 
 	/**

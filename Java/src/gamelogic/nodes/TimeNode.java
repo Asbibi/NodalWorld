@@ -8,10 +8,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to get the current frame. <br/>
 * 
-* Inputs : None <br/>
+* Inputs : <br/>
 * Outputs : time
 * 
-* @see GameManager
 */
 public class TimeNode extends Node {
 

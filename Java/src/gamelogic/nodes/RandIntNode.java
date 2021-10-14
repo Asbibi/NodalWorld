@@ -9,19 +9,18 @@ import gamelogic.NetworkIOException;
 import java.util.Random;
 
 /**
-* The node model used to generate a random integer in the range [0, N[. <br/>
+* The node model used to generate a random integer in the range [0, bound[. <br/>
 * 
-* Inputs : none <br/>
-* Outputs : val
+* Inputs : seed, bound <br/>
+* Outputs : res
 * 
-* @see GameManager
 */
 public class RandIntNode extends Node {
 
 	private Random rand;
 
 	/**
-	* @param bound
+	* 
 	*/ 
 	public RandIntNode() {
 		super("Random Int");

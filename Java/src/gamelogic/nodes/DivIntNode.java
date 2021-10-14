@@ -6,11 +6,17 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to double value corresponding to the division of an integer with another one. <br/>
+* 
+* Inputs : a, b <br/>
+* Outputs : a/b
+* 
+*/
 public class DivIntNode extends Node {
 
-
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	*
 	*/ 
 	public DivIntNode() {
 		super("Divide : Int");

@@ -7,16 +7,23 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The node model used to compute the angle between two vectors. <br/>
+* 
+* Inputs : vec1, vec2 <br/>
+* Outputs : angle
+* 
+*/
 public class TrigoAngleVectorsNode extends Node {
 
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* 
 	*/ 
 	public TrigoAngleVectorsNode() {
 		super("Vectors Angle");
-		addInput(new Input("vect1", Vec2D.class));
-		addInput(new Input("vect2", Vec2D.class));
+		addInput(new Input("vec1", Vec2D.class));
+		addInput(new Input("vec2", Vec2D.class));
 		addOutput(new Output("angle", Double.class));
 	}
 
@@ -25,7 +32,7 @@ public class TrigoAngleVectorsNode extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {		
-		getOutput("angle").setData(Vec2D.angleBetween(getInput("vect1").getData(Vec2D.class), getInput("vect2").getData(Vec2D.class)));
+		getOutput("angle").setData(Vec2D.angleBetween(getInput("vec1").getData(Vec2D.class), getInput("vec2").getData(Vec2D.class)));
 	}
 
 }

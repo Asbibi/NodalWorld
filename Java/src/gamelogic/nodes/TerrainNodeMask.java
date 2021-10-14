@@ -8,6 +8,13 @@ import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;
 
+/**
+* The node model used to mask a terrain layer with another one. <br/>
+* 
+* Inputs : surface, layer, mask <br/>
+* Outputs : layer
+* 
+*/
 public class TerrainNodeMask extends TerrainNode<TerrainModelMask> {
 
 	public TerrainNodeMask() {

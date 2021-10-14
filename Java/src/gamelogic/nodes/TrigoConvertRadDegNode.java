@@ -6,11 +6,18 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to convert radians to degrees. <br/>
+* 
+* Inputs : rad <br/>
+* Outputs : deg
+* 
+*/
 public class TrigoConvertRadDegNode extends Node {
 
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* 
 	*/ 
 	public TrigoConvertRadDegNode() {
 		super("Rad to Deg");

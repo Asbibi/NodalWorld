@@ -13,7 +13,6 @@ import gamelogic.NetworkIOException;
 * Inputs : vec <br/>
 * Outputs : x, y
 * 
-* @see GameManager
 */
 public class VectSplitNode extends Node {
 

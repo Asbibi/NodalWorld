@@ -13,7 +13,6 @@ import gamelogic.NetworkIOException;
 * Inputs : x, y <br/>
 * Outputs : vec
 * 
-* @see GameManager
 */
 public class VectGatherNode extends Node {
 

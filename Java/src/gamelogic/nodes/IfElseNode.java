@@ -9,12 +9,11 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to perform IF/ELSE statement. <br/>
+* The node model used to perform an IF/ELSE statement. <br/>
 * 
-* Inputs : cond, val1, val2 <br/>
+* Inputs : cond, true val, false val <br/>
 * Outputs : res
 * 
-* @see GameManager
 */
 public class IfElseNode<T> extends Node {
 
@@ -22,7 +21,7 @@ public class IfElseNode<T> extends Node {
 
 	/**
 	* @param name 
-	* @param dataClass the class object representing the type of the input objects
+	* @param dataClass
 	*/ 
 	public IfElseNode(String name, Class<T> dataClass) {
 		super(name);

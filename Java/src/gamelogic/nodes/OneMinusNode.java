@@ -5,12 +5,18 @@ import gamelogic.Input;
 import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
-
+/**
+* The node model used to compute 1-x for any double x. <br/>
+* 
+* Inputs : x <br/>
+* Outputs : 1-x
+* 
+*/
 public class OneMinusNode extends Node {
 
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	*
 	*/ 
 	public OneMinusNode() {
 		super("One minus double");

@@ -12,10 +12,9 @@ import java.lang.Comparable;
 /**
 * The node model used to compare two objects. <br/>
 * 
-* Inputs : val1, val2 <br/>
-* Outputs : res
+* Inputs : a, b <br/>
+* Outputs : a < b
 * 
-* @see GameManager
 */
 public class CompareNode<T extends Comparable<T>> extends Node {
 
@@ -23,7 +22,7 @@ public class CompareNode<T extends Comparable<T>> extends Node {
 
 	/**
 	* @param name
-	* @param dataClass the class object representing the type of the objects to compare
+	* @param dataClass
 	*/ 
 	public CompareNode(String name, Class<T> dataClass) {
 		super(name);

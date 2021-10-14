@@ -7,11 +7,18 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The node model used to calculate the scalar product of two vectors. <br/>
+* 
+* Inputs : val1, val2 <br/>
+* Outputs : res
+* 
+*/
 public class VectScalarProductNode extends Node {
 
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* 
 	*/ 
 	public VectScalarProductNode() {
 		super("Scalar Product");

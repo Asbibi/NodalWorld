@@ -9,12 +9,11 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to compute the max of two objects. <br/>
+* The abstract node model used to compute the max of two objects (concrete subclasses are instanciated by static methods). <br/>
 * 
-* Inputs : val1, val2 <br/>
-* Outputs : res
+* Inputs : a, b <br/>
+* Outputs : max(a,b)
 * 
-* @see GameManager
 */
 public abstract class MaxNode<T> extends Node {
 
@@ -26,9 +25,9 @@ public abstract class MaxNode<T> extends Node {
 	public MaxNode(String name, Class<T> dataClass) {
 		super(name);
 		this.dataClass = dataClass;
-		addInput(new Input("val1", dataClass));
-		addInput(new Input("val2", dataClass));
-		addOutput(new Output("res", dataClass));
+		addInput(new Input("a", dataClass));
+		addInput(new Input("b", dataClass));
+		addOutput(new Output("max(a,b)", dataClass));
 	}
 
 	/**
@@ -36,9 +35,9 @@ public abstract class MaxNode<T> extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		T val1 = getInput("val1").getData(dataClass);
-		T val2 = getInput("val2").getData(dataClass);
-		getOutput("res").setData(max(val1 ,val2));
+		T val1 = getInput("a").getData(dataClass);
+		T val2 = getInput("b").getData(dataClass);
+		getOutput("max(a,b)").setData(max(val1 ,val2));
 	}
 
 	/**
@@ -51,6 +50,9 @@ public abstract class MaxNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to compute the max of two integers
+	*/ 
 	public static MaxNode<Integer> buildMaxIntNode() {
 		return new MaxNode<Integer>("Max : Int", Integer.class) {
 			@Override
@@ -60,6 +62,9 @@ public abstract class MaxNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to compute the max of two doubles
+	*/ 
 	public static MaxNode<Double> buildMaxDoubleNode() {
 		return new MaxNode<Double>("Max : Double", Double.class) {
 			@Override

@@ -9,10 +9,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to get the species being processed. <br/>
 * 
-* Inputs : none <br/>
+* Inputs : <br/>
 * Outputs : species
 * 
-* @see GameManager
 */
 public class CurSpeciesNode extends Node {
 

@@ -9,26 +9,26 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to compute the min of two objects. <br/>
+* The abstract node model used to compute the min of two objects (concrete subclasses are instanciated by static methods). <br/>
 * 
-* Inputs : val1, val2 <br/>
-* Outputs : res
+* Inputs : a, b <br/>
+* Outputs : min(a,b)
 * 
-* @see GameManager
 */
 public abstract class MinNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public MinNode(String name, Class<T> dataClass) {
 		super(name);
 		this.dataClass = dataClass;
-		addInput(new Input("val1", dataClass));
-		addInput(new Input("val2", dataClass));
-		addOutput(new Output("res", dataClass));
+		addInput(new Input("a", dataClass));
+		addInput(new Input("b", dataClass));
+		addOutput(new Output("min(a,b)", dataClass));
 	}
 
 	/**
@@ -36,9 +36,9 @@ public abstract class MinNode<T> extends Node {
 	*/ 
 	@Override
 	public void evaluate(GameManager game) throws NetworkIOException {
-		T val1 = getInput("val1").getData(dataClass);
-		T val2 = getInput("val2").getData(dataClass);
-		getOutput("res").setData(min(val1 ,val2));
+		T val1 = getInput("a").getData(dataClass);
+		T val2 = getInput("b").getData(dataClass);
+		getOutput("min(a,b)").setData(min(val1 ,val2));
 	}
 
 	/**
@@ -51,6 +51,9 @@ public abstract class MinNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to compute the min of two integers
+	*/ 
 	public static MinNode<Integer> buildMinIntNode() {
 		return new MinNode<Integer>("Min : Int", Integer.class) {
 			@Override
@@ -60,6 +63,9 @@ public abstract class MinNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to compute the min of two doubles
+	*/ 
 	public static MinNode<Double> buildMinDoubleNode() {
 		return new MinNode<Double>("Min : Double", Double.class) {
 			@Override

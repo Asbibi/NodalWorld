@@ -5,6 +5,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to provide the constant value PI. <br/>
+* 
+* Inputs : <br/>
+* Outputs : pi
+* 
+*/
 public class TrigoPINode extends Node {
 
 	/**

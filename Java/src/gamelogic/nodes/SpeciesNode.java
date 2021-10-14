@@ -11,10 +11,8 @@ import gamelogic.NetworkIOException;
 * The node model used to extract data from a species. <br/>
 * 
 * Inputs : species <br/>
-* Outputs : size
+* Outputs : period, count, id
 * 
-* @see GameManager
-* @see Species
 */
 public class SpeciesNode extends Node {
 
@@ -23,6 +21,7 @@ public class SpeciesNode extends Node {
 		addInput(new Input("species", Species.class));
 		addOutput(new Output("period", Integer.class));
 		addOutput(new Output("count", Integer.class));
+		addOutput(new Output("id", Integer.class));
 	}
 
 	/**
@@ -33,6 +32,7 @@ public class SpeciesNode extends Node {
 		Species sp = getInput("species").getData(Species.class);
 		getOutput("count").setData(sp.getMembers().size());
 		getOutput("period").setData(sp.getTriggerTime());
+		getOutput("id").setData(sp.getId());
 	}
 
 }

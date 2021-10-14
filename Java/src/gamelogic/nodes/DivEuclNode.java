@@ -9,10 +9,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to compute the euclidean division of an integer (dividend) by another integer (divisor). <br/>
 * 
-* Inputs : dividend, divisor <br/>
-* Outputs : quotient, remainder
+* Inputs : a, b <br/>
+* Outputs : a/b, remainder
 * 
-* @see GameManager
 */
 public class DivEuclNode extends Node {
 

@@ -8,6 +8,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to generate a random double following a normal law. <br/>
+* 
+* Inputs : seed, mean, deviation <br/>
+* Outputs : res
+* 
+*/
 public class RandGaussDoubleNode extends Node {
 
 	private Random rand;

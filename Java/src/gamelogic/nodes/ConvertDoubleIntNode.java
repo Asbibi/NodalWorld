@@ -8,6 +8,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to split a double into an integer part (simply the truncated value) and the residue (the fractional part). <br/>
+* 
+* Inputs : val <br/>
+* Outputs : val, rest
+* 
+*/
 public class ConvertDoubleIntNode extends Node {
 
 	/**

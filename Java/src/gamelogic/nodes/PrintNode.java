@@ -9,13 +9,20 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to print informations on an object, using its toString method. <br/>
+* 
+* Inputs : val, label, enable <br/>
+* Outputs : val
+* 
+*/
 public class PrintNode<T> extends Node {
 	
 	private Class<T> dataClass;
 
 	/**
 	* @param name 
-	* @param dataClass the class object representing the type of the objects to test
+	* @param dataClass
 	*/ 
 	public PrintNode(String name, Class<T> dataClass) {
 		super(name);

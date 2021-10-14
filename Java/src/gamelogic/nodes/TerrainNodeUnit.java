@@ -7,6 +7,13 @@ import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;
 
+/**
+* The node model used to create a terrain layer that covers only one tile. <br/>
+* 
+* Inputs : surface, pos <br/>
+* Outputs : layer
+* 
+*/
 public class TerrainNodeUnit extends TerrainNode<TerrainModelRectangle> {
 
 	public TerrainNodeUnit() {

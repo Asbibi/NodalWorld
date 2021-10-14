@@ -7,12 +7,20 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The abstract node model used to multiply two objects (concrete subclasses are instanciated by static methods). <br/>
+* 
+* Inputs : a, b <br/>
+* Outputs : a*b
+* 
+*/
 public abstract class MultiplyNode<T> extends Node {
 
 	private Class<T> dataClass;
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	* @param name 
+	* @param dataClass
 	*/ 
 	public MultiplyNode(String name, Class<T> dataClass) {
 		super(name);
@@ -42,6 +50,9 @@ public abstract class MultiplyNode<T> extends Node {
 
 	// ========== CONCRETE SUBCLASSES ==========
 
+	/**
+	* @return a node model used to multiply two integers
+	*/ 
 	public static MultiplyNode<Integer> buildMulIntNode() {
 		return new MultiplyNode<Integer>("Multiply : Int", Integer.class) {
 			@Override
@@ -51,6 +62,9 @@ public abstract class MultiplyNode<T> extends Node {
 		};
 	}
 
+	/**
+	* @return a node model used to multiply two doubles
+	*/ 
 	public static MultiplyNode<Double> buildMulDoubleNode() {
 		return new MultiplyNode<Double>("Multiply : Double", Double.class) {
 			@Override

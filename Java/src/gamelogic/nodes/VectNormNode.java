@@ -7,8 +7,18 @@ import gamelogic.NetworkIOException;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The node model used to calculate the norm of a vector. <br/>
+* 
+* Inputs : vec <br/>
+* Outputs : norm
+* 
+*/
 public class VectNormNode extends Node{
 
+	/**
+	*
+	*/ 
 	public VectNormNode(){
 		super("Norm");
 		addInput(new Input("vec", Vec2D.class));

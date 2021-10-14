@@ -15,7 +15,6 @@ import gamelogic.NetworkIOException;
 * Inputs : entity <br/>
 * Outputs : pos, species, birth
 * 
-* @see GameManager
 */
 public class EntityNode extends Node {
 

@@ -8,10 +8,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to get the game's grid dimensions. <br/>
 * 
-* Inputs : none <br/>
+* Inputs : <br/>
 * Outputs : width, height
 * 
-* @see GameManager
 */
 public class DimNode extends Node {
 

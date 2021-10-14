@@ -8,6 +8,13 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to generate a random boolean following a Bernoulli law. <br/>
+* 
+* Inputs : seed, bound <br/>
+* Outputs : res
+* 
+*/
 public class RandBoolNode extends Node {
 
 	private Random rand;

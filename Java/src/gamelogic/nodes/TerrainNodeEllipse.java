@@ -7,6 +7,13 @@ import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;
 
+/**
+* The node model used to create an elliptic terrain layer. <br/>
+* 
+* Inputs : surface, center, rx, ry <br/>
+* Outputs : layer
+* 
+*/
 public class TerrainNodeEllipse extends TerrainNode<TerrainModelEllipse> {
 
 	public TerrainNodeEllipse() {

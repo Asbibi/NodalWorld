@@ -9,10 +9,9 @@ import gamelogic.NetworkIOException;
 /**
 * The node model used to negate a boolean. <br/>
 * 
-* Inputs : val <br/>
-* Outputs : res
+* Inputs : a <br/>
+* Outputs : !a
 * 
-* @see GameManager
 */
 public class NotNode extends Node {
 

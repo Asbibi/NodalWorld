@@ -7,6 +7,13 @@ import gamelogic.Node;
 import gamelogic.Output;
 import gamelogic.Vec2D;
 
+/**
+* The node model used to create a vector by specifying its angle and norm. <br/>
+* 
+* Inputs : angle, norm <br/>
+* Outputs : vec
+* 
+*/
 public class TrigoRadialToVector  extends Node {
 
 	/**

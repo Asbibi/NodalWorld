@@ -6,11 +6,17 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to divide a double with another one. <br/>
+* 
+* Inputs : a, b <br/>
+* Outputs : a/b
+* 
+*/
 public class DivDoubleNode extends Node {
 
-
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	*
 	*/ 
 	public DivDoubleNode() {
 		super("Divide : Double");

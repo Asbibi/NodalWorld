@@ -6,11 +6,18 @@ import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
 
+/**
+* The node model used to calculate the cosine of an angle. <br/>
+* 
+* Inputs : t <br/>
+* Outputs : cos(t)
+* 
+*/
 public class TrigoCosNode extends Node {
 
 
 	/**
-	* @param dataClass the class object representing the type of the objects being added
+	*
 	*/ 
 	public TrigoCosNode() {
 		super("Cosinus");

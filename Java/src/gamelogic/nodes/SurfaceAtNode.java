@@ -14,7 +14,6 @@ import gamelogic.NetworkIOException;
 * Inputs : position <br/>
 * Outputs : surface
 * 
-* @see GameManager
 */
 public class SurfaceAtNode extends Node {
 

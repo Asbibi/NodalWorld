@@ -11,7 +11,7 @@ import gamelogic.rules.GenerationRule;
 * The node model used as terminal node in a generation rule's network. <br/>
 * 
 * Inputs : generate, position <br/>
-* Outputs : none
+* Outputs :
 * 
 * @see GenerationRule
 */ 

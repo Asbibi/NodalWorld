@@ -10,12 +10,11 @@ import gamelogic.NetworkIOException;
 import java.lang.Class;
 
 /**
-* The node model used to represent a single variable. <br/>
+* The node model used to represent a single variable, parametrized by the variable's type. <br/>
 * 
 * Inputs : var <br\>
 * Outputs : var
 * 
-* @see GameManager
 */
 public class VariableNode<T> extends Node {
 
@@ -23,7 +22,7 @@ public class VariableNode<T> extends Node {
 
 	/**
 	* @param name 
-	* @param dataClass the class object representing the type of the objects to test
+	* @param dataClass
 	*/ 
 	public VariableNode(String name, Class<T> dataClass) {
 		super(name);
