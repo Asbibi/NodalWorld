@@ -257,7 +257,6 @@ public class NodalEditorUI {
 					if(game.getRule(editor.getRuleClass(), sp) != null) {
 						NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
 						g2d.setColor(new Color(120,255,0));
-						g2d.setStroke(new BasicStroke(5));
 						g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
 					}
 				}
