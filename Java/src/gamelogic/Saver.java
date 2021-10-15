@@ -19,7 +19,33 @@ import java.util.zip.ZipOutputStream;
 import javax.imageio.ImageIO;
 
 /**
-* The goal of the Saver class is to save and load a project's game manager.
+* The goal of the Saver class is to save and load a project's GameManager from a savefile.<br/><br/>
+* 
+* Saving a project is done in several steps.<br/>
+* The first one is to create a temporary work folder.<br/>
+* Then we serialize the GameManger into a txt file in this folder.<br/>
+* After, another txt file is created to list all the images used by the surfaces. There is one line per Surface, with its name and a path to the image.<br/>
+* If the pack image option is selected, the image will be copied in the temporary folder and a relative path is written.<br/>
+* In the other case, it's an absolute path that is written. A lettre indicates if it's a relative or an absolute path.<br/>
+* An image loaded from a save file with pack option will always be resaved as pack, as its absolute path has been lost.<br/>
+* The same process occurs for the Species images.<br/>
+* Once save is complete, the temporary folder is zipped and its extension is changed to .nws (but data speaking it's a .zip file).<br/>
+* Finally the temporary folder is deleted.<br/><br/>
+* 
+* Loading follows the same principle:<br/>
+* First unzip the savefile in a temporary folder.<br/>
+* Then deserialize the GameManager.<br/>
+* After that, for each line in the Surface Image List text file, retrieve the surface in the GameManager's Surfaces array.<br/>
+* Load the image either with its absolute path or from the temporary folder (the letter indicating which option to choose for each surface) and set it to the retrieved surface.<br/>
+* Do the same for species.<br/>
+* Finally delete the temporary folder (the images are actually BufferedImage, so deleting their original file isn't an issue).<br/><br/><br/>
+* 
+* 
+* WARNING -- If you plan on directly use the loaded GameManager, don't forget to init its transient attributes (for example its listeners) by calling initTransientFields().<br/><br/>
+* 
+* WARNING -- Because of the way the saving and loading processes works, if a folder already exists with the savefile name, it will get deleted.<br/><br/>
+* 
+* Zip and Unzip code partially use code written here: https://www.youtube.com/watch?v=lm1Y_vMzgQk&ab_channel=jinujawadm
 * 
 * @see GameManager
 */ 
@@ -29,9 +55,10 @@ public class Saver {
 	// ===========	Save Methods	===========
 	
 	/**
+	* Save a GameManager and all related images if asked.
 	* @param saveFilePath
 	* @param manager
-	* @param packImages
+	* @param packImages if true, all images used with an absolute path will be copied and zipped in the save file, otherwise their absolute path are saved
 	*/ 
 	public static void saveGame(String saveFilePath, GameManager manager, boolean packImages) {
 		try {
@@ -105,7 +132,15 @@ public class Saver {
 			e.printStackTrace();
 		}        
 	}
-		
+	
+	/**
+	* Save the image of an element.
+	* @param saveFilePath
+	* @param packImages if true, the image will be copied and zipped in the save file, otherwise its absolute path will be kept if not lost
+	* @param imagesFiles the array of all the images File saved
+	* @param imageOut the writer to the text file listing all saved images for the element class
+	* @param element the current element to save the image of
+	*/ 
 	private static void saveImage(String saveFilePath, boolean packImages, ArrayList<File> imagesFiles, FileWriter imageOut, Element element) throws IOException {
 		if (element.getImageFile() == null)
 			return;
@@ -131,6 +166,11 @@ public class Saver {
         System.out.println("New image saved");
 	}
 	
+	/**
+	* Zip the temporary save folder into a .nws save file (that is data speaking a .zip file)
+	* @param saveFilePath
+	* @param imagesFiles the array of all the images File saved
+	*/ 
 	private static void zipSaveFiles(String zipFilePath, ArrayList<File> imagesFiles){
 	     byte[] buffer = new byte[1024];
 	     try {
@@ -154,12 +194,17 @@ public class Saver {
 	    } catch(IOException ex) {
 	       ex.printStackTrace();
 	    }
-   }
+	}
+	
+	
 	
 
+	
 	// ===========	Load Methods	===========
 	
+	
 	/**
+	* Load a GameManager and all related images.
 	* @param saveFilePath
 	* @return the loaded game manager
 	*/ 
@@ -197,6 +242,11 @@ public class Saver {
 		return manager;
 	}
 	
+	/**
+	* Loads a GameManager by deserializing it from its text file.
+	* @param files all the files unzipped from the .nws savefile, including the GameManager Serialize text file
+	* @return the loaded game manager, null if file not found or deserialisation went wrong
+	*/ 
 	private static GameManager loadGameManager(ArrayList<File> files) {
 		int i = 0;
 		File managerFile;
@@ -222,6 +272,12 @@ public class Saver {
 		}
 	}
 	
+	/**
+	* Loads all the images needed and set them to their corresponding element in the manager's list.
+	* @param manager 
+	* @param isSurface true if we're loading surface images, false if we're loading species images
+	* @param files all the files unzipped from the .nws savefile, including the GameManager Serialize text file
+	*/ 
 	private static void loadImages(GameManager manager, boolean isSurface, ArrayList<File> files) {
 		try {
 			int i = 0;
@@ -270,12 +326,26 @@ public class Saver {
 			e.printStackTrace();
 		}		
 	}
+	
+	/**
+	* Loads all the images needed and set them to their corresponding element in the manager's list.
+	* @param manager 
+	* @param isSurface true if we're looking for a surface, false if we're looking for a species
+	* @param elementName the name of the wanted element
+	* @return the element wanted, if found
+	*/ 
 	private static Element getElementFromManager(GameManager manager, boolean isSurface, String elementName) {
 		if (isSurface)
 			return manager.getSurface(elementName);
 		else
 			return manager.getSpecies(elementName);
 	}
+	
+	/**
+	* Loads an external image using an absolute path and sets it as the element's image.
+	* @param element the element receiving the image
+	* @param imagePath the absolute path of the image file
+	*/ 
 	private static void loadElementImage_AbsoluteExternal(Element element, String imagePath) {
 		if (element == null){
 			System.err.println("Element is null -> Save file may be corrupted");
@@ -284,6 +354,13 @@ public class Saver {
 		element.setImageFile(new ImageFile(imagePath));		
         System.out.println("Absolute Image loaded for element: " + element.toString() + "\t | " + imagePath);
 	}
+
+	/**
+	* Loads an unzipped temporary image using the list of the unzipped files and sets it as the element's image.
+	* @param element the element receiving the image
+	* @param imageName the name of the image file
+	* @param files the list of the unzipped files
+	*/ 
 	private static void loadElementImage_Saved(Element element, String imageName, ArrayList<File> files) {
 		try {
 			if (element == null){
@@ -309,6 +386,11 @@ public class Saver {
 		}
 	}
 	
+	/**
+	* Unzips a .nws savefile into a temporary folder.
+	* @param saveFilePath
+	* @param files an empty list of files to fill with the unzipped files references
+	*/ 
 	private static File unzipSaveFiles(String saveFilePath, ArrayList<File> files) {
 		System.out.println(saveFilePath);
 		

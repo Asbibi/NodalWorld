@@ -19,7 +19,7 @@ public class GameManagerBuilder {
 	* @param template
 	* @param width
 	* @param height
-	* @return the newly created empty game manager
+	* @return the newly created game manager, based on the template given
 	*/ 
 	public static GameManager buildGameFromTemplate(NewWorldTemplate template, int width, int height, String savefilePath) {
 		if (template.isEqual(NewWorldTemplate.empty))
@@ -87,9 +87,11 @@ public class GameManagerBuilder {
 	
 	
 	/**
+	* If loading fails, it will return an empty game manager with given width and height.
+	* @param saveFilePath the path to the savefile used as surface and species bank
 	* @param width
 	* @param height
-	* @return the newly created game manager with some basic settings
+	* @return the newly created game manager with all the surfaces and species of a loaded savefile
 	*/ 
 	public static GameManager buildDataLoadedGame(String saveFilePath, int width, int height) {
 		GameManager game = buildEmptyGame(width, height);
@@ -101,51 +103,62 @@ public class GameManagerBuilder {
 	}
 	
 	/**
-	* @param width
-	* @param height
-	* @return the newly created game manager with some basic settings
+	* If loading fails, it will return an empty game manager with given width and height.
+	* @param saveFilePath the path to the savefile used as surface and species bank
+	* @param width_failsafe	used only if loading fails
+	* @param height_failsafe used only if loading fails
+	* @return the newly created game manager with all the surfaces, species and terrain graph of a loaded savefile
 	*/ 
-	public static GameManager buildTerrainLoadedGame(String saveFilePath, int width, int height) {
-		GameManager game = buildEmptyGame(width, height);
+	public static GameManager buildTerrainLoadedGame(String saveFilePath, int width_failsafe, int height_failsafe) {
 		GameManager gameSaved = Saver.loadGame(saveFilePath);
 		if (gameSaved != null) {
+			GameManager game = buildEmptyGame(gameSaved.gridWidth(), gameSaved.gridHeight());
 			gameSaved.initTransientFields();
 			copyElementsGameManager(game, gameSaved);
 			game.copyTerrain_TerrainNet(gameSaved);
+			return game;
 		}
-		
-		return game;
+		else
+			return buildEmptyGame(width_failsafe, height_failsafe);
 	}
 	
 	/**
-	* @param width
-	* @param height
-	* @return the newly created game manager with some basic settings
+	* If loading fails, it will return an empty game manager with given width and height.
+	* @param saveFilePath the path to the savefile used as surface and species bank
+	* @param width_failsafe	used only if loading fails
+	* @param height_failsafe used only if loading fails
+	* @return the newly created game manager with all the data and graphs of a loaded savefile, but with no members and starting at frame 0
 	*/ 
-	public static GameManager buildAllNetsLoadedGame(String saveFilePath, int width, int height) {
+	public static GameManager buildAllNetsLoadedGame(String saveFilePath, int width_failsafe, int height_failsafe) {
 		GameManager game = Saver.loadGame(saveFilePath);
 		game.initTransientFields();
 		game.reinitWorld();
-		return game != null ? game : buildEmptyGame(width, height);
+		return game != null ? game : buildEmptyGame(width_failsafe, height_failsafe);
 	}
 	
 	/**
-	* @param width width used in case the loading fails
-	* @param height height used in case the loading fails
-	* @return the exact replica of the gamemanager saved
+	* If loading fails, it will return an empty game manager with given width and height.
+	* @param saveFilePath the path to the savefile used
+	* @param width_failsafe	used only if loading fails
+	* @param height_failsafe used only if loading fails
+	* @return the loaded game manager as it was saved
 	*/ 
-	public static GameManager buildFullLoadedGame(String saveFilePath, int width, int height) {
+	public static GameManager buildFullLoadedGame(String saveFilePath, int width_failsafe, int height_failsafe) {
 		GameManager game = Saver.loadGame(saveFilePath);
 		game.initTransientFields();
-		return game != null ? game : buildEmptyGame(width, height);
+		return game != null ? game : buildEmptyGame(width_failsafe, height_failsafe);
 	}
 
 
 	// ========== UTILITY METHODS ==========
 
 	private static Surface ground, water, grassD, grassB, sand, stoneD, stoneB, magma, lava;
-	private static Species human, chicken, boar, birch, oak;
+	private static Species human, chicken, birch, oak;
+	//private static Species boar;			// Boar disabled to have only 4 different species which is better looking + to have an image available for the demo
 
+	/**
+	* Creates all the basic surfaces.
+	*/ 
 	private static void initBasicSurfaces() {
 		ground = new Surface("Ground", "res/Tile_Dirt.png"); 
 		ground.setColor(new Color(196,161,126));
@@ -171,16 +184,23 @@ public class GameManagerBuilder {
 		lava.setColor(new Color(214,77,24));
 	}
 
+	/**
+	* Creates all the basic surfaces.
+	*/ 
 	private static void initBasicSpecies() {
 		human = new Species("Human", "res/Animal_Human.png");
 		chicken = new Species("Chicken", "res/Animal_Chicken.png");
-		boar = new Species("Boar", "res/Animal_Boar.png");
+		//boar = new Species("Boar", "res/Animal_Boar.png");
 		birch = new Species("Birch", "res/Tree_Birch.png");
 		birch.setTriggerTime(10);
 		oak = new Species("Oak", "res/Tree_Oak.png");
 		oak.setTriggerTime(15);
 	}
 
+	/**
+	* Adds all basic surfaces and species to game
+	* @param game
+	*/ 
 	private static void initBasicGameManager(GameManager game) {
 		// Surfaces
 		game.addSurface(ground);
@@ -196,11 +216,15 @@ public class GameManagerBuilder {
 		// Species
 		game.addSpecies(human);
 		game.addSpecies(chicken);
-		game.addSpecies(boar);
+		//game.addSpecies(boar);
 		game.addSpecies(birch);
 		game.addSpecies(oak);
 	}
 
+	/**
+	* Adds terrain rules to the demo GameManager.
+	* @param game
+	*/ 
 	private static void addDemoTerrain(GameManager game) {
 		// TODO
 		// fill grid with water
@@ -208,21 +232,38 @@ public class GameManagerBuilder {
 		// add come grass
 	}
 
+	/**
+	* Adds generation rules to the demo GameManager.
+	* @param game
+	*/ 
 	private static void addDemoGenRule(GameManager game) {
 		// TODO
 		// generate new humans at the center of the map
 	}
-
+	
+	/**
+	* Adds generation rules to the demo GameManager.
+	* @param game
+	*/ 
 	private static void addDemoMoveRule(GameManager game) {
 		// TODO
 		// move in a random direction
 	}
 
+	/**
+	* Adds generation rules to the demo GameManager.
+	* @param game
+	*/ 
 	private static void addDemoDeathRule(GameManager game) {
 		// TODO
 		// die if too old or if in water
 	}
 
+	/**
+	* Copies all elements (i.e. Surface and Species) from a GameManager to another.
+	* @param gameCopy the GameManager that copies the other
+	* @param gameCopied the GameManager that is used as source by the other
+	*/ 
 	private static void copyElementsGameManager(GameManager gameCopy, GameManager gameCopied) {
 		for (int i = 1; i < gameCopied.getSurfaceArray().size(); i++)
 				gameCopy.addSurface(gameCopied.getSurfaceArray().get(i));

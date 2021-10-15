@@ -316,6 +316,7 @@ public class GameFrame extends JFrame {
 /* TODO :
 - find a way to ask to update world if element image changed		=>		listener
 - debug element list : if clicked then drag then release on another element, for JList it will be the selected one but not for the detail panel
+- stops save/load if folder/file exists with savefile name
 - terrain visualizer is a bit laggy
 ////////////////////////////////////////////////
 - saving on exit
