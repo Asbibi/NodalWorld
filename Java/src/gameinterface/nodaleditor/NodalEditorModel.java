@@ -82,7 +82,7 @@ public class NodalEditorModel implements Serializable {
 
 		changeListeners = new LinkedList<ChangeListener>();
 		
-		// copy needed model data from loded save file
+		// copy needed model data from loded save file if there is one, and register in any case
 		network.copyFromLoadedAndAttachEditorModel(this);
 	}
 	public void copyNonTransientFields(NodalEditorModel otherModel) {
@@ -99,12 +99,6 @@ public class NodalEditorModel implements Serializable {
 			NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
 			infoPanels.put(node, infoPanel);
 		}
-		System.out.println("info panel loaded with: " + game);
-		
-		/*
-		 NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
-		infoPanels.put(node, infoPanel);
-		 */
 	}
 
 

@@ -4,7 +4,7 @@ import gamelogic.TerrainModel;
 import gamelogic.Vec2D;
 
 /**
-* A terrain model used to mask a terrain model with another one.
+* A terrain model used to mask a terrain model with another one (substraction).
 */ 
 public class TerrainModelMask implements TerrainModel {
 
@@ -26,14 +26,14 @@ public class TerrainModelMask implements TerrainModel {
 
 	/**
 	* @param pos
-	* @return true if the given position is inside both terrain models (the layer and the mask)
+	* @return true if the given position is inside layer and outside mask
 	*/ 
 	@Override
 	public boolean hasSurfaceAt(Vec2D pos) {
 		if (layer == null || mask == null)
 			return false;
 		
-		return (layer.hasSurfaceAt(pos) && mask.hasSurfaceAt(pos));
+		return (layer.hasSurfaceAt(pos) && !mask.hasSurfaceAt(pos));
 	}
 
 }
