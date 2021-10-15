@@ -20,6 +20,9 @@ import gamelogic.Vec2D;
 */ 
 public class Port implements Serializable {
 
+
+	// ========== MEMBER VARIABLES ==========
+
 	private NodeBox parent;
 	private double x, y, scale, size;
 	private Input input;
@@ -27,10 +30,15 @@ public class Port implements Serializable {
 
 	private double tx, ty, ds;
 
+
+	// ========== INITIALIZATION ==========
+
 	/**
 	* @param parent
 	* @param x
 	* @param y
+	* @param scale
+	* @param size
 	*/ 
 	public Port(NodeBox parent, double x, double y, double scale, double size) {
 		this.parent = parent;
@@ -50,6 +58,8 @@ public class Port implements Serializable {
 	* @param parent
 	* @param x
 	* @param y
+	* @param scale
+	* @param size
 	* @param input
 	*/ 
 	public Port(NodeBox parent, double x, double y, double scale, double size, Input input) {
@@ -61,6 +71,8 @@ public class Port implements Serializable {
 	* @param parent
 	* @param x
 	* @param y
+	* @param scale
+	* @param size
 	* @param output
 	*/ 
 	public Port(NodeBox parent, double x, double y, double scale, double size, Output output) {
@@ -68,11 +80,17 @@ public class Port implements Serializable {
 		this.output = output;
 	}
 
+
+	// ========== BASIC GETTERS AND SETTERS ==========
+
 	/**
 	* @return the parent node box
 	*/ 
 	public NodeBox getBox() { return parent; }
 
+	/**
+	* @return the current scale
+	*/ 
 	public double getScale() { return scale*(1+ds); }
 
 	/**
@@ -84,31 +102,6 @@ public class Port implements Serializable {
 	* @return y coordinate
 	*/ 
 	public double getY() { return y*getScale() + ty; }
-
-	/**
-	* @param tx
-	* @param ty
-	*/ 
-	public void translate(double tx, double ty) {
-		this.tx = tx;
-		this.ty = ty;
-	}
-
-	public void commitTranslate() {
-		x += tx/getScale();
-		y += ty/getScale();
-		tx = 0;
-		ty = 0;
-	}
-
-	public void scale(double ds) {
-		this.ds = ds;
-	}
-
-	public void commitScale() {
-		this.scale *= 1+ds;
-		ds = 0;
-	}
 
 	/**
 	* @return the port size
@@ -135,12 +128,59 @@ public class Port implements Serializable {
 	*/ 
 	public Output getOutput() { return output; }
 
+
+	// ========== TRANSLATION AND SCALING ==========
+
+	/**
+	* Set the current translation
+	*  
+	* @param tx
+	* @param ty
+	*/ 
+	public void translate(double tx, double ty) {
+		this.tx = tx;
+		this.ty = ty;
+	}
+
+	/**
+	* Record the current translation as permanent
+	*/ 
+	public void commitTranslate() {
+		x += tx/getScale();
+		y += ty/getScale();
+		tx = 0;
+		ty = 0;
+	}
+
+	/**
+	* Set the current scaling
+	* 
+	* @param ds
+	*/ 
+	public void scale(double ds) {
+		this.ds = ds;
+	}
+
+	/**
+	* Record the current scaling as permanent
+	*/ 
+	public void commitScale() {
+		this.scale *= 1+ds;
+		ds = 0;
+	}
+
+
+	// ========== HIT TESTING FOR USER INTERACTION ==========
+
 	/**
 	* @return true if the pos is at a distance smaller than size to the port, otherwise false
 	*/ 
 	public boolean hit(double xPos, double yPos) {
 		return ((getX()-xPos)*(getX()-xPos)+(getY()-yPos)*(getY()-yPos) <= getSize()*getSize());
 	}
+
+
+	// ========== PAINTING ==========
 	
 	/**
 	* @return The color to use to represent the port

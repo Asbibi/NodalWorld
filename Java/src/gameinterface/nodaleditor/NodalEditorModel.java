@@ -28,6 +28,9 @@ import java.lang.Class;
 */ 
 public class NodalEditorModel implements Serializable {
 
+
+	// ========== MEMBER VARIABLES ==========
+
 	private transient GameManager game;
 	private transient Network network;
 	
@@ -47,6 +50,9 @@ public class NodalEditorModel implements Serializable {
 	private transient int curSpeciesRow, curTerrainSlotRow;
 
 	private transient Collection<ChangeListener> changeListeners;
+
+
+	// ========== INITIALIZATION ==========
 
 	/**
 	* @param game
@@ -102,7 +108,7 @@ public class NodalEditorModel implements Serializable {
 	}
 
 
-	// ========== Game ==========
+	// ========== GAME ==========
 
 	/**
 	* @return the game manager
@@ -110,7 +116,7 @@ public class NodalEditorModel implements Serializable {
 	public GameManager getGameManager() { return game; }
 
 
-	// ========== Network ==========
+	// ========== NETWORK ==========
 
 	/**
 	* @return the network the model represents
@@ -118,6 +124,8 @@ public class NodalEditorModel implements Serializable {
 	public Network getNetwork() { return network; }
 
 	/**
+	* Add a node box corresponding to the given node at position (x, y)
+	* 
 	* @param node
 	* @param x
 	* @param y
@@ -138,6 +146,11 @@ public class NodalEditorModel implements Serializable {
 		triggerChangeListeners();
 	}
 
+	/**
+	* Remove the node corresponding to the given node box from the network, and all its connections.
+	*  
+	* @param box
+	*/ 
 	public void removeNode(NodeBox box) {
 		network.removeNode(box.getNode());
 		infoPanels.remove(box.getNode());
@@ -157,8 +170,12 @@ public class NodalEditorModel implements Serializable {
 	}
 
 	/**
+	* Add a link between two ports if it is possible (constraints are detailed in the network class).
+	* 
 	* @param portOut
 	* @param portIn
+	* 
+	* @see Network
 	*/ 
 	public void link(Port portOut, Port portIn) {
 		Node source = portOut.getBox().getNode();
@@ -172,6 +189,8 @@ public class NodalEditorModel implements Serializable {
 	}
 
 	/**
+	* Remove the link connecting an input port (given as parameter) to any other output port, if it exists
+	* 
 	* @param port
 	*/ 
 	public void unlink(Port port) {
@@ -185,7 +204,7 @@ public class NodalEditorModel implements Serializable {
 	}
 
 
-	// ========== Node Boxes and Ports ==========
+	// ========== NODE BOXES AND PORTS ==========
 
 	/**
 	* @return all the node boxes
@@ -252,14 +271,25 @@ public class NodalEditorModel implements Serializable {
 		return opt.orElse(null);
 	}
 
+	/**
+	* @return the current global scale of the editor
+	*/ 
 	public double getScale() { return scale*(1+ds); }
 
+	/**
+	* Set the current global scale of the editor
+	* 
+	* @param ds
+	*/ 
 	public void scale(double ds) {
 		this.ds = ds;
 		for(NodeBox box : boxes) box.scale(ds);
 		triggerChangeListeners();
 	}
 
+	/**
+	* Record the current global scaling as permanent
+	*/ 
 	public void commitScale() {
 		scale = getScale();
 		ds = 0;
@@ -331,6 +361,9 @@ public class NodalEditorModel implements Serializable {
 
 	// ========== Interaction ==========
 
+	/**
+	* @param b the user begins/end editing a link
+	*/ 
 	public void setEditingLink(boolean b) {
 		if(editingLink != b) {
 			editingLink = b;
@@ -338,8 +371,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is editing a link
+	*/ 
 	public boolean isEditingLink() { return editingLink; }
 
+	/**
+	* @param b the user begins/end moving the selection
+	*/ 
 	public void setMovingSelection(boolean b) {
 		if(movingSelection != b) {
 			movingSelection = b;
@@ -347,8 +386,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is moving the selection
+	*/ 
 	public boolean isMovingSelection() { return movingSelection; }
 
+	/**
+	* @param b the user begins/end selecting an area
+	*/ 
 	public void setSelectingArea(boolean b) {
 		if(selectingArea != b) {
 			selectingArea = b;
@@ -356,8 +401,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is selecting an area
+	*/
 	public boolean isSelectingArea() { return selectingArea; }
 
+	/**
+	* @param b the user begins/end panning
+	*/ 
 	public void setPanning(boolean b) {
 		if(panning != b) {
 			panning = b;
@@ -365,8 +416,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is panning
+	*/
 	public boolean isPanning() { return panning; }
 
+	/**
+	* @param b the user begins/end zooming
+	*/ 
 	public void setZooming(boolean b) {
 		if(zooming != b) {
 			zooming = b;
@@ -374,8 +431,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is zooming
+	*/
 	public boolean isZooming() { return zooming; }
 
+	/**
+	* @param b the user begins/end linking species to rule nodes
+	*/ 
 	public void setLinkingSpecies(boolean b) {
 		if(linkingSpecies != b) {
 			linkingSpecies = b;
@@ -383,8 +446,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is linking species to rule nodes
+	*/ 
 	public boolean isLinkingSpecies() { return linkingSpecies; }
 
+	/**
+	* @param b the user begins/end linking terrain slots to terrain nodes
+	*/ 
 	public void setLinkingTerrainSlot(boolean b) {
 		if(linkingTerrainSlot != b) {
 			linkingTerrainSlot = b;
@@ -392,8 +461,14 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the user is linking terrain slots to terrain nodes
+	*/ 
 	public boolean isLinkingTerrainSlot() { return linkingTerrainSlot; }
 
+	/**
+	* @param b the current network fails to execute
+	*/ 
 	public void setOnAlert(boolean b) {
 		if(onAlert != b) {
 			onAlert = b;
@@ -401,42 +476,81 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @return the current network failed to execute
+	*/ 
 	public boolean isOnAlert() { return onAlert; }
 
+	/**
+	* @param x
+	* @param y
+	*/ 
 	public void setCursorPos(int x, int y) {
 		xCursor = x;
 		yCursor = y;
 		triggerChangeListeners();
 	}
 
+	/**
+	* @return the last recorded cursor position on the x-axis
+	*/ 
 	public int getXCursor() { return xCursor; }
 
+	/**
+	* @return the last recorded cursor position on the y-axis
+	*/ 
 	public int getYCursor() { return yCursor; }
 
-	public void setCurrentPort(Port port) {
-		curPort = port;
-		triggerChangeListeners();
-	}
-
+	/**
+	* @param x
+	* @param y
+	*/ 
 	public void setReferencePos(int x, int y) {
 		xRef = x;
 		yRef = y;
 		triggerChangeListeners();
 	}
 
+	/**
+	* @return the last recorded reference position on the x-axis
+	*/ 
 	public int getXReference() { return xRef; }
 
+	/**
+	* @return the last recorded reference position on the y-axis
+	*/ 
 	public int getYReference() { return yRef; }
 
+	/**
+	* @param port
+	*/ 
+	public void setCurrentPort(Port port) {
+		curPort = port;
+		triggerChangeListeners();
+	}
+
+	/**
+	* @return the currently selected port
+	*/ 
 	public Port getCurrentPort() { return curPort; }
 
+	/**
+	* @param box
+	* @return the box is part of the user selection
+	*/ 
 	public boolean isSelected(NodeBox box) { return selected.get(box); }
 
+	/**
+	* Empty the user selection
+	*/ 
 	public void clearSelection() {
 		selected.replaceAll((k, v) -> false);
 		triggerChangeListeners();
 	}
 
+	/**
+	* @param box
+	*/ 
 	public void addToSelection(NodeBox box) {
 		if(!selected.get(box)) {
 			selected.replace(box, true);
@@ -444,6 +558,9 @@ public class NodalEditorModel implements Serializable {
 		}
 	}
 
+	/**
+	* @param box
+	*/ 
 	public void soloSelection(NodeBox box) {
 		selected.replaceAll((k, v) -> false);
 		selected.replace(box, true);
@@ -451,26 +568,47 @@ public class NodalEditorModel implements Serializable {
 		triggerChangeListeners();
 	}
 
+	/**
+	* @return the node info panel currently displayed
+	*/ 
 	public JPanel getCurrentInfoPanel() {
 		return ((curInfoPanel==null) ? defaultInfoPanel : curInfoPanel);
 	}
 
+	/**
+	* @param row the row or index of the species in the species array
+	*/ 
 	public void setCurrentSpeciesRow(int row) {
 		curSpeciesRow = row;
 		triggerChangeListeners();
 	}
 
+	/**
+	* @return the last selected species row (when network is using species)
+	*/ 
 	public int getCurrentSpeciesRow() { return curSpeciesRow; }
 
+	/**
+	* @return the last selected species (when network is using species)
+	*/ 
 	public Species getCurrentSpecies() { return game.getSpecies(curSpeciesRow+1); }
 
+	/**
+	* @param row the row or index of the slot in the terrain's slot array
+	*/ 
 	public void setCurrentTerrainSlotRow(int row) {
 		curTerrainSlotRow = row;
 		triggerChangeListeners();
 	}
 
+	/**
+	* @return the last selected terrain slot row (when network is using terrains)
+	*/ 
 	public int getCurrentTerrainSlotRow() { return curTerrainSlotRow; }
 
+	/**
+	* @return the last selected terrain slot (when network is using terrains)
+	*/ 
 	public TerrainSlot getCurrentTerrainSlot() { return game.getTerrain().getSlot(curTerrainSlotRow); }
 
 
@@ -486,6 +624,9 @@ public class NodalEditorModel implements Serializable {
 	*/ 
 	public void removeChangeListener(ChangeListener listener) { changeListeners.remove(listener); }
 
+	/**
+	* Notify listeners that the model internal state has changed
+	*/ 
 	private void triggerChangeListeners() {
 		for(ChangeListener listener : changeListeners)
 			listener.stateChanged(new ChangeEvent(this));

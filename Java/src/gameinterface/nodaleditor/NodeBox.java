@@ -35,6 +35,9 @@ import java.lang.Class;
 */ 
 public class NodeBox implements Serializable {
 
+
+	// ========== MEMBER VARIABLES ==========
+
 	private Node node;
 	private double x, y, scale;
 
@@ -44,6 +47,9 @@ public class NodeBox implements Serializable {
 	private boolean valid;
 
 	private double tx, ty, ds;
+
+
+	// ========== INITIALIZATION ==========
 
 	/**
 	* @param node
@@ -126,10 +132,21 @@ public class NodeBox implements Serializable {
 	}
 
 	/**
+	* @return true if the view has been initialized, otherwise false
+	*/
+	public boolean isValid() { return valid; }
+
+
+	// ========== BASIC GETTERS AND SETTERS ==========
+
+	/**
 	* @return node represented by this box
 	*/ 
 	public Node getNode() { return node; }
 
+	/**
+	* @return the current scale
+	*/ 
 	public double getScale() { return scale*(1+ds); }
 
 	/**
@@ -141,40 +158,6 @@ public class NodeBox implements Serializable {
 	* @return top left y coordinate
 	*/ 
 	public double getY() { return y*getScale() + ty; }
-
-	/**
-	* @param tx
-	* @param ty
-	*/ 
-	public void translate(double tx, double ty) {
-		this.tx = tx;
-		this.ty = ty;
-		for(Port port : ports) port.translate(tx, ty);
-	}
-
-	public void commitTranslate() {
-		x += tx/getScale();
-		y += ty/getScale();
-		tx = 0;
-		ty = 0;
-		for(Port port : ports) port.commitTranslate();
-	}
-
-	public void scale(double ds) {
-		this.ds = ds;
-		for(Port port : ports) port.scale(ds);
-	}
-
-	public void commitScale() {
-		this.scale *= 1+ds;
-		ds = 0; 
-		for(Port port : ports) port.commitScale();
-	}
-
-	/**
-	* @return true if the view has been initialized, otherwise false
-	*/
-	public boolean isValid() { return valid; }
 
 	/**
 	* @return the padding on left and right of the box
@@ -196,6 +179,54 @@ public class NodeBox implements Serializable {
 	*/ 
 	public Collection<Port> getPorts() { return ports; }
 
+
+	// ========== TRANSLATION AND SCALING ==========
+
+	/**
+	* Set the current translation
+	*  
+	* @param tx
+	* @param ty
+	*/ 
+	public void translate(double tx, double ty) {
+		this.tx = tx;
+		this.ty = ty;
+		for(Port port : ports) port.translate(tx, ty);
+	}
+
+	/**
+	* Record the current translation as permanent
+	*/ 
+	public void commitTranslate() {
+		x += tx/getScale();
+		y += ty/getScale();
+		tx = 0;
+		ty = 0;
+		for(Port port : ports) port.commitTranslate();
+	}
+
+	/**
+	* Set the current scaling
+	* 
+	* @param ds
+	*/ 
+	public void scale(double ds) {
+		this.ds = ds;
+		for(Port port : ports) port.scale(ds);
+	}
+
+	/**
+	* Record the current scaling as permanent
+	*/ 
+	public void commitScale() {
+		this.scale *= 1+ds;
+		ds = 0; 
+		for(Port port : ports) port.commitScale();
+	}
+
+
+	// ========== HIT TESTING FOR USER INTERACTION ==========
+
 	/**
 	* @return true if the pos is inside the box, otherwise false
 	*/ 
@@ -206,6 +237,13 @@ public class NodeBox implements Serializable {
 				&& yPos <= getY()+getHeight());
 	}
 
+
+	// ========== PAINTING ==========
+
+	/**
+	* @param g2d
+	* @param editor
+	*/ 
 	public void paint(Graphics2D g2d, NodalEditor editor) {
 		FontMetrics metrics = g2d.getFontMetrics();
 		int lineHeight = metrics.getAscent()+metrics.getDescent()+metrics.getLeading();
@@ -238,7 +276,7 @@ public class NodeBox implements Serializable {
 	}
 
 
-	// ========== PRIVATE UTILITY METHODS ==========
+	// ========== UTILITY METHODS ==========
 
 	private Shape portShape(Port port) {
 		if(port.hasInput() && !port.getInput().hasSource()) {

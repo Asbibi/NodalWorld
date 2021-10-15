@@ -47,6 +47,7 @@ public class NodalEditorUI {
 				editor.setOnAlert(false);
 				editor.requestFocus();
 
+				// Zooming
 				if(e.isShiftDown()) {
 					editor.setReferencePos(e.getX(), e.getY());
 					editor.setCursorPos(e.getX(), e.getY());
@@ -54,6 +55,7 @@ public class NodalEditorUI {
 					return;
 				}
 
+				// Panning
 				if(e.isControlDown()) {
 					editor.setReferencePos(e.getX(), e.getY());
 					editor.setCursorPos(e.getX(), e.getY());
@@ -61,6 +63,7 @@ public class NodalEditorUI {
 					return;
 				}
 
+				// Selecting a port (input or output) to add or remove a link
 				Port portHit = editor.getPort(e.getX(), e.getY());
 				if(portHit != null) {
 					if(portHit.hasInput()) {
@@ -81,6 +84,8 @@ public class NodalEditorUI {
 					return;
 				}
 
+				// Selecting a node box 
+				// the user can start moving the selection
 				NodeBox box = editor.getBox(e.getX(), e.getY());
 				if(box != null) {
 					if(!editor.isSelected(box)) {
@@ -92,6 +97,7 @@ public class NodalEditorUI {
 					return;
 				}
 
+				// Selecting a species (when using them) to add or remove a link to a terminal node
 				int speciesRow = editor.getSpeciesRow(e.getX(), e.getY());
 				if(speciesRow >= 0) {
 					editor.setCurrentSpeciesRow(speciesRow);
@@ -101,6 +107,7 @@ public class NodalEditorUI {
 					return;
 				}
 
+				// Selecting a terrain slot (when using them) to add or remove a link to a terrain node
 				int terrainSlotRow = editor.getTerrainSlotRow(e.getX(), e.getY());
 				if(terrainSlotRow >= 0) {
 					editor.setCurrentTerrainSlotRow(terrainSlotRow);
@@ -110,6 +117,7 @@ public class NodalEditorUI {
 					return;
 				}
 
+				// Default press on background clears the selection
 				editor.clearSelection();
 				editor.setReferencePos(e.getX(), e.getY());
 				editor.setCursorPos(e.getX(), e.getY());
@@ -118,6 +126,7 @@ public class NodalEditorUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// Node menu appears on right click
 				if(SwingUtilities.isRightMouseButton(e)) {
 					editor.showNodeMenu(e.getX(), e.getY());
 				}
@@ -126,10 +135,14 @@ public class NodalEditorUI {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				if(editor.isEditingLink()) {
+					// If the user tried to create a new link
 					Port portHit = editor.getPort(e.getX(), e.getY());
 					if(portHit != null) {
+
+						// Delete previous one if it exists
 						editor.unlink(portHit);
 
+						// Create new link
 						if(editor.getCurrentPort().hasInput() && portHit.hasOutput()) {
 							editor.link(portHit, editor.getCurrentPort());
 						} else if(editor.getCurrentPort().hasOutput() && portHit.hasInput()) {
@@ -139,25 +152,31 @@ public class NodalEditorUI {
 					editor.setEditingLink(false);
 
 				} else if(editor.isMovingSelection()) {
+					// Record the translation as permanent
 					for(NodeBox box : editor.getBoxes()) {
 						if(editor.isSelected(box)) box.commitTranslate();
 					}
 					editor.setMovingSelection(false);
 
 				} else if(editor.isPanning()) {
+					// Record the translation as permanent
 					for(NodeBox box : editor.getBoxes()) box.commitTranslate();
 					editor.setPanning(false);
 
 				} else if(editor.isZooming()) {
+					// Record the scaling as permanent
 					editor.commitScale();
 					editor.setZooming(false);
 
 				} else if(editor.isSelectingArea()) {
+					// Compute rectangular selection area
 					int x = Math.min(editor.getXCursor(), editor.getXReference());
 					int y = Math.min(editor.getYCursor(), editor.getYReference());
 					int w = Math.abs(editor.getXCursor()-editor.getXReference());
 					int h = Math.abs(editor.getYCursor()-editor.getYReference());
 					Rectangle2D selectRect = new Rectangle2D.Double(x, y, w, h);
+
+					// Add all nodes that intersects it to the selection
 					for(NodeBox box : editor.getBoxes()) {
 						Rectangle2D boxRect = new Rectangle2D.Double(box.getX()-box.getPadding(), box.getY(), box.getWidth()+2*box.getPadding(), box.getHeight());
 						if(selectRect.intersects(boxRect)) {
@@ -167,6 +186,7 @@ public class NodalEditorUI {
 					editor.setSelectingArea(false);
 
 				} else if(editor.isLinkingSpecies()) {
+					// Connect a rule to a species via a terminal node
 					NodeBox box = editor.getBox(e.getX(), e.getY());
 					if(box != null && box.getNode() instanceof TerminalNode) {
 						editor.getGameManager().connectRuleToSpecies(((TerminalNode) box.getNode()).getRule(), editor.getCurrentSpecies());
@@ -174,6 +194,7 @@ public class NodalEditorUI {
 					editor.setLinkingSpecies(false);
 
 				} else if(editor.isLinkingTerrainSlot()) {
+					// Connect a terrain model to a slot via a terrain node
 					NodeBox box = editor.getBox(e.getX(), e.getY());
 					if(box != null && box.getNode() instanceof TerrainNode) {
 						editor.getCurrentTerrainSlot().connect((TerrainNode) (box.getNode()));
@@ -187,15 +208,19 @@ public class NodalEditorUI {
 		editor.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				// Record current mouse position
 				editor.setCursorPos(e.getX(), e.getY());
 
 				if(editor.isMovingSelection()) {
+					// Temporary translation
 					int tx = editor.getXCursor()-editor.getXReference();
 					int ty = editor.getYCursor()-editor.getYReference();
 					for(NodeBox box : editor.getBoxes()) {
 						if(editor.isSelected(box)) box.translate(tx, ty);
 					}
+
 				} else if(editor.isPanning()) {
+					// Temporary translation
 					int tx = editor.getXCursor()-editor.getXReference();
 					int ty = editor.getYCursor()-editor.getYReference();
 					for(NodeBox box : editor.getBoxes()) {
@@ -203,6 +228,7 @@ public class NodalEditorUI {
 					}
 
 				} else if(editor.isZooming()) {
+					// Temporary scaling
 					double ds = Math.tanh((editor.getXCursor()-editor.getXReference())*0.001);
 					editor.scale(ds);
 				}
@@ -213,6 +239,7 @@ public class NodalEditorUI {
 			@Override
 			public void keyPressed(KeyEvent e)  {
 				if(e.getKeyCode() == KeyEvent.VK_DELETE) {
+					// Delete nodes in selection
 					LinkedList<NodeBox> boxesToRemove = new LinkedList<NodeBox>();
 					for(NodeBox box : editor.getBoxes()) {
 						if(editor.isSelected(box)) boxesToRemove.add(box);
@@ -237,12 +264,14 @@ public class NodalEditorUI {
 		g2d.setRenderingHints(rh);
 		g2d.setStroke(new BasicStroke(3));
 
+		// Initialize node box geometry if it hasn't already been done
 		for(NodeBox box : editor.getBoxes()) {
 			if(!box.isValid()) {
 				box.init(6, 5, 4, g2d.getFontMetrics());
 			}
 		}
 
+		// Links between terminal nodes and species
 		if(editor.isUsingRules()) {
 			GameManager game = editor.getGameManager();
 			int row = -1;
@@ -267,12 +296,14 @@ public class NodalEditorUI {
 				row++;
 			}
 
+			// Draw incomplete link
 			if(editor.isLinkingSpecies()) {
 				g2d.setColor(Color.red);
 				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentSpeciesRow()+0.5), editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 
+		// Links between terrain nodes and slots
 		if(editor.isUsingTerrains()) {
 			Terrain terrain = editor.getGameManager().getTerrain();
 			int row = 0;
@@ -295,18 +326,21 @@ public class NodalEditorUI {
 				row++;
 			}
 
+			// Draw incomplete link
 			if(editor.isLinkingTerrainSlot()) {
 				g2d.setColor(Color.red);
 				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentTerrainSlotRow()+0.5), editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 
+		// Draw nodes (adapt font size to scale)
 		double baseFontSize = g2d.getFont().getSize();
 		g2d.setFont(g2d.getFont().deriveFont((float) (baseFontSize*editor.getScale())));
 		for(NodeBox box : editor.getBoxes()) {
 			box.paint(g2d, editor);
 		}
 
+		// Draw links
 		for(NodeBox box : editor.getBoxes()) {
 			for(Port p : box.getPorts()) {
 				if(p.hasInput() && p.getInput().hasSource()) {
@@ -317,12 +351,13 @@ public class NodalEditorUI {
 			}
 		}
 		
-
+		// Draw incomplete link
 		if(editor.isEditingLink()) {
 			g2d.setColor(Color.red);
 			g2d.draw(new Line2D.Double(editor.getCurrentPort().getX(), editor.getCurrentPort().getY(), editor.getXCursor(), editor.getYCursor()));
 		}
 
+		// Selection area
 		if(editor.isSelectingArea()) {
 			int x = Math.min(editor.getXCursor(), editor.getXReference());
 			int y = Math.min(editor.getYCursor(), editor.getYReference());
@@ -333,6 +368,7 @@ public class NodalEditorUI {
 			g2d.fill(selectRect);
 		}
 
+		// Alert signal when an execution of network failed
 		if(editor.isOnAlert()) {
 			g2d.setColor(new Color(255, 0, 0, 100));
 			Rectangle2D alertRect = new Rectangle2D.Double(0, 0, editor.getSize().width, editor.getSize().height);

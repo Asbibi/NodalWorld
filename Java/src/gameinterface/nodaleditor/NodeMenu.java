@@ -92,7 +92,7 @@ public class NodeMenu extends JPopupMenu {
 		menuRandom.add(buildNodeItem(() -> new RandGaussDoubleNode()));
 		return menuRandom;	
 	}
-	//
+	
 	private JMenu buildMenuTrigo() {
 		JMenu menuTrigo = new JMenu("Trigonometry");
 		menuTrigo.add(buildNodeItem(() -> new TrigoPINode()));
@@ -317,7 +317,7 @@ public class NodeMenu extends JPopupMenu {
 	public void removeActionListener(ActionListener listener) { actionListeners.remove(listener); }
 
 	/**
-	*
+	* Notify the listeners that a new node has been created
 	*/ 
 	public void fireActionListeners() {
 		for(ActionListener listener : actionListeners) {
