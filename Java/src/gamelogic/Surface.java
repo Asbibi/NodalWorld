@@ -1,8 +1,6 @@
 package gamelogic;
 
 import java.awt.Color;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.lang.Object;
 import java.util.List;
 

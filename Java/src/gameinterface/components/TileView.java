@@ -5,17 +5,15 @@ import java.awt.*;
 import gameinterface.WorldPanel;
 
 /**
-* This class is responsible for the view part of the TileComponent
+* This class is responsible for the view part of the TileComponent.
 * 
 * @see TileComponent
 */ 
 public class TileView {
 
 	/**
-	* Display the tile entierly
-	* 
-	* @param The graphic context used to display
-	* @param The model displayed
+	* @param graphics2D the Graphic Context to use
+	* @param component the tile component to display
 	*/ 
 	public void paint(Graphics2D g, TileComponent tile) {
 		paintSurface(g, tile);
@@ -27,10 +25,9 @@ public class TileView {
 	
 	
 	/**
-	* Display the surface of the tile
-	* 
-	* @param The graphic context used to display
-	* @param The model displayed
+	* Paints the surface of the tile.
+	* @param graphics2D the Graphic Context to use
+	* @param component the tile component to display
 	*/
 	private void paintSurface(Graphics2D g, TileComponent tile) {
 		if (tile.isSurfaceEmpty()) {
@@ -49,11 +46,11 @@ public class TileView {
 			}
 		}		
 	}
+	
 	/**
-	* Display the species on the tile
-	* 
-	* @param The graphic context used to display
-	* @param The model displayed
+	* Paints the species on the tile with their count if greater than one.
+	* @param graphics2D the Graphic Context to use
+	* @param component the tile component to display
 	*/
 	private void paintSpecies(Graphics2D g, TileComponent tile) {
 		int maxSpeciesPerLine = tile.getOwner().getSpeciesSlotNumber_sqrt();
@@ -85,7 +82,7 @@ public class TileView {
 			if (currentCount == 0)
 				continue;
 			
-			Image speciesImage = tile.getOwner().getSpeciesImage(i + 1);	// as the empty species isn't represent in the tile species
+			Image speciesImage = tile.getOwner().getSpeciesImage(i + 1);	// +1 because the empty species isn't represent in the tile species
 			if (speciesImage == null || speciesImage.getHeight(null) < 0) {
 				g.setColor(tile.getOwner().getMissingSpeciesImageColor());
 		        g.fillRoundRect(x, y, speciesWidth, speciesHeight, 0, 0);
@@ -102,13 +99,15 @@ public class TileView {
 		    g.drawString(Integer.toString(currentCount), x + 2, y + countHeight -1);
         }
 	}
+	
 	/**
-	* Display the grid over the tile.
+	* Paints the grid over the tile.
 	* It's basically a rectangle around the tile.
-	* Color and thickness are retrieved from the tile's owner (WorldPanel)
+	* Color and thickness are retrieved from the tile's owner (a WorldPanel)
 	* 
-	* @param The graphic context used to display
-	* @param The model displayed
+	* @param graphics2D the Graphic Context to use
+	* @param component the tile component to display
+	* 
 	* @see WorldPanel
 	*/
 	private void paintGrid(Graphics2D g, TileComponent tile) {

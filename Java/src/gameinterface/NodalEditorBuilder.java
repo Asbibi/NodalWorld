@@ -4,7 +4,6 @@ import gamelogic.GameManager;
 import gamelogic.rules.*;
 
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -12,7 +11,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
-import java.awt.BorderLayout;
 
 /**
 * A class with only static methods, meant to build the standard node editors we use in the software.

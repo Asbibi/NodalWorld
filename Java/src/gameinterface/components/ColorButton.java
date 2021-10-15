@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import gameinterface.ColorDialogBox;
 

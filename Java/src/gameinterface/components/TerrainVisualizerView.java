@@ -5,22 +5,20 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import gamelogic.Surface;
-import gamelogic.Terrain;
 import gamelogic.TerrainSlot;
 import gamelogic.Vec2D;
 
 /**
-* View of the TerrainStackVisualizer component
+* View of the TerrainVisualizerComponent
 * 
 * @see TerrainVisualizerComponent
 */
 public class TerrainVisualizerView {
 	
 	/**
-	* The global paint method of the view 
-	* @param the Graphic Context to use to display the color wheel
-	* @param the TerrainStackVisualizer controller to display
-	*/
+	* @param graphics2D the Graphic Context to use
+	* @param component the terrain visualizer model/controller to display
+	*/ 
 	public void paint(Graphics2D g2d, TerrainVisualizerComponent model) {
 		if (model.getTerrain().getSlots().isEmpty())
 			return;
@@ -29,6 +27,8 @@ public class TerrainVisualizerView {
 		int offset_y = model.getOffset_y();
 		final Integer delta_y = model.getDelta_y();
 		final Integer delta_x = model.getDelta_x();
+		final Integer w = model.getTerrain().getWidth();
+		final Integer h = model.getTerrain().getHeight();
 		int y = model.getOffset_Starting_y();
 		
 		boolean focus = !model.getOnlyFocusedInColor();
@@ -37,32 +37,31 @@ public class TerrainVisualizerView {
 			y -= offset_y;
 			if (i == model.getFocusedLayer()) {
 				focus = true;
-				paintOneLayer(g2d, model.getTerrain(), model.getTerrain().getSlot(i), delta_x, y, delta_x, delta_y, focus);
-				paintBorderLayer(g2d, model.getTerrain(), delta_x, y, delta_x, delta_y);
+				paintOneSlot(g2d, model.getTerrain().getSlot(i), w, h, delta_x, y, delta_x, delta_y, focus);
+				paintBorderSlot(g2d, w, h, delta_x, y, delta_x, delta_y);
 				//model.setFocusedLayerPositionOnParentScrollBar(y - model.getTerrain().getWidth() * delta_y + 0*delta_y);
 				y -= model.getOffset_Focus_y();
 				focus = false;
 			}
 			else
-				paintOneLayer(g2d, model.getTerrain(), model.getTerrain().getSlot(i), delta_x, y, delta_x, delta_y, focus);
+				paintOneSlot(g2d, model.getTerrain().getSlot(i), w, h, delta_x, y, delta_x, delta_y, focus);
 		}
 	}
 	
 	
 	/**
-	* The paint method for one layer
-	* @param the Graphic Context to use to display the color wheel
-	* @param the layer
-	* @param the x position for the first tile of the layer
-	* @param the y position for the first tile of the layer
-	* @param the delta_x of the controller
-	* @param the delta_y of the controller
-	* @param is the layer focused
+	* The paint method for one layer.
+	* @param graphics2D the Graphic Context to use
+	* @param slot the TerrainSlot to paint
+	* @param w_terrain the width of the terrain owning the slot
+	* @param h_terrain the height of the terrain owning the slot
+	* @param x_firstTilethe x position for the first tile of the layer
+	* @param y_firstTile the y position for the first tile of the layer
+	* @param delta_x the delta_x of the controller, the x distance to represent a tile side
+	* @param delta_y the delta_y of the controller, the y distance to represent a tile side
+	* @param focus indicates if slot is focused (i.e. if it's paint with its color or the unfocused gray colors)
 	*/
-	private void paintOneLayer(Graphics2D g2d, Terrain terrain, TerrainSlot slot, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y, boolean focus) {
-		int w = terrain.getWidth();
-		int h = terrain.getHeight();
-		
+	private void paintOneSlot(Graphics2D g2d, TerrainSlot slot, final Integer w,  final Integer h, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y, boolean focus) {		
 		for (int x = 0; x < w; x++)		
 			for (int y = 0; y < h; y++) {
 				Surface surface = slot.isOccupied() ? slot.getTerrainNode().getSurfaceAt(new Vec2D(x,y)) : null;
@@ -74,18 +73,16 @@ public class TerrainVisualizerView {
 	}
 
 	/**
-	* The paint method for the border of a layer
-	* @param the Graphic Context to use to display the color wheel
-	* @param the layer
-	* @param the x position for the first tile of the layer
-	* @param the y position for the first tile of the layer
-	* @param the delta_x of the controller
-	* @param the delta_y of the controller
+	* The paint method for the border of a layer.
+	* @param graphics2D the Graphic Context to use
+	* @param w_terrain the width of the terrain owning the slot
+	* @param h_terrain the height of the terrain owning the slot
+	* @param x_firstTilethe x position for the first tile of the layer
+	* @param y_firstTile the y position for the first tile of the layer
+	* @param delta_x the delta_x of the controller, the x distance to represent a tile side
+	* @param delta_y the delta_y of the controller, the y distance to represent a tile side
 	*/
-	private void paintBorderLayer(Graphics2D g2d, Terrain terrain, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y) {
-		int w = terrain.getWidth();
-		int h = terrain.getHeight();
-				
+	private void paintBorderSlot(Graphics2D g2d, final Integer w,  final Integer h, int x_firstTile, int y_firstTile, final Integer delta_x, final Integer delta_y) {
 		int x = x_firstTile;
 		int y = y_firstTile;
 		
@@ -99,13 +96,13 @@ public class TerrainVisualizerView {
 	
 
 	/**
-	* The paint method for a regular (non empty) tile : it's displayed as a filled losange
-	* @param the Graphic Context to use to display the color wheel
-	* @param the color of the tile (from its Surface)
-	* @param the x position of the tile
-	* @param the y position of the tile
-	* @param the delta_x of the controller
-	* @param the delta_y of the controller
+	* The paint method for a regular (non empty) tile : it's displayed as a losange filled with the tile's surface's color.
+	* @param graphics2D the Graphic Context to use	
+	* @param color the color of the tile (should be got from its Surface)
+	* @param x the x position of the tile to paint
+	* @param y the y position of the tile to paint
+	* @param delta_x the delta_x of the controller, the x distance to represent a tile side
+	* @param delta_y the delta_y of the controller, the y distance to represent a tile side
 	*/
 	private void paintSurface(Graphics2D g2d, Color color, int x, int y, final Integer delta_x, final Integer delta_y) {
 		int[] xs = {x,			x-delta_x,	x,			x+delta_x};
@@ -114,13 +111,13 @@ public class TerrainVisualizerView {
 		g2d.fillPolygon(xs, ys, 4);
 	}
 	/**
-	* The paint method for an empty tile : it's displayed as a losange border
-	* @param the Graphic Context to use to display the color wheel
-	* @param the x position of the tile
-	* @param the y position of the tile
-	* @param the delta_x of the controller
-	* @param the delta_y of the controller
-	* @param is the layer focused
+	* The paint method for a regular (non empty) tile : it's displayed as a losange filled with the tile's surface's color.
+	* @param graphics2D the Graphic Context to use
+	* @param x the x position of the tile to paint
+	* @param y the y position of the tile to paint
+	* @param delta_x the delta_x of the controller, the x distance to represent a tile side
+	* @param delta_y the delta_y of the controller, the y distance to represent a tile side
+	* @param focused indicates if the TerrainSlot the tile is from is the slot focused (i.e. if it's paint with its color or the unfocused gray colors)
 	*/
 	private void paintEmptySurface(Graphics2D g2d, int x, int y, final Integer delta_x, final Integer delta_y, boolean focused) {
 		int[] xs = {x,			x-delta_x,	x,			x+delta_x};

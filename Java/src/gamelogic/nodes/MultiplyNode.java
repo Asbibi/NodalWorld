@@ -5,7 +5,6 @@ import gamelogic.Input;
 import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
-import gamelogic.Vec2D;
 
 /**
 * The abstract node model used to multiply two objects (concrete subclasses are instanciated by static methods). <br/>

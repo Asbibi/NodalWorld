@@ -1,7 +1,5 @@
 package gamelogic.nodes;
 
-import java.util.Random;
-
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;

@@ -14,9 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import gamelogic.GameManager;
-import gamelogic.ImageFile;
-
 /**
 * The dialog box that will pop to start a new world.<br/>
 * This dialog box proposes 8 options to create a new world.<br/>

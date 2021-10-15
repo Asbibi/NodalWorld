@@ -3,8 +3,6 @@ package gamelogic;
 import java.io.Serializable;
 import java.lang.Object;
 
-import java.util.Collection;
-
 /**
 * Abstract model for the rules defined by the user through a network of operators.
 * Rules rely on a specific node in the network - called a terminal node - for the implementation of the apply method.

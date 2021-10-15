@@ -2,12 +2,8 @@ package gameinterface;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.*;
 
 import gameinterface.components.ColorButton;
-import gameinterface.components.ColorWheelComponent;
 
 /**
 * A property field for Color.

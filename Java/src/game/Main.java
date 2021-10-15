@@ -4,7 +4,6 @@ import gameinterface.GameFrame;
 import gameinterface.NewWorldDialogBox;
 import gamelogic.GameManager;
 import gamelogic.GameManagerBuilder;
-import gamelogic.Saver;
 
 /**
 * Class starting the game by opening a NewWorldDialogBox to create a GameManager, and a GameFrame and a GamePlayer linked to it respectively to display and update over time the GameManager.<br/>

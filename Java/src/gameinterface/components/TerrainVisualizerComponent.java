@@ -1,11 +1,9 @@
 package gameinterface.components;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -13,19 +11,21 @@ import javax.swing.JScrollPane;
 import gamelogic.Terrain;
 
 /**
-* This class allows to visualize a list of TerrainLayer from a TerrainStack.
+* This class display a visualizationof a Terrain by display separatively each of his TerrainSlots from bottom to top.
 * 
 * @see TerrainVisualizerView
-* @see TerrainLayer
+* @see Terrain
+* @see TerrainSlot
 */
 public class TerrainVisualizerComponent extends JComponent {
+	private static Color unfocusedColor  = new Color(192,192,192,192);	// a Color.lightGray with transparency
+	private static Color realFocusedColor  = Color.red;
+	
 	private TerrainVisualizerView view;
 	private Terrain terrain;
 	private int focusedLayer = 0;
 	private boolean onlyFocusedInColor = false;
 	
-	private static Color unfocusedColor  = new Color(192,192,192,192);//Color.lightGray with transparency
-	private static Color realFocusedColor  = Color.red;
 	private int delta_x = 6;
 	private int delta_y = 3;
 	private int offsetFactor_y = 5;
@@ -33,7 +33,9 @@ public class TerrainVisualizerComponent extends JComponent {
 	private int focusedLayerPositionOnParentScrollBar = 0;
 	
 	
-	
+	/**
+	* @param terrain the Terrain to visalize
+	*/
 	public TerrainVisualizerComponent(Terrain terrain) {
 		view = new TerrainVisualizerView();
 		this.terrain = terrain;
@@ -85,6 +87,9 @@ public class TerrainVisualizerComponent extends JComponent {
 		return focusedLayer;
 	}
 
+	/**
+	* @return indicates if only the focused TerrainSlot should be displayed with colors (true) or every TerrainSlots under too (false)
+	*/
 	public boolean getOnlyFocusedInColor() {
 		return onlyFocusedInColor;
 	}
@@ -107,15 +112,15 @@ public class TerrainVisualizerComponent extends JComponent {
 		return offsetFactor_y * delta_y;
 	}
 	/**
-	* @return the distance among y betwen the focused layer and the one before
+	* @return the distance among y betwen the focused TerrainSlot and the one before
 	*/
 	public int getOffset_Focus_y() {
 		if (focusedLayer == 0)
 			return 0;
-		return terrain.getWidth() * delta_y + terrain.getHeight() * delta_y;	//+ getOffset_y()
+		return terrain.getWidth() * delta_y + terrain.getHeight() * delta_y;
 	}
 	/**
-	* @return the distance among y betwen the position 0 and the first layer
+	* @return the distance among y betwen the position 0 and the first TerrainLayer
 	*/
 	public int getOffset_Starting_y() {
 		return delta_y * terrain.getWidth() + getOffset_y() * terrain.getSlots().size() + getOffset_Focus_y();
@@ -133,7 +138,7 @@ public class TerrainVisualizerComponent extends JComponent {
 		return getOffset_Starting_y() - getOffset_y() + delta_y * terrain.getHeight();
 	}
 	/** 
-	* @return the height the its parent panel should have (0 if there are currently no slots)
+	* @return the height the this's parent panel should have (0 if there are currently no TerrainSlots in the Terrain)
 	*/
 	private int computeParentPreferredHeigth() {
 		if (terrain.getSlots().isEmpty())
@@ -148,6 +153,10 @@ public class TerrainVisualizerComponent extends JComponent {
 		focusedLayerPositionOnParentScrollBar = (getOffset_Starting_y() - getOffset_y()*(getTerrain().getSlots().size() - focusedLayer)) - getTerrain().getWidth() * delta_y;
 		applyFocusedLayerPositionOnParentScrollBar();
 	}
+
+	/**
+	* Applies the parent's scroll bar position computed in computeFocusedLayerPositionOnParentScrollBar()
+	*/
 	private void applyFocusedLayerPositionOnParentScrollBar() {
 		JScrollPane scrollParent = (JScrollPane)(getParent().getParent());
 		if (scrollParent == null)
@@ -184,13 +193,16 @@ public class TerrainVisualizerComponent extends JComponent {
 	}
 
 	/**
-	* Flips if only the focused layer should be displayed with colors.
+	* Flips onlyFocusedInColor.
 	*/ 
 	public void flipOnlyFocusedInColor() {
 		onlyFocusedInColor = !onlyFocusedInColor;		
 		repaint();
 	}
 	
+	/**
+	* @param terrain the new terrain represented
+	*/
 	public void setTerrain(Terrain terrain) {
 		this.terrain = terrain;
 	}

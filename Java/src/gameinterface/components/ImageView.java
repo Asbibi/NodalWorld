@@ -11,8 +11,8 @@ import java.awt.Image;
 public class ImageView {
 
 	/**
-	* @param graphics2D the Graphic Context to use to display the color wheel
-	* @param component the color wheel model/controller to display
+	* @param graphics2D the Graphic Context to use
+	* @param component the image model/controller to display
 	*/ 
 	public void paint(Graphics2D g, ImageComponent owner) {
 		Image image = owner.getImage();

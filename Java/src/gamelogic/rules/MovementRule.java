@@ -5,9 +5,6 @@ import gamelogic.Rule;
 import gamelogic.Vec2D;
 import gamelogic.nodes.MoveNode;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
 * Rule used to move entities.
 * 

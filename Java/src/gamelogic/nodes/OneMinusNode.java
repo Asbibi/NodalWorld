@@ -5,6 +5,7 @@ import gamelogic.Input;
 import gamelogic.NetworkIOException;
 import gamelogic.Node;
 import gamelogic.Output;
+
 /**
 * The node model used to compute 1-x for any double x. <br/>
 * 

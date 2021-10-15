@@ -4,7 +4,6 @@ import gamelogic.Node;
 import gamelogic.GameManager;
 import gamelogic.Input;
 import gamelogic.Output;
-import gamelogic.Surface;
 import gamelogic.NetworkIOException;
 
 import java.lang.Class;

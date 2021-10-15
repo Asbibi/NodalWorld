@@ -2,8 +2,6 @@ package gamelogic;
 
 import java.util.Collection;
 import java.util.List;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import java.lang.Object;

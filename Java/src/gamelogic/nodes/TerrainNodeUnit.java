@@ -1,6 +1,5 @@
 package gamelogic.nodes;
 
-import gamelogic.GameManager;
 import gamelogic.TerrainNode;
 import gamelogic.terrains.TerrainModelRectangle;
 import gamelogic.Vec2D;

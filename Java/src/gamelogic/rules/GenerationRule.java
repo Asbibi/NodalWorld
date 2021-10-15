@@ -4,9 +4,6 @@ import gamelogic.GameManager;
 import gamelogic.Rule;
 import gamelogic.nodes.GenerateNode;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
 * Rule used to generate new members in a species.
 * 

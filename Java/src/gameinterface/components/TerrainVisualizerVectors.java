@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 /**
-* Component that simply displays the X and Y vectors of a TerrainStackVisualizer
+* Simple component that only displays the X and Y unit vectors of a TerrainVisualizerComponent.
 * 
 * @see TerrainVisualizerComponent
 */
@@ -20,6 +20,9 @@ public class TerrainVisualizerVectors extends JComponent {
 	int offset_x = 2;
 	int offset_y = 4;
 	
+	/**
+	* @param visualizer the visualizer this must represent the unit vectors of
+	*/ 
 	public TerrainVisualizerVectors(TerrainVisualizerComponent visualizer) {
 		this.visualizer = visualizer;
 	}

@@ -1,10 +1,8 @@
 package gamelogic.nodes;
 
-import gamelogic.GameManager;
 import gamelogic.TerrainNode;
 import gamelogic.TerrainModel;
 import gamelogic.terrains.TerrainModelMask;
-import gamelogic.Vec2D;
 import gamelogic.Input;
 import gamelogic.NetworkIOException;
 

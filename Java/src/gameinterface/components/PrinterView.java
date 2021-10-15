@@ -7,8 +7,17 @@ import java.util.List;
 
 import gameinterface.PrinterMessage;
 
+/**
+* The view of a ImageCompoent.
+* 
+* @see PrinterComponent
+*/ 
 public class PrinterView {
 
+	/**
+	* @param graphics2D the Graphic Context to use
+	* @param component the PrinterComponent to display
+	*/
 	public void paint(Graphics2D g, PrinterComponent owner) {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, owner.getWidth(), owner.getHeight());
@@ -48,9 +57,23 @@ public class PrinterView {
 		}
 	}
 	
+	/**
+	* Prints a message on the given line. 
+	* @param graphics2D the Graphic Context to use
+	* @param message the message to print on this line
+	* @param yTextPos the y position of this line
+	* @param withFrame indicates if the frame must be printed on the message
+	*/
 	private void paintMessage(Graphics2D g, PrinterMessage message, int yTextPos, boolean withFrame) {
 		g.drawString(message.getMessage(withFrame), 2, yTextPos);
 	}
+	
+	/**
+	* Prints a special line to indicate a change of frame. 
+	* @param graphics2D the Graphic Context to use
+	* @param frame the frame to print in the speparator
+	* @param yTextPos the y position of the separator line
+	*/
 	private void paintFrameSeparation(Graphics2D g, int frame, int yTextPos) {
 		g.drawString("=========   Frame: " + frame + "   =========", 2, yTextPos);		
 	}
