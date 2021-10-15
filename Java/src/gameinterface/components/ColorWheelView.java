@@ -3,15 +3,15 @@ package gameinterface.components;
 import java.awt.*;
 
 /**
-* The view of a Color wheel component
+* This class is the view of a ColorWheelComponent.
 * 
 * @see ColorWheelComponent
 */ 
 public class ColorWheelView {
 	
 	/**
-	* @param the Graphic Context to use to display the color wheel
-	* @param the color wheel model/controller to display
+	* @param graphics2D the Graphic Context to use to display the color wheel
+	* @param component the color wheel model/controller to display
 	*/ 
 	public void paint(Graphics2D g, ColorWheelComponent owner) {
 		int sliderSupp = 5 + owner.getSliderWidth();

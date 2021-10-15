@@ -21,12 +21,6 @@ import gamelogic.ImageFile;
 * @see ImageView
 */ 
 public class ImageComponent extends JComponent{
-	static private Color nullColor = new Color(105,98,73);
-	/**
-	* @return the color to display as a rectangle when the image is null or empty
-	*/ 
-	static public Color getNullColor(){ return nullColor; }
-	
 	private ImageView view;
 	private ImageModel model;
 	private ImageFile image;
@@ -94,13 +88,13 @@ public class ImageComponent extends JComponent{
 	
 	
 	/**
-	* @param if the image component should be enabled or not
+	* @param enabled sets if the image component should be enabled or not
 	*/ 
     public void setIsEnabled(boolean enabled) {
     	model.setIsEnabled(enabled);
     }
 	/**
-	* @param the image displayed
+	* @param image the image displayed
 	*/ 
 	public void setImage(ImageFile image) {
 		this.image = image;
@@ -116,4 +110,15 @@ public class ImageComponent extends JComponent{
 			image = new ImageFile(selectedImage.getPath());
 		}		
 	}
+	
+	
+	
+	// ===== Static =====
+
+	static private Color nullColor = new Color(105,98,73);
+	
+	/**
+	* @return the color to display as a rectangle when the image is null or empty
+	*/ 
+	static public Color getNullColor(){ return nullColor; }
 }

@@ -4,15 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 /**
-* The model of the clickable image display
+* The view of a ImageCompoent.
 * 
 * @see ImageComponent
 */ 
 public class ImageView {
 
 	/**
-	* @param the Graphic Context to use to display the image
-	* @param the image component
+	* @param graphics2D the Graphic Context to use to display the color wheel
+	* @param component the color wheel model/controller to display
 	*/ 
 	public void paint(Graphics2D g, ImageComponent owner) {
 		Image image = owner.getImage();

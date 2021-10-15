@@ -1,18 +1,25 @@
-package gameinterface.components;
+package gameinterface;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import gameinterface.NewWorldTemplate;
-
-public class NewWorldTemplateComponent extends JPanel {
+/**
+* A panel displaying a NewWorldTemplate composed on the top of the template's name, at the bottom of the 2 description lines of the template, and on the center of a button with the template's image.<br/>
+* The panel can be selected or not, and its button color change depending on that value.
+* 
+* @see NewWorldTemplate
+*/ 
+public class NewWorldTemplatePanel extends JPanel {
 	private JButton button;
 	private boolean selected = false;
 	private NewWorldTemplate template;
 	
-	public NewWorldTemplateComponent(NewWorldTemplate template) {
+	/**
+	* @param template the template represented
+	*/ 
+	public NewWorldTemplatePanel(NewWorldTemplate template) {
 		this.template = template;
 		
 		setLayout(new BorderLayout());
@@ -44,22 +51,31 @@ public class NewWorldTemplateComponent extends JPanel {
 		add(descriptionPanel, BorderLayout.SOUTH);
 	}
 
-	
+	/**
+	* @param actionListener the listener to add to the button's ActionListener's list
+	*/ 
 	public void addActionListener(ActionListener listener) {
 		button.addActionListener(listener);
 	}
 	
 	
-
+	/**
+	* @param selected sets if the template is selected or not
+	*/ 
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 		repaint();
 	}
 
-
+	/**
+	* @return if the panel is selected
+	*/ 
 	public boolean getSelected() {
 		return selected;
 	}
+	/**
+	* @return the template associated to the panel
+	*/ 
 	public NewWorldTemplate getTemplate() {
 		return template;
 	}

@@ -27,6 +27,10 @@ public class ColorWheelComponent extends JComponent {
 	private double x_Cursor;
 	private double y_Cursor;
 	
+
+	/**
+	* @param color the initial color displayed
+	*/
 	public ColorWheelComponent(Color color) {
 		view = new ColorWheelView();
 		setColorToCursor(color);				
@@ -44,10 +48,11 @@ public class ColorWheelComponent extends JComponent {
 		generateWheelImage(getHeight(), false);
 		view.paint((Graphics2D)g, this);
 	}
+	
 	/**
-	* @param the diameter of the circle, it's also the height of the image and it determines its width (not equal)
-	* @param if set to false, the image will only be generated if the diameter given is different from the one of the previous generation
 	* Generates a BufferedImage of the color wheel (the circle + the value shader) of the correct height, without any cursor on it
+	* @param diameter the diameter of the circle, it's also the height of the image and it determines its width (not equal)
+	* @param forceRegenerate if false, the image will only be generated if the diameter given is different from the one of the previous generation (true is useful if the color's value cursor moved)
 	*/
 	private void generateWheelImage(int diameter, boolean forceRegenerate) {
 		if (!forceRegenerate && wheelImage!=null && diameter == wheelImage.getHeight())
@@ -83,10 +88,11 @@ public class ColorWheelComponent extends JComponent {
 			}
 		}
 	}
+	
 	/**
-	* @param the H (hue) value of the color to convert
-	* @param the S (saturation) value of the color to convert
-	* @param the V (value) value of the color to convert
+	* @param hue the H (hue) value of the color to convert
+	* @param saturation the S (saturation) value of the color to convert
+	* @param value the V (value) value of the color to convert
 	* @return the hex code (RGBA, with alpha = 255) of the color designated
 	*/
 	private int convertHSVtoRGB(double hue, double saturation, double value) {
@@ -153,7 +159,6 @@ public class ColorWheelComponent extends JComponent {
 	public int getSliderWidth() { return Math.max(getHeight()/20, 5); }
 	/**
 	* @return directly the V value
-	* @see getValueCursorY
 	*/
 	public double getValue() { return value; }
 	/**
@@ -170,7 +175,7 @@ public class ColorWheelComponent extends JComponent {
 	
 	
 	/**
-	* @param (X,Y) coordinates on the component used to place the HS or V cursors (depending on X)
+	* @param point X,Y coordinates (on the component surface) converted to place the HS or V cursors (depending on X value)
 	*/
 	public void setCursorPositionFromPoint(Point point) {
 		double diameter = getHeight();
@@ -195,7 +200,7 @@ public class ColorWheelComponent extends JComponent {
 		}
 	}
 	/**
-	* @param the color the HS & V cursors have to point
+	* @param color the color the HS & V cursors have to point
 	*/
 	public void setColorToCursor(Color color) {
 		float[] hsv = new float[3];

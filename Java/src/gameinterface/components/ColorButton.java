@@ -17,9 +17,11 @@ import gameinterface.ColorDialogBox;
 * @see ColorDialogBox
 */ 
 public class ColorButton extends JButton{
-
 	private Color color;
 	
+	/**
+	* @param color the initial color displayed
+	*/
 	public ColorButton(Color color) {
 		this.color = color;
 		addActionListener( e -> askColor() );
@@ -36,7 +38,7 @@ public class ColorButton extends JButton{
 	
 	/**
 	* Pops a modal dialog box with a color wheel so the user can set the color he wants.
-	* When the dialog box is closed by cliking the "OK" button, the color set by the user replaces the one displayed by the button
+	* When the dialog box is closed by cliking the "OK" button, the color set by the user replaces the one displayed by the button.
 	* @see ColorDialogBox
 	*/ 
 	private void askColor() {
@@ -47,14 +49,16 @@ public class ColorButton extends JButton{
         color = dialogBox.getColor();
         repaint();
 	}
+	
 	/**
 	* @return the color of the button
 	*/ 
 	public Color getColor() {
 		return color;
 	}
+	
 	/**
-	* @param the new color of the button
+	* @param color the color of the button
 	*/ 
 	public void setColor(Color color) {
 		this.color = color;

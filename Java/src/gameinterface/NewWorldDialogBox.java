@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import gameinterface.components.NewWorldTemplateComponent;
 import gamelogic.GameManager;
 import gamelogic.ImageFile;
 
@@ -38,14 +37,14 @@ public class NewWorldDialogBox extends JDialog {
 	private TextFieldPanel widthInputField;
 	private TextFieldPanel heightInputField;
 	
-	private NewWorldTemplateComponent emptyPanel;
-	private NewWorldTemplateComponent basicPanel;
-	private NewWorldTemplateComponent islandPanel;
-	private NewWorldTemplateComponent completeDemoPanel;
-	private NewWorldTemplateComponent loadElementsPanel;
-	private NewWorldTemplateComponent loadElementsTerrainPanel;
-	private NewWorldTemplateComponent loadElementsAllNodesPanel;
-	private NewWorldTemplateComponent loadFullSavePanel;
+	private NewWorldTemplatePanel emptyPanel;
+	private NewWorldTemplatePanel basicPanel;
+	private NewWorldTemplatePanel islandPanel;
+	private NewWorldTemplatePanel completeDemoPanel;
+	private NewWorldTemplatePanel loadElementsPanel;
+	private NewWorldTemplatePanel loadElementsTerrainPanel;
+	private NewWorldTemplatePanel loadElementsAllNodesPanel;
+	private NewWorldTemplatePanel loadFullSavePanel;
 	
 	
 	/**
@@ -64,14 +63,14 @@ public class NewWorldDialogBox extends JDialog {
 		
 		JPanel templatePanel = new JPanel();
 		templatePanel.setLayout(new GridLayout(2,4, 10, 30));
-		templatePanel.add(emptyPanel = new NewWorldTemplateComponent(NewWorldTemplate.empty));
-		templatePanel.add(basicPanel = new NewWorldTemplateComponent(NewWorldTemplate.basic));
-		templatePanel.add(islandPanel = new NewWorldTemplateComponent(NewWorldTemplate.island));
-		templatePanel.add(completeDemoPanel = new NewWorldTemplateComponent(NewWorldTemplate.completeDemo));
-		templatePanel.add(loadElementsPanel = new NewWorldTemplateComponent(NewWorldTemplate.loadElements));
-		templatePanel.add(loadElementsTerrainPanel = new NewWorldTemplateComponent(NewWorldTemplate.loadElementsTerrain));
-		templatePanel.add(loadElementsAllNodesPanel = new NewWorldTemplateComponent(NewWorldTemplate.loadElementsAllNodes));
-		templatePanel.add(loadFullSavePanel = new NewWorldTemplateComponent(NewWorldTemplate.loadFullSave));
+		templatePanel.add(emptyPanel = new NewWorldTemplatePanel(NewWorldTemplate.empty));
+		templatePanel.add(basicPanel = new NewWorldTemplatePanel(NewWorldTemplate.basic));
+		templatePanel.add(islandPanel = new NewWorldTemplatePanel(NewWorldTemplate.island));
+		templatePanel.add(completeDemoPanel = new NewWorldTemplatePanel(NewWorldTemplate.completeDemo));
+		templatePanel.add(loadElementsPanel = new NewWorldTemplatePanel(NewWorldTemplate.loadElements));
+		templatePanel.add(loadElementsTerrainPanel = new NewWorldTemplatePanel(NewWorldTemplate.loadElementsTerrain));
+		templatePanel.add(loadElementsAllNodesPanel = new NewWorldTemplatePanel(NewWorldTemplate.loadElementsAllNodes));
+		templatePanel.add(loadFullSavePanel = new NewWorldTemplatePanel(NewWorldTemplate.loadFullSave));
 		emptyPanel.addActionListener( e -> selectTemplatePanel(emptyPanel) );
 		basicPanel.addActionListener( e -> selectTemplatePanel(basicPanel) );
 		islandPanel.addActionListener( e -> selectTemplatePanel(islandPanel) );
@@ -118,7 +117,7 @@ public class NewWorldDialogBox extends JDialog {
 	* It will mark it as selected, deselect the others, and enable or disable the input fields for terrain dimension.
 	* @param selectedTemplatePanel the templatePanel selected
 	*/ 
-	private void selectTemplatePanel(NewWorldTemplateComponent selectedTemplatePanel) {
+	private void selectTemplatePanel(NewWorldTemplatePanel selectedTemplatePanel) {
 		emptyPanel.setSelected(false);
 		basicPanel.setSelected(false);
 		islandPanel.setSelected(false);
