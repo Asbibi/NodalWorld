@@ -19,11 +19,21 @@ import java.util.Collection;
 import java.lang.Class;
 
 /**
-* The controller class for nodal editors. 
+* The controller class for nodal editors. <br/>
 * 
-* @see Network
-* @see Node
-* @see NodeEditorBuilder
+* A nodal editor is linked to a network at construction time, and is in charge of displaying the nodes and links in this network. <br/>
+* It allows to edit the network by adding or removing nodes and links, and it lets the user organize its workspace by selecting and moving or scaling nodes. 
+* Adding nodes is achieved using a node menu, in which we can disable som specific nodes if we need to. <br/>
+* Since the networks in this software emulate a strongly-typed language, we use a color code to let the user know the type of the inputs and outputs. <br/>
+* 
+* Finally, each nodal editor has a specific use : for computing either generation rules, movement rules, death rules or terrain layers. 
+* Once this specification is set, the user can also link the corresponding nodes to boxes on the right side of the interface representing either species or terrain slots. <br/>
+* These specific instances of nodal editors are built using the nodal editor builder.
+* 
+* @see NodalEditorModel
+* @see NodalEditorUI
+* @see NodeMenu
+* @see NodalEditorBuilder
 */ 
 public class NodalEditor extends JComponent {
 
@@ -80,6 +90,8 @@ public class NodalEditor extends JComponent {
 	}
 
 
+	// ========== PAINTING ==========
+
 	/**
 	* @param g the graphic context
 	*/ 
@@ -90,7 +102,22 @@ public class NodalEditor extends JComponent {
 	}
 
 
-	// ========== Calls forwarded to the model ==========
+	// ========== NODE MENU ==========
+
+	public void showNodeMenu(int x, int y) { nodeMenu.show(this, x, y); }
+
+	/**
+	* Disable a specific node in the menu, which prevents the user from adding it to the network.
+	* This method is used in the nodal editor builder to avoid some inconsistent behaviours from the network.
+	* 
+	* @param nodeName the name of the node to disable
+	* 
+	* @see NodalEditorBuilder
+	*/ 
+	public void disable(String nodeName) { nodeMenu.disable(nodeName); }
+
+
+	// ========== CALLS FORWARDED TO THE MODEL ==========
 
 	// Game Manager
 
@@ -237,12 +264,5 @@ public class NodalEditor extends JComponent {
 	public void addChangeListener(ChangeListener listener) { model.addChangeListener(listener); }
 
 	public void removeChangeListener(ChangeListener listener) { model.removeChangeListener(listener); }
-
-
-	// ========== Node Menu ==========
-
-	public void showNodeMenu(int x, int y) { nodeMenu.show(this, x, y); }
-
-	public void disable(String nodeName) { nodeMenu.disable(nodeName); }
 
 }
