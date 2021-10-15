@@ -3,11 +3,10 @@ package gameinterface;
 import java.awt.Color;
 
 import gamelogic.Element;
-import gamelogic.Species;
 import gamelogic.Surface;
 
 /**
-* Derived class to display all the properties of a surface
+* Derived class to display all the properties of a surface.
 * 
 * @see ElementDetailPanel
 * @see Surface
@@ -26,20 +25,15 @@ public class SurfaceDetailPanel extends ElementDetailPanel {
 	@Override
 	public void setElement(Element e) {
 		super.setElement(e);
-		setSurface((Surface)e);
-	}
-	
-
-	/**
-	* @param the surface to display
-	*/
-	private void setSurface(Surface surface) {
+		Surface surface = (Surface)e;
+		
 		if (surface != null && surface != Surface.getEmpty()) {
 			colorField.setFieldColor(surface.getColor());
 		} else {
 			colorField.setFieldColor(new Color(0,0,0,0));
 		}
 	}
+	
 	
 	@Override
 	public void applyModificationsToElement(Element e) {

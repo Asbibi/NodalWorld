@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import gameinterface.components.ColorWheelComponent;
 
 /**
-* A modal dialog box that pops to ask the user to input a color using a color wheel
+* A modal dialog box that pops to ask the user to input a color using a color wheel.
 * 
 * @see ColorWheelComponent
 */ 
@@ -24,6 +24,10 @@ public class ColorDialogBox extends JDialog {
 	private JButton OKButton;
 	private JButton CancelButton;
 	
+	/**
+	* @param owner the JFrame hosting the dialog box
+	* @param color the initial color value
+	*/ 
 	public ColorDialogBox(JFrame owner, Color color) {
 		super(owner, "Select a color", true);
 		setLayout(new BorderLayout());

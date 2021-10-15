@@ -1,31 +1,29 @@
 package gameinterface;
 
-import java.awt.Color;
-
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
-import gameinterface.components.TerrainStackVisualizer;
-import gamelogic.Element;
 import gamelogic.Terrain;
 
 /**
-* Create an terrain stack manager as a tool bar.
-* Includes a visualisation of the different layers as well as property fields for the 
+* ToolBar for viewing and editing the terrain.<br/>
+* It includes a visualizer of the different models and buttons to re-arrange them, delete one or add one.<br/>
+* It also displays the dimensions of the terrain as well as the terrain trigger time (that last one can be modified)
 * 
 * @see ControlPanel
 * @see TerrainVisualizerPanel
 * @see Terrain
 */
-public class TerrainManagerToolBar extends JToolBar {	
-	
+public class TerrainManagerToolBar extends JToolBar {
 	private Terrain terrain;
 	private TerrainVisualizerPanel visualizer;
 	private TextFixedFieldPanel widthField;
 	private TextFixedFieldPanel heightField;
 	private TextFieldPanel periodField;
 	
+	/**
+	* @param terrain The terrain represented
+	*/ 
 	public TerrainManagerToolBar(Terrain terrain) {
 		super(null, JToolBar.VERTICAL);
 		this.terrain = terrain;
@@ -33,7 +31,8 @@ public class TerrainManagerToolBar extends JToolBar {
 	}
 	
 	/**
-	* Sets up the UI of the terrain manager
+	* Creates the UI, called by the conrstructor 
+	* @param terrain The terrain represented
 	*/ 
 	private void setUpUI(Terrain terrain) {
 		add(new JLabel("Terrain"));
@@ -55,7 +54,7 @@ public class TerrainManagerToolBar extends JToolBar {
 	
 	
 	/**
-	* @param terrain
+	* @param terrain The terrain represented
 	*/ 
 	public void setTerrain(Terrain terrain) {
 		this.terrain = terrain;
@@ -64,7 +63,9 @@ public class TerrainManagerToolBar extends JToolBar {
 	}
 	
 	/**
-	* Update the visualisation and the fields value from the terrain reference held (set during instanciation)
+	* Update the visualisation and the fields value from the terrain reference held.<br/>
+	* Should be called with complete on true when following a terrain reference change, otherwise with false to keep periodField modified string intact.
+	* @param completeUpdate indicates if all fields must be updated (true) or just the display only component (false) 
 	*/ 
 	public void updateFromTerrain(boolean complete) {
 		if (terrain == null)
@@ -78,7 +79,7 @@ public class TerrainManagerToolBar extends JToolBar {
 	}
 	
 	/**
-	* Apply the changes in the fields' values to the terrain reference
+	* Apply the changes in the fields' values (i.e. periodField) to the terrain reference.
 	*/ 
 	private void applyToTerrain() {
 		if (terrain == null)
@@ -86,9 +87,9 @@ public class TerrainManagerToolBar extends JToolBar {
 		
 		try {
 			terrain.setTriggerTime(Integer.parseInt(periodField.getFieldString()));
-			periodField.setFieldColor(ControlPanel.getStandardFieldColor());
+			periodField.setFieldColor(GameFrame.getStandardFieldColor());
 		} catch (Exception e) {
-			periodField.setFieldColor(ControlPanel.getWrongFieldColor());		
+			periodField.setFieldColor(GameFrame.getWrongFieldColor());		
 		}	
 	}
 }

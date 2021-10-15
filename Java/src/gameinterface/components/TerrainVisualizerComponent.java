@@ -15,11 +15,11 @@ import gamelogic.Terrain;
 /**
 * This class allows to visualize a list of TerrainLayer from a TerrainStack.
 * 
-* @see TerrainStackVisualizerView
+* @see TerrainVisualizerView
 * @see TerrainLayer
 */
-public class TerrainStackVisualizer extends JComponent {
-	private TerrainStackVisualizerView view;
+public class TerrainVisualizerComponent extends JComponent {
+	private TerrainVisualizerView view;
 	private Terrain terrain;
 	private int focusedLayer = 0;
 	private boolean onlyFocusedInColor = false;
@@ -34,8 +34,8 @@ public class TerrainStackVisualizer extends JComponent {
 	
 	
 	
-	public TerrainStackVisualizer(Terrain terrain) {
-		view = new TerrainStackVisualizerView();
+	public TerrainVisualizerComponent(Terrain terrain) {
+		view = new TerrainVisualizerView();
 		this.terrain = terrain;
 	}
 

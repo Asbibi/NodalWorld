@@ -16,13 +16,16 @@ import gamelogic.GameManagerBuilder;
 import gamelogic.Saver;
 
 /**
-* This class manages the display of the whole game in its own window
+* The game's window.<br/>
+* It's basically composed of a MenuBar on top, a ControlPanel on the left side and a WorldPanel on the right side. 
 * 
 * @see GameManager
 * @see ControlPanel
 * @see WorldPanel
 */ 
 public class GameFrame extends JFrame {
+	static private Color 	standardFieldColor = Color.white;
+	static private Color 	wrongFieldColor = Color.red;
 	static private Color 	separatorColor = new Color(180,180,180);
 	
 	private	WorldPanel 		worldPanel;
@@ -42,12 +45,13 @@ public class GameFrame extends JFrame {
 	
 	private JFileChooser 	savefileChooser;
 	private ArrayList<ActionListener> onLoadListener;
-	private ImageIcon pauseIcon;
-	private ImageIcon playIcon;
+	private ImageIcon 		pauseIcon;
+	private ImageIcon 		playIcon;
 
 	
 	/**
-	* Calls setupUI() and the Control & World panels' constructors methods
+	* Calls setupUI() and the Control & World panels' constructors methods.
+	* @param gameManager the gameManager the gameFrame represents
 	*/ 
 	public GameFrame(GameManager gameManager) {
 		super("Nodal World");
@@ -80,16 +84,16 @@ public class GameFrame extends JFrame {
 		  });
 		 */
 		
-		updateWorld(0);
+		updateFrame(0);
 		worldPanel.resetTileSizeToMinimal();
 		
 		setVisible(true);
 	}
 	
 	/**
-	* Sets up the UI Layout :
-	* - Creates the menubar
-	* - Separate the empty space into 2 areas of the same size (GridLayout) : one for the ControlPanel and one for the WorldPanel 
+	* Sets up the UI Layout:<br/>
+	* - Creates the menubar<br/>
+	* - Separate the main space into 2 areas of the same default size (resizable) : the left one for the ControlPanel and the right one for the WorldPanel 
 	*/
 	private void setupUI() {
         setPreferredSize(new Dimension(1280, 720));
@@ -110,8 +114,9 @@ public class GameFrame extends JFrame {
 	    
 	    splitPanel.setDividerLocation(0.5);	// after pack() to let the split panel get its definitive size before setting the divider to the center (otherwise it's setting itself to 0)
 	}
+	
 	/**
-	* Creates the menubar of the game
+	* Creates the menubar of the GameFrame.
 	*/ 
 	private void setupMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
@@ -162,9 +167,10 @@ public class GameFrame extends JFrame {
 		newButton.addActionListener( e -> startNew_LoadedGame() );
 		onLoadListener = new ArrayList<ActionListener>();
 		addNew_LoadActionListener(e -> connectGameManager(((LoadEvent)e).getLoadedManager()));
-		addNew_LoadActionListener(e -> updateWorld(0));
+		addNew_LoadActionListener(e -> updateFrame(0));
 		
-		// =============== ADD TIME =================
+		
+		// =============== ADD BUTTONS =================
 		
 		menuBar.add(pauseButton);
 		menuBar.add(frameCount);
@@ -185,6 +191,11 @@ public class GameFrame extends JFrame {
 		menuBar.add(newButton);
 	    setJMenuBar(menuBar);
 	}
+	
+	/**
+	* Reconnect the GameFrame to a GameManager (used on loading).
+	* @param gameManager the GameManager to connect the gameFrame to
+	*/ 
 	private void connectGameManager(GameManager gameManager) {
 		if (gameManager == null)
 			return;
@@ -199,7 +210,7 @@ public class GameFrame extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				int frame = gameManager.getFrame();
-				updateWorld(frame);
+				updateFrame(frame);
 			}
 		});
 		
@@ -210,10 +221,10 @@ public class GameFrame extends JFrame {
 	}
 	
 	/**
-	* Ask the world panel to updates itself
+	* Updates the frame display, usually called after the gameManager evolved.
 	* @param the last frame processed
 	*/
-	public void updateWorld(int frame) {
+	public void updateFrame(int frame) {
 		worldPanel.updateMap(frame);
 		controlPanel.update();
 		frameCount.setText("Time: " + frame);
@@ -252,23 +263,22 @@ public class GameFrame extends JFrame {
 	
 	
 	/**
-	* @param the GameManager to save
+	* @param gameManager the GameManager to save
 	*/
 	private void saveGameManager(GameManager gameManager) {
         int res = savefileChooser.showSaveDialog(this);
         if(res == JFileChooser.APPROVE_OPTION){
         	String[] options = {"Pack images (Recommended)", "Use absolute paths"};        	
         	int resPack = JOptionPane.showOptionDialog(this,"Do you want to pack the images in the save file ?\n\nPacking the images in the save file makes it larger in memory.\nBut it will also make it independent of the image files used.","Pack images ?", 0,JOptionPane.INFORMATION_MESSAGE,null,options,null);
-                    //JOptionPane.YES_NO_OPTION,
-                    //JOptionPane.QUESTION_MESSAGE);
-             if(resPack == JOptionPane.YES_OPTION)
-            	 Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);
-        	 else if (resPack == JOptionPane.NO_OPTION)
-            	 Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, false);
+			if(resPack == JOptionPane.YES_OPTION)
+				Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);
+			else if (resPack == JOptionPane.NO_OPTION)
+				Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, false);
         }
 	}
+	
 	/**
-	* Creates a new GameManager based on the template selected in the dialog box this method will open (same than when the app starts).
+	* Creates a new GameManager based on the template selected by the user in the dialog box this method will open (which is the same dialog box than when the app starts).
 	*/
 	private void startNew_LoadedGame() {
 		NewWorldDialogBox dialogBox = new NewWorldDialogBox(this);
@@ -288,17 +298,25 @@ public class GameFrame extends JFrame {
 	
 	
 	/**
-	* @return the color the separator should use in the interface
+	* @return the color the separators should use in the interface
 	*/
 	static public Color getSeparatorColor() { return separatorColor; }
+	/**
+	* @return the color to use on a TextField background by default
+	*/ 
+	public static Color getStandardFieldColor() { return standardFieldColor; }
+	/**
+	* @return the color to use on a TextField background when the string inputed doesn't comply with constraints (e.g. writting letters in a TextField used for an int input)
+	*/
+	public static Color getWrongFieldColor() { return wrongFieldColor; }
+
 }
 
 
 /* TODO :
 - find a way to ask to update world if element image changed		=>		listener
-------//----
-- saving on exit
-- button load to restart
-------//----
 - debug element list : if clicked then drag then release on another element, for JList it will be the selected one but not for the detail panel
-*/
+- terrain visualizer is a bit laggy
+////////////////////////////////////////////////
+- saving on exit
+ */

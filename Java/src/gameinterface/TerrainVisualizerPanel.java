@@ -1,27 +1,25 @@
 package gameinterface;
 
 import java.awt.Dimension;
-import java.util.List;
 
 import javax.swing.*;
 
-import gameinterface.components.TerrainStackVisualizer;
-import gameinterface.components.TerrainStackVisualizerVectors;
+import gameinterface.components.TerrainVisualizerComponent;
+import gameinterface.components.TerrainVisualizerVectors;
 import gamelogic.Terrain;
 
 /**
-* Complete visualizer of the layers of a terrainStack.
-* It display the layers as well as buttons to change the focused layer.
+* Complete visualizer of the terrainSlots of a Terrain.<br/>
+* It display the visualization of the slots (using a TerrainStackVisualizer) as well as buttons to change the focused slot, and buttons to add/move/remove the slots.
 * 
-* @see TerrainLayer
-* @see TerrainStackVisualizer
-* @see TerrainStackVisualizerVectors
+* @see TerrainVisualizerComponent
+* @see TerrainVisualizerVectors
 */
 public class TerrainVisualizerPanel extends JPanel {
-	private TerrainStackVisualizer visualizer;
+	private TerrainVisualizerComponent visualizer;
 	private JScrollPane visuScrollPanel;
 	
-	private TerrainStackVisualizerVectors visuVectors;
+	private TerrainVisualizerVectors visuVectors;
 	private JButton focusUp;
 	private JButton focusDown;
 	private JLabel currentFocusLabel;
@@ -33,10 +31,13 @@ public class TerrainVisualizerPanel extends JPanel {
 	private JButton addButton;
 	
 
+	/**
+	* @param terrain the terrain represented
+	*/
 	TerrainVisualizerPanel(Terrain terrain) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		visualizer = new TerrainStackVisualizer(terrain);
+		visualizer = new TerrainVisualizerComponent(terrain);
 		visuScrollPanel = new JScrollPane(visualizer) { @Override public Dimension getPreferredSize() { return visualizer.getParentDimension(); } };
 		visuScrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		add(visuScrollPanel);
@@ -66,7 +67,7 @@ public class TerrainVisualizerPanel extends JPanel {
 			visualizer.flipOnlyFocusedInColor();
 			updateLayerLabelText();
 			} );
-		visuVectors = new TerrainStackVisualizerVectors(visualizer);		
+		visuVectors = new TerrainVisualizerVectors(visualizer);		
 		JSeparator separator = new JSeparator(SwingConstants.VERTICAL);		
 		separator.setForeground(GameFrame.getSeparatorColor());
 		focusButtonsPanel.add(visuVectors);
@@ -101,6 +102,9 @@ public class TerrainVisualizerPanel extends JPanel {
 		add(manageButtonsPanel);
 	}
 	
+	/**
+	* @param terrain the terrain represented
+	*/
 	public void setTerrain(Terrain terrain) {
 		visualizer.setTerrain(terrain);
 		revalidate();
@@ -108,29 +112,40 @@ public class TerrainVisualizerPanel extends JPanel {
 	}
 	
 	/**
-	* Update the index of the focused layer displayed to the actual focused layer index
+	* Updates the index of the focused layer displayed in the JLabel to fit the actual focused layer index.
 	*/
 	private void updateLayerLabelText() {
 		currentFocusLabel.setText(Integer.toString(visualizer.getFocusedLayer()));
 	}
 
-	
+	/**
+	* Adds a new empty slot above the focused slot.
+	*/
 	private void addTerrainSlot() {
 		int focused = visualizer.getFocusedLayer();
 		visualizer.getTerrain().addSlot(focused);
 		visualizer.revalidate();
 		repaint();
 	}
+	/**
+	* Move up the focused slot.
+	*/
 	private void moveUpTerrainSlot() {
 		int focused = visualizer.getFocusedLayer();
 		visualizer.getTerrain().swapSlots(focused, focused-1);
 		visualizer.focusPreviousLayer();
 	}
+	/**
+	* Move down the focused slot.
+	*/
 	private void moveDownTerrainSlot() {
 		int focused = visualizer.getFocusedLayer();
 		visualizer.getTerrain().swapSlots(focused, focused+1);
 		visualizer.focusNextLayer();
 	}
+	/**
+	* Remove the focused slot.
+	*/
 	private void removeTerrainSlot() {
 		int focused = visualizer.getFocusedLayer();
 		if (focused < 0)

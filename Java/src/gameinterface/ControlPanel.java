@@ -10,18 +10,16 @@ import gamelogic.Species;
 import gamelogic.Surface;
 
 /**
-* Part of the game window responsible for interacting with the game.
-* It hosts the nodal widget and the element managers.
-* The elements managers are ElementDetailPanel instances.
-* They are derivated from JToolBar which allows the user to freely rearrange their positions
+* Part of the game window responsible for interacting with the game.<br/>
+* It hosts the nodal widget and the element managers.<br/>
+* The elements managers are ElementDetailPanel instances.<br/>
+* They are derivated from JToolBar which allows the user to freely rearrange their positions.<br/>
 * 
 * @see ElementManagerToolBar
+* @see NodalEditor
 * @see GameFrame
 */ 
-public class ControlPanel extends JPanel {
-	static private Color standardFieldColor = Color.white;
-	static private Color wrongFieldColor = Color.red;
-	
+public class ControlPanel extends JPanel {	
 	private JSplitPane splitPanel;
 	private JTabbedPane nodeEditorPanel;
 	
@@ -31,6 +29,9 @@ public class ControlPanel extends JPanel {
 	private PrinterToolBar printerToolBar;
 
 	
+	/**
+	* @param gameManager the game manager instance to link the control panel on.
+	*/ 
 	public ControlPanel(GameManager gameManager) {
 		setUpUI(gameManager);
 	}
@@ -38,9 +39,10 @@ public class ControlPanel extends JPanel {
 	
 	
 	/**
-	* Sets up this panel's UI
-	* Creates the elements and terrain managers as a left toolbar. Its horizontal size can be adjusted by the user
+	* Sets up this panel's UI.<br/>
+	* Creates the elements and terrain managers as a left toolbar. Its horizontal size can be adjusted by the user.<br/>
 	* The main area is used to display the node editors.
+	* @param gameManager the game manager instance to link the control panel to.
 	*/ 
 	private void setUpUI(GameManager gameManager) {
 		setLayout(new BorderLayout());
@@ -77,6 +79,11 @@ public class ControlPanel extends JPanel {
 		add(splitPanel);
 		splitPanel.setDividerLocation(toolScrollPanel.getPreferredSize().width);
 	}
+	
+	/**
+	* Change the gameManager linked to the control panel. Used for loading another world.
+	* @param gameManager the game manager instance to link the control panel to.
+	*/ 
 	public void connectGameManager(GameManager gameManager) {
 		nodeEditorPanel = NodalEditorBuilder.buildTabbedEditors(gameManager);
 		splitPanel.setRightComponent(nodeEditorPanel);
@@ -85,23 +92,13 @@ public class ControlPanel extends JPanel {
 		speciesToolBar.setGameManager(gameManager);
 	}
 	
+	/**
+	* Update the control panel display only values to make them coherent with a gameManager change.<br/>
+	* This is called on GameFrame.update().
+	*/ 
 	public void update() {
 		terrainToolBar.updateFromTerrain(false);
 		//surfaceToolBar.updateDetails(); 		// useless since surfaces don't have display only properties
 		speciesToolBar.updateDetails();
-	}
-	
-	
-	/**
-	* @return the color to use on a TextField background by default
-	*/ 
-	public static Color getStandardFieldColor() {
-		return standardFieldColor;
-	}
-	/**
-	* @return the color to use on a TextField background when the string inputed doesn't comply with constraints (e.g. writting letters in a TextField used for inputing integers)
-	*/
-	public static Color getWrongFieldColor() {
-		return wrongFieldColor;
 	}
 }

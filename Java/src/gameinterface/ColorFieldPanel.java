@@ -18,9 +18,16 @@ import gameinterface.components.ColorWheelComponent;
 public class ColorFieldPanel extends PropertyFieldPanel {
 	ColorButton colorField;
 
+	/**
+	* @param fieldName the name of the property (which is a Color)
+	*/ 
 	public ColorFieldPanel(String fieldName) { 
 		this(fieldName, false);
 	}
+	/**
+	* @param fieldName the name of the property (which is a Color)
+	* @param withButton indicated if the property field should have a button at its right side	
+	*/ 
 	public ColorFieldPanel(String fieldName, boolean withButton) {
 		super(fieldName, withButton);
 		colorField = new ColorButton(Color.LIGHT_GRAY);

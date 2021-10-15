@@ -11,9 +11,16 @@ import javax.swing.*;
 public class TextFixedFieldPanel extends PropertyFieldPanel {
 	JLabel textLabel;
 	
+	/**
+	* @param fieldName the name of the property (which is a String)
+	*/
 	public TextFixedFieldPanel(String fieldName) {
 		this(fieldName, false);
 	}
+	/**
+	* @param fieldName the name of the property (which is a String)
+	* @param withButton indicated if the property field should have a button at its right side	
+	*/
 	public TextFixedFieldPanel(String fieldName, boolean withButton) {
 		super(fieldName, withButton);
 		textLabel = new JLabel("-", SwingConstants.CENTER);
@@ -22,7 +29,7 @@ public class TextFixedFieldPanel extends PropertyFieldPanel {
 	
 
 	/**
-	* @param the new value of the property as a string
+	* @param text the new value of the property as a String
 	*/
 	public void setLabelString(String text) { textLabel.setText(text); }
 }

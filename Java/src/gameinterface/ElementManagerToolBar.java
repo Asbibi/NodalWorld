@@ -14,9 +14,10 @@ import java.lang.Class;
 import java.util.stream.Collectors;
 
 /**
-* Create an element manager as a tool bar.
-* Includes the list for the different elements,
-* buttons to add/remove/rearrange them,
+* Create an element manager as a tool bar.<br/><br/>
+* 
+* Includes the list for the different elements,<br/>
+* buttons to add/remove/rearrange them,<br/>
 * a viewer to inspect and modify a specific element.
 * 
 * @see ControlPanel
@@ -34,6 +35,10 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	private JTextField addTextField;
 	private ElementDetailPanel detailPanel;
 	
+	/**
+	* @param elementClass the class of elements that are gonna be managed, must be T.class
+	* @param detailPanel the instance of detail panel used, should be an instance of the T specific derivated class of ElementDetailPanel
+	*/ 
 	public ElementManagerToolBar(Class<T> eltClass, ElementDetailPanel detailPanel) {
 		super(null, JToolBar.VERTICAL);
 		this.eltClass = eltClass;
@@ -41,7 +46,9 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	}
 	
 	/**
-	* Sets up the UI of the element manager
+	* Sets up the UI of the element manager, called by the constructor.
+	* @param title the title of the manager, displayed as a JLabel
+	* @param detailPanel the instance of detail panel used
 	*/ 
 	private void setUpUI(String className, ElementDetailPanel detailPanel) {
 		add(new JLabel(className));
@@ -118,6 +125,10 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		add(this.detailPanel);
 	}
 	
+	/**
+	* Connects the gameManager to the element manager.
+	* @param gameManager the gameManager to connect the element manager to
+	*/ 
 	public void setGameManager(GameManager game) {
 		this.game = game;
 		CopyElementsToJList();
@@ -142,6 +153,9 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		repaint();
 	}
 	
+	/**
+	* Ask the detail panel to update its diplay only properties.
+	*/ 
 	public void updateDetails() {
 		int selectedIndex = scrollList.getSelectedIndex();
 		if (selectedIndex > -1) 
@@ -150,10 +164,10 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	
 	
 	
-	// === Button callbacks ===
+	// ========== Button callbacks ==========
 	
 	/**
-	* Callback for the up button : swap the selected element with the one above
+	* Callback for the up button : swap the selected element in the JList with the one above
 	*/ 
 	public void moveUpCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
@@ -163,7 +177,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 	}
 	/**
-	* Callback for the down button : swap the selected element with the one below
+	* Callback for the down button : swap the selected element in the JList with the one below
 	*/ 
 	public void moveDownCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
@@ -173,7 +187,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 	}
 	/**
-	* Callback for the remove button : remove the selected element of the list
+	* Callback for the remove button : remove the selected in the JList element of the game's element list
 	*/ 
 	public void removeCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
@@ -187,23 +201,21 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		}
 	}
 	/**
-	* Callback for the add button : create a new element using the addTextField's text as the element's name.
-	* If the name inputed is empty or already used, the addTextField will become have the "wrong" color from the ColorPanel and the add won't happen.
-	* If the add is successful the callback will also reset the addTextField's text to an empty string.
-	* 
-	* @see ControlPanel.getWrongFieldColor
+	* Callback for the add button : create a new element using the addTextField's text as the element's name.<br/>
+	* If the name inputed is empty or already used, the method will stops and a feedback will be given to the user (the addTextField's color will be the "wrong" color defined in the ControlPanel).<br/>
+	* If the add is successful, the callback will also reset the addTextField's text to an empty string.
 	*/ 
 	public void addNewElement() {
 		String name = addTextField.getText();
 		if (name.isEmpty()) {
-			addTextField.setBackground(ControlPanel.getWrongFieldColor());
+			addTextField.setBackground(GameFrame.getWrongFieldColor());
 			return;
 		}
 		
 		// check if the name has already be given
 		for (Element e : getElements()) {
 			if(e.toString().equals(name) ) {
-				addTextField.setBackground(ControlPanel.getWrongFieldColor());
+				addTextField.setBackground(GameFrame.getWrongFieldColor());
 				return;
 			}
 		}
@@ -214,10 +226,11 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		addElementArray(newElement);
 		scrollList.setSelectedIndex(getElements().size() -1);
 		addTextField.setText("");
-		addTextField.setBackground(ControlPanel.getStandardFieldColor());
+		addTextField.setBackground(GameFrame.getStandardFieldColor());
 	}
+	
 	/**
-	* Method to create the new element, should be override on class instanciation using an anonym class in order to use the T constructor
+	* Method to create the new element, should be override on class instanciation using an anonym class in order to use the T constructor.
 	*/
 	public T createElement(String name) { return null; }
 	
@@ -225,32 +238,32 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	
 	
 	
-	
-	// Array management
+	// ========== Array management ==========
+
 	/**
-	* @param the new element to add to the list
+	* @param element the element to add to the list
 	*/ 
 	public void addElementArray(T element) {
 		addElement(element);
 		CopyElementsToJList();
 	}
 	/**
-	* @param the index of the element to remove to the list
+	* @param elementIndex the index of the element to remove to the list
 	*/ 
 	public void removeElementArray(int elementIndex) {
 		removeElement(elementIndex);
 		CopyElementsToJList();
 	}
 	/**
-	* @param the indexes of the elements to swap in the list
+	* @param firstElementIndex the index of the first element to swap in the JList
+	* @param secondElementIndex the index of the second element to swap in the JList
 	*/ 
 	public void swapElementArray(int firstElementIndex, int secondElementIndex) {
 		swapElements(firstElementIndex, secondElementIndex);
 		CopyElementsToJList();
 	}
 	/**
-	* This methods copies the ArrayList of Element to the JList displaying them.
-	* Should be called every time the ArrayList elements is modified. 
+	* Updates the JList display array on the gameManager's element list. 
 	*/
 	private void CopyElementsToJList() {
 		Element[] elementArray = new Element[getElements().size() - 1];
@@ -265,14 +278,21 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	}
 
 
+	
 	// ========== Link to game manager method, depending on element class ==========
 
+	/**
+	* @return the element class name
+	*/
 	private String getElementClassName() {
 		if(eltClass.equals(Surface.class)) return "Surface";
 		else if(eltClass.equals(Species.class)) return "Species";
 		return null;
 	}
 
+	/**
+	* @return the element list, from the gameManager
+	*/
 	private List<T> getElements() {
 		if (game == null) return null;
 		if(eltClass.equals(Surface.class)) return game.getSurfaceArray().stream().map(elt -> eltClass.cast(elt)).collect(Collectors.toList());
@@ -280,6 +300,9 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		return null;
 	}
 
+	/**
+	* @return the selected element in the JList
+	*/
 	private T getSelectedElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
 		if (selectedIndex != -1) 
@@ -288,19 +311,31 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 			return null;
 	}
 	
+	/**
+	* WARNING -- Jlist don't show the empty element, meaning for a given element : JList's index = GameManager's index -1 
+	* @param index the index in the JList of the element wanted
+	* @return the element asked
+	*/
 	private T getElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
 		if (game == null) return null;
 		if(eltClass.equals(Surface.class)) return eltClass.cast(game.getSurface(index + 1));
 		else if(eltClass.equals(Species.class)) return eltClass.cast(game.getSpecies(index + 1));
 		return null;
 	}
-
+	
+	/**
+	* @param element the element to add at the end of the list
+	*/
 	private void addElement(T elt) {
 		if (game == null) return;
 		if(eltClass.equals(Surface.class)) game.addSurface((Surface) elt);
 		else if(eltClass.equals(Species.class)) game.addSpecies((Species) elt);
 	}
 
+	/**
+	* WARNING -- Jlist don't show the empty element, meaning for a given element : JList's index = GameManager's index -1 
+	* @param index the index in the JList of the element to remove
+	*/
 	private void removeElement(int index) { // +1 because we exclude empty from the display so the JList index has an offset
 		if (game == null) return;
 		if(eltClass.equals(Surface.class)) 
@@ -308,7 +343,12 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 		else if(eltClass.equals(Species.class)) 
 			game.removeSpecies(index + 1);
 	}
-
+	
+	/**
+	* WARNING -- Jlist don't show the empty element, meaning for a given element : JList's index = GameManager's index -1 
+	* @param firstElementIndex the index of the first element to swap in the JList
+	* @param secondElementIndex the index of the second element to swap in the JList
+	*/
 	private void swapElements(int indexFst, int indexSnd) {	// +1 because we exclude empty from the display so the JList index has an offset
 		if (game == null) return;
 		if(eltClass.equals(Surface.class)) game.swapSurfaces(indexFst +1, indexSnd+1);

@@ -12,16 +12,16 @@ import gamelogic.Vec2D;
 /**
 * View of the TerrainStackVisualizer component
 * 
-* @see TerrainStackVisualizer
+* @see TerrainVisualizerComponent
 */
-public class TerrainStackVisualizerView {
+public class TerrainVisualizerView {
 	
 	/**
 	* The global paint method of the view 
 	* @param the Graphic Context to use to display the color wheel
 	* @param the TerrainStackVisualizer controller to display
 	*/
-	public void paint(Graphics2D g2d, TerrainStackVisualizer model) {
+	public void paint(Graphics2D g2d, TerrainVisualizerComponent model) {
 		if (model.getTerrain().getSlots().isEmpty())
 			return;
 		
@@ -69,7 +69,7 @@ public class TerrainStackVisualizerView {
 				if (surface == null || surface == Surface.getEmpty())
 					paintEmptySurface(g2d, x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y, focus);
 				else
-					paintSurface(g2d, focus ? surface.getColor() : TerrainStackVisualizer.getUnfocusedColor(), x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y);
+					paintSurface(g2d, focus ? surface.getColor() : TerrainVisualizerComponent.getUnfocusedColor(), x_firstTile + x*delta_x + y*delta_x, y_firstTile - x*delta_y + y*delta_y, delta_x, delta_y);
 			}
 	}
 
@@ -91,7 +91,7 @@ public class TerrainStackVisualizerView {
 		
 		int[] xs = {x-delta_x,	x + delta_x*(h-1),	x + delta_x*(h-1) + delta_x*(w),	x + delta_x*(w-1)};
 		int[] ys = {y,			y + delta_y*h,		y + delta_y*h - delta_y*w,			y - delta_y*w};
-		g2d.setColor(TerrainStackVisualizer.getRealFocusedColor());
+		g2d.setColor(TerrainVisualizerComponent.getRealFocusedColor());
 		g2d.setStroke(new BasicStroke(2));
 		g2d.drawPolygon(xs, ys, 4);
 		g2d.setStroke(new BasicStroke(1));
@@ -125,7 +125,7 @@ public class TerrainStackVisualizerView {
 	private void paintEmptySurface(Graphics2D g2d, int x, int y, final Integer delta_x, final Integer delta_y, boolean focused) {
 		int[] xs = {x,			x-delta_x,	x,			x+delta_x};
 		int[] ys = {y-delta_y,	y,			y+delta_y,	y};
-		g2d.setColor(focused ? Color.darkGray : TerrainStackVisualizer.getUnfocusedColor());
+		g2d.setColor(focused ? Color.darkGray : TerrainVisualizerComponent.getUnfocusedColor());
 		g2d.drawPolygon(xs, ys, 4);
 	}
 }

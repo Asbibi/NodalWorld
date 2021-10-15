@@ -8,6 +8,8 @@ import gameinterface.NewWorldTemplate;
 * Class with only static methods meant to build new game managers when the user wants to start a new project or to load previously saved projects.
 * 
 * @see GameManager
+* @see NewWorldTemplate
+* @see Saver
 */ 
 public class GameManagerBuilder {
 

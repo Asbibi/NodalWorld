@@ -14,7 +14,15 @@ import gamelogic.Terrain;
 import gamelogic.Vec2D;
 
 /**
-* This class manages how the world will be displayed.
+* This class manages how the display of the world.<br/>
+* The display consists of grid of tile representing the map. The grid has the terrain dimension and each tile represent the surface at its position (surface being the first non empty Surface returned by a TerrainSlot, begining with the one on top).<br/>
+* The tiles can display their surface using the surface's image as texture or the surface's color for a simplified display.<br/><br/>
+* 
+* Then the species are displayed. On each tile, if the species is present its image will be displayed. Plus, if there is more then 1 member, the count will be displayed on the top left corner of the species as well.<br/>
+* Each species will always take the same part of the available area in the tile, area that is divided depending on the number of species.<br/><br/>
+* 
+* WorldPanel has also possibility to display a green grid over the map in order to better demarcate the tile.<br/>
+* And it has zoom in/out/reset features.
 * 
 * @see TerrainStack
 * @see TileComponent
@@ -40,10 +48,12 @@ public class WorldPanel extends JPanel{
 	private Terrain terrain;
 	private int speciesSlotNumber_sqrt;
 	private int usedTileSize;
-	private int minimalTileSize;
+	private int perfectTileSize;
 	
 
-	
+	/**
+	* @param gameManager the gameManager that is represented
+	*/
 	public WorldPanel(GameManager gameManager) {
 		tiles = new ArrayList<TileComponent>();
 		gridDimension = new Dimension(-1,-1);
@@ -51,6 +61,9 @@ public class WorldPanel extends JPanel{
 		terrain = null;
 	}
 	
+	/**
+	* @param gameManager the gameManager that is represented
+	*/
 	public  void connectGameManager(GameManager gameManager) {
 		speciesDisplayed = gameManager.getSpeciesArray();
 		terrain = gameManager.getTerrain();
@@ -61,13 +74,13 @@ public class WorldPanel extends JPanel{
 	}
 
 	/**
-	* Update the terrain and the species that need to.
-	* Having the frame allows to only update the species that were triggered this frame
-	* @param the frame that had just be computed by the gamemanager.
+	* Updates the terrain and the species that need to be.
+	* Having the frame allows to only update the species that were triggered during the computed frame.
+	* @param frame the frame that had just been computed by the gamemanager
 	*/
 	public void updateMap(int frame) {
 		updateTerrain();
-		for (int i = 1; i < speciesDisplayed.size(); i++) {	// for starting at 1 to prevent using the empty species
+		for (int i = 1; i < speciesDisplayed.size(); i++) {	// starting at 1 to prevent using the empty species
 			if(speciesDisplayed.get(i).trigger(frame))
 				updateSpeciesDisplay(i);
 		}
@@ -79,14 +92,15 @@ public class WorldPanel extends JPanel{
 	// ==== Size Related ====
 
 	/**
-	* Resets the zoom so the map fit completely in the available space;
+	* Resets the zoom so the map fits as much as possible in the available space.<br/>
+	* Taht corresponds to setting the tile size to perfectTileSize. 
 	*/
 	public void resetTileSizeToMinimal() {
-		usedTileSize = minimalTileSize;
+		usedTileSize = perfectTileSize;
 		revalidate();
 	}
 	/**
-	* Zooms in until one tile is 600x600 pixels
+	* Zooms in until tile size is 600 pixels.
 	*/
 	public void increaseTileSize() {
 		usedTileSize *= 1.5;
@@ -95,20 +109,21 @@ public class WorldPanel extends JPanel{
 		revalidate();
 	}
 	/**
-	* Zooms out until one tile as the size of the minimal tile
+	* Zooms out until tile size is perfectTileSize / 4.
 	*/
 	public void decreaseTileSize() {
 		usedTileSize *= 0.75;
-		if (usedTileSize < minimalTileSize)
-			usedTileSize = minimalTileSize;
+		if (usedTileSize < perfectTileSize/4)
+			usedTileSize = perfectTileSize/4;
 		revalidate();
 	}
 	/**
-	* Compute the minimal tile size to use, depending on the parent's size which is the available size for the world
+	* Compute perfectTileSize, the perfect tile size to use.<br/>
+	* The result depends on the worldPanel's parent's size (i.e. the available display area dimension).
 	*/
 	public void computeMinimalTileSize() {
 		if (gridDimension == null || gridDimension.width == 0 || gridDimension.height == 0) {
-			minimalTileSize = 32;
+			perfectTileSize = 32;
 			return;
 		}
 		
@@ -118,7 +133,7 @@ public class WorldPanel extends JPanel{
 		Dimension d = parent.getParent().getSize();	// access the JScrollPane to get the available space dimension
 		int tileSizeX = d.width / gridDimension.width;
 		int tileSizeY = d.height / gridDimension.height;
-		minimalTileSize = Math.min(tileSizeX, tileSizeY);
+		perfectTileSize = Math.min(tileSizeX, tileSizeY);
 	}
 	
 	@Override
@@ -133,31 +148,34 @@ public class WorldPanel extends JPanel{
 	public Dimension getPreferredSize() {
 		return new Dimension(usedTileSize * gridDimension.width, usedTileSize * gridDimension.height);
 	}
+
 	
+
 	
 	
 	
 	// ==== Surface Related ====
 	
+	
 	/**
-	 * Updates the whole terrain, including dimension check and potential changed
-	* @param the terrain stack to display
+	* Updates the whole terrain, including dimension check and potential changed species.
 	*/
 	public void updateTerrain() {
 		if (terrain == null) {
 			gridDimension = new Dimension(-1,-1);			
 		} else {
-			setDimensions(new Dimension(terrain.getWidth(), terrain.getHeight()));
-			updateTilesSurface(terrain);
+			updateDimensions();
+			updateTilesSurface();
 		}
 	}	
 	
 
 	/**
-	 * If the dimensions are the same as the previous ones, it wont do nothing. Otherwise, it will adapt the layout and create enough tiles to fill the entire map.
-	* @param the new Dimensions (should be got from the terrain to display)
+	* If the dimensions are the same as the previous ones, it wont do anything.<br/>
+	* Otherwise, it will adapt the layout and create enough tiles to fill the map, or remove to ones in excess.
 	*/
-	private void setDimensions(Dimension newDimensions) {
+	private void updateDimensions() {
+		Dimension newDimensions = new Dimension(terrain.getWidth(), terrain.getHeight());
 		if (gridDimension == newDimensions)
 			return;
 				
@@ -185,16 +203,15 @@ public class WorldPanel extends JPanel{
 		gridDimension = newDimensions;
 		updateAllSpeciesDisplay();
 		computeMinimalTileSize();
-		//System.out.println(newDimensions);
+		
         setPreferredSize(getPreferredSize());
 	}
 	
 	/**
 	* Only updates the surfaces displayed.
- 	* This method assumes that the dimensions of the terrain are the same as gridDimension.
-	* @param the terrain stack to represent
+ 	* This method assumes that the dimensions of the terrain are the same as gridDimension (which should be check by calling updateDimensions() before).
 	*/
-	private void updateTilesSurface(Terrain terrain) {
+	private void updateTilesSurface() {
 		int width = gridDimension.width;
 		for (int x = 0; x < gridDimension.width; x++)
 		{
@@ -212,9 +229,7 @@ public class WorldPanel extends JPanel{
 	
 	
 	/**
-	 * This method should only be called when a species is added or removed. For usual game logic loop just use updateOneSpeciesDisplayed
-	* @param the array of species that should be displayed
-	* @see updateOneSpeciesDisplayed
+	* This method should only be called when a species is added or removed. For usual game logic loop just use updateOneSpeciesDisplayed(...).
 	*/
 	public void updateAllSpeciesDisplay() {
 		boolean hasChanged = computeSpeciesSlotNumber_sqrt(speciesDisplayed.size() - 1);	// set speciesSlotNumber_sqrt ; -1 is because the first "species" in the list is the empty species
@@ -228,7 +243,7 @@ public class WorldPanel extends JPanel{
 	}
 	
 	/**
-	 * Actually calls updateSpeciesDisplay(int speciesIndex) after retrieving the index
+	* Actually calls updateSpeciesDisplay(int speciesIndex) after retrieving the species's index index. Returns if it's the empty species.
 	* @param the species to update
 	*/
 	public void updateSpeciesDisplay(Species speciesToUpdate) {
@@ -237,13 +252,13 @@ public class WorldPanel extends JPanel{
 	}
 	
 	/**
-	 * This assumes that the correct number of slots has already been computed and setted on the tiles
-	 * Also assumes that there wont be any entity outside of the terrain bounds defined by gridDimension
-	 * (no checks)
-	* @param the index of the species to update
+	* This assumes that the correct number of slots has already been computed and setted on the tiles
+	* Also assumes that there wont be any entity outside of the terrain bounds defined by gridDimension
+	* To skip the empty surface, an index < 1 or greater than the last species index will make the method simply return. 
+	* @param speciesIndex the index of the species to update
 	*/
 	public void updateSpeciesDisplay(int speciesIndex) {
-		if (speciesIndex == 0)	// The first species of the list is always the empty species
+		if (speciesIndex < 1 || speciesIndex >= speciesDisplayed.size())	// The first species of the list is always the empty species, so skip it
 			return;
 		
 		// for each tiles, reset the count of the species to 0
@@ -258,13 +273,13 @@ public class WorldPanel extends JPanel{
 	}
 	
 	/**
-	 * Compute the number of slots needed and set the value found to the class attribute speciesSlotNumber_sqrt
-	* @param the number of species to potentially display in a single tile
-	* @return returns if the number of slots needed changed
+	* Computes the number of slots needed to display every species on one tile, and sets the value found to speciesSlotNumber_sqrt.
+	* @param numberOfSpecies the number of species to potentially display in a single tile
+	* @return returns if the number of slots needed changed or not
 	*/
 	private boolean computeSpeciesSlotNumber_sqrt(int numberOfSpecies) {
 		int _speciesSlotNumber_sqrt = (int)Math.sqrt(numberOfSpecies);
-		if (_speciesSlotNumber_sqrt * _speciesSlotNumber_sqrt < numberOfSpecies)	//check if it's the perfect square (ex 4,9) or if the next square is needed (ex 5->9, 18->25)
+		if (_speciesSlotNumber_sqrt * _speciesSlotNumber_sqrt < numberOfSpecies)	//check if it's a perfect square number (ex 4,9) or if the next square number is needed (ex 5->9, 18->25)
 			_speciesSlotNumber_sqrt++;
 		
 		if (_speciesSlotNumber_sqrt != speciesSlotNumber_sqrt) {
@@ -280,14 +295,14 @@ public class WorldPanel extends JPanel{
 	// ==== Setters ====
 
 	/**
-	* Flips the boolean indicating if the grid should be displayed on top of the tiles
+	* Flips the boolean indicating if the grid should be displayed on top of the tiles.
 	*/
 	public void flipDisplayGridDetail() {
 		displayGridDetail = !displayGridDetail;
 		repaint();
 	}
 	/**
-	* Flips the boolean indicating if the tiles should be displayed with their images as texture or as square of their color
+	* Flips the boolean indicating if the tiles should display their surface with its images as texture or as square of its color.
 	*/
 	public void flipUseColorOverImage() {
 		useColorOverImage = !useColorOverImage;
@@ -299,40 +314,40 @@ public class WorldPanel extends JPanel{
 	// ==== Getters ====
 	
 	/**
-	* @return square root of the number of slot needed to display all species on one tile
+	* @return the square root of the number of slot needed to display all species on one tile
 	*/
 	public int getSpeciesSlotNumber_sqrt() { return speciesSlotNumber_sqrt;}
 	/**
-	* @param index of the species the image is required
-	* @return image of the species indicated
+	* @param speciesIndex the index of the species of which the image is required
+	* @return the image of the species indicated
 	*/
 	public Image getSpeciesImage(int speciesIndex) { return speciesDisplayed.get(speciesIndex).getImage(); }
 	/**
-	* @return color to use when the surface is empty
+	* @return the color to use when the surface is empty
 	*/
 	public Color getEmptyColor() { return emptyColor; }
 	/**
-	* @return color to use when the surface isn't empty but the image is missing
+	* @return the color to use when the surface isn't empty but the image is missing
 	*/
 	public Color getMissingSurfaceImageColor() { return missingSurfaceImageColor; }
 	/**
-	* @return color to use when the image of the species is missing or null
+	* @return the color to use when the image of the species is missing or null
 	*/
 	public Color getMissingSpeciesImageColor() { return missingSpeciesImageColor; }
 	/**
-	* @return color of the count indication text
+	* @return the color of the member count text
 	*/
 	public Color getSpeciesCountColor() { return speciesCountColor; }
 	/**
-	* @return color of the count indication background
+	* @return the color of the member count background
 	*/
 	public Color getSpeciesCountBGColor() { return speciesCountBGColor; }
 	/**
-	* @return color of the grid (if shown)
+	* @return the color of the grid
 	*/
 	public Color getGridColor() { return gridColor; }
 	/**
-	* @return half thickness of the grid (if shown)
+	* @return the thickness of the grid
 	*/
 	public int getGridThickness() { return gridThickness; }
 	/**

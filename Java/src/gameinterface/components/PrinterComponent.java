@@ -1,4 +1,4 @@
-package gameinterface;
+package gameinterface.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,6 +9,14 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 
+import gameinterface.PrinterMessage;
+
+/**
+* ....
+* 
+* @see PrinterMessage
+* @see PrinterView
+*/
 public class PrinterComponent extends JComponent {
 
 	static private List<PrinterComponent> printers = new ArrayList<>();

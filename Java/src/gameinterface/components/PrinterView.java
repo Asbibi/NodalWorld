@@ -1,9 +1,11 @@
-package gameinterface;
+package gameinterface.components;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.List;
+
+import gameinterface.PrinterMessage;
 
 public class PrinterView {
 
@@ -22,8 +24,9 @@ public class PrinterView {
 				return;
 			
 			paintFrameSeparation(g, messages.get(0).getFrame(), lineHeight);
-			for (int i = 0; i < messages.size(); i++)
-				paintMessage(g, messages.get(i), (i + 2)*lineHeight, whithFrameNumber);
+			int lastMessageIndex = messages.size() - 1;
+			for (int i = lastMessageIndex; i > -1; i--)
+				paintMessage(g, messages.get(i), ((lastMessageIndex-i) + 2)*lineHeight, whithFrameNumber);
 		}
 		else {
 			List<PrinterMessage> messages = PrinterComponent.getAllMessages();

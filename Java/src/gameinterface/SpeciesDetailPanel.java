@@ -8,7 +8,7 @@ import gamelogic.Element;
 import gamelogic.Species;
 
 /**
-* Derived class to display all the properties of a species
+* Derived class to display all the properties of a species.
 * 
 * @see ElementDetailPanel
 * @see Species
@@ -39,14 +39,8 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 	@Override
 	public void setElement(Element e) {
 		super.setElement(e);
-		setSpecies((Species)e);
-	}
-
-	
-	/**
-	* @param the species to display
-	*/
-	private void setSpecies(Species species) {
+		Species species = (Species)e;
+		
 		if (species != null) {
 			triggerTimeField.setFieldString(species.getTriggerTime().toString());
 			memberCount.setLabelString(Integer.toString(species.getMembers().size()));
@@ -65,11 +59,16 @@ public class SpeciesDetailPanel extends ElementDetailPanel {
 		try {
 			species.setTriggerTime(Integer.parseInt(triggerTimeField.getFieldString()));
 			super.applyModificationsToElement(e);
-			triggerTimeField.setFieldColor(ControlPanel.getStandardFieldColor());
+			triggerTimeField.setFieldColor(GameFrame.getStandardFieldColor());
 		} catch (Exception except) {
-			triggerTimeField.setFieldColor(ControlPanel.getWrongFieldColor());		
+			triggerTimeField.setFieldColor(GameFrame.getWrongFieldColor());		
 		}
 	}
 	
+	/**
+	* Remove all the ActionListeners of the member count field's button, and add the given ActionListener instead.<br/>
+	* This method is used when starting a new world (ie new gameManager).
+	* @param actionListener
+	*/
 	public void replaceMemberButtonActionListener(ActionListener l) { memberCount.removeAllButtonActionListener(); memberCount.addButtonActionListener(l); }
 }

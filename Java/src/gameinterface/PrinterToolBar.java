@@ -10,6 +10,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
+import gameinterface.components.PrinterComponent;
+
+/**
+* ToolBar holding the printer and its related component, including 2 JToggbleButtons and one TextFieldPanel.<br/>
+* The JToggleButtons 
+* 
+* @see PrinterComponent
+* @see TextFieldPanel
+*/
 public class PrinterToolBar extends JToolBar{
 	private PrinterComponent printer;
 	
@@ -36,15 +45,18 @@ public class PrinterToolBar extends JToolBar{
 		printAllFrames.addActionListener(e -> printer.flipOnlyThisFrame());
 		add(frameNumberField = new TextFieldPanel("Buffer"));
 		frameNumberField.setFieldString(Integer.toString(PrinterComponent.getMaxFrameToKeep()));
-		frameNumberField.addActionListener( e -> applyToTerrain() );
+		frameNumberField.addActionListener( e -> applyMaxFrameBuffered() );
 	}
 	
-	private void applyToTerrain() {		
+	/**
+	* Set the max number of frame bufferred from the frameNumberField value if valid (convertible to int)
+	*/
+	private void applyMaxFrameBuffered() {		
 		try {
 			PrinterComponent.setMaxFrameToKeep(Integer.parseInt(frameNumberField.getFieldString()));
-			frameNumberField.setFieldColor(ControlPanel.getStandardFieldColor());
+			frameNumberField.setFieldColor(GameFrame.getStandardFieldColor());
 		} catch (Exception e) {
-			frameNumberField.setFieldColor(ControlPanel.getWrongFieldColor());		
+			frameNumberField.setFieldColor(GameFrame.getWrongFieldColor());		
 		}	
 	}
 }

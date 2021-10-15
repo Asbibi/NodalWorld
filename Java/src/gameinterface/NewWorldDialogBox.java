@@ -15,8 +15,16 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import gameinterface.components.NewWorldTemplateComponent;
+import gamelogic.GameManager;
 import gamelogic.ImageFile;
 
+/**
+* The dialog box that will pop to start a new world.<br/>
+* This dialog box proposes 8 options to create a new world.<br/>
+* Some of those options requires to give terrain dimensions, which can be done using the text fields at the bottom. They are disable if not needed.
+* 
+* @see NewWorldTemplate
+*/ 
 public class NewWorldDialogBox extends JDialog {
 
 	private boolean confirm = false;
@@ -40,6 +48,9 @@ public class NewWorldDialogBox extends JDialog {
 	private NewWorldTemplateComponent loadFullSavePanel;
 	
 	
+	/**
+	* @param owner the JFrame hosting the dialog box 
+	*/ 
 	public NewWorldDialogBox(JFrame owner) {
 		super(owner, "Choose a starting template", true);
 		
@@ -102,6 +113,11 @@ public class NewWorldDialogBox extends JDialog {
 		setVisible(true);
 	}
 
+	/**
+	* Callback for the Template Panel that is called when a template panel is clicked.<br/>
+	* It will mark it as selected, deselect the others, and enable or disable the input fields for terrain dimension.
+	* @param selectedTemplatePanel the templatePanel selected
+	*/ 
 	private void selectTemplatePanel(NewWorldTemplateComponent selectedTemplatePanel) {
 		emptyPanel.setSelected(false);
 		basicPanel.setSelected(false);
@@ -118,21 +134,30 @@ public class NewWorldDialogBox extends JDialog {
 		heightInputField.setEnable(template.getAskDimension());
 	}
 	
+
+	/**
+	* Callback for OK button.<br/>
+	* First of all it will check that if the template needs dimensions, the dimensions given are correct (ie the string input is readable as an int).<br/>
+	* Then, if it's template based on loading a save file, it will open a file chooser to select a savefile.<br/>
+	* If any of this steps fails, it simply return the method, otherwhise it will close the dialog box with the confirm boolean set to true.
+	* 
+	* @param selectedTemplatePanel the templatePanel selected
+	*/ 
 	private void onOkButtonPressed() {
 		confirm = true;
 		if (template.getAskDimension()) {
 			try {
 				width = Integer.parseInt(widthInputField.getFieldString());
-				widthInputField.setFieldColor(ControlPanel.getStandardFieldColor());
+				widthInputField.setFieldColor(GameFrame.getStandardFieldColor());
 			} catch (Exception except) {
-				widthInputField.setFieldColor(ControlPanel.getWrongFieldColor());
+				widthInputField.setFieldColor(GameFrame.getWrongFieldColor());
 				confirm = false;
 			}
 			try {
 				height = Integer.parseInt(heightInputField.getFieldString());
-				heightInputField.setFieldColor(ControlPanel.getStandardFieldColor());
+				heightInputField.setFieldColor(GameFrame.getStandardFieldColor());
 			} catch (Exception except) {
-				heightInputField.setFieldColor(ControlPanel.getWrongFieldColor());
+				heightInputField.setFieldColor(GameFrame.getWrongFieldColor());
 				confirm = false;
 			}
 			if(!confirm)
@@ -150,22 +175,37 @@ public class NewWorldDialogBox extends JDialog {
 		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 	
-
+	/**
+	* @return indicates if the dialog box has been closed with a result that is valid
+	*/ 
 	public boolean getConfirm() {
 		return confirm;
 	}
+	
+	/**
+	* @return the template selected (should only use it if getConfirm() returns true)
+	*/ 
 	public NewWorldTemplate getSelectedTemplate() {
 		return template;
 	}
-
+	
+	/**
+	* @return the width to use for the template selected (should only use it if getConfirm() returns true)
+	*/ 
 	public int getTemplateWidth() {
 		return width;
 	}
 
+	/**
+	* @return the height to use for the template selected (should only use it if getConfirm() returns true)
+	*/
 	public int getTemplateHeight() {
 		return height;
 	}
 
+	/**
+	* @return the path of the savefile to use for the template selected (should only use it if getConfirm() returns true)
+	*/
 	public String getSelectedSaveFilePath() {
 		if (savefileChooser.getSelectedFile() != null)
 			return savefileChooser.getSelectedFile().getPath();

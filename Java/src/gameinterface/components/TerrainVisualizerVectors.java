@@ -11,16 +11,16 @@ import javax.swing.JComponent;
 /**
 * Component that simply displays the X and Y vectors of a TerrainStackVisualizer
 * 
-* @see TerrainStackVisualizer
+* @see TerrainVisualizerComponent
 */
-public class TerrainStackVisualizerVectors extends JComponent {
-	private TerrainStackVisualizer visualizer;
+public class TerrainVisualizerVectors extends JComponent {
+	private TerrainVisualizerComponent visualizer;
 	int lenght = 2;
 	double arrowSize = 0.5;
 	int offset_x = 2;
 	int offset_y = 4;
 	
-	public TerrainStackVisualizerVectors(TerrainStackVisualizer visualizer) {
+	public TerrainVisualizerVectors(TerrainVisualizerComponent visualizer) {
 		this.visualizer = visualizer;
 	}
 	
@@ -51,7 +51,7 @@ public class TerrainStackVisualizerVectors extends JComponent {
 		int[] arrow2_x = {sizeDelta_x + d_x + offset_x,			sizeDelta_x + offset_x,											(int)(sizeDelta_x - d_x * 2 * arrowSize) + offset_x};
 		int[] arrow2_y = {offset_y,								(int)(d_y * (1 + 2* arrowSize)) + offset_y, 					d_y + offset_y};
 		
-		g2d.setColor(TerrainStackVisualizer.getRealFocusedColor());
+		g2d.setColor(TerrainVisualizerComponent.getRealFocusedColor());
 		g2d.setStroke(new BasicStroke(2));
 		
 		g2d.drawLine(offset_x, offset_y + d_y + sizeDelta_y, offset_x + sizeDelta_x, offset_y + d_y);
