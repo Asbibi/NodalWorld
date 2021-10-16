@@ -1,6 +1,7 @@
 package gamelogic;
 
 import java.awt.Color;
+import java.io.File;
 
 import gameinterface.NewWorldTemplate;
 
@@ -68,12 +69,12 @@ public class GameManagerBuilder {
 	}	
 
 	/**
-	* @param width
-	* @param height
+	* @param width_failsafe	used only if loading fails
+	* @param height_failsafe used only if loading fails
 	* @return the newly created game manager used for demonstration purposes
 	*/ 
-	public static GameManager buildDemoGame(int width, int height) {
-		GameManager game = new GameManager(width, height);
+	public static GameManager buildDemoGame(int width_failsafe, int height_failsafe) {
+		/*GameManager game = new GameManager(width, height);
 		initBasicSurfaces();
 		initBasicSpecies();
 		initBasicGameManager(game);
@@ -81,7 +82,8 @@ public class GameManagerBuilder {
 		addDemoGenRule(game);
 		addDemoMoveRule(game);
 		addDemoDeathRule(game);
-		return game;
+		return game;*/
+		return buildAllNetsLoadedGame("res" + File.separator + "DemoSaveFile.nws", width_failsafe, height_failsafe);
 	}
 
 	

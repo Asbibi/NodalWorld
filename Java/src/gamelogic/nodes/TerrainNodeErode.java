@@ -4,19 +4,19 @@ import gamelogic.Input;
 import gamelogic.NetworkIOException;
 import gamelogic.TerrainModel;
 import gamelogic.TerrainNode;
-import gamelogic.terrains.TerrainModelInvert;
+import gamelogic.terrains.TerrainModelErode;
 
 /**
-* The node model used to invert another model. <br/>
+* The node model used to erode another model. <br/>
 * 
 * Inputs : surface, layer <br/>
 * Outputs : layer
 * 
 */
-public class TerrainNodeInvert extends TerrainNode<TerrainModelInvert> {
+public class TerrainNodeErode extends TerrainNode<TerrainModelErode> {
 
-	public TerrainNodeInvert() {
-		super("Invert Terrain", new TerrainModelInvert());
+	public TerrainNodeErode() {
+		super("Erode Terrain", new TerrainModelErode());
 		addInput(new Input("layer", TerrainModel.class));
 	}
 

@@ -6,7 +6,7 @@ import gamelogic.Vec2D;
 /**
 * Invert the surface occupied by a TerrainModel.
 */ 
-public class TerrainModelInvert  implements TerrainModel {
+public class TerrainModelInvert implements TerrainModel {
 
 	private TerrainModel layer;
 
