@@ -281,7 +281,7 @@ public class NodeBox implements Serializable {
 	private Shape portShape(Port port) {
 		if(port.hasInput() && !port.getInput().hasSource()) {
 			Class<?> dataClass = port.getInput().getDataClass();
-			if(dataClass != Boolean.class && dataClass != Integer.class && dataClass != Double.class && dataClass != Surface.class) 
+			if(dataClass != Boolean.class && dataClass != Integer.class && dataClass != Double.class && dataClass != Surface.class && dataClass != Species.class && dataClass != String.class) 
 				return new Rectangle2D.Double(port.getX()-port.getSize(), port.getY()-port.getSize(), 2*port.getSize(), 2*port.getSize());
 		}
 

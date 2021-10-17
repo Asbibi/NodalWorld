@@ -16,7 +16,7 @@ import gamelogic.NetworkIOException;
 public class TerrainNodeMask extends TerrainNode<TerrainModelMask> {
 
 	public TerrainNodeMask() {
-		super("Mask Terrain", new TerrainModelMask());
+		super("Substract Terrain", new TerrainModelMask());
 		addInput(new Input("layer", TerrainModel.class));
 		addInput(new Input("mask", TerrainModel.class));
 	}

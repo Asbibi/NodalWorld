@@ -69,7 +69,7 @@ public class NodalEditorBuilder {
 		editor.setRuleCreator(GenerationRule.class);
 		disable(editor, new String[] {
 			"Movement", "Death", 
-			"Terrain Unit", "Terrain Rectangle", "Terrain Ellipse", "Masked Terrain", 
+			"Terrain Unit", "Filled Terrain", "Terrain Rectangle", "Terrain Ellipse", "Intersect Terrain", "Union Terrain", "Substract Terrain", "Invert Terrain", "Erode Terrain", "Expand Terrain",
 			"Current Entity"
 		});
 
@@ -96,7 +96,7 @@ public class NodalEditorBuilder {
 		editor.setRuleCreator(MovementRule.class);
 		disable(editor, new String[] {
 			"Generation", "Death", 
-			"Terrain Unit", "Terrain Rectangle", "Terrain Ellipse", "Masked Terrain"
+			"Terrain Unit", "Filled Terrain", "Terrain Rectangle", "Terrain Ellipse", "Intersect Terrain", "Union Terrain", "Substract Terrain", "Invert Terrain", "Erode Terrain", "Expand Terrain",
 		});
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());
@@ -122,7 +122,7 @@ public class NodalEditorBuilder {
 		editor.setRuleCreator(DeathRule.class);
 		disable(editor, new String[] {
 			"Generation", "Movement", 
-			"Terrain Unit", "Terrain Rectangle", "Terrain Ellipse", "Masked Terrain"
+			"Terrain Unit", "Filled Terrain", "Terrain Rectangle", "Terrain Ellipse", "Intersect Terrain", "Union Terrain", "Substract Terrain", "Invert Terrain", "Erode Terrain", "Expand Terrain",
 		});
 
 		JScrollPane infoScroll = new JScrollPane(editor.getCurrentInfoPanel());

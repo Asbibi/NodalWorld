@@ -74,16 +74,20 @@ public class NodeMenu extends JPopupMenu {
 
 	private JMenu buildMenuTerrain() {
 		JMenu menuTerrain = new JMenu("Terrain");
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeUnit()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeFill()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeRectangle()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeEllipse()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeIntersect()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeUnion()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeMask()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeInvert()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeErode()));
-		menuTerrain.add(buildNodeItem(() -> new TerrainNodeExpand()));
+		JMenu menuPrimitiveTerrain = new JMenu("Primitives");
+		menuPrimitiveTerrain.add(buildNodeItem(() -> new TerrainNodeUnit()));
+		menuPrimitiveTerrain.add(buildNodeItem(() -> new TerrainNodeFill()));
+		menuPrimitiveTerrain.add(buildNodeItem(() -> new TerrainNodeRectangle()));
+		menuPrimitiveTerrain.add(buildNodeItem(() -> new TerrainNodeEllipse()));
+		JMenu menuModifierTerrain = new JMenu("Modifiers");
+		menuModifierTerrain.add(buildNodeItem(() -> new TerrainNodeIntersect()));
+		menuModifierTerrain.add(buildNodeItem(() -> new TerrainNodeUnion()));
+		menuModifierTerrain.add(buildNodeItem(() -> new TerrainNodeMask()));
+		menuModifierTerrain.add(buildNodeItem(() -> new TerrainNodeInvert()));
+		menuModifierTerrain.add(buildNodeItem(() -> new TerrainNodeErode()));
+		menuModifierTerrain.add(buildNodeItem(() -> new TerrainNodeExpand()));
+		menuTerrain.add(menuPrimitiveTerrain);
+		menuTerrain.add(menuModifierTerrain);
 		return menuTerrain;
 	}
 
@@ -136,8 +140,6 @@ public class NodeMenu extends JPopupMenu {
 		menuUtils.add(buildNodeItem(() -> new OneMinusNode()));
 		menuUtils.add(buildNodeItem(() -> new SpeciesNode()));
 		menuUtils.add(buildNodeItem(() -> new EntityNode()));
-		menuUtils.add(buildNodeItem(() -> new SpeciesInAreaNode()));
-		menuUtils.add(buildNodeItem(() -> new EntityInAreaNode()));
 		return menuUtils;
 	}
 
@@ -231,8 +233,10 @@ public class NodeMenu extends JPopupMenu {
 		menuGame.add(buildNodeItem(() -> new DimNode()));
 		menuGame.add(buildNodeItem(() -> new OutsideNode()));
 		menuGame.add(buildNodeItem(() -> new SurfaceAtNode()));
-		menuGame.add(buildNodeItem(() -> new CurEntityNode()));
 		menuGame.add(buildNodeItem(() -> new CurSpeciesNode()));
+		menuGame.add(buildNodeItem(() -> new CurEntityNode()));
+		menuGame.add(buildNodeItem(() -> new SpeciesInAreaNode()));
+		menuGame.add(buildNodeItem(() -> new EntityInAreaNode()));
 		return menuGame;
 	}
 	

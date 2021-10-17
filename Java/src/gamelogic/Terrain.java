@@ -97,7 +97,8 @@ public class Terrain implements Serializable {
 	*/ 
 	public Surface getSurfaceAt(Vec2D pos) {
 		if(slots.isEmpty()) return Surface.getEmpty();
-		for(int i=slots.size()-1; i>= 0; i--) {
+		//for(int i=slots.size()-1; i>= 0; i--) {
+		for(int i = 0; i < slots.size(); i++) {
 			TerrainSlot slot = slots.get(i);
 			if(slot.isOccupied()) {
 				Surface surface = slot.getTerrainNode().getSurfaceAt(pos);

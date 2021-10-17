@@ -33,7 +33,6 @@ public class Surface extends Element{
 		id = idCounter;
 		idCounter++;
 		color = Color.lightGray;
-		System.out.println(id);
 	}
 
 	/**

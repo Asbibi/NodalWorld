@@ -318,11 +318,9 @@ public class GameFrame extends JFrame {
 - debug element list : if clicked then drag then release on another element, for JList it will be the selected one but not for the detail panel
 - stops save/load if folder/file exists with savefile name
 - terrain visualizer is a bit laggy on focus
-- terrain visualizer ahs its slots in the wrong order
-- square instead of circle for strings & species
 ////////////////////////////////////////////////
 - saving on exit ?
 - change terrain dimension ?
 - terrain grid paintable
-- demo & island templates
+- island templates
  */
