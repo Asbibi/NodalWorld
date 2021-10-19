@@ -25,7 +25,6 @@ public class PrinterView {
 		boolean whithFrameNumber = owner.getPrintWithFrame();
 		int lineHeight = 15;
 		g.setFont(new Font("Arial", Font.PLAIN, 12));
-		g.setColor(Color.darkGray);
 		
 		if(owner.getOnlyThisFrame()) {
 			List<PrinterMessage> messages = PrinterComponent.getLastFrameMessages();
@@ -65,6 +64,7 @@ public class PrinterView {
 	* @param withFrame indicates if the frame must be printed on the message
 	*/
 	private void paintMessage(Graphics2D g, PrinterMessage message, int yTextPos, boolean withFrame) {
+		g.setColor(message.getIsError() ? Color.red : Color.darkGray);
 		g.drawString(message.getMessage(withFrame), 2, yTextPos);
 	}
 	
@@ -75,6 +75,7 @@ public class PrinterView {
 	* @param yTextPos the y position of the separator line
 	*/
 	private void paintFrameSeparation(Graphics2D g, int frame, int yTextPos) {
+		g.setColor(Color.darkGray);
 		g.drawString("=========   Frame: " + frame + "   =========", 2, yTextPos);		
 	}
 }

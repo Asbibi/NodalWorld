@@ -8,6 +8,7 @@ package gameinterface;
 public class PrinterMessage {
 	private String message;
 	private int frame;
+	private boolean isError;
 	
 	
 	/**
@@ -15,8 +16,18 @@ public class PrinterMessage {
 	* @param message the actual message
 	*/
 	public PrinterMessage(int frame, String message) {
+		this(frame, message, false);
+	}
+	
+	/**
+	* @param frame the frame the message is emitted on
+	* @param message the actual message
+	* @param isError indicates if the message is from anetwork error and thus if should be printed in red
+	*/
+	public PrinterMessage(int frame, String message, boolean isError) {
 		this.frame = frame;
 		this.message = message;
+		this.isError = isError;
 	}
 	
 	/**
@@ -35,5 +46,12 @@ public class PrinterMessage {
 			return "F: " + frame + "     \t|     " + message;
 		else
 			return message;
+	}
+	
+	/**
+	* @return if the message has been emitted from a printer or a the node editor for a Network Exception
+	*/
+	public boolean getIsError() {
+		return isError;
 	}
 }

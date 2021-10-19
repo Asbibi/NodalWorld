@@ -73,7 +73,7 @@ public class Output implements Serializable {
 	*/ 
 	public void setData(Object data) throws NetworkIOException {
 		if(data == null) {
-			throw new NetworkIOException("Cannot write null to output " + name);
+			throw new NetworkIOException("Cannot write null to output " + name + "  |  Type: " + dataClass.getName());
 		}
 		if(this.dataClass.isInstance(data)) {
 			this.data = data;
@@ -87,12 +87,12 @@ public class Output implements Serializable {
 	*/ 
 	public <T> T getData(Class<T> requestClass) throws NetworkIOException {
 		if(data == null) {
-			throw new NetworkIOException("Cannot read data from output " + name);
+			throw new NetworkIOException("Cannot read data from output " + name + "  |  Type: " + dataClass.getName());
 		}
 		if(this.dataClass.equals(requestClass)) {
 			return requestClass.cast(data);
 		}
-		throw new NetworkIOException("Request class do not match data class of output " + name);
+		throw new NetworkIOException("Request class do not match data class of output " + name + "  |  Type: " + dataClass.getName());
 	}
 
 	// ========== TARGET INPUTS THE OUTPUT POINTS TO ==========

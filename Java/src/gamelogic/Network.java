@@ -16,6 +16,8 @@ import java.util.HashSet;
 
 import javax.swing.event.ChangeListener;
 
+import gameinterface.PrinterMessage;
+import gameinterface.components.PrinterComponent;
 import gameinterface.nodaleditor.NodalEditorModel;
 
 import javax.swing.event.ChangeEvent;
@@ -186,6 +188,7 @@ public class Network implements Serializable {
 
 		} catch(NetworkIOException e) {
 			triggerAlertListeners();
+			PrinterComponent.addMessage(new PrinterMessage(game.getFrame(), e.getMessage() + "  |  Terminal: " + sink.name, true));
 			throw e;
 		}
 	}

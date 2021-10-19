@@ -133,12 +133,12 @@ public class Input implements Serializable {
 	*/ 
 	public <T> T getManualValue(Class<T> requestClass) throws NetworkIOException {
 		if(value == null) {
-			throw new NetworkIOException("No manual value defined on input " + name);
+			throw new NetworkIOException("No manual value defined on input " + name + "  |  Type: " + dataClass.getName());
 		}
 		if(dataClass.equals(requestClass)) {
 			return requestClass.cast(value);
 		}
-		throw new NetworkIOException("Request class do not match data class of input " + name);
+		throw new NetworkIOException("Request class do not match data class of input " + name + "  |  Type: " + dataClass.getName());
 	}
 
 	/**
@@ -149,12 +149,12 @@ public class Input implements Serializable {
 	public <T> T getData(Class<T> requestClass) throws NetworkIOException {
 		if(source==null) {
 			if(manual) return getManualValue(requestClass);
-			else throw new NetworkIOException("Cannot read data from input " + name);
+			else throw new NetworkIOException("Cannot read data from input: " + name + "  |  Type: " + dataClass.getName());
 		}
 		if(dataClass.equals(requestClass)) {
 			return source.getData(requestClass);
 		}
-		throw new NetworkIOException("Request class do not match data class of input " + name);
+		throw new NetworkIOException("Request class do not match data class of input " + name + "  |  Type: " + dataClass.getName());
 	}
 
 }

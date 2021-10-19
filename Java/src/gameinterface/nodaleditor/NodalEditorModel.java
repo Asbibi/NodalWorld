@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
-import java.awt.FontMetrics;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;

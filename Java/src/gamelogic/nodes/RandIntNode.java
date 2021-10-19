@@ -28,7 +28,9 @@ public class RandIntNode extends Node {
 		input.setManualValue(-1);
 		addInput(input);
 		rand = new Random();
-		addInput(new Input("bound", Integer.class));
+		Input boundInput = new Input("bound", Integer.class);
+		boundInput.setManualValue(1);
+		addInput(boundInput);
 		addOutput(new Output("res", Integer.class));
 	}
 
@@ -36,11 +38,15 @@ public class RandIntNode extends Node {
 	* @param game
 	*/ 
 	@Override
-	public void evaluate(GameManager game) throws NetworkIOException {
+	public void evaluate(GameManager game) throws NetworkIOException {		
 		int seed = getInput("seed").getData(Integer.class);
 		Random randUsed = seed < 0 ? rand : new Random(getInput("seed").getData(Integer.class));
 		
 		Integer bound = getInput("bound").getData(Integer.class);
+		if (bound < 1) {
+			getOutput("res").setData(null);
+			return;
+		}			
 		Integer val = randUsed.nextInt(bound);
 		getOutput("res").setData(val);
 	}

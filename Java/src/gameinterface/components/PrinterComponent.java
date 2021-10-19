@@ -93,7 +93,7 @@ public class PrinterComponent extends JComponent {
 		for (PrinterComponent printer : printers) {
 			int lineNumber = (message.getFrame() - messages.get(0).getFrame()) + messages.size() + 4;
 			int height = Math.max(40, lineNumber * 15);
-			printer.setPreferredSize(new Dimension(300, height));
+			printer.setPreferredSize(new Dimension(550, height));
 
 			JScrollPane scrollParent = (JScrollPane)(printer.getParent().getParent());
 			if (scrollParent != null)				

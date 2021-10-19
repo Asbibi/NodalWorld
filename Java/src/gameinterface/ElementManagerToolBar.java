@@ -147,7 +147,8 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	            if (reply != JOptionPane.YES_OPTION)
 	                return;				
 				
-				game.exterminateSpeciesMembers(sp);				
+				game.exterminateSpeciesMembers(sp);
+				((SpeciesDetailPanel)detailPanel).updateVariableElementInfo(sp);
 			});
 		}
 		repaint();
