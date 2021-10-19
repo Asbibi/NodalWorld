@@ -11,6 +11,8 @@ import gamelogic.nodes.MoveNode;
 * @see MoveNode
 */ 
 public class MovementRule extends Rule<MoveNode> {
+	
+	private static final long serialVersionUID = -1679464283527829799L;
 
 	/**
 	* @param terminalNode

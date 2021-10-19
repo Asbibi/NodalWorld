@@ -11,6 +11,8 @@ import gamelogic.nodes.KillNode;
 */ 
 public class DeathRule extends Rule<KillNode> {
 
+	private static final long serialVersionUID = 1620143180129461019L;
+
 	/**
 	* @param terminalNode
 	*/ 

@@ -9,6 +9,7 @@ import java.io.Serializable;
 */ 
 public class Edge implements Serializable {
 
+	private static final long serialVersionUID = 797864409022863271L;
 	private Node source, target;
 
 	/**

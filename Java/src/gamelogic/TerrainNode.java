@@ -9,6 +9,7 @@ package gamelogic;
 */ 
 public abstract class TerrainNode<T extends TerrainModel> extends Node {
 
+	private static final long serialVersionUID = 7392695605115953305L;
 	private Surface surface;
 	protected T model;
 

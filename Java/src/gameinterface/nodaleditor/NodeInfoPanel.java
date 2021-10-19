@@ -34,6 +34,8 @@ import java.awt.Dimension;
 */ 
 public class NodeInfoPanel extends JPanel implements Serializable {
 
+	private static final long serialVersionUID = -8777717094571538478L;
+
 	/**
 	* @param game 
 	* @param node

@@ -18,6 +18,7 @@ import java.lang.Class;
 */ 
 public class Output implements Serializable {
 
+	private static final long serialVersionUID = 5183701892953092044L;
 	private static int idCounter = 0;
 
 	private int id;

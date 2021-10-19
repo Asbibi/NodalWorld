@@ -11,6 +11,8 @@ import gamelogic.nodes.GenerateNode;
 */ 
 public class GenerationRule extends Rule<GenerateNode> {
 
+	private static final long serialVersionUID = -5364286651329260418L;
+
 	/**
 	* @param terminalNode
 	*/ 

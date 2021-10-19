@@ -12,6 +12,8 @@ import java.util.List;
 */
 public class Surface extends Element{
 
+	private static final long serialVersionUID = 6650543758021558806L;
+
 	private static int idCounter;
 
 	private int id;

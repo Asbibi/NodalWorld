@@ -17,7 +17,8 @@ import javax.swing.event.ChangeEvent;
 */ 
 public class Terrain implements Serializable {
 
-
+	private static final long serialVersionUID = -463099586726467833L;
+	
 	// ========== MEMBERS VARIABLES ==========
 
 	private int width, height;

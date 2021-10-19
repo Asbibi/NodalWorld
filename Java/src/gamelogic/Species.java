@@ -19,6 +19,8 @@ public class Species extends Element{
 
 	// ========== MEMBER VARIABLES ==========
 
+	private static final long serialVersionUID = 5143931481581010388L;
+
 	private static int idCounter = 0;
 
 	private int id;

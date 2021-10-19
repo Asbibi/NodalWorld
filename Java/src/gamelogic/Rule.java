@@ -12,6 +12,8 @@ import java.lang.Object;
 */ 
 public abstract class Rule<T extends TerminalNode> implements Serializable {
 
+	private static final long serialVersionUID = -8229149502622430174L;
+
 	private static int idCounter = 0;
 
 	private int id;

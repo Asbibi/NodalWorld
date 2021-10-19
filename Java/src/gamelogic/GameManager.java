@@ -30,6 +30,8 @@ public class GameManager implements Serializable {
 
 	// ========== MEMBER VARIABLES ==========
 
+	private static final long serialVersionUID = -6754649290957010917L;
+
 	private Integer frame;
 
 	private Terrain terrain;

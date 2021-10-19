@@ -8,6 +8,7 @@ package gamelogic;
 */ 
 public abstract class TerminalNode<R extends Rule> extends Node {
 
+	private static final long serialVersionUID = 8094688124751769422L;
 	protected R rule;
 
 	/**

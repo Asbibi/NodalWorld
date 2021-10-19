@@ -23,6 +23,7 @@ public class Port implements Serializable {
 
 	// ========== MEMBER VARIABLES ==========
 
+	private static final long serialVersionUID = -3988422383853818449L;
 	private NodeBox parent;
 	private double x, y, scale, size;
 	private Input input;

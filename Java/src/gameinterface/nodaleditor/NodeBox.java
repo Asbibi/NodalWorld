@@ -38,6 +38,7 @@ public class NodeBox implements Serializable {
 
 	// ========== MEMBER VARIABLES ==========
 
+	private static final long serialVersionUID = -4202974147728112750L;
 	private Node node;
 	private double x, y, scale;
 

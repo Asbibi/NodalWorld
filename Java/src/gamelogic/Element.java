@@ -12,6 +12,7 @@ import java.io.Serializable;
 */ 
 public class Element implements Serializable {
 
+	private static final long serialVersionUID = 221225820502337258L;
 	protected String name = "";
 	protected transient ImageFile image = null;
 	

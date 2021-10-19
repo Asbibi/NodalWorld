@@ -31,6 +31,7 @@ public class NodalEditorModel implements Serializable {
 
 	// ========== MEMBER VARIABLES ==========
 
+	private static final long serialVersionUID = -7183388775875107101L;
 	private transient GameManager game;
 	private transient Network network;
 	

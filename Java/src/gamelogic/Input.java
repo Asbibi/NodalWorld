@@ -13,6 +13,7 @@ import java.lang.Class;
 */ 
 public class Input implements Serializable {
 
+	private static final long serialVersionUID = 8121995336723032139L;
 	private static int idCounter = 0;
 
 	private int id;

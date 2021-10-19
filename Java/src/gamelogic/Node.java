@@ -15,6 +15,8 @@ import java.util.Collection;
 */ 
 public abstract class Node implements Serializable {
 
+	private static final long serialVersionUID = 6501070277350305776L;
+
 	private static int idCounter = 0;
 
 	private int id;

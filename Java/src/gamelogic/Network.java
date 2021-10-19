@@ -33,6 +33,7 @@ public class Network implements Serializable {
 
 	// ========== MEMBER VARIABLES =========
 
+	private static final long serialVersionUID = 4987783164559072568L;
 	private List<Node> nodes;
 	private Map<Node, Collection<Edge>> outEdges, inEdges;
 	

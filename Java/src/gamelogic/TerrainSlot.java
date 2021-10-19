@@ -10,6 +10,7 @@ import java.io.Serializable;
 */ 
 public class TerrainSlot implements Serializable {
 
+	private static final long serialVersionUID = 7607023427483287328L;
 	private boolean occupied;
 	private TerrainNode terrainNode;
 

@@ -12,6 +12,7 @@ import java.io.Serializable;
 */ 
 public class Entity implements Serializable {
 
+	private static final long serialVersionUID = 995885698190560146L;
 	private Species species;
 	private Vec2D pos;
 	private Integer birthTime;
