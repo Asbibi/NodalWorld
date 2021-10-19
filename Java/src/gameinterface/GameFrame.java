@@ -86,6 +86,8 @@ public class GameFrame extends JFrame {
 		
 		updateFrame(0);
 		worldPanel.resetTileSizeToMinimal();
+
+		setIconImage((new ImageIcon("res/_System_App_Icon.png")).getImage());
 		
 		setVisible(true);
 	}
