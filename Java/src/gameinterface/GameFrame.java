@@ -224,7 +224,7 @@ public class GameFrame extends JFrame {
 	
 	/**
 	* Updates the frame display, usually called after the gameManager evolved.
-	* @param the last frame processed
+	* @param frame the last frame processed, to check which species were triggered
 	*/
 	public void updateFrame(int frame) {
 		worldPanel.updateMap(frame);
@@ -254,10 +254,10 @@ public class GameFrame extends JFrame {
 	
 	/**
 	* This list of action listeners is called after a load is performed, and they are triggered with a LoadEvent 
-	* @param the ActionListener to add to the new/load action listener list
+	* @param listener the ActionListener to add to the new/load action listener list
 	*/
-	public void addNew_LoadActionListener(ActionListener action) {
-		onLoadListener.add(action);
+	public void addNew_LoadActionListener(ActionListener listener) {
+		onLoadListener.add(listener);
 	}
 
 	

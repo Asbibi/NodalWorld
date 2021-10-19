@@ -201,7 +201,7 @@ public class WorldPanel extends JPanel{
 				add(tiles.get(x + y * width));
 		
 		gridDimension = newDimensions;
-		updateAllSpeciesDisplay();
+		updateAllSpeciesDisplay(true);
 		computeMinimalTileSize();
 		
         setPreferredSize(getPreferredSize());
@@ -230,10 +230,11 @@ public class WorldPanel extends JPanel{
 	
 	/**
 	* This method should only be called when a species is added or removed. For usual game logic loop just use updateOneSpeciesDisplayed(...).
+	* @param forceChange indicates if should reset tiles' entity count array in any case or only if the count of species changed
 	*/
-	public void updateAllSpeciesDisplay() {
+	public void updateAllSpeciesDisplay(boolean forceChange) {
 		boolean hasChanged = computeSpeciesSlotNumber_sqrt(speciesDisplayed.size() - 1);	// set speciesSlotNumber_sqrt ; -1 is because the first "species" in the list is the empty species
-		if (hasChanged) {
+		if (hasChanged || forceChange) {
 			// reset all tiles arrays to fit the new potential size
 			for (int i = 0; i < tiles.size() ; i++) 
 				tiles.get(i).setEmptyArraySpecies(speciesSlotNumber_sqrt * speciesSlotNumber_sqrt);
@@ -262,8 +263,8 @@ public class WorldPanel extends JPanel{
 			return;
 		
 		// for each tiles, reset the count of the species to 0
-		for (int i = 0; i < tiles.size() ; i++)
-			tiles.get(i).resetCountArraySpecies(speciesIndex -1);
+		for (int i = 0; i < tiles.size() ; i++) 
+			tiles.get(i).resetCountArraySpecies(speciesIndex -1);		
 		
 		// for each entity of the species, increment the species count
 		int width = gridDimension.width;

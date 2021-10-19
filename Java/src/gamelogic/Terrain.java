@@ -54,10 +54,24 @@ public class Terrain implements Serializable {
 	// ========== BASIC GETTERS AND SETTERS ==========
 
 	/**
+	* @param width the new terrain's width
+	*/ 
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	/**
 	* @return the terrain's width
 	*/ 
 	public int getWidth() {
 		return width;
+	}
+
+	/**
+	* @param height the new terrain's height
+	*/ 
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 	/**

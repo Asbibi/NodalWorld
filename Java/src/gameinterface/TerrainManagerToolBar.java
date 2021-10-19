@@ -17,8 +17,8 @@ import gamelogic.Terrain;
 public class TerrainManagerToolBar extends JToolBar {
 	private Terrain terrain;
 	private TerrainVisualizerPanel visualizer;
-	private TextFixedFieldPanel widthField;
-	private TextFixedFieldPanel heightField;
+	private TextFieldPanel widthField;
+	private TextFieldPanel heightField;
 	private TextFieldPanel periodField;
 	
 	/**
@@ -40,10 +40,12 @@ public class TerrainManagerToolBar extends JToolBar {
 		visualizer = new TerrainVisualizerPanel(terrain);
 		add(visualizer);
 		
-		widthField = new TextFixedFieldPanel("Width");;
-		heightField = new TextFixedFieldPanel("Height");
+		widthField = new TextFieldPanel("Width");;
+		heightField = new TextFieldPanel("Height");
 		periodField = new TextFieldPanel("Period");
-		periodField.addActionListener( e -> applyToTerrain() );
+		widthField.addActionListener( e -> applyWidthToTerrain() );
+		heightField.addActionListener( e -> applyHeightToTerrain() );
+		periodField.addActionListener( e -> applyPeriodToTerrain() );
 		
 		updateFromTerrain(true);
 		
@@ -72,21 +74,67 @@ public class TerrainManagerToolBar extends JToolBar {
 			return;
 		
 		visualizer.repaint();
-		widthField.setLabelString(Integer.toString(terrain.getWidth()));
-		heightField.setLabelString(Integer.toString(terrain.getHeight()));
-		if (complete)
-			periodField.setFieldString(Integer.toString(terrain.getTriggerTime()));
+		if (complete) {
+			widthField.setFieldString(Integer.toString(terrain.getWidth()));
+			heightField.setFieldString(Integer.toString(terrain.getHeight()));			
+			periodField.setFieldString(Integer.toString(terrain.getTriggerTime()));		
+		}		
 	}
 	
 	/**
-	* Apply the changes in the fields' values (i.e. periodField) to the terrain reference.
+	* Apply the changes in the period field value to the terrain reference.
 	*/ 
-	private void applyToTerrain() {
+	private void applyWidthToTerrain() {
 		if (terrain == null)
 			return;
 		
 		try {
-			terrain.setTriggerTime(Integer.parseInt(periodField.getFieldString()));
+			int val = Integer.parseInt(widthField.getFieldString());
+			if (val <1) {
+				widthField.setFieldColor(GameFrame.getWrongFieldColor());	
+				return;
+			}
+			terrain.setWidth(val);
+			widthField.setFieldColor(GameFrame.getStandardFieldColor());
+		} catch (Exception e) {
+			widthField.setFieldColor(GameFrame.getWrongFieldColor());		
+		}	
+	}
+	
+	/**
+	* Apply the changes in the period field value to the terrain reference.
+	*/ 
+	private void applyHeightToTerrain() {
+		if (terrain == null)
+			return;
+		
+		try {
+			int val = Integer.parseInt(heightField.getFieldString());
+			if (val <1) {
+				heightField.setFieldColor(GameFrame.getWrongFieldColor());	
+				return;
+			}
+			terrain.setHeight(val);
+			heightField.setFieldColor(GameFrame.getStandardFieldColor());
+		} catch (Exception e) {
+			heightField.setFieldColor(GameFrame.getWrongFieldColor());		
+		}	
+	}
+	
+	/**
+	* Apply the changes in the period field value to the terrain reference.
+	*/ 
+	private void applyPeriodToTerrain() {
+		if (terrain == null)
+			return;
+		
+		try {
+			int val = Integer.parseInt(periodField.getFieldString());
+			if (val <1) {
+				periodField.setFieldColor(GameFrame.getWrongFieldColor());	
+				return;
+			}
+			terrain.setTriggerTime(val);
 			periodField.setFieldColor(GameFrame.getStandardFieldColor());
 		} catch (Exception e) {
 			periodField.setFieldColor(GameFrame.getWrongFieldColor());		
