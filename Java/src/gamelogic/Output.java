@@ -132,4 +132,15 @@ public class Output implements Serializable {
 		return targets;
 	}
 
+
+	// ========== LOADING ==========
+
+	/**
+	* This method synchronizes the idCounter on this output, 
+	* making it bigger than this output's id
+	*/ 
+	public void synchIdCounter() {
+		idCounter = Math.max(idCounter, id+1);
+	}
+
 }

@@ -138,5 +138,16 @@ public abstract class Node implements Serializable {
 				return;
 			}
 		}
-	}	
+	}
+
+
+	// ========== LOADING ==========
+
+	/**
+	* This method synchronizes the idCounter on this node, 
+	* making it bigger than this node's id
+	*/ 
+	public void synchIdCounter() {
+		idCounter = Math.max(idCounter, id+1);
+	}
 }

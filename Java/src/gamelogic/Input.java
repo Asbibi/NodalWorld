@@ -157,4 +157,15 @@ public class Input implements Serializable {
 		throw new NetworkIOException("Request class do not match data class of input " + name + "  |  Type: " + dataClass.getName());
 	}
 
+
+	// ========== LOADING ==========
+
+	/**
+	* This method synchronizes the idCounter on this input, 
+	* making it bigger than this input's id
+	*/ 
+	public void synchIdCounter() {
+		idCounter = Math.max(idCounter, id+1);
+	}
+
 }

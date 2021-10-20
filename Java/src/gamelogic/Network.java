@@ -304,4 +304,19 @@ public class Network implements Serializable {
 		return dependencies;
 	}
 
+
+	// ========== LOADING ==========
+
+	/**
+	* This method synchronizes the idCounter on all the nodes/inputs/outputs of the network, 
+	* so that the id of a new node is created it will be coherent with the previous ids.
+	*/ 
+	public void synchIdCounter() {
+		for(Node node : nodes) {
+			node.synchIdCounter();
+			for(Input input : node.getInputs()) input.synchIdCounter();
+			for(Output output : node.getOutputs()) output.synchIdCounter();
+		}
+	}
+
 }
