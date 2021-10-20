@@ -246,6 +246,10 @@ public class Saver {
 		
 		Surface.synchIdCounter(manager.getSurfaceArray());
 		Species.synchIdCounter(manager.getSpeciesArray());
+		manager.getTerrainNet().synchIdCounter();
+		manager.getGenNet().synchIdCounter();
+		manager.getMoveNet().synchIdCounter();
+		manager.getDeathNet().synchIdCounter();
 		return manager;
 	}
 	
