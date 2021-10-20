@@ -36,7 +36,7 @@ public class NodalEditorModel implements Serializable {
 	
 	private Collection<NodeBox> boxes;
 	private double scale, ds;
-	private Map<Node, NodeInfoPanel> infoPanels;
+	private transient Map<Node, NodeInfoPanel> infoPanels;
 	private boolean usingRules, usingTerrains;
 	private Class<? extends Rule> ruleClass;
 	private int sideBoxWidth, sideBoxHeight;
@@ -88,7 +88,7 @@ public class NodalEditorModel implements Serializable {
 
 		changeListeners = new LinkedList<ChangeListener>();
 		
-		// copy needed model data from loded save file if there is one, and register in any case
+		// copy needed model data from loaded save file if there is one, and register in any case
 		network.copyFromLoadedAndAttachEditorModel(this);
 	}
 	public void copyNonTransientFields(NodalEditorModel otherModel) {
@@ -100,10 +100,10 @@ public class NodalEditorModel implements Serializable {
 		sideBoxHeight = otherModel.sideBoxHeight;
 		selected = otherModel.selected;
 
-		//infoPanels = otherModel.infoPanels;
-		for (Node node : otherModel.infoPanels.keySet()) {
-			NodeInfoPanel infoPanel = new NodeInfoPanel(game, node);
-			infoPanels.put(node, infoPanel);
+		//~ infoPanels = otherModel.infoPanels;
+		for (NodeBox nodebox : boxes) {
+			NodeInfoPanel infoPanel = new NodeInfoPanel(game, nodebox.getNode());
+			infoPanels.put(nodebox.getNode(), infoPanel);
 		}
 	}
 
