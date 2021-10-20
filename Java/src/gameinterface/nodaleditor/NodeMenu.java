@@ -160,6 +160,7 @@ public class NodeMenu extends JPopupMenu {
 		menuOperations.add(menuMul);
 		menuMul.add(buildNodeItem(() -> MultiplyNode.buildMulIntNode()));
 		menuMul.add(buildNodeItem(() -> MultiplyNode.buildMulDoubleNode()));
+		menuMul.add(buildNodeItem(() -> new MultiplyIntDoubleNode()));		
 		menuMul.add(buildNodeItem(() -> MultiplyVectorNode.buildMulVecIntNode()));
 		menuMul.add(buildNodeItem(() -> MultiplyVectorNode.buildMulVecDoubleNode()));
 		JMenu menuDiv = new JMenu("Div");

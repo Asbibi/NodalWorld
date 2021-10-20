@@ -28,7 +28,7 @@ public class GameManagerBuilder {
 		else if (template.isEqual(NewWorldTemplate.basic))
 			return buildBasicGame(width, height);
 		else if (template.isEqual(NewWorldTemplate.island))
-			return null;
+			return buildIslandGame(width, height);
 		else if (template.isEqual(NewWorldTemplate.completeDemo))
 			return buildDemoGame(width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElements))
@@ -36,7 +36,7 @@ public class GameManagerBuilder {
 		else if (template.isEqual(NewWorldTemplate.loadElementsTerrain))
 			return buildTerrainLoadedGame(savefilePath,width, height);
 		else if (template.isEqual(NewWorldTemplate.loadElementsAllNodes))
-			return buildAllNetsLoadedGame(savefilePath,width, height);
+			return buildAllNetsLoadedGame(savefilePath,width, height, true);
 		else if (template.isEqual(NewWorldTemplate.loadFullSave))
 			return buildFullLoadedGame(savefilePath,width, height);
 		else {
@@ -69,21 +69,22 @@ public class GameManagerBuilder {
 	}	
 
 	/**
+	* @param width
+	* @param height
+	* @return the newly created game manager used for demonstration purposes
+	*/ 
+	public static GameManager buildIslandGame(int width, int height) {
+		GameManager islandManager =  buildAllNetsLoadedGame("res" + File.separator + "IslandSaveFile.nws", width, height, true);
+		return islandManager;
+	}
+	
+	/**
 	* @param width_failsafe	used only if loading fails
 	* @param height_failsafe used only if loading fails
 	* @return the newly created game manager used for demonstration purposes
 	*/ 
 	public static GameManager buildDemoGame(int width_failsafe, int height_failsafe) {
-		/*GameManager game = new GameManager(width, height);
-		initBasicSurfaces();
-		initBasicSpecies();
-		initBasicGameManager(game);
-		addDemoTerrain(game);
-		addDemoGenRule(game);
-		addDemoMoveRule(game);
-		addDemoDeathRule(game);
-		return game;*/
-		return buildAllNetsLoadedGame("res" + File.separator + "DemoSaveFile.nws", width_failsafe, height_failsafe);
+		return buildAllNetsLoadedGame("res" + File.separator + "DemoSaveFile.nws", width_failsafe, height_failsafe, false);
 	}
 
 	
@@ -107,35 +108,40 @@ public class GameManagerBuilder {
 	/**
 	* If loading fails, it will return an empty game manager with given width and height.
 	* @param saveFilePath the path to the savefile used as surface and species bank
-	* @param width_failsafe	used only if loading fails
-	* @param height_failsafe used only if loading fails
+	* @param width
+	* @param height
 	* @return the newly created game manager with all the surfaces, species and terrain graph of a loaded savefile
 	*/ 
-	public static GameManager buildTerrainLoadedGame(String saveFilePath, int width_failsafe, int height_failsafe) {
+	public static GameManager buildTerrainLoadedGame(String saveFilePath, int width, int height) {
 		GameManager gameSaved = Saver.loadGame(saveFilePath);
 		if (gameSaved != null) {
-			GameManager game = buildEmptyGame(gameSaved.gridWidth(), gameSaved.gridHeight());
+			GameManager game = buildEmptyGame(width, height);
 			gameSaved.initTransientFields();
 			copyElementsGameManager(game, gameSaved);
 			game.copyTerrain_TerrainNet(gameSaved);
 			return game;
 		}
 		else
-			return buildEmptyGame(width_failsafe, height_failsafe);
+			return buildEmptyGame(width, height);
 	}
 	
 	/**
 	* If loading fails, it will return an empty game manager with given width and height.
 	* @param saveFilePath the path to the savefile used as surface and species bank
-	* @param width_failsafe	used only if loading fails
-	* @param height_failsafe used only if loading fails
+	* @param width
+	* @param height
+	* @param withDimension indicates if the dimension given should be used on the new terrain or only as failsafe values
 	* @return the newly created game manager with all the data and graphs of a loaded savefile, but with no members and starting at frame 0
 	*/ 
-	public static GameManager buildAllNetsLoadedGame(String saveFilePath, int width_failsafe, int height_failsafe) {
+	public static GameManager buildAllNetsLoadedGame(String saveFilePath, int width, int height, boolean withDimension) {
 		GameManager game = Saver.loadGame(saveFilePath);
 		if (game == null)
-			return buildEmptyGame(width_failsafe, height_failsafe);
-		
+			return buildEmptyGame(width, height);
+
+		if (withDimension ) {
+			game.getTerrain().setWidth(width);
+			game.getTerrain().setHeight(height);
+		}
 		game.initTransientFields();
 		game.reinitWorld();
 		return game;

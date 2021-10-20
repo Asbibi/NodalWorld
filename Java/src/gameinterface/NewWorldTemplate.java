@@ -20,8 +20,8 @@ public class NewWorldTemplate {
 	public static NewWorldTemplate completeDemo				= new NewWorldTemplate("Demo", 				"A complete demo world to", "use as example.",					"res/_System_Template_Demo.png", 			false, false);
 	
 	public static NewWorldTemplate loadElements 			= new NewWorldTemplate("Import Data", 		"Load surfaces & species", "from a save file.", 				"res/_System_Template_LoadElements.png", 	true, true);
-	public static NewWorldTemplate loadElementsTerrain 		= new NewWorldTemplate("Import Terrain",	"Load surfaces, species &", "terrain from a save file.",		"res/_System_Template_LoadEleTerrain.png", 	true, false);
-	public static NewWorldTemplate loadElementsAllNodes 	= new NewWorldTemplate("Import Graphs", 	"Load surfaces, species &", "all graphs from a save file.", 	"res/_System_Template_LoadEleTerGraphs.png",true, false);
+	public static NewWorldTemplate loadElementsTerrain 		= new NewWorldTemplate("Import Terrain",	"Load surfaces, species &", "terrain from a save file.",		"res/_System_Template_LoadEleTerrain.png", 	true, true);
+	public static NewWorldTemplate loadElementsAllNodes 	= new NewWorldTemplate("Import Graphs", 	"Load surfaces, species &", "all graphs from a save file.", 	"res/_System_Template_LoadEleTerGraphs.png",true, true);
 	public static NewWorldTemplate loadFullSave 			= new NewWorldTemplate("Complete Load", 	"Resume from a save file.", "", 								"res/_System_Template_LoadFull.png", 		true, false);
 	
 	// ====================================================

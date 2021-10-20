@@ -7,6 +7,8 @@ import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -98,7 +100,7 @@ public class NodalEditorUI {
 				}
 
 				// Selecting a species (when using them) to add or remove a link to a terminal node
-				int speciesRow = editor.getSpeciesRow(e.getX(), e.getY());
+				int speciesRow = editor.getSpeciesRow(e.getX(), e.getY() + editor.getSideBoxYOffset());
 				if(speciesRow >= 0) {
 					editor.setCurrentSpeciesRow(speciesRow);
 					editor.disconnectSpecies(speciesRow);
@@ -108,7 +110,7 @@ public class NodalEditorUI {
 				}
 
 				// Selecting a terrain slot (when using them) to add or remove a link to a terrain node
-				int terrainSlotRow = editor.getTerrainSlotRow(e.getX(), e.getY());
+				int terrainSlotRow = editor.getTerrainSlotRow(e.getX(), e.getY() + editor.getSideBoxYOffset());
 				if(terrainSlotRow >= 0) {
 					editor.setCurrentTerrainSlotRow(terrainSlotRow);
 					editor.disconnectTerrainSlot(terrainSlotRow);
@@ -234,6 +236,12 @@ public class NodalEditorUI {
 				}
 			}
 		});
+		
+		editor.addMouseWheelListener(new MouseWheelListener() {
+		    public void mouseWheelMoved(MouseWheelEvent e) {
+			    editor.changeSideBoxYOffset(e.getWheelRotation());
+		    }
+	    });
 
 		editor.addKeyListener(new KeyAdapter() {
 			@Override
@@ -277,19 +285,19 @@ public class NodalEditorUI {
 			int row = -1;
 			for(Species sp : game.getSpeciesArray()) {
 				if(row >= 0) {
-					Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
+					Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight() - editor.getSideBoxYOffset(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
 					boolean isConnected = game.getRule(editor.getRuleClass(), sp) != null;
 					g2d.setColor(isConnected ? slotConnectedColor : slotDisconnectedColor);
 					g2d.fill(rect);
 					g2d.setColor(Color.gray);
 					g2d.draw(rect);
 					g2d.setColor(Color.black);
-					g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+10);
+					g2d.drawString(sp.toString(), editor.getWidth()-editor.getSideBoxWidth()+10, row*editor.getSideBoxHeight() - editor.getSideBoxYOffset() + 30);
 
 					if(isConnected) {
 						NodeBox box = editor.getBox(game.getRule(editor.getRuleClass(), sp).getTerminalNode());
 						g2d.setColor(new Color(120,255,0));
-						g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
+						g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5) - editor.getSideBoxYOffset(), box.getX()+box.getWidth(), box.getY()));
 					}
 				}
 
@@ -299,7 +307,7 @@ public class NodalEditorUI {
 			// Draw incomplete link
 			if(editor.isLinkingSpecies()) {
 				g2d.setColor(Color.red);
-				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentSpeciesRow()+0.5), editor.getXCursor(), editor.getYCursor()));
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentSpeciesRow()+0.5) - editor.getSideBoxYOffset(), editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 
@@ -308,19 +316,19 @@ public class NodalEditorUI {
 			Terrain terrain = editor.getGameManager().getTerrain();
 			int row = 0;
 			for(TerrainSlot slot : terrain.getSlots()) {
-				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
+				Rectangle2D rect = new Rectangle2D.Double(editor.getWidth()-editor.getSideBoxWidth(), row*editor.getSideBoxHeight()  - editor.getSideBoxYOffset(), editor.getSideBoxWidth(), editor.getSideBoxHeight());
 				boolean isConnected = slot.isOccupied();
 				g2d.setColor(isConnected ? slotConnectedColor : slotDisconnectedColor);
 				g2d.fill(rect);
 				g2d.setColor(Color.gray);
 				g2d.draw(rect);
 				g2d.setColor(Color.black);
-				g2d.drawString("slot "+row, editor.getWidth()-editor.getSideBoxWidth()+10, editor.getSideBoxHeight()*row+30);
+				g2d.drawString("slot "+row, editor.getWidth()-editor.getSideBoxWidth()+10, row*editor.getSideBoxHeight() - editor.getSideBoxYOffset() +30);
 
 				if(isConnected) {
 					NodeBox box = editor.getBox(slot.getTerrainNode());
 					g2d.setColor(Color.green);
-					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5), box.getX()+box.getWidth(), box.getY()));
+					g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(row+0.5)  - editor.getSideBoxYOffset(), box.getX()+box.getWidth(), box.getY()));
 				}
 
 				row++;
@@ -329,7 +337,7 @@ public class NodalEditorUI {
 			// Draw incomplete link
 			if(editor.isLinkingTerrainSlot()) {
 				g2d.setColor(Color.red);
-				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentTerrainSlotRow()+0.5), editor.getXCursor(), editor.getYCursor()));
+				g2d.draw(new Line2D.Double(editor.getWidth()-editor.getSideBoxWidth(), editor.getSideBoxHeight()*(editor.getCurrentTerrainSlotRow()+0.5) - editor.getSideBoxYOffset(), editor.getXCursor(), editor.getYCursor()));
 			}
 		}
 

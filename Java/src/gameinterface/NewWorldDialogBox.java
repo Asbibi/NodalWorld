@@ -94,8 +94,8 @@ public class NewWorldDialogBox extends JDialog {
 		inputPanel.setLayout(new FlowLayout());
 		inputPanel.add(widthInputField = new TextFieldPanel("Width:"));
 		inputPanel.add(heightInputField = new TextFieldPanel("Height:"));
-		widthInputField.setFieldString("10");
-		heightInputField.setFieldString("10");
+		widthInputField.setFieldString("25");
+		heightInputField.setFieldString("25");
 		
 		JPanel southPanel = new JPanel();
 		southPanel.setLayout(new GridLayout(0,2));

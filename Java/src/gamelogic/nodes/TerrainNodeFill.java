@@ -14,7 +14,7 @@ import gamelogic.terrains.TerrainModelFill;
 public class TerrainNodeFill extends TerrainNode<TerrainModelFill> {
 
 	public TerrainNodeFill() {
-		super("Filled Terrain", new TerrainModelFill());
+		super("Terrain Fill", new TerrainModelFill());
 	}
 
 	@Override

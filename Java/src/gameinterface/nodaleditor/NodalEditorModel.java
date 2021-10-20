@@ -42,7 +42,7 @@ public class NodalEditorModel implements Serializable {
 	private int sideBoxWidth, sideBoxHeight;
 
 	private transient boolean editingLink, movingSelection, selectingArea, panning, zooming, linkingSpecies, linkingTerrainSlot, onAlert;
-	private transient int xCursor, yCursor, xRef, yRef;
+	private transient int xCursor, yCursor, xRef, yRef, sideBoxYOffset;
 	private transient Port curPort;
 
 	private Map<NodeBox, Boolean> selected;
@@ -500,6 +500,24 @@ public class NodalEditorModel implements Serializable {
 	* @return the last recorded cursor position on the y-axis
 	*/ 
 	public int getYCursor() { return yCursor; }
+	
+	/**
+	* @return the Y offset for the scroll feature on the right side slot list
+	*/
+	public int getSideBoxYOffset() { return sideBoxYOffset; }
+	
+	/**
+	* Changes the Y offset for the scroll feature on the right side slot list.
+	* @param the number of mouse wheel step
+	*/
+	public void changeSideBoxYOffset(int steps) {
+		sideBoxYOffset += steps*5;
+		int max = ((isUsingTerrains() ? game.getTerrain().getSlots().size() : game.getSpeciesArray().size() -1) - 1) * sideBoxHeight;
+		if (sideBoxYOffset > max)
+			sideBoxYOffset = max;
+		if (sideBoxYOffset < 0)
+			sideBoxYOffset = 0;
+	}
 
 	/**
 	* @param x

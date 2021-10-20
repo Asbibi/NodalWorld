@@ -172,6 +172,10 @@ public class NodalEditor extends JComponent {
 	public int getSideBoxWidth() { return model.getSideBoxWidth(); }
 
 	public int getSideBoxHeight() { return model.getSideBoxHeight(); }
+	
+	public int getSideBoxYOffset() { return model.getSideBoxYOffset(); }
+	
+	public void changeSideBoxYOffset(int steps) { model.changeSideBoxYOffset(steps); repaint(); }
 
 	public int getSpeciesRow(int x, int y) {
 		if(isUsingRules() && x >= getWidth()-getSideBoxWidth() && y < getSideBoxHeight()*getGameManager().getSpeciesArray().size()) {
