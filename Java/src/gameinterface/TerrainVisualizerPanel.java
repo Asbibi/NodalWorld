@@ -150,9 +150,6 @@ public class TerrainVisualizerPanel extends JPanel {
 		int focused = visualizer.getFocusedLayer();
 		if (focused < 0)
 			return;
-		int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete the Slot " + focused +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
-        if (reply != JOptionPane.YES_OPTION)
-        	return;
         
     	visualizer.getTerrain().removeSlot(focused);
     	if (focused != 0)

@@ -143,7 +143,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 				if (sp == null)
 					return;
 				
-				int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete all entities of "+ getSelectedElement().toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
+				int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete all entities of "+ getSelectedElement().toString() +" ?\nIt can't be undone.", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 	            if (reply != JOptionPane.YES_OPTION)
 	                return;				
 				
@@ -193,7 +193,7 @@ public class ElementManagerToolBar<T extends Element> extends JToolBar {
 	public void removeCurrentElement() {
 		int selectedIndex = scrollList.getSelectedIndex();
 		if (selectedIndex != -1) {
-			int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete "+ getSelectedElement().toString() +" ? It can't be undone.", "Delete", JOptionPane.YES_NO_OPTION);
+			int reply = JOptionPane.showConfirmDialog(null, "Do you really want to delete "+ getSelectedElement().toString() +" ?\nIt can't be undone.", "Confirm Delete", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (reply != JOptionPane.YES_OPTION)
                 return;
 			

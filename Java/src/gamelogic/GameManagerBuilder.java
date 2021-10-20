@@ -133,9 +133,12 @@ public class GameManagerBuilder {
 	*/ 
 	public static GameManager buildAllNetsLoadedGame(String saveFilePath, int width_failsafe, int height_failsafe) {
 		GameManager game = Saver.loadGame(saveFilePath);
+		if (game == null)
+			return buildEmptyGame(width_failsafe, height_failsafe);
+		
 		game.initTransientFields();
 		game.reinitWorld();
-		return game != null ? game : buildEmptyGame(width_failsafe, height_failsafe);
+		return game;
 	}
 	
 	/**

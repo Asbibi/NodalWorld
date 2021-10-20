@@ -271,7 +271,7 @@ public class GameFrame extends JFrame {
         int res = savefileChooser.showSaveDialog(this);
         if(res == JFileChooser.APPROVE_OPTION){
         	String[] options = {"Pack images (Recommended)", "Use absolute paths"};        	
-        	int resPack = JOptionPane.showOptionDialog(this,"Do you want to pack the images in the save file ?\n\nPacking the images in the save file makes it larger in memory.\nBut it will also make it independent of the image files used.","Pack images ?", 0,JOptionPane.INFORMATION_MESSAGE,null,options,null);
+        	int resPack = JOptionPane.showOptionDialog(null, "Do you want to pack the images in the save file ?\n\nPacking the images in the save file makes it larger in memory.\nBut it will also make it independent of the image files used.","Pack images ?", 0,JOptionPane.INFORMATION_MESSAGE,null,options,null);
 			if(resPack == JOptionPane.YES_OPTION)
 				Saver.saveGame(savefileChooser.getSelectedFile().getPath(), gameManager, true);
 			else if (resPack == JOptionPane.NO_OPTION)

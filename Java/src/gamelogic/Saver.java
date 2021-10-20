@@ -17,6 +17,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
 * The goal of the Saver class is to save and load a project's GameManager from a savefile.<br/><br/>
@@ -62,13 +63,19 @@ public class Saver {
 	*/ 
 	public static void saveGame(String saveFilePath, GameManager manager, boolean packImages) {
 		try {
+			if (saveFileAlreadyExistsAndCancelSave(saveFilePath))
+				return;
+			
 			String ext = saveFilePath.substring(saveFilePath.length() - 4);
 			if (ext.equals(".nws"))
 				saveFilePath = saveFilePath.substring(0, saveFilePath.length() - 4);
 			
 			ArrayList<File> tempSaveFiles = new ArrayList<>();
 			File tempFolder = new File(saveFilePath);
-	    	tempFolder.mkdir();
+			if (tempFolderAlreadyExists(tempFolder))
+				return;
+			
+			
 			
 
 			// === Create and add the important text files at the begining of the list ===
@@ -402,7 +409,9 @@ public class Saver {
 		byte[] buffer = new byte[1024];
 		try{
 			File folder = new File(saveFilePath.substring(0, saveFilePath.length() - 4));
-			folder.mkdir();
+			if (tempFolderAlreadyExists(folder))
+				return null;
+			
 			System.out.println(folder);
 			
 			//get the zip file content
@@ -435,5 +444,44 @@ public class Saver {
 	        ex.printStackTrace();
 			return null;			
 		}		
-	}	
+	}
+	
+	
+	
+	
+	
+	// ===========	File Already exists Checks	===========
+	
+	/**
+	* Checks if a temporary folder already exists. If so, pops a an error dialog box. Else, create the temporary folder.
+	* @param tempFolder the temporary folder to check
+	* @return if the folder already exists or not (i.e. if should abort the operation or continue it)
+	*/ 
+	private static boolean tempFolderAlreadyExists(File tempFolder) {
+		if (tempFolder.exists()) {
+			System.err.println("Folder exists !!");
+			JOptionPane.showMessageDialog(null, "Can't perform action on " + tempFolder.getAbsolutePath() + ".nws\nA folder with the same name already exists at this location.", "Error: Folder with same name exists", JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		else {
+	    	tempFolder.mkdir();
+	    	return false;			
+		}
+	}
+	
+	/**
+	* Checks if a save file already exists at specified location. If so, pops a dialog box to ask the user if it should be replaced.
+	* @param saveFilePath the path of the save file to be
+	* @return if the save should be abort or not
+	*/ 
+	private static boolean saveFileAlreadyExistsAndCancelSave(String filePath) {
+		File saveFilee = new File(filePath);
+		if (!saveFilee.exists())
+			return false;
+		
+		System.out.println("Save file already exists");
+		
+		int res = JOptionPane.showConfirmDialog(null, filePath + " already exists.\nReplace it ?", "Save File already exists", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		return res != 0;	
+	}
 }
