@@ -44,8 +44,6 @@ import javax.swing.JOptionPane;
 * 
 * WARNING -- If you plan on directly use the loaded GameManager, don't forget to init its transient attributes (for example its listeners) by calling initTransientFields().<br/><br/>
 * 
-* WARNING -- Because of the way the saving and loading processes works, if a folder already exists with the savefile name, it will get deleted.<br/><br/>
-* 
 * Zip and Unzip code partially use code written here: https://www.youtube.com/watch?v=lm1Y_vMzgQk&ab_channel=jinujawadm
 * 
 * @see GameManager
